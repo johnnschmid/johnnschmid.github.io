@@ -420,21 +420,29 @@
                         <div class="w-10 h-10 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center"><i class="fa-solid fa-envelope"></i></div>
                         <span class="font-bold text-gray-700">support@studyhub.com</span>
                     </div>
+                    <div class="flex items-center gap-4">
+                        <div class="w-10 h-10 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center"><i class="fa-solid fa-phone"></i></div>
+                        <span class="font-bold text-gray-700">+63 (912) 345 6789</span>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <div class="w-10 h-10 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center"><i class="fa-solid fa-location-dot"></i></div>
+                        <span class="font-bold text-gray-700">123 Academic Way, Manila, PH</span>
+                    </div>
                 </div>
             </div>
             <div class="flex flex-col md:flex-row items-center md:items-end justify-end gap-6">
                 <!-- CEO PHOTO ADDED HERE -->
             <div class="flex items-center justify-center md:justify-end gap-6">
                 <div class="flex flex-col items-center gap-2">
-                    <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=300&h=300&fit=crop" class="w-32 h-32 md:w-40 md:h-40 object-cover rounded-xl border border-gray-100">
+                    <img src="ceo.png" class="w-32 h-32 md:w-40 md:h-40 object-cover rounded-xl border border-gray-100">
                     <p class="text-[10px] font-bold text-gray-400 uppercase">CEO Josselle Rabago</p>
                 </div>
                 <div class="flex flex-col items-center gap-2">
                     <div class="bg-gray-50 p-4 rounded-3xl border border-gray-100">
-                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://johnnschmid.vercel.app&color=2D5BFF" class="w-24 h-24 md:w-32 md:h-32 rounded-xl">
+                        <img id="dynamicQR" src="" class="w-24 h-24 md:w-32 md:h-32 rounded-xl">
                     </div>
                     <p class="text-[10px] font-bold text-gray-400 uppercase">Scan to Visit</p>
-            </div>
+                </div>
                 
                 
             </div>
@@ -493,6 +501,12 @@
                 ],
 
                 init() {
+                    // 1. Dynamic QR Code Generation
+                    const qrImg = document.getElementById('dynamicQR');
+                    const currentURL = encodeURIComponent(window.location.href);
+                    qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${currentURL}&color=2D5BFF`;
+                                
+                
                     setInterval(() => {
                         this.heroActiveIndex = (this.heroActiveIndex + 1) % this.products.length;
                     }, 4000);
