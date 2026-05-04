@@ -40,7 +40,6 @@
                 <i class="fa-solid" :class="isMuted ? 'fa-volume-xmark text-red-500' : 'fa-volume-high text-blue-600'"></i>
                 <span x-text="isMuted ? 'Muted' : 'Music On'"></span>
             </button>
-            <!-- VOLUME REGULATOR -->
             <input type="range" min="0" max="1" step="0.1" x-model="volume" @input="updateVolume" class="w-16 h-1 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600">
         </div>
 
@@ -155,7 +154,109 @@
         </div>
     </div>
 
-    <!-- 1. HOME / HERO SECTION -->
+    <!-- PRODUCT DETAIL MODAL -->
+    <div x-show="selectedProduct" x-cloak class="fixed inset-0 z-[110] flex items-center justify-center p-4">
+        <div class="absolute inset-0 bg-black/60 backdrop-blur-md" @click="selectedProduct = null"></div>
+        <div class="bg-white w-full max-w-4xl rounded-[2.5rem] shadow-2xl relative z-10 overflow-hidden flex flex-col md:flex-row max-h-[90vh]"
+             x-transition:enter="transition ease-out duration-300"
+             x-transition:enter-start="opacity-0 scale-95"
+             x-transition:enter-end="opacity-100 scale-100">
+            
+            <button @click="selectedProduct = null" class="absolute top-6 right-8 text-gray-400 hover:text-gray-900 text-3xl z-20">&times;</button>
+            
+            <!-- Modal Images Slider -->
+            <div class="md:w-1/2 bg-gray-50 relative group h-80 md:h-auto">
+                <template x-if="selectedProduct">
+                    <img :src="selectedProduct.images[selectedProduct.currentImg]" class="w-full h-full object-cover">
+                </template>
+                <div class="absolute inset-0 flex items-center justify-between px-4">
+                    <button @click="prevImg(selectedProduct)" class="w-10 h-10 bg-white/80 rounded-full shadow-lg flex items-center justify-center hover:bg-white"><i class="fa-solid fa-chevron-left"></i></button>
+                    <button @click="nextImg(selectedProduct)" class="w-10 h-10 bg-white/80 rounded-full shadow-lg flex items-center justify-center hover:bg-white"><i class="fa-solid fa-chevron-right"></i></button>
+                </div>
+            </div>
+
+            <!-- Modal Content -->
+            <div class="md:w-1/2 p-8 md:p-12 overflow-y-auto text-left">
+                <template x-if="selectedProduct">
+                    <div>
+                        <h2 class="text-3xl font-bold mb-2" x-text="selectedProduct.name"></h2>
+                        <div class="flex items-center gap-2 mb-4">
+                            <div class="flex text-yellow-400 text-xs">
+                                <template x-for="i in 5">
+                                    <i class="fa-star" :class="i <= selectedProduct.rating ? 'fa-solid' : 'fa-regular'"></i>
+                                </template>
+                            </div>
+                            <span class="text-gray-400 text-xs" x-text="'(' + selectedProduct.rating + '.0)'"></span>
+                        </div>
+                        <p class="text-2xl font-black text-blue-600 mb-6" x-text="formatPrice(selectedProduct.price)"></p>
+                        
+                        <p class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">Description</p>
+                        <p class="text-gray-500 text-sm mb-8 leading-relaxed" x-text="selectedProduct.description"></p>
+                        
+                        <div class="mb-8">
+                            <p class="text-xs font-bold text-gray-400 uppercase mb-3">Select Color</p>
+                            <div class="flex gap-3">
+                                <template x-for="cObj in selectedProduct.colors" :key="cObj.hex">
+                                    <div class="color-dot w-8 h-8" 
+                                         :style="{ backgroundColor: cObj.hex }" 
+                                         :class="selectedProduct.selectedColor.hex === cObj.hex ? 'active' : ''"
+                                         @click="selectedProduct.selectedColor = cObj"></div>
+                                </template>
+                            </div>
+                        </div>
+
+                        <button @click="addToCart(selectedProduct); selectedProduct = null" class="btn-blue-pill w-full py-4 text-lg mb-10 shadow-lg shadow-blue-100">Add to Bag</button>
+
+                        <hr class="border-gray-100 mb-8">
+
+                        <!-- Reviews List -->
+                        <div class="space-y-6">
+                            <h3 class="font-bold text-lg">Student Reviews</h3>
+                            <div class="space-y-4">
+                                <template x-for="rev in selectedProduct.reviews">
+                                    <div class="bg-gray-50 p-4 rounded-2xl border border-gray-100">
+                                        <div class="flex justify-between items-center mb-1">
+                                            <span class="font-bold text-sm text-gray-800" x-text="rev.user"></span>
+                                            <span class="text-[10px] text-gray-400 font-medium" x-text="rev.date"></span>
+                                        </div>
+                                        <!-- Review Stars -->
+                                        <div class="flex text-yellow-400 text-[10px] mb-2" x-show="rev.rating">
+                                            <template x-for="starIdx in 5">
+                                                <i class="fa-star" :class="starIdx <= rev.rating ? 'fa-solid' : 'fa-regular'"></i>
+                                            </template>
+                                        </div>
+                                        <p class="text-gray-600 text-sm" x-text="rev.text"></p>
+                                    </div>
+                                </template>
+                            </div>
+
+                            <!-- New Review Form with Stars -->
+                            <div class="mt-6 p-6 bg-blue-50/50 rounded-2xl border border-blue-100/50">
+                                <p class="text-sm font-bold text-gray-800 mb-3">Leave a Review</p>
+                                
+                                <!-- Star Rating Input -->
+                                <div class="flex items-center gap-1 mb-3" x-data="{ hoverRating: 0 }">
+                                    <template x-for="star in [1,2,3,4,5]">
+                                        <i class="cursor-pointer transition-colors text-lg" 
+                                           :class="(hoverRating || newReviewRating) >= star ? 'fa-solid fa-star text-yellow-400' : 'fa-regular fa-star text-gray-300'"
+                                           @mouseenter="hoverRating = star"
+                                           @mouseleave="hoverRating = 0"
+                                           @click="newReviewRating = star"></i>
+                                    </template>
+                                    <span class="text-xs text-gray-400 ml-2" x-text="newReviewRating ? newReviewRating + '/5' : 'Rate it'"></span>
+                                </div>
+
+                                <textarea x-model="newReviewText" placeholder="How's your experience with this item?" class="w-full p-4 bg-white border border-gray-100 rounded-xl text-sm outline-none focus:ring-2 focus:ring-blue-500 mb-3 h-24"></textarea>
+                                <button @click="submitReview(selectedProduct)" class="btn-outline-pill w-full py-2 text-xs bg-white border-blue-200">Submit Review</button>
+                            </div>
+                        </div>
+                    </div>
+                </template>
+            </div>
+        </div>
+    </div>
+
+    <!-- HOME / HERO SECTION -->
     <header class="px-4 md:px-8 py-8 md:py-12">
         <div class="hero-bg-gradient max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-12 px-8 md:px-20 py-16 md:py-24 rounded-[2rem] shadow-xl overflow-hidden">
             <div class="md:w-1/2 space-y-8 text-left">
@@ -187,7 +288,7 @@
                          x-transition:leave-start="opacity-100 scale-100"
                          x-transition:leave-end="opacity-0 scale-105"
                          class="absolute inset-0 flex items-center justify-center">
-                        <img :src="p.image" 
+                        <img :src="p.images[0]" 
                              class="w-full h-full max-w-md object-cover rounded-[2.5rem] shadow-2xl border-8 border-white">
                     </div>
                 </template>
@@ -195,7 +296,7 @@
         </div>
     </header>
 
-    <!-- 2. THE PROBLEM WE SOLVE -->
+    <!-- THE PROBLEM WE SOLVE -->
     <section class="py-20 px-8 bg-white">
         <div class="max-w-7xl mx-auto text-center">
             <h2 class="text-3xl font-bold mb-12">The Problem We Solve</h2>
@@ -223,22 +324,28 @@
         </div>
     </section>
 
-    <!-- 3. SHOP SECTION -->
+    <!-- SHOP SECTION -->
     <section id="shop" class="max-w-7xl mx-auto px-8 py-20">
         <h2 class="text-3xl font-bold mb-10 text-left">Collections</h2>
         <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
             <template x-for="p in products" :key="p.id">
-                <div class="bg-white p-5 rounded-[2rem] border border-gray-100 card-shadow group">
-                    <img :src="p.image" class="w-full h-48 object-cover rounded-2xl mb-4 group-hover:scale-105 transition-transform duration-500">
-                    <h3 class="font-bold text-gray-800" x-text="p.name"></h3>
+                <div class="bg-white p-5 rounded-[2rem] border border-gray-100 card-shadow group flex flex-col">
                     
-                    <div class="flex items-center gap-1 my-1" x-data="{ hover: 0 }">
+                    <div class="relative h-48 mb-4 overflow-hidden rounded-2xl bg-gray-50">
+                        <img :src="p.images[p.currentImg]" 
+                             class="w-full h-full object-cover cursor-pointer hover:scale-105 transition-transform duration-500"
+                             @click="selectedProduct = p">
+                        <div class="absolute inset-0 flex items-center justify-between px-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <button @click.stop="prevImg(p)" class="w-8 h-8 bg-white/90 rounded-full flex items-center justify-center shadow text-xs hover:bg-white"><i class="fa-solid fa-chevron-left"></i></button>
+                            <button @click.stop="nextImg(p)" class="w-8 h-8 bg-white/90 rounded-full flex items-center justify-center shadow text-xs hover:bg-white"><i class="fa-solid fa-chevron-right"></i></button>
+                        </div>
+                    </div>
+
+                    <h3 class="font-bold text-gray-800 cursor-pointer hover:text-blue-600 truncate" x-text="p.name" @click="selectedProduct = p"></h3>
+                    
+                    <div class="flex items-center gap-1 my-1">
                         <template x-for="star in [1, 2, 3, 4, 5]">
-                            <i class="cursor-pointer transition-colors text-[10px]" 
-                               :class="(hover || p.rating) >= star ? 'fa-solid fa-star text-yellow-400' : 'fa-regular fa-star text-gray-300'"
-                               @mouseenter="hover = star"
-                               @mouseleave="hover = 0"
-                               @click="rateProduct(p, star)"></i>
+                            <i class="text-[10px]" :class="p.rating >= star ? 'fa-solid fa-star text-yellow-400' : 'fa-regular fa-star text-gray-300'"></i>
                         </template>
                         <span class="text-[10px] text-gray-400 ml-1" x-text="`(${p.rating}.0)`"></span>
                     </div>
@@ -252,14 +359,17 @@
                         </template>
                     </div>
 
-                    <p class="text-blue-600 font-black text-lg" x-text="formatPrice(p.price)"></p>
-                    <button @click="addToCart(p)" class="btn-blue-pill w-full py-3 mt-5 text-sm">Add to Bag</button>
+                    <p class="text-blue-600 font-black text-lg mt-auto" x-text="formatPrice(p.price)"></p>
+                    <div class="flex gap-2 mt-4">
+                        <button @click="addToCart(p)" class="btn-blue-pill flex-1 py-3 text-[10px] uppercase tracking-wider">Add to Bag</button>
+                        <button @click="selectedProduct = p" class="w-10 h-10 btn-outline-pill border-none bg-gray-50 text-gray-400 hover:text-blue-600"><i class="fa-solid fa-eye text-xs"></i></button>
+                    </div>
                 </div>
             </template>
         </div>
     </section>
 
-    <!-- 4. ABOUT SECTION -->
+    <!-- ABOUT SECTION -->
     <section id="about" class="py-24 px-8 bg-gray-50">
         <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-16 items-center">
             <div class="order-2 md:order-1">
@@ -295,7 +405,7 @@
             <div x-show="view === 'bag'" class="flex-1 overflow-y-auto p-8 text-left">
                 <template x-for="(item, idx) in cart" :key="item.id + item.selectedColor.hex">
                     <div class="flex gap-4 border-b pb-4 mb-4 items-center">
-                        <img :src="item.image" class="w-16 h-16 rounded-xl object-cover">
+                        <img :src="item.images[0]" class="w-16 h-16 rounded-xl object-cover">
                         <div class="flex-1">
                             <div class="font-bold text-sm" x-text="item.name"></div>
                             <div class="flex items-center gap-1 mt-1">
@@ -411,7 +521,7 @@
         </div>
     </div>
 
-    <!-- 5. CONTACT SECTION -->
+    <!-- CONTACT SECTION -->
     <footer id="contact" class="py-20 px-8 border-t border-gray-100 bg-white">
         <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-center">
             <div class="text-left space-y-6">
@@ -433,20 +543,18 @@
                 </div>
             </div>
             <div class="flex flex-col md:flex-row items-center md:items-end justify-end gap-6">
-                <!-- CEO PHOTO ADDED HERE -->
-            <div class="flex items-center justify-center md:justify-end gap-6">
-                <div class="flex flex-col items-center gap-2">
-                    <img src="ceo.jpg" class="w-32 h-32 md:w-40 md:h-40 object-cover rounded-xl border border-gray-100">
-                    <p class="text-[10px] font-bold text-gray-400 uppercase">CEO</p>
-                </div>
-                <div class="flex flex-col items-center gap-2">
-                    <div class="bg-gray-50 p-4 rounded-3xl border border-gray-100">
-                        <img id="dynamicQR" src="" class="w-24 h-24 md:w-32 md:h-32">
+                <div class="flex items-center justify-center md:justify-end gap-6">
+                    <div class="flex flex-col items-center gap-2">
+                        <img src="ceo.jpg" class="w-32 h-32 md:w-40 md:h-40 object-cover rounded-xl border border-gray-100">
+                        <p class="text-[10px] font-bold text-gray-400 uppercase">CEO</p>
                     </div>
-                    <p class="text-[10px] font-bold text-gray-400 uppercase">Scan to Visit</p>
+                    <div class="flex flex-col items-center gap-2">
+                        <div class="bg-gray-50 p-4 rounded-3xl border border-gray-100">
+                            <img id="dynamicQR" src="" class="w-24 h-24 md:w-32 md:h-32">
+                        </div>
+                        <p class="text-[10px] font-bold text-gray-400 uppercase">Scan to Visit</p>
+                    </div>
                 </div>
-                
-                
             </div>
         </div>
         <div class="mt-20 pt-8 border-t border-gray-50 text-center">
@@ -455,7 +563,6 @@
     </footer>
 
     <script>
-        // Modification: Set build date and time next to "All rights reserved"
         const now = new Date();
         document.getElementById('buildTimestamp').innerText = `Build Date: ${now.toLocaleDateString()} ${now.toLocaleTimeString()}`;
 
@@ -471,6 +578,9 @@
                 volume: 0.5,
                 fontSize: 16,
                 heroActiveIndex: 0,
+                selectedProduct: null,
+                newReviewText: '',
+                newReviewRating: 0, // Added star rating state
 
                 shippingInfo: {
                     name: '',
@@ -486,35 +596,32 @@
                 userName: '', 
 
                 products: [
-                    { id: 1, name: 'Premium Journal', price: 1.99, rating: 5, image: 'https://images.unsplash.com/photo-1531346878377-a5be20888e57?w=400', colors: [{hex: '#000', name: 'Black'}, {hex: '#2D5BFF', name: 'Blue'}, {hex: '#FF5B5B', name: 'Red'}], selectedColor: {hex: '#000', name: 'Black'} },
-                    { id: 2, name: 'Studio Pen Set', price: 0.99, rating: 4, image: 'https://images.unsplash.com/photo-1583485088034-697b5bc54ccd?w=400', colors: [{hex: '#000', name: 'Black'}, {hex: '#2D5BFF', name: 'Blue'}, {hex: '#FFF', name: 'White'}], selectedColor: {hex: '#000', name: 'Black'} },
-                    { id: 3, name: 'Smart Calculator', price: 2.99, rating: 5, image: 'https://images.unsplash.com/photo-1587145820266-a5951ee6f620?w=400', colors: [{hex: '#333', name: 'Charcoal'}, {hex: '#888', name: 'Gray'}], selectedColor: {hex: '#333', name: 'Charcoal'} },
-                    { id: 4, name: 'Canvas Backpack', price: 19.99, rating: 4, image: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400', colors: [{hex: '#4b5563', name: 'Gray'}, {hex: '#1e40af', name: 'Navy'}, {hex: '#166534', name: 'Green'}], selectedColor: {hex: '#4b5563', name: 'Gray'} },
-                    { id: 5, name: 'Pastel Highlighters', price: 1.59, rating: 5, image: 'https://images.unsplash.com/photo-1513542789411-b6a5d4f31634?w=400', colors: [{hex: '#fef08a', name: 'Yellow'}, {hex: '#bbf7d0', name: 'Mint'}, {hex: '#fbcfe8', name: 'Pink'}], selectedColor: {hex: '#fef08a', name: 'Yellow'} },
-                    { id: 6, name: 'Wireless Mouse', price: 11.59, rating: 4, image: 'https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=400', colors: [{hex: '#000', name: 'Black'}, {hex: '#ef4444', name: 'Red'}, {hex: '#3b82f6', name: 'Blue'}], selectedColor: {hex: '#000', name: 'Black'} },
-                    { id: 7, name: 'Desk Organizer', price: 2.99, rating: 5, image: 'https://images.unsplash.com/photo-1644463589256-02679b9c0767?w=400', colors: [{hex: '#fff', name: 'White'}, {hex: '#000', name: 'Black'}], selectedColor: {hex: '#fff', name: 'White'} },
-                    { id: 8, name: 'Sticky Note Bundle', price: 5.69, rating: 1, image: 'https://images.unsplash.com/photo-1587145820137-a9dbc8c5ed99?w=400', colors: [{hex: '#fef08a', name: 'Yellow'}, {hex: '#fde68a', name: 'Gold'}], selectedColor: {hex: '#fef08a', name: 'Yellow'} },
-                    { id: 9, name: 'Math Geometry Set', price: 3.99, rating: 2, image: 'https://plus.unsplash.com/premium_photo-1723651610517-8d6efa0201d2?w=400', colors: [{hex: '#cbd5e1', name: 'Silver'}, {hex: '#2D5BFF', name: 'Blue'}], selectedColor: {hex: '#cbd5e1', name: 'Silver'} },
-                    { id: 10, name: 'Noise-Canceling Buds', price: 10.99, rating: 4, image: 'https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=400', colors: [{hex: '#fff', name: 'White'}, {hex: '#000', name: 'Black'}], selectedColor: {hex: '#fff', name: 'White'} },
-                    { id: 11, name: 'Lined Legal Pads', price: 7, rating: 3, image: 'https://images.unsplash.com/photo-1709728163881-b77f2a76a36a?w=400', colors: [{hex: '#fff', name: 'White'}, {hex: '#fef9c3', name: 'Ivory'}], selectedColor: {hex: '#fff', name: 'White'} },
-                    { id: 12, name: 'Laptop Sleeve', price: 18, rating: 2, image: 'https://images.unsplash.com/photo-1611461527944-1a718332613b?w=400', colors: [{hex: '#111', name: 'Ebony'}, {hex: '#444', name: 'Slate'}], selectedColor: {hex: '#111', name: 'Ebony'} },
-                    { id: 13, name: 'Hardcover Sketchbook', price: 4.99, rating: 5, image: 'https://images.unsplash.com/photo-1557752370-64699f42ee4d?w=400', colors: [{hex: '#000', name: 'Black'}, {hex: '#7c2d12', name: 'Sienna'}], selectedColor: {hex: '#000', name: 'Black'} },
-                    { id: 14, name: 'USB-C Hub Adapter', price: 2.99, rating: 3, image: 'https://images.unsplash.com/photo-1760376789487-994070337c76?w=400', colors: [{hex: '#94a3b8', name: 'Steel'}], selectedColor: {hex: '#94a3b8', name: 'Steel'} }
+                    { id: 1, name: 'Premium Journal', price: 1.99, rating: 5, images: ['https://images.unsplash.com/photo-1531346878377-a5be20888e57?w=400', 'https://images.unsplash.com/photo-1544816153-36ad49bc10d8?w=400', 'https://images.unsplash.com/photo-1586075010682-2a075249f390?w=400'], currentImg: 0, description: 'Elegantly crafted journal with acid-free paper, perfect for thoughts, sketches, and daily planning.', reviews: [{user: 'Alex T.', date: 'Jan 12', rating: 5, text: 'Best journal I have ever used. The paper is thick!'}], colors: [{hex: '#000', name: 'Black'}, {hex: '#2D5BFF', name: 'Blue'}, {hex: '#FF5B5B', name: 'Red'}], selectedColor: {hex: '#000', name: 'Black'} },
+                    { id: 2, name: 'Studio Pen Set', price: 0.99, rating: 4, images: ['https://images.unsplash.com/photo-1583485088034-697b5bc54ccd?w=400', 'https://images.unsplash.com/photo-1511108690759-009324a903df?w=400', 'https://images.unsplash.com/photo-1525011268546-bf3f946d7f5d?w=400'], currentImg: 0, description: 'Smooth-writing gel pens in a set of 5. Perfect for long study sessions.', reviews: [{user: 'Mia R.', date: 'Feb 05', rating: 4, text: 'The ink flows so smoothly. Worth every cent.'}], colors: [{hex: '#000', name: 'Black'}, {hex: '#2D5BFF', name: 'Blue'}, {hex: '#FFF', name: 'White'}], selectedColor: {hex: '#000', name: 'Black'} },
+                    { id: 3, name: 'Smart Calculator', price: 2.99, rating: 5, images: ['https://images.unsplash.com/photo-1587145820266-a5951ee6f620?w=400', 'https://images.unsplash.com/photo-1610473068501-c884249a2a7a?w=400', 'https://images.unsplash.com/photo-1594814171200-fe7932617758?w=400'], currentImg: 0, description: 'Essential for math and science. Features an extra large display and solar power.', reviews: [], colors: [{hex: '#333', name: 'Charcoal'}, {hex: '#888', name: 'Gray'}], selectedColor: {hex: '#333', name: 'Charcoal'} },
+                    { id: 4, name: 'Canvas Backpack', price: 19.99, rating: 4, images: ['https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400', 'https://images.unsplash.com/photo-1551232864-3f0890e580d9?w=400'], currentImg: 0, description: 'Durable canvas material with a dedicated laptop compartment and multiple pockets.', reviews: [], colors: [{hex: '#4b5563', name: 'Gray'}, {hex: '#1e40af', name: 'Navy'}], selectedColor: {hex: '#4b5563', name: 'Gray'} },
+                    { id: 5, name: 'Pastel Highlighters', price: 1.59, rating: 5, images: ['https://images.unsplash.com/photo-1513542789411-b6a5d4f31634?w=400'], currentImg: 0, description: 'Set of 6 aesthetic pastel colors that wont bleed through paper.', reviews: [], colors: [{hex: '#fef08a', name: 'Yellow'}, {hex: '#bbf7d0', name: 'Mint'}], selectedColor: {hex: '#fef08a', name: 'Yellow'} },
+                    { id: 6, name: 'Wireless Mouse', price: 11.59, rating: 4, images: ['https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=400'], currentImg: 0, description: 'Ergonomic wireless mouse with silent clicks and long battery life.', reviews: [], colors: [{hex: '#000', name: 'Black'}, {hex: '#ef4444', name: 'Red'}], selectedColor: {hex: '#000', name: 'Black'} },
+                    { id: 7, name: 'Desk Organizer', price: 2.99, rating: 5, images: ['https://images.unsplash.com/photo-1644463589256-02679b9c0767?w=400'], currentImg: 0, description: 'Keep your workspace tidy. Multiple compartments for pens, notes, and clips.', reviews: [], colors: [{hex: '#fff', name: 'White'}, {hex: '#000', name: 'Black'}], selectedColor: {hex: '#fff', name: 'White'} },
+                    { id: 8, name: 'Sticky Note Bundle', price: 5.69, rating: 1, images: ['https://images.unsplash.com/photo-1587145820137-a9dbc8c5ed99?w=400'], currentImg: 0, description: 'Colorful sticky notes in various sizes for reminders and bookmarks.', reviews: [], colors: [{hex: '#fef08a', name: 'Yellow'}], selectedColor: {hex: '#fef08a', name: 'Yellow'} },
+                    { id: 9, name: 'Math Geometry Set', price: 3.99, rating: 2, images: ['https://plus.unsplash.com/premium_photo-1723651610517-8d6efa0201d2?w=400'], currentImg: 0, description: 'Complete set including compass, protractor, and rulers in a protective case.', reviews: [], colors: [{hex: '#cbd5e1', name: 'Silver'}], selectedColor: {hex: '#cbd5e1', name: 'Silver'} },
+                    { id: 10, name: 'Noise-Canceling Buds', price: 10.99, rating: 4, images: ['https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=400'], currentImg: 0, description: 'Block out distractions and focus on your studies with premium audio quality.', reviews: [], colors: [{hex: '#fff', name: 'White'}, {hex: '#000', name: 'Black'}], selectedColor: {hex: '#fff', name: 'White'} },
+                    { id: 11, name: 'Lined Legal Pads', price: 7, rating: 3, images: ['https://images.unsplash.com/photo-1709728163881-b77f2a76a36a?w=400'], currentImg: 0, description: 'Large format pads for detailed notes and drafting.', reviews: [], colors: [{hex: '#fff', name: 'White'}], selectedColor: {hex: '#fff', name: 'White'} },
+                    { id: 12, name: 'Laptop Sleeve', price: 18, rating: 2, images: ['https://images.unsplash.com/photo-1611461527944-1a718332613b?w=400'], currentImg: 0, description: 'Water-resistant sleeve with soft lining to protect your tech.', reviews: [], colors: [{hex: '#111', name: 'Ebony'}], selectedColor: {hex: '#111', name: 'Ebony'} },
+                    { id: 13, name: 'Hardcover Sketchbook', price: 4.99, rating: 5, images: ['https://images.unsplash.com/photo-1557752370-64699f42ee4d?w=400'], currentImg: 0, description: 'Heavyweight paper suitable for ink, pencil, and light watercolor.', reviews: [], colors: [{hex: '#000', name: 'Black'}], selectedColor: {hex: '#000', name: 'Black'} },
+                    { id: 14, name: 'USB-C Hub Adapter', price: 2.99, rating: 3, images: ['https://images.unsplash.com/photo-1760376789487-994070337c76?w=400'], currentImg: 0, description: 'Expand your laptop connectivity with HDMI, USB, and SD ports.', reviews: [], colors: [{hex: '#94a3b8', name: 'Steel'}], selectedColor: {hex: '#94a3b8', name: 'Steel'} }
                 ],
 
                 init() {
-                    // 1. Dynamic QR Code Generation
                     const qrImg = document.getElementById('dynamicQR');
                     const currentURL = encodeURIComponent(window.location.href);
                     qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${currentURL}&color=2D5BFF`;
                                 
-                
                     setInterval(() => {
                         this.heroActiveIndex = (this.heroActiveIndex + 1) % this.products.length;
                     }, 4000);
                     document.getElementById('bgMusic').volume = this.volume;
                     
-                    // Added Watcher: Updates shipping name automatically when user logs in
                     this.$watch('isLoggedIn', value => {
                         if (value && this.userName) {
                             this.shippingInfo.name = this.userName;
@@ -555,21 +662,17 @@
                 },
 
                 confirmPurchase() {
-                    // Feature Add: Ensure the logged-in name is used if shipping name is empty
                     if (this.isLoggedIn && !this.shippingInfo.name) {
                         this.shippingInfo.name = this.userName;
                     }
-
                     if (!this.shippingInfo.name || !this.shippingInfo.address) {
                         alert('Please fill out shipping information');
                         return;
                     }
-
                     if (this.payMethod !== 'cash' && !this.paymentNumber) {
                         alert('Please enter payment details');
                         return;
                     }
-
                     this.lastOrder = {
                         items: JSON.parse(JSON.stringify(this.cart)),
                         total: this.cart.reduce((sum, i) => sum + (i.price * i.qty), 0)
@@ -578,8 +681,30 @@
                     this.cart = [];
                 },
 
-                rateProduct(product, score) {
-                    product.rating = score;
+                nextImg(product) {
+                    product.currentImg = (product.currentImg + 1) % product.images.length;
+                },
+
+                prevImg(product) {
+                    product.currentImg = (product.currentImg - 1 + product.images.length) % product.images.length;
+                },
+
+                submitReview(product) {
+                    if (!this.newReviewText.trim()) return;
+                    if (this.newReviewRating === 0) {
+                        alert('Please select a star rating first.');
+                        return;
+                    }
+                    
+                    product.reviews.unshift({
+                        user: this.isLoggedIn ? this.userName : 'Guest Student',
+                        date: 'Just now',
+                        rating: this.newReviewRating, // Store the selected rating
+                        text: this.newReviewText
+                    });
+                    
+                    this.newReviewText = '';
+                    this.newReviewRating = 0; // Reset for next time
                 }
             }))
         })
