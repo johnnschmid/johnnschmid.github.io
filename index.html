@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ReTools</title>
+    <title>Johannes Schmid</title>
     <link rel="icon" type="image/png" href="favicon.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
@@ -365,7 +365,7 @@ iframe {
 @media (min-width: 1024px) {
     .step-nav-container {
         max-width: 56rem; 
-        margin-top: 2.5rem;
+        margin-top: 0.5rem;
     }
 }
 
@@ -510,9 +510,9 @@ iframe {
     <nav class="bg-white px-4 py-4 flex items-center justify-between sticky top-0 z-40 border-b border-gray-50 shadow-xl">
         <div class="logo-container">
           <div class="superellipse">
-            <span class="logo-text-white">Re</span>
+            <span class="logo-text-white">JS</span>
           </div>
-          <span class="logo-label">Tools</span>
+          <span class="logo-label">Projects</span>
         </div>
         
 	<!-- NAVIGATION -->        
@@ -1229,22 +1229,22 @@ iframe {
                 <div class="bg-white p-8 rounded-xl border border-gray-100 card-shadow">
                     <div class="w-16 h-16 bg-red-500 text-white rounded-full flex items-center justify-center mx-auto mb-6 text-2xl"><i class="fa-solid fa-dollar-sign"></i></div>
                     <h3 class="text-xl font-bold mb-3">Save your money</h3>
-                    <p class="text-gray-500 text-sm">You will be able to produce an unlimited amount of filament from readily available raw materials.</p>
+                    <p class="text-gray-500 text-sm">Better price for electronics development on the market</p>
                 </div>
                 <div class="bg-white p-8 rounded-xl border border-gray-100 card-shadow">
                     <div class="w-16 h-16 bg-yellow-400 text-white rounded-full flex items-center justify-center mx-auto mb-6 text-2xl"><i class="fa-solid fa-magnifying-glass"></i></div>
                     <h3 class="text-xl font-bold mb-3">Everything here!</h3>
-                    <p class="text-gray-500 text-sm">Finding quality 3D printer filament supplies takes time and effort.</p>
+                    <p class="text-gray-500 text-sm">Schematics, PCB, Software, Industrial design</p>
                 </div>
                 <div class="bg-white p-8 rounded-xl border border-gray-100 card-shadow">
                     <div class="w-16 h-16 bg-green-500 text-white rounded-full flex items-center justify-center mx-auto mb-6 text-2xl"><i class="fa-solid fa-clock"></i></div>
                     <h3 class="text-xl font-bold mb-3">Time-Consuming</h3>
-                    <p class="text-gray-500 text-sm">No more need to order and wait filament. Start producing filament at your workspace now!</p>
+                    <p class="text-gray-500 text-sm">Let's discuss development and production time!</p>
                 </div>
             </div>
             <div class="bg-blue-50 p-6 rounded-xl flex items-center gap-6 max-w-7xl mx-auto border border-blue-100">
                 <div class="w-14 h-14 bg-blue-600 text-white rounded-full flex items-center justify-center flex-shrink-0 text-xl"><i class="fa-solid fa-lightbulb"></i></div>
-                <p class="text-gray-800 text-left font-medium"><strong>ReTools</strong> brings everything into one platform — affordable, organized, and customer-friendly.</p>
+                <p class="text-gray-800 text-left font-medium"><strong>Have idea?</strong> I can develop design, hardware, firmware or software, based on your technical requirements!</p>
             </div>
         </div>
     </section>
@@ -1333,2313 +1333,186 @@ iframe {
 
 
 
-<!-- ABOUT SECTION -->
-    <section id="about" class="custom-section bg-gray-100" @contextmenu.prevent x-data="{ currentImg: 0, videoPlaying: false, items: [
-            { type: 'image', url: 'https://www.aalto.fi/sites/default/files/styles/1_91_1200w_630h_n/public/2025-08/3d.jpg' },
-            { type: 'image', url: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQcA48fPsF_tV_-tci1lSpLozdBFFPvu3_JAVSTwDNy1QCdpbdwQujMg3TA&s=10' },
-            { type: 'image', url: 'https://i.redd.it/xsy2l9gmj2pe1.jpeg' },
-            { type: 'image', url: 'https://cdn.shopify.com/s/files/1/0102/5523/7175/files/3D_Printers_Office_1500w.webp' },
-            { type: 'image', url: 'https://images.squarespace-cdn.com/content/v1/5c597f4934c4e2e36920ca80/1779265817734-15ANWMBLW119HVIFFXJ9/ChatGPT+Image+May+20%2C+2026%2C+01_39_22+PM.webp?format=1500w' },
-            { type: 'video', url: 'https://drive.google.com/file/d/1SF9vcNE9mLlR-rOrfgBYs9brZMLN31sH/preview' },
-            { type: 'video', url: 'https://www.youtube.com/embed/GzDiOcrPyL4' },
-        ]}"
-        x-effect="if (items[currentImg].type !== 'video') videoPlaying = false">
+
+<!-- ДИНАМИЧЕСКИЙ ВЫВОД СЕКЦИЙ ИЗ products.js -->
+<template x-for="sec in sections" :key="sec.id">
+    <section class="custom-section" 
+             :class="sec.bgClass" 
+             x-data="{ 
+                 currentImg: 0, 
+                 videoPlaying: false,
+                 currentStep: sec.steps ? sec.steps[0].id : null
+             }">
         
-        <div class="custom-grid">
-			
-            <div class="order-2 lg:order-1 relative group aspect-[4/3] flex items-center justify-center overflow-hidden rounded-xl shadow-2xl bg-gray-100 -rotate-1 transition-transform duration-300 hover:rotate-0 hover:scale-105">
-                
-                <!-- Картинка -->
-                <template x-if="items[currentImg].type === 'image'">
-                    <img :src="items[currentImg].url" class="w-full h-full object-cover transition-all duration-300 cursor-pointer" alt="Application Areas" @click="openModalGallery(items, currentImg)">
-                </template>
-                
-				<!-- Видео -->
-				<template x-if="items[currentImg].type === 'video'">
-					<div class="w-full h-full relative group/vid">
-						
-						<!-- Состояние 1: Видео НЕ играет (Показываем превью с кнопкой Play) -->
-						<template x-if="!videoPlaying">
-							<div class="absolute inset-0 w-full h-full rounded-xl overflow-hidden cursor-pointer z-30"
-								 @click="openModalGallery(items, currentImg)">
-								
-								<!-- Заглушка/фрейм для превью -->
-								<iframe :src="items[currentImg].url" 
-										class="w-full h-full border-0 absolute inset-0 rounded-xl pointer-events-none z-10"
-										allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-										allowfullscreen>
-								</iframe>
-
-
-								<!-- Кнопка Play (запускает видео на месте, строго поверх всего) -->
-								<div class="absolute inset-0 flex items-center justify-center z-40">
-									<button type="button" 
-											@click.stop="videoPlaying = true" 
-											class="w-20 h-20 rounded-full bg-transparent text-white flex items-center justify-center transform transition-transform hover:scale-110 cursor-pointer">
-										<i class="fa-solid fa-play text-2xl ml-1 drop-shadow-md"></i>
-									</button>
-								</div>
-							</div>
-						</template>
-
-						<!-- Состояние 2: Видео играет (Активный плеер и прозрачный слой для остановки) -->
-						<template x-if="videoPlaying">
-							<div class="absolute inset-0 w-full h-full rounded-xl overflow-hidden z-30">
-								<iframe :src="items[currentImg].url + '?autoplay=1'" 
-										class="w-full h-full border-0 absolute inset-0 rounded-xl z-10"
-										allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-										allowfullscreen>
-								</iframe>
-								
-								<!-- Прозрачный слой поверх плеера для остановки по клику в любом месте видео -->
-								<div class="absolute inset-0 cursor-pointer bg-transparent z-20"
-									 @click="videoPlaying = false"
-									 title="Нажмите, чтобы остановить видео">
-								</div>
-							</div>
-						</template>
-
-					</div>
-				</template>
-                     
-                <!-- Кнопки переключения слайдов -->
-                <div class="absolute inset-0 flex items-center justify-between px-4 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50">
-                    <button @click.stop="videoPlaying = false; currentImg = (currentImg - 1 + items.length) % items.length" class="pointer-events-auto w-10 h-10 custom-slider-btn rounded-full flex items-center justify-center shadow text-sm cursor-pointer transition-colors">
-                        <i class="fa-solid fa-chevron-left pointer-events-none"></i>
-                    </button>
-                    <button @click.stop="videoPlaying = false; currentImg = (currentImg + 1) % items.length" class="pointer-events-auto w-10 h-10 custom-slider-btn rounded-full flex items-center justify-center shadow text-sm cursor-pointer transition-colors">
-                        <i class="fa-solid fa-chevron-right pointer-events-none"></i>
-                    </button>
-                </div>
-
-                <!-- Индикаторы (точки) -->
-                <div class="absolute bottom-4 left-0 right-0 flex justify-center gap-2 z-50 pointer-events-auto">
-                    <template x-for="(item, idx) in items" :key="idx">
-                        <button @click.stop="videoPlaying = false; currentImg = idx" 
-                                class="w-2.5 h-2.5 rounded-full transition-all cursor-pointer shadow"
-                                :class="currentImg === idx ? 'bg-blue-600 w-6' : 'bg-white/70 hover:bg-white'">
-                        </button>
-                    </template>
-                </div>
-            </div>
-                 
-            <div class="order-1 lg:order-2 space-y-6 text-left">
-                <h2 class="text-4xl font-bold text-gray-900 mb-4">About ReTools</h2>
-                <p class="text-gray-800 leading-relaxed text-lg">ReTools was built with one goal in mind — to make 3D Printing more cheaper.</p>
-                <p class="text-gray-800 leading-relaxed text-lg">We understand how challenging it can be to find complete and budget-friendly 3D printing supplies. That’s why we created a platform where everything you need is available in one place.</p>
-                
-                <div class="space-y-3 pt-4">
-                    <div class="flex items-center gap-3">
-                        <span class="text-2xl">🎯</span>
-                        <p class="font-bold text-gray-800 text-lg">Our Goal: <span class="font-normal text-gray-800">Simplify 3D printing</span></p>
-                    </div>
-                    <div class="flex items-center gap-3">
-                        <span class="text-2xl">🚀</span>
-                        <p class="font-bold text-gray-800 text-lg">Our Promise: <span class="font-normal text-gray-800">Affordable, organized, and dependable service</span></p>
-                    </div>
-                </div>
-
-            </div>
-
-        </div>
-    </section>
-
-
-
-
-
-<!-- PET Bottle Filament Extruder -->
-    <section id="extruder" class="custom-section bg-white" x-data="{ currentImg: 0, videoPlaying: false, items: [
-            { type: 'video', url: 'https://drive.google.com/file/d/1SF9vcNE9mLlR-rOrfgBYs9brZMLN31sH/preview' },
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPgBo_7C2KwYIJ29EcqmHAEeoHDVBybO91Sahj1ToHJkACOVb3g30ML3A9b0hHjlYlEcQGDfqFwYMcxBBIyB-EXlrKRQsKIbTNDVMUB-Q0PIoiSc7orZfNCbUUYc66n28OBII436Wof0A8sfKhzE5M=w1440-h1080-s-no?authuser=0' },
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMajsOOUNvj3ylUR2Rq6C250YDWKEZwF-yP_tIhVLd4jZwYn16VqOM5oK4klKnMRE0f8mrSf5D0C0mh3yLApbhti8NayVBFi_DV-XJz2HwLlecokk2qOavro_G8tJaX3LqFJ2wWM70W1xg2L8NSE4so=w1392-h1200-s-no?authuser=0' },
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMUza5zOwyDDewxsqSBPGtAF5k5gr5wcpySktigAYj5pzMhk86tubvlW_DIYmAiuTFnldQvFaVRakSDpTVEc5vi4T5da8U1Ax7rjxwUeSJQK8RUsVPNSaVZpk4j8EgFZtjqvNn1Gqo5vaCtowV2KrJ0=w2757-h1001-s-no?authuser=0' },
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNnaQcdxYmvovBnOlUc7td7HkBe0B2K-Gkgp1mJY4NFz8ow0A0CFN9VGWZKahhbUrXwF7Kxij4NVYNp4TnpbQaz8LoyJTAk_NgTlzkoMh4VaSDDd5hIk-CmpuQAqWwbpvUhZq-QYnAM8NRLzg8TqNOD=w1433-h733-s-no?authuser=0' },
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPBgiV6GHKFfN9aHh9plAubV9hBIi9cgtsooJl_Yc4Ztce1znFFvEp4nY46-k5Pj678VkbQG6zTNwO0VVsaNL6IaZAiTZIinD9BchxUsM-D_y2o4G4d_wIlHvwLEvXTcnGOTh7Qwb6jNbjidavOpTpy=w1924-h1080-s-no?authuser=0' },
-        ]}">
-        <div class="custom-grid flex flex-col lg:grid lg:grid-cols-2 gap-8 items-start">
+        <div class="custom-grid flex flex-col lg:flex-row gap-8 items-start">
             
-            <!-- Левая колонка (Текст и подсказка в одном потоке) -->
-            <div class="order-1 lg:order-none lg:col-start-1 lg:row-start-1 space-y-6 text-left">
-                <h2 class="text-4xl font-bold text-gray-900 mb-4">PET Bottle Filament Extruder</h2>
-                <p class="text-gray-800 leading-relaxed text-lg">Filament prices haven't been pleasing lately at all. It is also frustrating that some parts have to be reprinted multiple times to get the desired results. The process of developing and printing a part can sometimes be quite iterative and meditative. What if you had unlimited plastic? A sort of "superpower" — filament-man? Would this help you in your 3D creative work?</p>
-                <p class="text-gray-800 leading-relaxed text-lg">We present to your attention RePet Compact — a compact PET bottle filament extruder!</p>
+            <!-- 1. Блок с картинкой, шагами и мобильной подсказкой -->
+            <div class="order-2 w-full flex flex-col gap-6 my-6 lg:my-0"
+                 :class="sec.imageLeft ? 'lg:order-1 lg:w-1/2' : 'lg:order-2 lg:w-1/2'">
                 
-                <!-- Подсказка теперь находится прямо здесь, сразу под текстом на десктопе, но скрыта на мобилке через скрытый класс, чтобы не дублироваться -->
-                <div class="hidden lg:block pt-2 text-left w-full">
-                    <div class="flex items-center gap-3 justify-start text-left">
-                        <span class="text-2xl flex-shrink-0">💡</span>
-                        <p class="font-bold text-gray-800 text-lg text-left">Hint: <span class="font-normal text-gray-800 text-lg">Find more videos and tutorials on our <a href="https://www.youtube.com/@ReInstruments" target="_blank" class="text-red-600 hover:underline font-bold">YouTube</a> channel</span></p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 2. Картинка / Галерея (на мобилке вторая: order-2) -->
-            <div class="order-2 lg:order-none lg:col-start-2 lg:row-start-1 relative group aspect-[4/3] flex items-center justify-center overflow-hidden rounded-xl shadow-2xl bg-gray-100 rotate-1 transition-transform duration-300 hover:rotate-0 hover:scale-105 w-full my-6 lg:my-0">
-                
-                <!-- Картинка -->
-                <template x-if="items[currentImg].type === 'image'">
-                    <img :src="items[currentImg].url" class="w-full h-full object-cover transition-all duration-300" alt="Application Areas" @click="openModalGallery(items, currentImg)">
-                </template>
-                
-                <!-- Видео -->
-                <template x-if="items[currentImg].type === 'video'">
-                    <div class="w-full h-full relative group/vid">
-                        
-                        <!-- Состояние 1: Видео НЕ играет -->
-                        <template x-if="!videoPlaying">
-                            <div class="absolute inset-0 w-full h-full rounded-xl overflow-hidden cursor-pointer z-30"
-                                   @click="openModalGallery(items, currentImg)">
-                                
-                                <iframe :src="items[currentImg].url" 
-                                        class="w-full h-full border-0 absolute inset-0 rounded-xl pointer-events-none z-10"
-                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                                        allowfullscreen>
-                                </iframe>
-
-                                <div class="absolute inset-0 flex items-center justify-center z-40">
-                                    <button type="button" 
-                                            @click.stop="videoPlaying = true" 
-                                            class="w-20 h-20 rounded-full bg-transparent text-white flex items-center justify-center transform transition-transform hover:scale-110 cursor-pointer">
-                                        <i class="fa-solid fa-play text-2xl ml-1 drop-shadow-md"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </template>
-
-                        <!-- Состояние 2: Видео играет -->
-                        <template x-if="videoPlaying">
-                            <div class="absolute inset-0 w-full h-full rounded-xl overflow-hidden z-30">
-                                <iframe :src="items[currentImg].url + '?autoplay=1'" 
-                                        class="w-full h-full border-0 absolute inset-0 rounded-xl z-10"
-                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                                        allowfullscreen>
-                                </iframe>
-                                
-                                <div class="absolute inset-0 cursor-pointer bg-transparent z-20"
-                                     @click="videoPlaying = false"
-                                     title="Нажмите, чтобы остановить видео">
-                                </div>
-                            </div>
-                        </template>
-
-                    </div>
-                </template>
-
-                <!-- Кнопки переключения -->
-                <div class="absolute inset-0 flex items-center justify-between px-4 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50">
-                    <button @click="currentImg = (currentImg - 1 + items.length) % items.length" class="pointer-events-auto w-10 h-10 custom-slider-btn rounded-full flex items-center justify-center shadow text-sm cursor-pointer transition-colors">
-                        <i class="fa-solid fa-chevron-left pointer-events-none"></i>
-                    </button>
-                    <button @click="currentImg = (currentImg + 1) % items.length" class="pointer-events-auto w-10 h-10 custom-slider-btn rounded-full flex items-center justify-center shadow text-sm cursor-pointer transition-colors">
-                        <i class="fa-solid fa-chevron-right pointer-events-none"></i>
-                    </button>
-                </div>
-
-                <!-- Индикаторы (точки) -->
-                <div class="absolute bottom-4 left-0 right-0 flex justify-center gap-2 z-50">
-                    <template x-for="(item, idx) in items" :key="idx">
-                        <button @click="currentImg = idx" 
-                                class="w-2.5 h-2.5 rounded-full transition-all cursor-pointer shadow"
-                                :class="currentImg === idx ? 'bg-blue-600 w-6' : 'bg-white/70 hover:bg-white'">
-                        </button>
-                    </template>
-                </div>
-            </div>
-
-            <!-- 3. Подсказка для мобильной версии (на мобилках третья: order-3 под картинкой, на десктопе скрыта, так как уже выведена выше внутри текста) -->
-            <div class="order-3 block lg:hidden pt-0 text-left w-full">
-                <div class="flex items-center gap-3 justify-start text-left">
-                    <span class="text-2xl flex-shrink-0">💡</span>
-                    <p class="font-bold text-gray-800 text-lg text-left">Hint: <span class="font-normal text-gray-800 text-lg">Find more videos and tutorials on our <a href="https://www.youtube.com/@ReInstruments" target="_blank" class="text-red-600 hover:underline font-bold">YouTube</a> channel</span></p>
-                </div>
-            </div>
-
-        </div>
-    </section>
-
-
-
-
-
-<div style="display: none;">
-	<!-- PET Bottle Filament Extruder -->
-	<section id="extruder" class="custom-section bg-white" x-data="{ currentImg: 0, videoPlaying: false, items: [
-			{ type: 'video', url: 'https://drive.google.com/file/d/1SF9vcNE9mLlR-rOrfgBYs9brZMLN31sH/preview' },
-			{ type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPgBo_7C2KwYIJ29EcqmHAEeoHDVBybO91Sahj1ToHJkACOVb3g30ML3A9b0hHjlYlEcQGDfqFwYMcxBBIyB-EXlrKRQsKIbTNDVMUB-Q0PIoiSc7orZfNCbUUYc66n28OBII436Wof0A8sfKhzE5M=w1440-h1080-s-no?authuser=0' },
-			{ type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMajsOOUNvj3ylUR2Rq6C250YDWKEZwF-yP_tIhVLd4jZwYn16VqOM5oK4klKnMRE0f8mrSf5D0C0mh3yLApbhti8NayVBFi_DV-XJz2HwLlecokk2qOavro_G8tJaX3LqFJ2wWM70W1xg2L8NSE4so=w1392-h1200-s-no?authuser=0' },
-			{ type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMUza5zOwyDDewxsqSBPGtAF5k5gr5wcpySktigAYj5pzMhk86tubvlW_DIYmAiuTFnldQvFaVRakSDpTVEc5vi4T5da8U1Ax7rjxwUeSJQK8RUsVPNSaVZpk4j8EgFZtjqvNn1Gqo5vaCtowV2KrJ0=w2757-h1001-s-no?authuser=0' },
-			{ type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNnaQcdxYmvovBnOlUc7td7HkBe0B2K-Gkgp1mJY4NFz8ow0A0CFN9VGWZKahhbUrXwF7Kxij4NVYNp4TnpbQaz8LoyJTAk_NgTlzkoMh4VaSDDd5hIk-CmpuQAqWwbpvUhZq-QYnAM8NRLzg8TqNOD=w1433-h733-s-no?authuser=0' },
-			{ type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPBgiV6GHKFfN9aHh9plAubV9hBIi9cgtsooJl_Yc4Ztce1znFFvEp4nY46-k5Pj678VkbQG6zTNwO0VVsaNL6IaZAiTZIinD9BchxUsM-D_y2o4G4d_wIlHvwLEvXTcnGOTh7Qwb6jNbjidavOpTpy=w1924-h1080-s-no?authuser=0' },
-		]}">
-		<div class="custom-grid">
-			
-			<div class="order-2 lg:order-2 relative group aspect-[4/3] flex items-center justify-center overflow-hidden rounded-xl shadow-2xl bg-gray-100 rotate-1 transition-transform duration-300 hover:rotate-0 hover:scale-105">
-				
-				<!-- Картинка -->
-				<template x-if="items[currentImg].type === 'image'">
-					<img :src="items[currentImg].url" class="w-full h-full object-cover transition-all duration-300" alt="Application Areas" @click="openModalGallery(items, currentImg)">
-				</template>
-				
-				<!-- Видео -->
-				<template x-if="items[currentImg].type === 'video'">
-					<div class="w-full h-full relative group/vid">
-						
-						<!-- Состояние 1: Видео НЕ играет (Показываем превью с кнопкой Play) -->
-						<template x-if="!videoPlaying">
-							<div class="absolute inset-0 w-full h-full rounded-xl overflow-hidden cursor-pointer z-30"
-								 @click="openModalGallery(items, currentImg)">
-								
-								<!-- Заглушка/фрейм для превью -->
-								<iframe :src="items[currentImg].url" 
-										class="w-full h-full border-0 absolute inset-0 rounded-xl pointer-events-none z-10"
-										allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-										allowfullscreen>
-								</iframe>
-
-
-								<!-- Кнопка Play (запускает видео на месте, строго поверх всего) -->
-								<div class="absolute inset-0 flex items-center justify-center z-40">
-									<button type="button" 
-											@click.stop="videoPlaying = true" 
-											class="w-20 h-20 rounded-full bg-transparent text-white flex items-center justify-center transform transition-transform hover:scale-110 cursor-pointer">
-										<i class="fa-solid fa-play text-2xl ml-1 drop-shadow-md"></i>
-									</button>
-								</div>
-							</div>
-						</template>
-
-						<!-- Состояние 2: Видео играет (Активный плеер и прозрачный слой для остановки) -->
-						<template x-if="videoPlaying">
-							<div class="absolute inset-0 w-full h-full rounded-xl overflow-hidden z-30">
-								<iframe :src="items[currentImg].url + '?autoplay=1'" 
-										class="w-full h-full border-0 absolute inset-0 rounded-xl z-10"
-										allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-										allowfullscreen>
-								</iframe>
-								
-								<!-- Прозрачный слой поверх плеера для остановки по клику в любом месте видео -->
-								<div class="absolute inset-0 cursor-pointer bg-transparent z-20"
-									 @click="videoPlaying = false"
-									 title="Нажмите, чтобы остановить видео">
-								</div>
-							</div>
-						</template>
-
-					</div>
-				</template>
-
-				 
-				<!-- Кнопки переключения -->
-				<div class="absolute inset-0 flex items-center justify-between px-4 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50">
-					<button @click="currentImg = (currentImg - 1 + items.length) % items.length" class="pointer-events-auto w-10 h-10 custom-slider-btn rounded-full flex items-center justify-center shadow text-sm cursor-pointer transition-colors">
-						<i class="fa-solid fa-chevron-left pointer-events-none"></i>
-					</button>
-					<button @click="currentImg = (currentImg + 1) % items.length" class="pointer-events-auto w-10 h-10 custom-slider-btn rounded-full flex items-center justify-center shadow text-sm cursor-pointer transition-colors">
-						<i class="fa-solid fa-chevron-right pointer-events-none"></i>
-					</button>
-				</div>
-
-				<!-- Индикаторы (точки) -->
-				<div class="absolute bottom-4 left-0 right-0 flex justify-center gap-2 z-50">
-					<template x-for="(item, idx) in items" :key="idx">
-						<button @click="currentImg = idx" 
-								class="w-2.5 h-2.5 rounded-full transition-all cursor-pointer shadow"
-								:class="currentImg === idx ? 'bg-blue-600 w-6' : 'bg-white/70 hover:bg-white'">
-						</button>
-					</template>
-				</div>
-			</div>
-			
-			<div class="order-1 lg:order-1 space-y-6 text-left">
-				<h2 class="text-4xl font-bold text-gray-900 mb-4">PET Bottle Filament Extruder</h2>
-				<p class="text-gray-800 leading-relaxed text-lg">Filament prices haven't been pleasing lately at all. It is also frustrating that some parts have to be reprinted multiple times to get the desired results. The process of developing and printing a part can sometimes be quite iterative and meditative. What if you had unlimited plastic? A sort of "superpower" — filament-man? Would this help you in your 3D creative work?</p>
-				<p class="text-gray-800 leading-relaxed text-lg">We present to your attention RePet Compact — a compact PET bottle filament extruder!</p>
-				
-                <div class="space-y-3 pt-2">
-                    <div class="flex items-center gap-3">
-                        <span class="text-2xl">💡</span>
-                        <!-- <p class="font-bold text-gray-800">Hint: <span class="font-medium text-gray-600">Find more videos and tutorials on our YouTube channel</span></p>-->
-                        <p class="font-bold text-gray-800 text-lg">Hint: <span class="font-normal text-gray-800 text-lg">Find more videos and tutorials on our <a href="https://www.youtube.com/@ReInstruments" target="_blank" class="text-red-600 hover:underline font-bold">YouTube</a> channel</span></p>
-                    </div>                    
-                </div>                
-			
-			</div>
-		</div>
-	</section>
-</div>
-
-
-
-
-
-
-<!-- Operating Principle_new -->  
-<section id="extruder" class="custom-section bg-gray-100" x-data="{ currentImg: 0, videoPlaying: false, items: [            
-        { type: 'image', url: 'https://habrastorage.org/r/w1560/getpro/habr/upload_files/eba/1bf/ac2/eba1bfac2ec1291f7db7ca29b9263666.png' },
-        { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMajsOOUNvj3ylUR2Rq6C250YDWKEZwF-yP_tIhVLd4jZwYn16VqOM5oK4klKnMRE0f8mrSf5D0C0mh3yLApbhti8NayVBFi_DV-XJz2HwLlecokk2qOavro_G8tJaX3LqFJ2wWM70W1xg2L8NSE4so=w1392-h1200-s-no?authuser=0' },
-        { type: 'video', url: 'https://www.youtube.com/embed/GzDiOcrPyL4' },
-    ]}">    
-    <div class="custom-grid">
-        
-        <!-- Левая колонка: Галерея + Панель шагов под ней -->
-        <div class="order-2 lg:order-1 flex flex-col">
-            <!-- Контейнер галереи -->
-            <div class="relative group aspect-[4/4] flex items-center justify-center overflow-hidden rounded-xl shadow-2xl bg-gray-100 rotate-1 transition-transform duration-300 hover:rotate-0 hover:scale-105">
-                
-                <!-- Картинка -->
-                <template x-if="items[currentImg].type === 'image'">
-                    <img :src="items[currentImg].url" class="w-full h-full object-cover transition-all duration-300 cursor-pointer" alt="Application Areas" @click="openModalGallery(items, currentImg)">
-                </template>
-                
-                <!-- Видео -->
-                <template x-if="items[currentImg].type === 'video'">
-                    <div class="w-full h-full relative group/vid">
-                        
-                        <!-- Состояние 1: Видео НЕ играет (Показываем превью с кнопкой Play) -->
-                        <template x-if="!videoPlaying">
-                            <div class="absolute inset-0 w-full h-full rounded-xl overflow-hidden cursor-pointer z-30"
-                                 @click="openModalGallery(items, currentImg)">
-                                
-                                <!-- Заглушка/фрейм для превью -->
-                                <iframe :src="items[currentImg].url" 
-                                        class="w-full h-full border-0 absolute inset-0 rounded-xl pointer-events-none z-10"
-                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                                        allowfullscreen>
-                                </iframe>
-
-                                <!-- Кнопка Play (запускает видео на месте, строго поверх всего) -->
-                                <div class="absolute inset-0 flex items-center justify-center z-40">
-                                    <button type="button" 
-                                            @click.stop="videoPlaying = true" 
-                                            class="w-20 h-20 rounded-full bg-transparent text-white flex items-center justify-center transform transition-transform hover:scale-110 cursor-pointer">
-                                        <i class="fa-solid fa-play text-2xl ml-1 drop-shadow-md"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </template>
-
-                        <!-- Состояние 2: Видео играет (Активный плеер и прозрачный слой для остановки) -->
-                        <template x-if="videoPlaying">
-                            <div class="absolute inset-0 w-full h-full rounded-xl overflow-hidden z-30">
-                                <iframe :src="items[currentImg].url + '?autoplay=1'" 
-                                        class="w-full h-full border-0 absolute inset-0 rounded-xl z-10"
-                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                                        allowfullscreen>
-                                </iframe>
-                                
-                                <!-- Прозрачный слой поверх плеера для остановки по клику в любом месте видео -->
-                                <div class="absolute inset-0 cursor-pointer bg-transparent z-20"
-                                     @click="videoPlaying = false"
-                                     title="Нажмите, чтобы остановить видео">
-                                </div>
-                            </div>
-                        </template>
-
-                    </div>
-                </template>
-                 
-                <!-- Кнопки переключения -->
-                <div class="absolute inset-0 flex items-center justify-between px-4 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50">
-                    <button @click="currentImg = (currentImg - 1 + items.length) % items.length" class="pointer-events-auto w-10 h-10 custom-slider-btn rounded-full flex items-center justify-center shadow text-sm cursor-pointer transition-colors">
-                        <i class="fa-solid fa-chevron-left pointer-events-none"></i>
-                    </button>
-                    <button @click="currentImg = (currentImg + 1) % items.length" class="pointer-events-auto w-10 h-10 custom-slider-btn rounded-full flex items-center justify-center shadow text-sm cursor-pointer transition-colors">
-                        <i class="fa-solid fa-chevron-right pointer-events-none"></i>
-                    </button>
-                </div>
-
-                <!-- Индикаторы (точки) -->
-                <div class="absolute bottom-4 left-0 right-0 flex justify-center gap-2 z-50">
-                    <template x-for="(item, idx) in items" :key="idx">
-                        <button @click="currentImg = idx" 
-                                class="w-2.5 h-2.5 rounded-full transition-all cursor-pointer shadow"
-                                :class="currentImg === idx ? 'bg-blue-600 w-6' : 'bg-white/70 hover:bg-white'">
-                        </button>
-                    </template>
-                </div>
-            </div>
-
-
-        
-        </div>
-        
-        <!-- Правая колонка: Текст -->
-        <div class="order-1 lg:order-2 space-y-6 text-left">
-            <h2 class="text-4xl font-bold text-gray-900 mb-4">Operating Principle</h2>
-            <p class="text-gray-800 leading-relaxed text-lg">The extruder operates on the technology of direct transformation of PET bottles into a tape, and then into a filament suitable for 3D printing.This technology is called "pulltrusion", and consists of the fact that the PET bottle does not need to be crushed into crumbs used as raw material, but is simply cut into a tape, heated to 180 degrees, and pulled through a hotend-former using a winch. At such a low temperature, the plastic does not emit an odor, unlike the extrusion technology, which requires melting the material to a fluid state with all ensuing consequences. I wouldn't even call this process extrusion in full, rather — PET conditioning — preparing ready-made plastic for 3D printing.</p>
-            <p class="text-gray-800 leading-relaxed text-lg">Unlike industrial plants for plastic production, pulltrusion technology does not require expensive equipment (plastic grinder, pellet screw extruder, etc.) and consumes much less electricity. With this extruder, for example, from a single five-liter bottle you can get 16-19 meters of PET filament. The machine can be installed right on the 3D printer (or nearby) and print directly from the machine's feed spool. The machine operates from a 220V network, and there is also a 12V 4A version for work in, so to speak, "field conditions".</p>
-            
-            <div class="space-y-3 pt-2">
-                <div class="flex items-center gap-3">
-                    <span class="text-2xl">⚡</span>
-                    <p class="font-bold text-gray-800 text-lg">Power consumption: <span class="font-normal text-gray-600">220V 6W</span></p>
-                </div>
-                <div class="flex items-center gap-3">
-                    <span class="text-2xl">🔋</span>
-                    <p class="font-bold text-gray-800 text-lg">Mobility: <span class="font-normal text-gray-800">DC 12V 4A battery or power supply operable</span></p>
-                </div>
-            </div>
-        </div>
-
-    </div>
-</section>
-
-
-
-
-
-
-
-
-
-
-<!-- Features of the Applied Raw Materials -->    
-<section id="extruder" class="custom-section bg-white" x-data="{ currentImg: 0, videoPlaying: false, items: [
-        { type: 'image', url: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTq0lquMR8IODMJzrBv2atCC_BlMVa1WR8cVL3WDhQu5WkzNELdOny6q78&s=10' },
-        { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMrojiHPgMMeSwDwW-jsFQKUuUQFCS59NkEs04j_xNlMaoZheLaRM79xhL7W3MwNXign7oK7HEOszr41IKfd6m38VmdNUhV5JQpn3DEspTIZawkay-76LX_sGYDuZRDzHTTE0RAlJj5FfMGZ4OA4iSY=w1900-h1500-s-no?authuser=0' },
-        { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczOQtOOtsfh3R5mpUO5ApVYM1F1WCFYTGn-PmXfsto-_fKurLSPqVMvvWtlI5SWXbACl1OcVziqTnl_2N1pk9Nw_0Rh9DfWJKqpysFSnaY-arY8PcYnmKpO7pwthkndSNUaZU94w2h7j5b50p2gCscKl=w1400-h1000-s-no?authuser=0' },
-        { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczOykhBDNxZOou6XNNF94BGlnS_4oeYytgTZWBaf2I4_0Uc51X5Ha6L5rSVcSPRDm-1RauC2fSrkIXmmlfJLjYs4rOICrqi-Ah7xYtjJVyHxq7Lm2L2eGosPozygUbxa7equ1y5bL9LLFQWZie5VwkPF=w527-h442-s-no?authuser=0' },
-        { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczOpF7-cYL5GPP1AXH9GVXoB30740_fXhKzl0xDRDpIF51a78MVKi-dBHLs8RDUEdK6bUPK6fFVRtVYkJO2NpUuikGW9rd4Zdlr0-9rFIci893HPrtwpr7uIbvckuhkYAdQc8vOXb8rgD_vscFwyXh-m=w1900-h1600-s-no?authuser=0' },
-        { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNbdlVzJJGYSjv3974pAO6phCXx5SDGF79ajneYvzPv3v7BIHV98sDdncGv9FXzUgG_Gg7etPUyTQAUuhCSCaeuhGOWVbXSpMwJLGpfcVrHAw-ducHNYjkAKygdcQtlHVqit8osNoUQlkZj2M6Pd8tz=w2500-h2000-s-no?authuser=0' },
-        { type: 'video', url: 'https://drive.google.com/file/d/1SF9vcNE9mLlR-rOrfgBYs9brZMLN31sH/preview' },
-    ]}">    
-    
-    <!-- 1. Вместо длинной строки с max-w-7xl mx-auto grid ... используем класс из CSS -->
-    <div class="custom-grid">
-        
-        <!-- Левая колонка: Галерея + Панель шагов под ней -->
-        <div class="order-2 lg:order-2 flex flex-col">
-            <!-- Контейнер галереи -->
-            <div class="relative group aspect-[4/3] flex items-center justify-center overflow-hidden rounded-xl shadow-2xl bg-gray-100 rotate-1 transition-transform duration-300 hover:rotate-0 hover:scale-105">
-                
-                <!-- Картинка -->
-                <template x-if="items[currentImg].type === 'image'">
-                    <img :src="items[currentImg].url" class="w-full h-full object-cover transition-all duration-300" alt="Application Areas" @click="openModalGallery(items, currentImg)">
-                </template>
-                
-                <!-- Видео -->
-                <template x-if="items[currentImg].type === 'video'">
-                    <div class="w-full h-full relative group/vid">
-                        
-                        <!-- Состояние 1: Видео НЕ играет -->
-                        <template x-if="!videoPlaying">
-                            <div class="absolute inset-0 w-full h-full rounded-xl overflow-hidden cursor-pointer z-30"
-                                 @click="openModalGallery(items, currentImg)">
-                                
-                                <iframe :src="items[currentImg].url" 
-                                        class="w-full h-full border-0 absolute inset-0 rounded-xl pointer-events-none z-10"
-                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                                        allowfullscreen>
-                                </iframe>
-
-                                <div class="absolute inset-0 flex items-center justify-center z-40">
-                                    <button type="button" 
-                                            @click.stop="videoPlaying = true" 
-                                            class="w-20 h-20 rounded-full bg-transparent text-white flex items-center justify-center transform transition-transform hover:scale-110 cursor-pointer">
-                                        <i class="fa-solid fa-play text-2xl ml-1 drop-shadow-md"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </template>
-
-                        <!-- Состояние 2: Видео играет -->
-                        <template x-if="videoPlaying">
-                            <div class="absolute inset-0 w-full h-full rounded-xl overflow-hidden z-30">
-                                <iframe :src="items[currentImg].url + '?autoplay=1'" 
-                                        class="w-full h-full border-0 absolute inset-0 rounded-xl z-10"
-                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                                        allowfullscreen>
-                                </iframe>
-                                
-                                <div class="absolute inset-0 cursor-pointer bg-transparent z-20"
-                                     @click="videoPlaying = false"
-                                     title="Нажмите, чтобы остановить видео">
-                                </div>
-                            </div>
-                        </template>
-
-                    </div>
-                </template>
-
-                <!-- Кнопки переключения -->
-                <div class="absolute inset-0 flex items-center justify-between px-4 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50">
-                    <button @click="currentImg = (currentImg - 1 + items.length) % items.length" class="pointer-events-auto w-10 h-10 custom-slider-btn rounded-full flex items-center justify-center shadow text-sm cursor-pointer transition-colors">
-                        <i class="fa-solid fa-chevron-left pointer-events-none"></i>
-                    </button>
-                    <button @click="currentImg = (currentImg + 1) % items.length" class="pointer-events-auto w-10 h-10 custom-slider-btn rounded-full flex items-center justify-center shadow text-sm cursor-pointer transition-colors">
-                        <i class="fa-solid fa-chevron-right pointer-events-none"></i>
-                    </button>
-                </div>
-
-                <!-- Индикаторы (точки) -->
-                <div class="absolute bottom-4 left-0 right-0 flex justify-center gap-2 z-50">
-                    <template x-for="(item, idx) in items" :key="idx">
-                        <button @click="currentImg = idx" 
-                                class="w-2.5 h-2.5 rounded-full transition-all cursor-pointer shadow"
-                                :class="currentImg === idx ? 'bg-blue-600 w-6' : 'bg-white/70 hover:bg-white'">
-                        </button>
-                    </template>
-                </div>
-            </div>
-
-			<!-- Панель шагов -->
-			<div class="step-nav-container" x-data="{ currentStep: 'bottle' }">
-				<div class="step-nav-wrapper">
-					<div class="step-nav-inner">
-						
-						<!-- Bottle -->
-						<div @click="currentStep = 'bottle'" 
-							 :class="currentStep === 'bottle' ? 'active' : 'inactive'"
-							 class="step-btn step-btn-first" style="z-index: 1;">
-							Bottle
-						</div>
-
-						<!-- Tape -->
-						<div @click="currentStep = 'tape'" 
-							 :class="currentStep === 'tape' ? 'active' : 'inactive'"
-							 class="step-btn step-btn-middle" style="z-index: 2;">
-							Tape
-						</div>
-
-						<!-- Filament -->
-						<div @click="currentStep = 'filament'" 
-							 :class="currentStep === 'filament' ? 'active' : 'inactive'"
-							 class="step-btn step-btn-middle" style="z-index: 3;">
-							<span class="sm:hidden">Fil.</span><span class="hidden sm:inline">Filament</span>
-						</div>
-
-						<!-- Joining -->
-						<div @click="currentStep = 'join'" 
-							 :class="currentStep === 'join' ? 'active' : 'inactive'"
-							 class="step-btn step-btn-middle" style="z-index: 2;">
-							<span class="sm:hidden">Join</span><span class="hidden sm:inline">Joining</span>
-						</div>
-
-						<!-- Spool -->
-						<div @click="currentStep = 'spool'" 
-							 :class="currentStep === 'spool' ? 'active' : 'inactive'"
-							 class="step-btn step-btn-middle" style="z-index: 2;">
-							Spool
-						</div>
-
-						<!-- Print -->
-						<div @click="currentStep = 'printing'" 
-							 :class="currentStep === 'printing' ? 'active' : 'inactive'"
-							 class="step-btn step-btn-last">
-							Print
-						</div>
-
-					</div>
-				</div>
-			</div>
-            
-            
-        </div>
+				<!-- Слайдер / Медиа -->
+				<div class="relative group flex items-center justify-center overflow-hidden rounded-xl shadow-2xl bg-gray-100 rotate-1 transition-transform duration-300 hover:rotate-0 hover:scale-105 w-full"
+					 :class="sec.aspectClass || 'aspect-[4/3]'"
+					 x-data="{ 
+						 get media() { return sec.items.filter(i => i.type === 'image' || i.type === 'video'); } 
+					 }">
                     
-        <!-- Правая колонка: Текст -->
-        <div class="order-1 lg:order-1  space-y-6 text-left">
-            <h2 class="text-4xl font-bold text-gray-900 mb-4">Features of the Applied Raw Materials</h2>
-            <p class="text-gray-800 leading-relaxed text-lg">During experiments, various types of PET packaging with thick and thin walls were tested. When working with thick-walled containers, it is necessary to simply reduce the width of the tape using the steel limiter on the bottle cutter. Paper labels on the containers must be removed using a heat gun. Plastic labels are easily removed manually. Washing off adhesive residue is not required.</p>
-            <div class="space-y-4 pt-2">
-                <div class="flex items-start gap-4">
-                    <div class="w-10 h-10 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center flex-shrink-0 mt-1"><i class="fa-solid fa-wine-bottle"></i></div>
-                    <div>
-                        <p class="font-bold text-gray-800 text-lg">5L water bottles</p>
-                        <p class="font-normal text-lg text-gray-800">(16–17 meters of plastic per bottle) (dark blue, light blue, transparent, turquoise)</p>
-                    </div>
-                </div>
-                <div class="flex items-start gap-4">
-                    <div class="w-10 h-10 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center flex-shrink-0 mt-1"><i class="fa-solid fa-wine-bottle"></i></div>
-                    <div>
-                        <p class="font-bold text-gray-800 text-lg">1–2 L beer/carbonated water bottles, etc.</p>
-                        <p class="font-normal text-lg text-gray-800">(8–9 meters of plastic) (dark brown)</p>
-                    </div>
-                </div>
-                <div class="flex items-start gap-4">
-                    <div class="w-10 h-10 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center flex-shrink-0 mt-1"><i class="fa-solid fa-wine-bottle"></i></div>
-                    <div>
-                        <p class="font-bold text-gray-800 text-lg">PET milk bottles</p>
-                        <p class="font-normal text-lg text-gray-800">(white plastic)</p>
-                    </div>
-                </div>
-                <div class="flex items-start gap-4">
-                    <div class="w-10 h-10 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center flex-shrink-0 mt-1"><i class="fa-solid fa-wine-bottle"></i></div>
-                    <div>
-                        <p class="font-bold text-gray-800 text-lg">PET energy drink bottles</p>
-                        <p class="font-normal text-lg text-gray-800">(black plastic)</p>
-                    </div>
-                </div>                                         
-            </div>
-        </div>
-
-    </div>
-</section>
-
-
-
-
-
-
-
-
-
-
-
-
-
-	<!-- Transformation of Bottle into Tape -->
-	<section id="transformation" class="custom-section bg-gray-100" x-data="{ currentImg: 0, videoPlaying: false, items: [		
-			{ type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPgBo_7C2KwYIJ29EcqmHAEeoHDVBybO91Sahj1ToHJkACOVb3g30ML3A9b0hHjlYlEcQGDfqFwYMcxBBIyB-EXlrKRQsKIbTNDVMUB-Q0PIoiSc7orZfNCbUUYc66n28OBII436Wof0A8sfKhzE5M=w1440-h1080-s-no?authuser=2' },
-			{ type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPjigC4jgGFPsTdpQ118rUxwq5FSCIBI54QrlWX-O1_iPoJ4KC45xRYPazv-FvDfKdVVAmEQ-IRYlRgBNCphWXxdx2KpwZnqegBRNH1D5F-B0VI3MfrR-RKZsAQ3GrYQXNCe1gsvLuWq7a21GBKAsY=w1440-h1080-s-no?authuser=0' },
-			{ type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPqYt3xUKJfGBQMJBL2nfMFxXtUXvwAUc45XQFb_Z1WKmp5ph6BTFMlj3NAuhtubvfqA1CpLWkgDpWLOfy-z5_6n1mc2gf2KLh0M-DnWv2jdv0QGiV8_aimnnrqUH6uPPUP87uAO4OgqTUx3g7yb9g=w1440-h1080-s-no?authuser=0' },			
-			{ type: 'video', url: 'https://www.youtube.com/embed/kw20Mvv-2lQ' },
-		]}"> 
-        <div class="custom-grid">
-			
-        <!-- Левая колонка: Галерея + Панель шагов под ней -->
-        <div class="order-2 lg:order-1 flex flex-col">
-            <!-- Контейнер галереи -->
-            <div class="relative group aspect-[4/3] flex items-center justify-center overflow-hidden rounded-xl shadow-2xl bg-gray-100 rotate-1 transition-transform duration-300 hover:rotate-0 hover:scale-105">
-				
-				<!-- Картинка -->
-				<template x-if="items[currentImg].type === 'image'">
-					<img :src="items[currentImg].url" class="w-full h-full object-cover transition-all duration-300" alt="Application Areas" @click="openModalGallery(items, currentImg)">
-				</template>
-				
-				<!-- Видео -->
-				<template x-if="items[currentImg].type === 'video'">
-					<div class="w-full h-full relative group/vid">
-						
-						<!-- Состояние 1: Видео НЕ играет (Показываем превью с кнопкой Play) -->
-						<template x-if="!videoPlaying">
-							<div class="absolute inset-0 w-full h-full rounded-xl overflow-hidden cursor-pointer z-30"
-								 @click="openModalGallery(items, currentImg)">
-								
-								<!-- Заглушка/фрейм для превью -->
-								<iframe :src="items[currentImg].url" 
-										class="w-full h-full border-0 absolute inset-0 rounded-xl pointer-events-none z-10"
-										allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-										allowfullscreen>
-								</iframe>
-
-
-								<!-- Кнопка Play (запускает видео на месте, строго поверх всего) -->
-								<div class="absolute inset-0 flex items-center justify-center z-40">
-									<button type="button" 
-											@click.stop="videoPlaying = true" 
-											class="w-20 h-20 rounded-full bg-transparent text-white flex items-center justify-center transform transition-transform hover:scale-110 cursor-pointer">
-										<i class="fa-solid fa-play text-2xl ml-1 drop-shadow-md"></i>
-									</button>
-								</div>
-							</div>
-						</template>
-
-						<!-- Состояние 2: Видео играет (Активный плеер и прозрачный слой для остановки) -->
-						<template x-if="videoPlaying">
-							<div class="absolute inset-0 w-full h-full rounded-xl overflow-hidden z-30">
-								<iframe :src="items[currentImg].url + '?autoplay=1'" 
-										class="w-full h-full border-0 absolute inset-0 rounded-xl z-10"
-										allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-										allowfullscreen>
-								</iframe>
-								
-								<!-- Прозрачный слой поверх плеера для остановки по клику в любом месте видео -->
-								<div class="absolute inset-0 cursor-pointer bg-transparent z-20"
-									 @click="videoPlaying = false"
-									 title="Нажмите, чтобы остановить видео">
-								</div>
-							</div>
-						</template>
-
-					</div>
-				</template>
-
-				 
-				<!-- Кнопки переключения -->
-				<div class="absolute inset-0 flex items-center justify-between px-4 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50">
-					<button @click="currentImg = (currentImg - 1 + items.length) % items.length" class="pointer-events-auto w-10 h-10 custom-slider-btn rounded-full flex items-center justify-center shadow text-sm cursor-pointer transition-colors">
-						<i class="fa-solid fa-chevron-left pointer-events-none"></i>
-					</button>
-					<button @click="currentImg = (currentImg + 1) % items.length" class="pointer-events-auto w-10 h-10 custom-slider-btn rounded-full flex items-center justify-center shadow text-sm cursor-pointer transition-colors">
-						<i class="fa-solid fa-chevron-right pointer-events-none"></i>
-					</button>
-				</div>
-
-				<!-- Индикаторы (точки) -->
-				<div class="absolute bottom-4 left-0 right-0 flex justify-center gap-2 z-50">
-					<template x-for="(item, idx) in items" :key="idx">
-						<button @click="currentImg = idx" 
-								class="w-2.5 h-2.5 rounded-full transition-all cursor-pointer shadow"
-								:class="currentImg === idx ? 'bg-blue-600 w-6' : 'bg-white/70 hover:bg-white'">
-						</button>
-					</template>
-				</div>
-			</div>
-
-
-			<!-- Панель шагов -->
-			<div class="step-nav-container" x-data="{ currentStep: 'tape' }">
-				<div class="step-nav-wrapper">
-					<div class="step-nav-inner">
-						
-						<!-- Bottle -->
-						<div @click="currentStep = 'bottle'" 
-							 :class="currentStep === 'bottle' ? 'active' : 'inactive'"
-							 class="step-btn step-btn-first" style="z-index: 1;">
-							Bottle
-						</div>
-
-						<!-- Tape -->
-						<div @click="currentStep = 'tape'" 
-							 :class="currentStep === 'tape' ? 'active' : 'inactive'"
-							 class="step-btn step-btn-middle" style="z-index: 2;">
-							Tape
-						</div>
-
-						<!-- Filament -->
-						<div @click="currentStep = 'filament'" 
-							 :class="currentStep === 'filament' ? 'active' : 'inactive'"
-							 class="step-btn step-btn-middle" style="z-index: 3;">
-							<span class="sm:hidden">Fil.</span><span class="hidden sm:inline">Filament</span>
-						</div>
-
-						<!-- Joining -->
-						<div @click="currentStep = 'join'" 
-							 :class="currentStep === 'join' ? 'active' : 'inactive'"
-							 class="step-btn step-btn-middle" style="z-index: 2;">
-							<span class="sm:hidden">Join</span><span class="hidden sm:inline">Joining</span>
-						</div>
-
-						<!-- Spool -->
-						<div @click="currentStep = 'spool'" 
-							 :class="currentStep === 'spool' ? 'active' : 'inactive'"
-							 class="step-btn step-btn-middle" style="z-index: 2;">
-							Spool
-						</div>
-
-						<!-- Print -->
-						<div @click="currentStep = 'printing'" 
-							 :class="currentStep === 'printing' ? 'active' : 'inactive'"
-							 class="step-btn step-btn-last">
-							Print
-						</div>
-
-					</div>
-				</div>
-			</div>
-     
-     
-        
-     </div>
-
-
-
-			
-            <div class="order-1 lg:order-2 space-y-6 text-left">
-                <h2 class="text-4xl font-bold text-gray-900 mb-4">Transformation of Bottle into Tape</h2>
-                <p class="text-gray-800 leading-relaxed text-lg">Before stripping the bottle to tape, last one should be prepaired. First, the bottom of the bottle is cut off and the label is removed. Next, the bottle is placed on the bottle cutter's guide. Then, the bottle passes through the bearing-equipped cutter via a special guide insert that limits the width of the strip being cut. At this stage, you can adjust the angle of the bottle (according to its diameter) and the width of the resulting tape using a changable preadjusted tape width guider.</p>
-               <div class="space-y-3 pt-2">
-                    <div class="flex items-center gap-3">
-                        <span class="text-2xl">📏</span>
-                        <p class="font-bold text-gray-800 text-lg">Tape width: <span class="font-normal text-gray-800">2-8 mm</span></p>
-                    </div>
-                    <div class="flex items-center gap-3">
-                        <span class="text-2xl">⚙️</span>
-                        <p class="font-bold text-gray-800 text-lg">Tape speed: <span class="font-normal text-gray-800">4-5 mm/sec</span></p>
-                    </div>
-                    <div class="flex items-center gap-3">
-                        <span class="text-2xl">💡</span>
-                        <p class="font-bold text-gray-800 text-lg">Hint: <span class="font-normal text-gray-800">you can order tape width guider in our store or print it and assemble by your own</span></p>
-                    </div>                    
-                </div>                 
-            </div>
-        </div>
-    </section>
-
-
-
-
-
-    <!-- Pulltrusion (PET conditioning) -->    
-	<section id="extruder" class="custom-section bg-white" x-data="{ currentImg: 0, videoPlaying: false, items: [
-			{ type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczP3XNCSVAtoOsUmg_lwNckks6LN3CwudCnHGMyDQv5QarFBkeBdVvHdIJkKjSkrjXp5O__JOfnqM8TbsYavfQTZeNoJQ8Q8QbSnRshJ2i6pN46eVHN_tEGnO12hlasaOp7XWgdft7BRiCsT5orwiA4=w1080-h1440-s-no?authuser=0' },
-			{ type: 'image', url: 'https://habrastorage.org/r/w1560/getpro/habr/upload_files/6cd/044/2a8/6cd0442a80defec8eee9bff39793a839.jpg' },
-			{ type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczO6ba16GR0kK26U7LtX-ywIY5oH3K9-YS18eMe6NVMDQVFkkXKn5YhHSzn7h3zevGYJZMPhYB7LRhY1sZYd9y2pLM0GAtxl9M_7wI0J2R2urD9vJA4puaKCnBXBLSLeMjIKoM8R626Vk5oUlttvPkhB=w1151-h1067-s-no?authuser=0' },
-			{ type: 'video', url: 'https://www.youtube.com/embed/STsMWqoz_iY' },
-		]}">    
-        <div class="custom-grid">
-        
-        <!-- Левая колонка: Галерея + Панель шагов под ней -->
-        <div class="order-2 lg:order-2 flex flex-col">
-            <!-- Контейнер галереи -->
-            <div class="relative group aspect-[4/3] flex items-center justify-center overflow-hidden rounded-xl shadow-2xl bg-gray-100 rotate-1 transition-transform duration-300 hover:rotate-0 hover:scale-105">
-				
-				<!-- Картинка -->
-				<template x-if="items[currentImg].type === 'image'">
-					<img :src="items[currentImg].url" class="w-full h-full object-cover transition-all duration-300" alt="Application Areas" @click="openModalGallery(items, currentImg)">
-				</template>
-				
-				<!-- Видео -->
-				<template x-if="items[currentImg].type === 'video'">
-					<div class="w-full h-full relative group/vid">
-						
-						<!-- Состояние 1: Видео НЕ играет (Показываем превью с кнопкой Play) -->
-						<template x-if="!videoPlaying">
-							<div class="absolute inset-0 w-full h-full rounded-xl overflow-hidden cursor-pointer z-30"
-								 @click="openModalGallery(items, currentImg)">
-								
-								<!-- Заглушка/фрейм для превью -->
-								<iframe :src="items[currentImg].url" 
-										class="w-full h-full border-0 absolute inset-0 rounded-xl pointer-events-none z-10"
-										allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-										allowfullscreen>
-								</iframe>
-
-
-								<!-- Кнопка Play (запускает видео на месте, строго поверх всего) -->
-								<div class="absolute inset-0 flex items-center justify-center z-40">
-									<button type="button" 
-											@click.stop="videoPlaying = true" 
-											class="w-20 h-20 rounded-full bg-transparent text-white flex items-center justify-center transform transition-transform hover:scale-110 cursor-pointer">
-										<i class="fa-solid fa-play text-2xl ml-1 drop-shadow-md"></i>
-									</button>
-								</div>
-							</div>
-						</template>
-
-						<!-- Состояние 2: Видео играет (Активный плеер и прозрачный слой для остановки) -->
-						<template x-if="videoPlaying">
-							<div class="absolute inset-0 w-full h-full rounded-xl overflow-hidden z-30">
-								<iframe :src="items[currentImg].url + '?autoplay=1'" 
-										class="w-full h-full border-0 absolute inset-0 rounded-xl z-10"
-										allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-										allowfullscreen>
-								</iframe>
-								
-								<!-- Прозрачный слой поверх плеера для остановки по клику в любом месте видео -->
-								<div class="absolute inset-0 cursor-pointer bg-transparent z-20"
-									 @click="videoPlaying = false"
-									 title="Нажмите, чтобы остановить видео">
-								</div>
-							</div>
-						</template>
-
-					</div>
-				</template>
-
-				 
-				<!-- Кнопки переключения -->
-				<div class="absolute inset-0 flex items-center justify-between px-4 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50">
-					<button @click="currentImg = (currentImg - 1 + items.length) % items.length" class="pointer-events-auto w-10 h-10 custom-slider-btn rounded-full flex items-center justify-center shadow text-sm cursor-pointer transition-colors">
-						<i class="fa-solid fa-chevron-left pointer-events-none"></i>
-					</button>
-					<button @click="currentImg = (currentImg + 1) % items.length" class="pointer-events-auto w-10 h-10 custom-slider-btn rounded-full flex items-center justify-center shadow text-sm cursor-pointer transition-colors">
-						<i class="fa-solid fa-chevron-right pointer-events-none"></i>
-					</button>
-				</div>
-
-				<!-- Индикаторы (точки) -->
-				<div class="absolute bottom-4 left-0 right-0 flex justify-center gap-2 z-50">
-					<template x-for="(item, idx) in items" :key="idx">
-						<button @click="currentImg = idx" 
-								class="w-2.5 h-2.5 rounded-full transition-all cursor-pointer shadow"
-								:class="currentImg === idx ? 'bg-blue-600 w-6' : 'bg-white/70 hover:bg-white'">
-						</button>
-					</template>
-				</div>
-			</div>
-
-
-			<!-- Панель шагов -->
-			<div class="step-nav-container" x-data="{ currentStep: 'filament' }">
-				<div class="step-nav-wrapper">
-					<div class="step-nav-inner">
-						
-						<!-- Bottle -->
-						<div @click="currentStep = 'bottle'" 
-							 :class="currentStep === 'bottle' ? 'active' : 'inactive'"
-							 class="step-btn step-btn-first" style="z-index: 1;">
-							Bottle
-						</div>
-
-						<!-- Tape -->
-						<div @click="currentStep = 'tape'" 
-							 :class="currentStep === 'tape' ? 'active' : 'inactive'"
-							 class="step-btn step-btn-middle" style="z-index: 2;">
-							Tape
-						</div>
-
-						<!-- Filament -->
-						<div @click="currentStep = 'filament'" 
-							 :class="currentStep === 'filament' ? 'active' : 'inactive'"
-							 class="step-btn step-btn-middle" style="z-index: 3;">
-							<span class="sm:hidden">Fil.</span><span class="hidden sm:inline">Filament</span>
-						</div>
-
-						<!-- Joining -->
-						<div @click="currentStep = 'join'" 
-							 :class="currentStep === 'join' ? 'active' : 'inactive'"
-							 class="step-btn step-btn-middle" style="z-index: 2;">
-							<span class="sm:hidden">Join</span><span class="hidden sm:inline">Joining</span>
-						</div>
-
-						<!-- Spool -->
-						<div @click="currentStep = 'spool'" 
-							 :class="currentStep === 'spool' ? 'active' : 'inactive'"
-							 class="step-btn step-btn-middle" style="z-index: 2;">
-							Spool
-						</div>
-
-						<!-- Print -->
-						<div @click="currentStep = 'printing'" 
-							 :class="currentStep === 'printing' ? 'active' : 'inactive'"
-							 class="step-btn step-btn-last">
-							Print
-						</div>
-
-					</div>
-				</div>
-			</div>
-        
-        
-        
-        
-        
-     </div>
-
-                        
-            <div class="order-1 lg:order-1 space-y-6 text-left">
-                <h2 class="text-4xl font-bold text-gray-900 mb-4">Pulltrusion (PET conditioning)</h2>
-                <p class="text-gray-800 leading-relaxed text-lg">Next, the tape enters the inlet funnel of the hotend-former, where heating and twisting of the tape into a tube takes place. The hotend-former is made from a prepared standard 3D printer nozzle (brass, stainless steel), a standard unmodified heat block, and a standard ceramic heating element. By the way, the width of the tape affects the filling percentage of the tube.</p>
-                <p class="text-gray-800 leading-relaxed text-lg">At the same time, the shape of the tube is more reminiscent of the letter "C" (c-type filament). The existing cavity in the filament is compensated by over-extrusion during 3D printing (I set from 130 to 150 percent in the slicer). The resulting filament is wound onto a spool using a reduction gearbox on a stepper motor.</p>
-				
-				<div class="space-y-3 pt-2">
-                    <div class="flex items-center gap-3">
-                        <span class="text-2xl">📏</span>
-                        <p class="font-bold text-gray-800 text-lg">Ribbon width adjust: <span class="font-normal text-gray-800">6-7 mm</span></p>
-                    </div>
-                    <div class="flex items-center gap-3">
-                        <span class="text-2xl">⚙️</span>
-                        <p class="font-bold text-gray-800 text-lg">Recommended extrusion flow in Slicer: <span class="font-normal text-gray-800">130% - 150%</span></p>
-                    </div>
-                </div>
-
-            </div>
-
-        </div>
-    </section>
-
-
-
-
-
-
-	<!-- Filament Welding -->
-	<section id="welding" class="custom-section bg-gray-100" x-data="{ currentImg: 0, videoPlaying: false, items: [
-			{ type: 'video', url: 'https://www.youtube.com/embed/Jl8NKu6hZWU' },
-			{ type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNpiE8GOVi1EofHW922b11Sx_RDeUKzZIKB4S5xm7rrTI4igTIR-6nURcwESxJy3m6nX12DpBChMbm06rgCFpOSQ_xbBBW3uhMpz2wTRFKDW07thieLXI3wQTLs3wcfS8XtcndM4QoWdBsyA4ALuHA=w1440-h1080-s-no?authuser=0' },
-			{ type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczOVwQV53-Suze0s6qUf3N--pHT6bcusRtGm_MWADiG5Rco536WPdMlXl2fGyfGrNAMhdOJ5zmiv-2oHvKE4ARbQJSjJGYZifM2uoof1B31vdX8tetL4sPbgvh86XI7Y2WWliREF-108UzKugUeWKUs=w1440-h1080-s-no?authuser=0' },
-			{ type: 'image', url: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQNDI0C0y7ecjkO5X2Z-oFxr7WR_k3lcITTvYseyWjaIQ&s=10' },
-			{ type: 'image', url: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTlgomZpL_4SG1Tg_OPp244dOjY0G91vRWb-dT8s7B3tZW4TIbWZqsO1A8t&s=10' },
-			{ type: 'image', url: 'https://media.printables.com/media/prints/209258/images/1920818_e6880d56-5280-4157-9a17-ab4cee39e7fb/thumbs/inside/1280x960/jpg/img_20220518_224505.webp' },
-		]}"> 
-        <div class="custom-grid">
-			
-        <!-- Левая колонка: Галерея + Панель шагов под ней -->
-        <div class="order-2 lg:order-1 flex flex-col">
-            <!-- Контейнер галереи -->
-            <div class="relative group aspect-[4/3] flex items-center justify-center overflow-hidden rounded-xl shadow-2xl bg-gray-100 rotate-1 transition-transform duration-300 hover:rotate-0 hover:scale-105">
-				
-				<!-- Картинка -->
-				<template x-if="items[currentImg].type === 'image'">
-					<img :src="items[currentImg].url" class="w-full h-full object-cover transition-all duration-300" alt="Application Areas" @click="openModalGallery(items, currentImg)">
-				</template>
-				
-				<!-- Видео -->
-				<template x-if="items[currentImg].type === 'video'">
-					<div class="w-full h-full relative group/vid">
-						
-						<!-- Состояние 1: Видео НЕ играет (Показываем превью с кнопкой Play) -->
-						<template x-if="!videoPlaying">
-							<div class="absolute inset-0 w-full h-full rounded-xl overflow-hidden cursor-pointer z-30"
-								 @click="openModalGallery(items, currentImg)">
-								
-								<!-- Заглушка/фрейм для превью -->
-								<iframe :src="items[currentImg].url" 
-										class="w-full h-full border-0 absolute inset-0 rounded-xl pointer-events-none z-10"
-										allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-										allowfullscreen>
-								</iframe>
-
-
-								<!-- Кнопка Play (запускает видео на месте, строго поверх всего) -->
-								<div class="absolute inset-0 flex items-center justify-center z-40">
-									<button type="button" 
-											@click.stop="videoPlaying = true" 
-											class="w-20 h-20 rounded-full bg-transparent text-white flex items-center justify-center transform transition-transform hover:scale-110 cursor-pointer">
-										<i class="fa-solid fa-play text-2xl ml-1 drop-shadow-md"></i>
-									</button>
-								</div>
-							</div>
-						</template>
-
-						<!-- Состояние 2: Видео играет (Активный плеер и прозрачный слой для остановки) -->
-						<template x-if="videoPlaying">
-							<div class="absolute inset-0 w-full h-full rounded-xl overflow-hidden z-30">
-								<iframe :src="items[currentImg].url + '?autoplay=1'" 
-										class="w-full h-full border-0 absolute inset-0 rounded-xl z-10"
-										allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-										allowfullscreen>
-								</iframe>
-								
-								<!-- Прозрачный слой поверх плеера для остановки по клику в любом месте видео -->
-								<div class="absolute inset-0 cursor-pointer bg-transparent z-20"
-									 @click="videoPlaying = false"
-									 title="Нажмите, чтобы остановить видео">
-								</div>
-							</div>
-						</template>
-
-					</div>
-				</template>
-
-				 
-				<!-- Кнопки переключения -->
-				<div class="absolute inset-0 flex items-center justify-between px-4 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50">
-					<button @click="currentImg = (currentImg - 1 + items.length) % items.length" class="pointer-events-auto w-10 h-10 custom-slider-btn rounded-full flex items-center justify-center shadow text-sm cursor-pointer transition-colors">
-						<i class="fa-solid fa-chevron-left pointer-events-none"></i>
-					</button>
-					<button @click="currentImg = (currentImg + 1) % items.length" class="pointer-events-auto w-10 h-10 custom-slider-btn rounded-full flex items-center justify-center shadow text-sm cursor-pointer transition-colors">
-						<i class="fa-solid fa-chevron-right pointer-events-none"></i>
-					</button>
-				</div>
-
-				<!-- Индикаторы (точки) -->
-				<div class="absolute bottom-4 left-0 right-0 flex justify-center gap-2 z-50">
-					<template x-for="(item, idx) in items" :key="idx">
-						<button @click="currentImg = idx" 
-								class="w-2.5 h-2.5 rounded-full transition-all cursor-pointer shadow"
-								:class="currentImg === idx ? 'bg-blue-600 w-6' : 'bg-white/70 hover:bg-white'">
-						</button>
-					</template>
-				</div>
-			</div>
-
-
-			<!-- Панель шагов -->
-			<div class="step-nav-container" x-data="{ currentStep: 'join' }">
-				<div class="step-nav-wrapper">
-					<div class="step-nav-inner">
-						
-						<!-- Bottle -->
-						<div @click="currentStep = 'bottle'" 
-							 :class="currentStep === 'bottle' ? 'active' : 'inactive'"
-							 class="step-btn step-btn-first" style="z-index: 1;">
-							Bottle
-						</div>
-
-						<!-- Tape -->
-						<div @click="currentStep = 'tape'" 
-							 :class="currentStep === 'tape' ? 'active' : 'inactive'"
-							 class="step-btn step-btn-middle" style="z-index: 2;">
-							Tape
-						</div>
-
-						<!-- Filament -->
-						<div @click="currentStep = 'filament'" 
-							 :class="currentStep === 'filament' ? 'active' : 'inactive'"
-							 class="step-btn step-btn-middle" style="z-index: 3;">
-							<span class="sm:hidden">Fil.</span><span class="hidden sm:inline">Filament</span>
-						</div>
-
-						<!-- Joining -->
-						<div @click="currentStep = 'join'" 
-							 :class="currentStep === 'join' ? 'active' : 'inactive'"
-							 class="step-btn step-btn-middle" style="z-index: 2;">
-							<span class="sm:hidden">Join</span><span class="hidden sm:inline">Joining</span>
-						</div>
-
-						<!-- Spool -->
-						<div @click="currentStep = 'spool'" 
-							 :class="currentStep === 'spool' ? 'active' : 'inactive'"
-							 class="step-btn step-btn-middle" style="z-index: 2;">
-							Spool
-						</div>
-
-						<!-- Print -->
-						<div @click="currentStep = 'printing'" 
-							 :class="currentStep === 'printing' ? 'active' : 'inactive'"
-							 class="step-btn step-btn-last">
-							Print
-						</div>
-
-					</div>
-				</div>
-			</div>
-        
-        
-        
-        
-        
-     </div>
-
-			
-            <div class="order-1 lg:order-2 space-y-6 text-left">
-                <h2 class="text-4xl font-bold text-gray-900 mb-4">Filament Welding</h2>
-                <p class="text-gray-800 leading-relaxed text-lg">The machine is equipped with a filament welding device. The filament welder consists of two clothespins with teflon molds. To heat the filament in the welder, a NiCr wire coil with a cross-section of 0.2 mm is used, with a total thread length of 200 mm, operating from a built-in 12V power supply. The ends of the filament are installed in the clothespins, when the button is pressed, 12V is supplied to the coil, the ends of the filament are heated by the coil, melted, connected together, and formed by one of the clothespins (any) by pushing the welded pair inside the clothespin. The weld seam is cooled in teflon molds in 1-2 seconds. Thus, you can weld and accumulate filament on different spools, sorting filament by colors.</p>
-                <div class="space-y-3 pt-2">
-                    <div class="flex items-center gap-3">
-                        <span class="text-2xl">🎥</span>
-                        <!-- <p class="font-bold text-gray-800">Hint: <span class="font-medium text-gray-600">Find more videos and tutorials on our YouTube channel</span></p>-->
-                        <p class="font-bold text-gray-800 text-lg">Video tutorial: <span class="font-normal text-gray-800">Filament welding process</span></p>
-                    </div>                    
-                </div>                 
-            </div>
-        </div>
-    </section>
-
-
-
-
-
-
-    <!-- Raw Materials and Colors -->
-	<section id="welding" class="custom-section bg-white" x-data="{ currentImg: 0, videoPlaying: false, items: [
-			{ type: 'image', url: 'https://habrastorage.org/r/w1560/getpro/habr/upload_files/074/242/6f5/0742426f541712158bc36a0fcd56bf1e.png' },
-			{ type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczM9VtXEruPrVorVIhTLttS_Ir3V1X1yuZRzg7z5R0xABLe2QieKuyDhjkq-z5gG0qARWq8OJ-wHZs9h3F1AOsXz13l2-upEKKZdoybzjvh0uUJIwkhuAz9EjtKJP9UGlQniqAhOZW7fsilhawAzVgdJ=w727-h829-s-no?authuser=0' },
-			{ type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNuwzcSXibV3E3mqNIyZqCusUQ2C2byDkeiLwXnKWwv5TQEuCCgFWIExvhabRYYpt9dOEBpyUl5jkg0dLkVQW9sbNVaHRPrbh-SS5juMpXEg4lFmjNtqo6jFjLI_2InGAFUrOAGL7r2VuAdw70EIeij=w719-h1000-s-no?authuser=0' },
-			{ type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczOE31IKt6hJ7mMbbP-aQVe5PHIIaNubNg_fWJJ8IMv10tSi-450pfVkdxKNeP3BdOXprkpO7c-wkT3rLWJm0C1uOcRtvZgFhPIW2B5ejutVOWRO8gSiNYOk7GS_jl7mR02aTQ75dUQqYaZujx67l_Zc=w1146-h1106-s-no?authuser=0' },
-			{ type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPTMYy_jK9Rw7oUmKP1qi-MgpbwUDjD1qbcgMTGq3fcFphvZrL2v0zrcVr3Y0MampFVtBhDm-VJh6S3dBeZR7MI5zp800sVRmdO85oNu7I2pY71RcR3iaxrZ0ZMfvU9wy0H8BwtfdaUVI7OoSAL3IMG=w2013-h2013-s-no?authuser=0' },
-			{ type: 'video', url: 'https://www.youtube.com/embed/Jl8NKu6hZWU' },
-		]}">    
-        <div class="custom-grid">
-        
-        <!-- Левая колонка: Галерея + Панель шагов под ней -->
-        <div class="order-2 lg:order-2 flex flex-col">
-            <!-- Контейнер галереи -->
-            <div class="relative group aspect-[4/3] flex items-center justify-center overflow-hidden rounded-xl shadow-2xl bg-gray-100 rotate-1 transition-transform duration-300 hover:rotate-0 hover:scale-105">
-				
-				<!-- Картинка -->
-				<template x-if="items[currentImg].type === 'image'">
-					<img :src="items[currentImg].url" class="w-full h-full object-cover transition-all duration-300" alt="Application Areas" @click="openModalGallery(items, currentImg)">
-				</template>
-				
-				<!-- Видео -->
-				<template x-if="items[currentImg].type === 'video'">
-					<div class="w-full h-full relative group/vid">
-						
-						<!-- Состояние 1: Видео НЕ играет (Показываем превью с кнопкой Play) -->
-						<template x-if="!videoPlaying">
-							<div class="absolute inset-0 w-full h-full rounded-xl overflow-hidden cursor-pointer z-30"
-								 @click="openModalGallery(items, currentImg)">
-								
-								<!-- Заглушка/фрейм для превью -->
-								<iframe :src="items[currentImg].url" 
-										class="w-full h-full border-0 absolute inset-0 rounded-xl pointer-events-none z-10"
-										allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-										allowfullscreen>
-								</iframe>
-
-
-								<!-- Кнопка Play (запускает видео на месте, строго поверх всего) -->
-								<div class="absolute inset-0 flex items-center justify-center z-40">
-									<button type="button" 
-											@click.stop="videoPlaying = true" 
-											class="w-20 h-20 rounded-full bg-transparent text-white flex items-center justify-center transform transition-transform hover:scale-110 cursor-pointer">
-										<i class="fa-solid fa-play text-2xl ml-1 drop-shadow-md"></i>
-									</button>
-								</div>
-							</div>
-						</template>
-
-						<!-- Состояние 2: Видео играет (Активный плеер и прозрачный слой для остановки) -->
-						<template x-if="videoPlaying">
-							<div class="absolute inset-0 w-full h-full rounded-xl overflow-hidden z-30">
-								<iframe :src="items[currentImg].url + '?autoplay=1'" 
-										class="w-full h-full border-0 absolute inset-0 rounded-xl z-10"
-										allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-										allowfullscreen>
-								</iframe>
-								
-								<!-- Прозрачный слой поверх плеера для остановки по клику в любом месте видео -->
-								<div class="absolute inset-0 cursor-pointer bg-transparent z-20"
-									 @click="videoPlaying = false"
-									 title="Нажмите, чтобы остановить видео">
-								</div>
-							</div>
-						</template>
-
-					</div>
-				</template>
-
-				 
-				<!-- Кнопки переключения -->
-				<div class="absolute inset-0 flex items-center justify-between px-4 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50">
-					<button @click="currentImg = (currentImg - 1 + items.length) % items.length" class="pointer-events-auto w-10 h-10 custom-slider-btn rounded-full flex items-center justify-center shadow text-sm cursor-pointer transition-colors">
-						<i class="fa-solid fa-chevron-left pointer-events-none"></i>
-					</button>
-					<button @click="currentImg = (currentImg + 1) % items.length" class="pointer-events-auto w-10 h-10 custom-slider-btn rounded-full flex items-center justify-center shadow text-sm cursor-pointer transition-colors">
-						<i class="fa-solid fa-chevron-right pointer-events-none"></i>
-					</button>
-				</div>
-
-				<!-- Индикаторы (точки) -->
-				<div class="absolute bottom-4 left-0 right-0 flex justify-center gap-2 z-50">
-					<template x-for="(item, idx) in items" :key="idx">
-						<button @click="currentImg = idx" 
-								class="w-2.5 h-2.5 rounded-full transition-all cursor-pointer shadow"
-								:class="currentImg === idx ? 'bg-blue-600 w-6' : 'bg-white/70 hover:bg-white'">
-						</button>
-					</template>
-				</div>
-			</div>
-
-
-			<!-- Панель шагов -->
-			<div class="step-nav-container" x-data="{ currentStep: 'spool' }">
-				<div class="step-nav-wrapper">
-					<div class="step-nav-inner">
-						
-						<!-- Bottle -->
-						<div @click="currentStep = 'bottle'" 
-							 :class="currentStep === 'bottle' ? 'active' : 'inactive'"
-							 class="step-btn step-btn-first" style="z-index: 1;">
-							Bottle
-						</div>
-
-						<!-- Tape -->
-						<div @click="currentStep = 'tape'" 
-							 :class="currentStep === 'tape' ? 'active' : 'inactive'"
-							 class="step-btn step-btn-middle" style="z-index: 2;">
-							Tape
-						</div>
-
-						<!-- Filament -->
-						<div @click="currentStep = 'filament'" 
-							 :class="currentStep === 'filament' ? 'active' : 'inactive'"
-							 class="step-btn step-btn-middle" style="z-index: 3;">
-							<span class="sm:hidden">Fil.</span><span class="hidden sm:inline">Filament</span>
-						</div>
-
-						<!-- Joining -->
-						<div @click="currentStep = 'join'" 
-							 :class="currentStep === 'join' ? 'active' : 'inactive'"
-							 class="step-btn step-btn-middle" style="z-index: 2;">
-							<span class="sm:hidden">Join</span><span class="hidden sm:inline">Joining</span>
-						</div>
-
-						<!-- Spool -->
-						<div @click="currentStep = 'spool'" 
-							 :class="currentStep === 'spool' ? 'active' : 'inactive'"
-							 class="step-btn step-btn-middle" style="z-index: 2;">
-							Spool
-						</div>
-
-						<!-- Print -->
-						<div @click="currentStep = 'printing'" 
-							 :class="currentStep === 'printing' ? 'active' : 'inactive'"
-							 class="step-btn step-btn-last">
-							Print
-						</div>
-
-					</div>
-				</div>
-			</div>
-        
-        
-        
-        
-        
-     </div>
-
-                        
-            <div class="order-1 lg:order-1 space-y-6 text-left">
-                <h2 class="text-4xl font-bold text-gray-900 mb-4">Raw Materials and Colors</h2>
-                <p class="text-gray-800 leading-relaxed text-lg">No matter what kind of PET bottles do you have!</p>
-                <p class="text-gray-800 leading-relaxed text-lg">The machine allows processing all types of PET bottles available today in retail sales:</p>
-                <div class="space-y-4 pt-2">
-                    <div class="flex items-start gap-4">
-                        <div class="w-10 h-10 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center flex-shrink-0 mt-1"><i class="fa-solid fa-wine-bottle"></i></div>
-                        <div>
-                            <p class="font-bold text-gray-800 text-lg">5L water bottles</p>
-                            <p class="font-normal text-gray-800 text-lg">16–17 meters of plastic per bottle</p>
-                            <p class="font-normal text-gray-800 text-lg">dark blue, light blue, transparent, turquoise</p>
-                        </div>
-                    </div>
-                    <div class="flex items-start gap-4">
-                        <div class="w-10 h-10 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center flex-shrink-0 mt-1"><i class="fa-solid fa-wine-bottle"></i></div>
-                        <div>
-                            <p class="font-bold text-gray-800 text-lg">1–2 L beer/carbonated water bottles, etc.</p>
-                            <p class="font-normal text-gray-800 text-lg">8–9 meters of plastic</p>
-                            <p class="font-normal text-gray-800 text-lg">dark brown</p>
-                        </div>
-                    </div>
-                    <div class="flex items-start gap-4">
-                        <div class="w-10 h-10 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center flex-shrink-0 mt-1"><i class="fa-solid fa-wine-bottle"></i></div>
-                        <div>
-                            <p class="font-bold text-gray-800 text-lg">PET milk bottles</p>
-                            <p class="font-normal text-gray-800 text-lg">white plastic</p>
-                        </div>
-                    </div>
-                    <div class="flex items-start gap-4">
-                        <div class="w-10 h-10 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center flex-shrink-0 mt-1"><i class="fa-solid fa-wine-bottle"></i></div>
-                        <div>
-                            <p class="font-bold text-gray-800 text-lg">PET energy drink bottles</p>
-                            <p class="font-normal text-gray-800 text-lg">black plastic</p>
-                        </div>
-                    </div>                                         
-                </div>
-            </div>
-
-        </div>
-    </section>
-
-
-
-
-
-<!-- Printing Parameters -->
-	<section id="extruder" class="custom-section bg-gray-100" x-data="{ currentImg: 0, videoPlaying: false, items: [
-			
-			{ type: 'image', url: 'https://images.unsplash.com/photo-1597765654525-5cb60d312ef6?auto=format&fit=crop&q=80&w=1000' },
-			{ type: 'image', url: 'https://sigmafilament.com/wp-content/uploads/2026/06/pet-filament-pet-vs-petg-thermal-chart.webp' },
-			{ type: 'image', url: 'https://ultimaker.com/wp-content/uploads/2025/02/70-Ultimaker-Eriks-1.png' },
-			{ type: 'image', url: 'https://forward-am.com/wp-content/uploads/2021/07/forward-am-use-case-vola-ultimaker.jpg' },
-			{ type: 'image', url: 'https://i.redd.it/vmlqkleq2f4g1.jpg' },
-			{ type: 'video', url: 'https://drive.google.com/file/d/1SF9vcNE9mLlR-rOrfgBYs9brZMLN31sH/preview' },
-		]}">    
-        <div class="custom-grid">
-			
-        <!-- Левая колонка: Галерея + Панель шагов под ней -->
-        <div class="order-2 lg:order-1 flex flex-col">
-            <!-- Контейнер галереи -->
-            <div class="relative group aspect-[4/3] flex items-center justify-center overflow-hidden rounded-xl shadow-2xl bg-gray-100 rotate-1 transition-transform duration-300 hover:rotate-0 hover:scale-105">
-				
-				<!-- Картинка -->
-				<template x-if="items[currentImg].type === 'image'">
-					<img :src="items[currentImg].url" class="w-full h-full object-cover transition-all duration-300" alt="Application Areas" @click="openModalGallery(items, currentImg)">
-				</template>
-				
-				<!-- Видео -->
-				<template x-if="items[currentImg].type === 'video'">
-					<div class="w-full h-full relative group/vid">
-						
-						<!-- Состояние 1: Видео НЕ играет (Показываем превью с кнопкой Play) -->
-						<template x-if="!videoPlaying">
-							<div class="absolute inset-0 w-full h-full rounded-xl overflow-hidden cursor-pointer z-30"
-								 @click="openModalGallery(items, currentImg)">
-								
-								<!-- Заглушка/фрейм для превью -->
-								<iframe :src="items[currentImg].url" 
-										class="w-full h-full border-0 absolute inset-0 rounded-xl pointer-events-none z-10"
-										allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-										allowfullscreen>
-								</iframe>
-
-
-								<!-- Кнопка Play (запускает видео на месте, строго поверх всего) -->
-								<div class="absolute inset-0 flex items-center justify-center z-40">
-									<button type="button" 
-											@click.stop="videoPlaying = true" 
-											class="w-20 h-20 rounded-full bg-transparent text-white flex items-center justify-center transform transition-transform hover:scale-110 cursor-pointer">
-										<i class="fa-solid fa-play text-2xl ml-1 drop-shadow-md"></i>
-									</button>
-								</div>
-							</div>
-						</template>
-
-						<!-- Состояние 2: Видео играет (Активный плеер и прозрачный слой для остановки) -->
-						<template x-if="videoPlaying">
-							<div class="absolute inset-0 w-full h-full rounded-xl overflow-hidden z-30">
-								<iframe :src="items[currentImg].url + '?autoplay=1'" 
-										class="w-full h-full border-0 absolute inset-0 rounded-xl z-10"
-										allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-										allowfullscreen>
-								</iframe>
-								
-								<!-- Прозрачный слой поверх плеера для остановки по клику в любом месте видео -->
-								<div class="absolute inset-0 cursor-pointer bg-transparent z-20"
-									 @click="videoPlaying = false"
-									 title="Нажмите, чтобы остановить видео">
-								</div>
-							</div>
-						</template>
-
-					</div>
-				</template>
-
-				 
-				<!-- Кнопки переключения -->
-				<div class="absolute inset-0 flex items-center justify-between px-4 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50">
-					<button @click="currentImg = (currentImg - 1 + items.length) % items.length" class="pointer-events-auto w-10 h-10 custom-slider-btn rounded-full flex items-center justify-center shadow text-sm cursor-pointer transition-colors">
-						<i class="fa-solid fa-chevron-left pointer-events-none"></i>
-					</button>
-					<button @click="currentImg = (currentImg + 1) % items.length" class="pointer-events-auto w-10 h-10 custom-slider-btn rounded-full flex items-center justify-center shadow text-sm cursor-pointer transition-colors">
-						<i class="fa-solid fa-chevron-right pointer-events-none"></i>
-					</button>
-				</div>
-
-				<!-- Индикаторы (точки) -->
-				<div class="absolute bottom-4 left-0 right-0 flex justify-center gap-2 z-50">
-					<template x-for="(item, idx) in items" :key="idx">
-						<button @click="currentImg = idx" 
-								class="w-2.5 h-2.5 rounded-full transition-all cursor-pointer shadow"
-								:class="currentImg === idx ? 'bg-blue-600 w-6' : 'bg-white/70 hover:bg-white'">
-						</button>
-					</template>
-				</div>
-			</div>
-
-
-			<!-- Панель шагов -->
-			<div class="step-nav-container" x-data="{ currentStep: 'printing' }">
-				<div class="step-nav-wrapper">
-					<div class="step-nav-inner">
-						
-						<!-- Bottle -->
-						<div @click="currentStep = 'bottle'" 
-							 :class="currentStep === 'bottle' ? 'active' : 'inactive'"
-							 class="step-btn step-btn-first" style="z-index: 1;">
-							Bottle
-						</div>
-
-						<!-- Tape -->
-						<div @click="currentStep = 'tape'" 
-							 :class="currentStep === 'tape' ? 'active' : 'inactive'"
-							 class="step-btn step-btn-middle" style="z-index: 2;">
-							Tape
-						</div>
-
-						<!-- Filament -->
-						<div @click="currentStep = 'filament'" 
-							 :class="currentStep === 'filament' ? 'active' : 'inactive'"
-							 class="step-btn step-btn-middle" style="z-index: 3;">
-							<span class="sm:hidden">Fil.</span><span class="hidden sm:inline">Filament</span>
-						</div>
-
-						<!-- Joining -->
-						<div @click="currentStep = 'join'" 
-							 :class="currentStep === 'join' ? 'active' : 'inactive'"
-							 class="step-btn step-btn-middle" style="z-index: 2;">
-							<span class="sm:hidden">Join</span><span class="hidden sm:inline">Joining</span>
-						</div>
-
-						<!-- Spool -->
-						<div @click="currentStep = 'spool'" 
-							 :class="currentStep === 'spool' ? 'active' : 'inactive'"
-							 class="step-btn step-btn-middle" style="z-index: 2;">
-							Spool
-						</div>
-
-						<!-- Print -->
-						<div @click="currentStep = 'printing'" 
-							 :class="currentStep === 'printing' ? 'active' : 'inactive'"
-							 class="step-btn step-btn-last">
-							Print
-						</div>
-
-					</div>
-				</div>
-			</div>
-       
-       
-       
-       
-        
-     </div>
-
-            
-            <div class="order-1 lg:order-2 space-y-6 text-left">
-                <h2 class="text-4xl font-bold text-gray-900 mb-4">Printing Parameters</h2>
-                <p class="text-gray-800 leading-relaxed text-lg">Printing with this filament is carried out at nozzle temperatures of 270–280°C and a bed temperature of 85°C — it is necessary to fine-tune the nozzle temperature based on the ease of pushing the filament through the extruder. A delicate part cooling fan is required during printing; otherwise, if cooling is insufficient, the plastic cools slowly and crystallizes. On larger models, I set the cooling fan within the 20–30% range. Several 3D printers were tested: a FlyingBear Ghost 5 Direct (teflon tube throat) and a Uni printer with a Titan Aero extruder (all metal throat, brass cube). No difference has been noticed so far. I use over-extrusion to compensate for the internal cavity within the filament (130–150%), as the filament is formed in the shape of a tube. An example of printing with this plastic is the machine itself.</p>
-                
-                <div class="space-y-3 pt-2">
-                    <div class="flex items-center gap-3">
-                        <span class="text-2xl">✅</span>
-                        <p class="font-bold text-gray-800 text-lg">Nozzle: <span class="font-normal text-gray-800">275–285 °C</span></p>
-                    </div>
-                    <div class="flex items-center gap-3">
-                        <span class="text-2xl">✅</span>
-                        <p class="font-bold text-gray-800 text-lg">Bed: <span class="font-normal text-gray-800">85 °C</span></p>
-                    </div>
-                    <div class="flex items-center gap-3">
-                        <span class="text-2xl">✅</span>
-                        <p class="font-bold text-gray-800 text-lg">Extrusion (Flow): <span class="font-normal text-gray-800">130–150%</span></p>
-                    </div>                    
-                </div>
-                
-                               
-            </div>
-            
-        </div>
-    </section>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	<!-- Machine Operation Timelapse -->
-	<section id="welding" class="custom-section bg-white" x-data="{ currentImg: 0, videoPlaying: false, items: [
-			{ type: 'video', url: 'https://www.youtube.com/embed/I6aGNNQ39JI' },
-			{ type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPgBo_7C2KwYIJ29EcqmHAEeoHDVBybO91Sahj1ToHJkACOVb3g30ML3A9b0hHjlYlEcQGDfqFwYMcxBBIyB-EXlrKRQsKIbTNDVMUB-Q0PIoiSc7orZfNCbUUYc66n28OBII436Wof0A8sfKhzE5M=w1244-h933-s-no?authuser=0' },
-			{ type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczOT1vbn-IIPAujBq1J8FZrbGTGVUAHYqJQc28PRpKmV9V1UfYkChx3zH_uNU7yVaGipzs0WUEhc0qVefE39HpySKxbx-ijJ4c3JmC0ZJ8ANZTqzQv4ZN_kMjZLdwcKVy0IbaAg6iFmej3rlaSWnS3E=w1440-h1080-s-no?authuser=0' },
-			{ type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNIQNQ3M4iaYGgDpb-AUzzTf_7ORwB8hdhsG59lhKyD32xQjOnLBFRlKU0gH1dd5dIuQTCaiJRFozb7Xds1dPBVtTFHQiyMQi0IXloz--BgBveLkqgv6tYZgZyX4SfyzU3UFcZgWlu3vHkUmf-VOmw=w1440-h1080-s-no?authuser=0' },			
-			
-		]}"> 
-        <div class="custom-grid">
-			
-			<div class="order-2 lg:order-2 relative group aspect-[4/3] flex items-center justify-center overflow-hidden rounded-xl shadow-2xl bg-gray-100 rotate-1 transition-transform duration-300 hover:rotate-0 hover:scale-105">
-				
-				<!-- Картинка -->
-				<template x-if="items[currentImg].type === 'image'">
-					<img :src="items[currentImg].url" class="w-full h-full object-cover transition-all duration-300" alt="Application Areas" @click="openModalGallery(items, currentImg)">
-				</template>
-				
-				<!-- Видео -->
-				<template x-if="items[currentImg].type === 'video'">
-					<div class="w-full h-full relative group/vid">
-						
-						<!-- Состояние 1: Видео НЕ играет (Показываем превью с кнопкой Play) -->
-						<template x-if="!videoPlaying">
-							<div class="absolute inset-0 w-full h-full rounded-xl overflow-hidden cursor-pointer z-30"
-								 @click="openModalGallery(items, currentImg)">
-								
-								<!-- Заглушка/фрейм для превью -->
-								<iframe :src="items[currentImg].url" 
-										class="w-full h-full border-0 absolute inset-0 rounded-xl pointer-events-none z-10"
-										allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-										allowfullscreen>
-								</iframe>
-
-
-								<!-- Кнопка Play (запускает видео на месте, строго поверх всего) -->
-								<div class="absolute inset-0 flex items-center justify-center z-40">
-									<button type="button" 
-											@click.stop="videoPlaying = true" 
-											class="w-20 h-20 rounded-full bg-transparent text-white flex items-center justify-center transform transition-transform hover:scale-110 cursor-pointer">
-										<i class="fa-solid fa-play text-2xl ml-1 drop-shadow-md"></i>
-									</button>
-								</div>
-							</div>
-						</template>
-
-						<!-- Состояние 2: Видео играет (Активный плеер и прозрачный слой для остановки) -->
-						<template x-if="videoPlaying">
-							<div class="absolute inset-0 w-full h-full rounded-xl overflow-hidden z-30">
-								<iframe :src="items[currentImg].url + '?autoplay=1'" 
-										class="w-full h-full border-0 absolute inset-0 rounded-xl z-10"
-										allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-										allowfullscreen>
-								</iframe>
-								
-								<!-- Прозрачный слой поверх плеера для остановки по клику в любом месте видео -->
-								<div class="absolute inset-0 cursor-pointer bg-transparent z-20"
-									 @click="videoPlaying = false"
-									 title="Нажмите, чтобы остановить видео">
-								</div>
-							</div>
-						</template>
-
-					</div>
-				</template>
-
-				 
-				<!-- Кнопки переключения -->
-				<div class="absolute inset-0 flex items-center justify-between px-4 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50">
-					<button @click="currentImg = (currentImg - 1 + items.length) % items.length" class="pointer-events-auto w-10 h-10 custom-slider-btn rounded-full flex items-center justify-center shadow text-sm cursor-pointer transition-colors">
-						<i class="fa-solid fa-chevron-left pointer-events-none"></i>
-					</button>
-					<button @click="currentImg = (currentImg + 1) % items.length" class="pointer-events-auto w-10 h-10 custom-slider-btn rounded-full flex items-center justify-center shadow text-sm cursor-pointer transition-colors">
-						<i class="fa-solid fa-chevron-right pointer-events-none"></i>
-					</button>
-				</div>
-
-				<!-- Индикаторы (точки) -->
-				<div class="absolute bottom-4 left-0 right-0 flex justify-center gap-2 z-50">
-					<template x-for="(item, idx) in items" :key="idx">
-						<button @click="currentImg = idx" 
-								class="w-2.5 h-2.5 rounded-full transition-all cursor-pointer shadow"
-								:class="currentImg === idx ? 'bg-blue-600 w-6' : 'bg-white/70 hover:bg-white'">
-						</button>
-					</template>
-				</div>
-			</div>
-			
-            <div class="order-1 lg:order-1 space-y-6 text-left">
-                <h2 class="text-4xl font-bold text-gray-900 mb-4">Machine Operation Timelapse</h2>
-                <p class="text-gray-800 leading-relaxed text-lg">This video features a timelapse of the machine in action, a demonstration of plastic types, and the operation of the ReTool manual welder (more on that later).</p>
-                <p class="text-gray-800 leading-relaxed text-lg">The machine operates in a temperature range of 175 °C, and theoretically allows cutting anything that has the shape of a ribbon or a thin-walled cylinder (bottles, cups, pre-prepared tape).</p>
-                <div class="space-y-3 pt-2">
-                    <div class="flex items-center gap-3">
-                        <span class="text-2xl">🎥</span>
-                        <!-- <p class="font-bold text-gray-800">Hint: <span class="font-medium text-gray-600">Find more videos and tutorials on our YouTube channel</span></p>-->
-                        <p class="font-bold text-gray-800 text-lg">Video tutorial: <span class="font-normal text-gray-800">Machine Operation Timelapse</span></p>
-                    </div>                    
-                </div>                 
-            </div>
-        </div>
-    </section>
-
-
-
-	
-
-
-
-
-    <!-- Not every bottle can be recycled -->    
-	<section id="extruder" class="custom-section bg-gray-100" x-data="{ currentImg: 0, videoPlaying: false, items: [
-	
-			{ type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMdbxgV5TLoz6VHdpVzwxpF03RisIxOMjTvSRZ9ulw89Rz6rxIKrsefOkGPbbLasGam6hkUthEvLDSZ6EeuZF4DT9_3gtUOU93WYG5c-qsJX6-KZqxwYQAkv78nz6s_b2cpEFQ5iSFGvUME7DhmoyWl=w612-h612-s-no?authuser=0' },
-			{ type: 'image', url: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT9L2bewOlsxqBcaCWb7TE6W5JxNsPida-rVpcmZhKHg5WR7xpEWQcj-dw&s=10' },
-			{ type: 'image', url: 'https://quadro.burda-forward.de/ctf/1815644d-b8cd-4c03-8486-f677025710ef.341597b5-2f6d-4a14-9448-60636b3cd3fd.jpeg?im=RegionOfInterestCrop=(1200,900),regionOfInterest=(320,180)&hash=36a5a8856999b57445d983370a49c892d360a6fed70218aab48776c1f4d11a63' },
-			{ type: 'video', url: 'https://drive.google.com/file/d/1SF9vcNE9mLlR-rOrfgBYs9brZMLN31sH/preview' },
-			
-		]}">  
-        <div class="custom-grid">
-			<div class="order-2 lg:order-1 relative group aspect-[4/4] flex items-center justify-center overflow-hidden rounded-xl shadow-2xl bg-gray-100 rotate-1 transition-transform duration-300 hover:rotate-0 hover:scale-105">
-				
-				<!-- Картинка -->
-				<template x-if="items[currentImg].type === 'image'">
-					<img :src="items[currentImg].url" class="w-full h-full object-cover transition-all duration-300" alt="Application Areas" @click="openModalGallery(items, currentImg)">
-				</template>
-				
-				<!-- Видео -->
-				<template x-if="items[currentImg].type === 'video'">
-					<div class="w-full h-full relative group/vid">
-						
-						<!-- Состояние 1: Видео НЕ играет (Показываем превью с кнопкой Play) -->
-						<template x-if="!videoPlaying">
-							<div class="absolute inset-0 w-full h-full rounded-xl overflow-hidden cursor-pointer z-30"
-								 @click="openModalGallery(items, currentImg)">
-								
-								<!-- Заглушка/фрейм для превью -->
-								<iframe :src="items[currentImg].url" 
-										class="w-full h-full border-0 absolute inset-0 rounded-xl pointer-events-none z-10"
-										allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-										allowfullscreen>
-								</iframe>
-
-
-								<!-- Кнопка Play (запускает видео на месте, строго поверх всего) -->
-								<div class="absolute inset-0 flex items-center justify-center z-40">
-									<button type="button" 
-											@click.stop="videoPlaying = true" 
-											class="w-20 h-20 rounded-full bg-transparent text-white flex items-center justify-center transform transition-transform hover:scale-110 cursor-pointer">
-										<i class="fa-solid fa-play text-2xl ml-1 drop-shadow-md"></i>
-									</button>
-								</div>
-							</div>
-						</template>
-
-						<!-- Состояние 2: Видео играет (Активный плеер и прозрачный слой для остановки) -->
-						<template x-if="videoPlaying">
-							<div class="absolute inset-0 w-full h-full rounded-xl overflow-hidden z-30">
-								<iframe :src="items[currentImg].url + '?autoplay=1'" 
-										class="w-full h-full border-0 absolute inset-0 rounded-xl z-10"
-										allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-										allowfullscreen>
-								</iframe>
-								
-								<!-- Прозрачный слой поверх плеера для остановки по клику в любом месте видео -->
-								<div class="absolute inset-0 cursor-pointer bg-transparent z-20"
-									 @click="videoPlaying = false"
-									 title="Нажмите, чтобы остановить видео">
-								</div>
-							</div>
-						</template>
-
-					</div>
-				</template>
-
-				 
-				<!-- Кнопки переключения -->
-				<div class="absolute inset-0 flex items-center justify-between px-4 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50">
-					<button @click="currentImg = (currentImg - 1 + items.length) % items.length" class="pointer-events-auto w-10 h-10 custom-slider-btn rounded-full flex items-center justify-center shadow text-sm cursor-pointer transition-colors">
-						<i class="fa-solid fa-chevron-left pointer-events-none"></i>
-					</button>
-					<button @click="currentImg = (currentImg + 1) % items.length" class="pointer-events-auto w-10 h-10 custom-slider-btn rounded-full flex items-center justify-center shadow text-sm cursor-pointer transition-colors">
-						<i class="fa-solid fa-chevron-right pointer-events-none"></i>
-					</button>
-				</div>
-
-				<!-- Индикаторы (точки) -->
-				<div class="absolute bottom-4 left-0 right-0 flex justify-center gap-2 z-50">
-					<template x-for="(item, idx) in items" :key="idx">
-						<button @click="currentImg = idx" 
-								class="w-2.5 h-2.5 rounded-full transition-all cursor-pointer shadow"
-								:class="currentImg === idx ? 'bg-blue-600 w-6' : 'bg-white/70 hover:bg-white'">
-						</button>
-					</template>
-				</div>
-			</div>
-                        
-            <div class="order-1 lg:order-2 space-y-6 text-left">
-                <h2 class="text-4xl font-bold text-gray-900 mb-4">Not every bottle can be recycled in supermarket</h2>
-                <p class="text-gray-800 leading-relaxed text-lg">For example, 5L bottles don't fit into the recycling machine. During our experiments with various types of PET packaging, we discovered that containers with overly thick walls, non-standard geometry, or massive volumes exceed the physical limitations of standard intake slots and cutting mechanisms. Commercial recycling hardware relies heavily on automated recognition databases, meaning unbranded containers, custom-shaped bottles, or foreign imports featuring unfamiliar barcodes are frequently rejected by standard sorting systems. Additionally, containers with complex chemical coatings, heavy texturing, or stubborn glue residues require additional preparation steps. Careful selection of your raw plastic source is essential to ensure a smooth cutting process, consistent ribbon width, and overall high-quality filament production for your 3D printing needs.</p>
-                
-                <div class="space-y-3 pt-2">
-                    <div class="flex items-center gap-3">
-                        <span class="text-2xl">❌</span>
-                        <p class="font-bold text-gray-800 text-lg">5L bottle: <span class="font-normal text-gray-800">Doesn't fit to recycle maschine</span></p>
-                    </div>
-                    <div class="flex items-center gap-3">
-                        <span class="text-2xl">❌</span>
-                        <p class="font-bold text-gray-800 text-lg">Unbranded bottle: <span class="font-normal text-gray-800">Recycle maschine not recognizes them</span></p>
-                    </div>
-                    <div class="flex items-center gap-3">
-                        <span class="text-2xl">❌</span>
-                        <p class="font-bold text-gray-800 text-lg">Botthe from other countries: <span class="font-normal text-gray-800">Recycle maschine often accepts only local bottles</span></p>
-                    </div>                    
-                </div>
-                
-            </div>
-        </div>
-    </section>
-
-
-
-
-	<!-- Application Areas of PET Recycling Machines -->
-	<section id="extruder" class="custom-section bg-white" x-data="{ currentImg: 0, videoPlaying: false, items: [
-			
-			{ type: 'image', url: 'https://www.raspberrypi.com/app/uploads/2025/08/Petmachine3.webp' },
-			{ type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMtw_jQNi8fzVZeppY0cCWtbD6OqMvsb9Dh1wUhHV7U0aJZxgLoj4JKiFKI5bU9Nc_E0_0ePrnqMcjLQNaSf0VUxvQ4mBO301sQXRcN_KHsLtNEw0PZmucIZwH0gAeQ9vZ82hbZ0dl7r4cxg4jWOZuF=w1080-h567-s-no?authuser=0' },
-			{ type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMajsOOUNvj3ylUR2Rq6C250YDWKEZwF-yP_tIhVLd4jZwYn16VqOM5oK4klKnMRE0f8mrSf5D0C0mh3yLApbhti8NayVBFi_DV-XJz2HwLlecokk2qOavro_G8tJaX3LqFJ2wWM70W1xg2L8NSE4so=w1100-h943-s-no?authuser=0' },
-			{ type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPqZlYhcsB6dVEjP3nJb6NzT9NyIhBDzaiVJVVk-1uJn8aIUzDrnyt6wAGk_PEwCZeSLlvWRt4LKjWO5cDJDKD5ynQ9y5NIN-e50zHm_MDQA6d4I6BCrNyKKZmPHfgwlO1wyNTHwtNpF_RcQEpfIzvJ=w2432-h2013-s-no?authuser=0' },
-			{ type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMw1WoCWS6dIwaFkX_-EMPsldF0W0dpWHA6fSuPwxm52g4PdKLMFiwDcTAiCbeC40gwQaz2bbEA2VF1j-wp3SL1u9Kpb7ep9z2Yo3jhsOmSL0ImCTTNj61FI0w-hbcJzdnSIZ0TvwLDPlGsbJIZa8dw=w1600-h1200-s-no?authuser=0' },
-			{ type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPBgiV6GHKFfN9aHh9plAubV9hBIi9cgtsooJl_Yc4Ztce1znFFvEp4nY46-k5Pj678VkbQG6zTNwO0VVsaNL6IaZAiTZIinD9BchxUsM-D_y2o4G4d_wIlHvwLEvXTcnGOTh7Qwb6jNbjidavOpTpy=w720-h404-s-no?authuser=0' },
-			{ type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPnY1Vc78xMSU6JUH7SO_LtlcnSqpM4a07RM1Pck19T-MmoqBkt2uOBhadwuuytCjzVocGSjoCYn92B6QGMecV-yxMAybaJbqf27DWuDhMjOxQ1uHk8o__XabNtanUftY6mWXhUTM_Go7oDn7Q1ZADP=w1024-h683-s-no?authuser=0' },
-			{ type: 'video', url: 'https://drive.google.com/file/d/1SF9vcNE9mLlR-rOrfgBYs9brZMLN31sH/preview' },
-			
-		]}"> 
-        <div class="custom-grid">
-			
-			<!-- Левая колонка: Галерея + Панель шагов под ней -->
-			<div class="order-2 lg:order-2 flex flex-col">
-            <!-- Контейнер галереи -->
-            <div class="relative group aspect-[4/3] flex items-center justify-center overflow-hidden rounded-xl shadow-2xl bg-gray-100 rotate-1 transition-transform duration-300 hover:rotate-0 hover:scale-105 isolation-isolate"> 
-				
-				<!-- Картинка -->
-				<template x-if="items[currentImg].type === 'image'">
-					<img :src="items[currentImg].url" class="w-full h-full object-cover transition-all duration-300" alt="Application Areas" @click="openModalGallery(items, currentImg)">
-				</template>
-				
-				<!-- Видео -->
-				<template x-if="items[currentImg].type === 'video'">
-					<div class="w-full h-full relative group/vid">
-						
-						<!-- Состояние 1: Видео НЕ играет (Показываем превью с кнопкой Play) -->
-						<template x-if="!videoPlaying">
-							<div class="absolute inset-0 w-full h-full rounded-xl overflow-hidden cursor-pointer z-30"
-								 @click="openModalGallery(items, currentImg)">
-								
-								<!-- Заглушка/фрейм для превью -->
-								<iframe :src="items[currentImg].url" 
-										class="w-full h-full border-0 absolute inset-0 rounded-xl pointer-events-none z-10"
-										allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-										allowfullscreen>
-								</iframe>
-
-
-								<!-- Кнопка Play (запускает видео на месте, строго поверх всего) -->
-								<div class="absolute inset-0 flex items-center justify-center z-40">
-									<button type="button" 
-											@click.stop="videoPlaying = true" 
-											class="w-20 h-20 rounded-full bg-transparent text-white flex items-center justify-center transform transition-transform hover:scale-110 cursor-pointer">
-										<i class="fa-solid fa-play text-2xl ml-1 drop-shadow-md"></i>
-									</button>
-								</div>
-							</div>
-						</template>
-
-						<!-- Состояние 2: Видео играет (Активный плеер и прозрачный слой для остановки) -->
-						<template x-if="videoPlaying">
-							<div class="absolute inset-0 w-full h-full rounded-xl overflow-hidden z-30">
-								<iframe :src="items[currentImg].url + '?autoplay=1'" 
-										class="w-full h-full border-0 absolute inset-0 rounded-xl z-10"
-										allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-										allowfullscreen>
-								</iframe>
-								
-								<!-- Прозрачный слой поверх плеера для остановки по клику в любом месте видео -->
-								<div class="absolute inset-0 cursor-pointer bg-transparent z-20"
-									 @click="videoPlaying = false"
-									 title="Нажмите, чтобы остановить видео">
-								</div>
-							</div>
-						</template>
-
-					</div>
-				</template>
-
-				 
-				<!-- Кнопки переключения -->
-				<div class="absolute inset-0 flex items-center justify-between px-4 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50">
-					<button @click="currentImg = (currentImg - 1 + items.length) % items.length" class="pointer-events-auto w-10 h-10 custom-slider-btn rounded-full flex items-center justify-center shadow text-sm cursor-pointer transition-colors">
-						<i class="fa-solid fa-chevron-left pointer-events-none"></i>
-					</button>
-					<button @click="currentImg = (currentImg + 1) % items.length" class="pointer-events-auto w-10 h-10 custom-slider-btn rounded-full flex items-center justify-center shadow text-sm cursor-pointer transition-colors">
-						<i class="fa-solid fa-chevron-right pointer-events-none"></i>
-					</button>
-				</div>
-
-				<!-- Индикаторы (точки) -->
-				<div class="absolute bottom-4 left-0 right-0 flex justify-center gap-2 z-50">
-					<template x-for="(item, idx) in items" :key="idx">
-						<button @click="currentImg = idx" 
-								class="w-2.5 h-2.5 rounded-full transition-all cursor-pointer shadow"
-								:class="currentImg === idx ? 'bg-blue-600 w-6' : 'bg-white/70 hover:bg-white'">
-						</button>
-					</template>
-				</div>
-			</div>
-			
-			<div style="display: none;">
-				<div class="max-w-md w-full mx-auto mt-10 px-4" x-data="{ currentStep: 'delivery' }">
-					<div class="flex rounded-full overflow-hidden border border-gray-200 bg-white shadow-sm text-xs font-medium">
-						
-						<!-- Basket -->
-						<div @click="currentStep = 'basket'" 
-							 :class="currentStep === 'basket' ? 'bg-[#00b4a6] text-white font-bold z-20' : 'text-gray-600 bg-white hover:text-black'"
-							 class="flex-1 py-3 text-center flex items-center justify-center cursor-pointer transition-colors relative"
-							 style="clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%); margin-right: -10px; z-index: 1;">
-							Basket
-						</div>
-
-						<!-- Select -->
-						<div @click="currentStep = 'select'" 
-							 :class="currentStep === 'select' ? 'bg-[#00b4a6] text-white font-bold z-20' : 'text-gray-600 bg-white hover:text-black'"
-							 class="flex-1 py-3 text-center flex items-center justify-center cursor-pointer transition-colors relative"
-							 style="clip-path: polygon(15% 0%, 100% 0%, 100% 100%, 0% 100%); margin-left: -6px; margin-right: -10px; z-index: 2;">
-							Select
-						</div>
-
-						<!-- Buy -->
-						<div @click="currentStep = 'buy'" 
-							 :class="currentStep === 'buy' ? 'bg-[#00b4a6] text-white font-bold z-20' : 'text-gray-600 bg-white hover:text-black'"
-							 class="flex-1 py-3 text-center flex items-center justify-center cursor-pointer transition-colors relative"
-							 style="clip-path: polygon(15% 0%, 100% 0%, 100% 100%, 0% 100%); margin-left: -6px; margin-right: -10px; z-index: 2;">
-							Buy
-						</div>
-
-						<!-- Delivery (Активный по умолчанию) -->
-						<div @click="currentStep = 'delivery'" 
-							 :class="currentStep === 'delivery' ? 'bg-[#00b4a6] text-white font-bold z-20' : 'text-gray-600 bg-white hover:text-black'"
-							 class="flex-1 py-3 text-center flex items-center justify-center cursor-pointer transition-colors relative"
-							 style="clip-path: polygon(15% 0%, 100% 0%, 85% 100%, 0% 100%); margin-left: -6px; margin-right: -10px; z-index: 3;">
-							Delivery
-						</div>
-
-						<!-- Confirm -->
-						<div @click="currentStep = 'confirm'" 
-							 :class="currentStep === 'confirm' ? 'bg-[#00b4a6] text-white font-bold z-20' : 'text-gray-600 bg-white hover:text-black'"
-							 class="flex-1 py-3 text-center flex items-center justify-center cursor-pointer transition-colors relative"
-							 style="clip-path: polygon(15% 0%, 100% 0%, 85% 100%, 0% 100%); margin-left: -6px; margin-right: -10px; z-index: 2;">
-							Confirm
-						</div>
-
-						<!-- Done! -->
-						<div @click="currentStep = 'done'" 
-							 :class="currentStep === 'done' ? 'bg-[#00b4a6] text-white font-bold z-20' : 'text-gray-600 bg-white hover:text-black'"
-							 class="flex-1 py-3 text-center flex items-center justify-center cursor-pointer transition-colors relative"
-							 style="clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%); margin-left: -10px; z-index: 1;">
-							Done
-						</div>
-
-                    </div>
-                </div>		
-			</div>
-			
-			
-			</div>
-			
-			
-			
-            <!-- Правая колонка: Текст -->
-            <div class="order-1 lg:order-1 space-y-6 text-left">
-                <h2 class="text-4xl font-bold text-gray-900 mb-4">Application Areas of PET Recycling Machines</h2>
-                <p class="text-gray-800 leading-relaxed text-lg">There are quite a few scenarios for using pulltrusion machines, as they are very compact and economical (effectively operating a 12V heater at 160–180 °C and 1 stepper motor). Here are some of them:</p>
-                <div class="space-y-3 pt-2">
-                    <div class="flex items-center gap-3">
-                        <span class="text-2xl">💡</span>
-                        <p class="font-normal text-gray-800 text-lg">Printing where access to purchased plastic is difficult, while PET bottles are available almost everywhere!</p>
-                    </div>
-                    <div class="flex items-center gap-3">
-                        <span class="text-2xl">💡</span>
-                        <p class="font-normal text-gray-800 text-lg">Saving your time, money, and energy spent on ordering, waiting, and delivering plastic to your printing location. The machine always stands in the lab and produces the required amount of plastic for work</p>
-                    </div>
-                    <div class="flex items-center gap-3">
-                        <span class="text-2xl">💡</span>
-                        <p class="font-normal text-gray-800 text-lg">Using plastic obtained from PET containers as draft material during 3D model design iterations (saves $$)</p>
-                    </div>
-                    <div class="flex items-center gap-3">
-                        <span class="text-2xl">💡</span>
-                        <p class="font-normal text-gray-800 text-lg">Promoting a culture of plastic consumption.</p>
-                    </div>                                                                           
-                </div>                
-            </div>
-        </div>
-    </section>
-
-
-
-<div style="display: none;">
-	 <!-- Economics of Pulltrusion Technology -->
-	<section id="extruder" class="py-24 px-8 bg-gray-100" x-data="{ currentImg: 0, videoPlaying: false, items: [
-			{ type: 'image', url: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&q=80&w=1000' },
-			{ type: 'image', url: 'https://plus.unsplash.com/premium_photo-1715786200772-4dd36839d0e4?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' },
-		]}"> 
-		<div class="custom-grid">
-			
-			<!-- Левая колонка: Галерея + Панель шагов под ней -->
-			<div class="order-2 lg:order-1 flex flex-col">
-            <!-- Контейнер галереи -->
-            <div class="relative group aspect-[4/3] flex items-center justify-center overflow-hidden rounded-xl shadow-2xl bg-gray-100 rotate-1 transition-transform duration-300 hover:rotate-0 hover:scale-105 isolation-isolate">     
-					
-					<!-- Картинка -->
-					<template x-if="items[currentImg].type === 'image'">
-						<img :src="items[currentImg].url" class="w-full h-full object-cover transition-all duration-300" alt="Application Areas" @click="openModalGallery(items, currentImg)">
-					</template>
-					
-				<!-- Видео -->
-				<template x-if="items[currentImg].type === 'video'">
-					<div class="w-full h-full relative group/vid">
-						
-						<!-- Состояние 1: Видео НЕ играет (Показываем превью с кнопкой Play) -->
-						<template x-if="!videoPlaying">
-							<div class="absolute inset-0 w-full h-full rounded-xl overflow-hidden cursor-pointer z-30"
-								 @click="openModalGallery(items, currentImg)">
-								
-								<!-- Заглушка/фрейм для превью -->
-								<iframe :src="items[currentImg].url" 
-										class="w-full h-full border-0 absolute inset-0 rounded-xl pointer-events-none z-10"
-										allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-										allowfullscreen>
-								</iframe>
-
-
-								<!-- Кнопка Play (запускает видео на месте, строго поверх всего) -->
-								<div class="absolute inset-0 flex items-center justify-center z-40">
-									<button type="button" 
-											@click.stop="videoPlaying = true" 
-											class="w-20 h-20 rounded-full bg-transparent text-white flex items-center justify-center transform transition-transform hover:scale-110 cursor-pointer">
-										<i class="fa-solid fa-play text-2xl ml-1 drop-shadow-md"></i>
-									</button>
-								</div>
-							</div>
-						</template>
-
-						<!-- Состояние 2: Видео играет (Активный плеер и прозрачный слой для остановки) -->
-						<template x-if="videoPlaying">
-							<div class="absolute inset-0 w-full h-full rounded-xl overflow-hidden z-30">
-								<iframe :src="items[currentImg].url + '?autoplay=1'" 
-										class="w-full h-full border-0 absolute inset-0 rounded-xl z-10"
-										allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-										allowfullscreen>
-								</iframe>
-								
-								<!-- Прозрачный слой поверх плеера для остановки по клику в любом месте видео -->
-								<div class="absolute inset-0 cursor-pointer bg-transparent z-20"
-									 @click="videoPlaying = false"
-									 title="Нажмите, чтобы остановить видео">
-								</div>
-							</div>
-						</template>
-
-					</div>
-				</template>
-
-					<!-- Кнопки переключения -->
-					<div class="absolute inset-0 flex items-center justify-between px-4 z-50 pointer-events-none">
-						<button @click="currentImg = (currentImg - 1 + items.length) % items.length" class="pointer-events-auto w-10 h-10 custom-slider-btn rounded-full flex items-center justify-center shadow text-sm cursor-pointer transition-colors bg-white/90 hover:bg-white text-gray-800 opacity-0 group-hover:opacity-100">
-							<i class="fa-solid fa-chevron-left pointer-events-none"></i>
-						</button>
-						<button @click="currentImg = (currentImg + 1) % items.length" class="pointer-events-auto w-10 h-10 custom-slider-btn rounded-full flex items-center justify-center shadow text-sm cursor-pointer transition-colors bg-white/90 hover:bg-white text-gray-800 opacity-0 group-hover:opacity-100">
-							<i class="fa-solid fa-chevron-right pointer-events-none"></i>
-						</button>
-					</div>
-
-					<!-- Индикаторы (точки) -->
-					<div class="absolute bottom-4 left-0 right-0 flex justify-center gap-2 z-50">
-						<template x-for="(item, idx) in items" :key="idx">
-							<button @click="currentImg = idx" 
-									class="w-2.5 h-2.5 rounded-full transition-all cursor-pointer shadow"
-									:class="currentImg === idx ? 'bg-blue-600 w-6' : 'bg-white/70 hover:bg-white'">
-							</button>
-						</template>
-					</div>    
-				</div>
-
-				<!-- Панель шагов (Basket, Select, Buy, Delivery, Confirm, Done) -->
-				<div class="max-w-md w-full mx-auto mt-10 px-4" x-data="{ currentStep: 'delivery' }">
-					<div class="flex rounded-full overflow-hidden border border-gray-200 bg-white shadow-sm text-xs font-medium">
-						
-						<!-- Basket -->
-						<div @click="currentStep = 'basket'" 
-							 :class="currentStep === 'basket' ? 'bg-[#00b4a6] text-white font-bold z-20' : 'text-gray-600 bg-white hover:text-black'"
-							 class="flex-1 py-3 text-center flex items-center justify-center cursor-pointer transition-colors relative"
-							 style="clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%); margin-right: -10px; z-index: 1;">
-							Basket
-						</div>
-
-						<!-- Select -->
-						<div @click="currentStep = 'select'" 
-							 :class="currentStep === 'select' ? 'bg-[#00b4a6] text-white font-bold z-20' : 'text-gray-600 bg-white hover:text-black'"
-							 class="flex-1 py-3 text-center flex items-center justify-center cursor-pointer transition-colors relative"
-							 style="clip-path: polygon(15% 0%, 100% 0%, 100% 100%, 0% 100%); margin-left: -6px; margin-right: -10px; z-index: 2;">
-							Select
-						</div>
-
-						<!-- Buy -->
-						<div @click="currentStep = 'buy'" 
-							 :class="currentStep === 'buy' ? 'bg-[#00b4a6] text-white font-bold z-20' : 'text-gray-600 bg-white hover:text-black'"
-							 class="flex-1 py-3 text-center flex items-center justify-center cursor-pointer transition-colors relative"
-							 style="clip-path: polygon(15% 0%, 100% 0%, 100% 100%, 0% 100%); margin-left: -6px; margin-right: -10px; z-index: 2;">
-							Buy
-						</div>
-
-						<!-- Delivery (Активный по умолчанию) -->
-						<div @click="currentStep = 'delivery'" 
-							 :class="currentStep === 'delivery' ? 'bg-[#00b4a6] text-white font-bold z-20' : 'text-gray-600 bg-white hover:text-black'"
-							 class="flex-1 py-3 text-center flex items-center justify-center cursor-pointer transition-colors relative"
-							 style="clip-path: polygon(15% 0%, 100% 0%, 85% 100%, 0% 100%); margin-left: -6px; margin-right: -10px; z-index: 3;">
-							Delivery
-						</div>
-
-						<!-- Confirm -->
-						<div @click="currentStep = 'confirm'" 
-							 :class="currentStep === 'confirm' ? 'bg-[#00b4a6] text-white font-bold z-20' : 'text-gray-600 bg-white hover:text-black'"
-							 class="flex-1 py-3 text-center flex items-center justify-center cursor-pointer transition-colors relative"
-							 style="clip-path: polygon(15% 0%, 100% 0%, 85% 100%, 0% 100%); margin-left: -6px; margin-right: -10px; z-index: 2;">
-							Confirm
-						</div>
-
-						<!-- Done! -->
-						<div @click="currentStep = 'done'" 
-							 :class="currentStep === 'done' ? 'bg-[#00b4a6] text-white font-bold z-20' : 'text-gray-600 bg-white hover:text-black'"
-							 class="flex-1 py-3 text-center flex items-center justify-center cursor-pointer transition-colors relative"
-							 style="clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%); margin-left: -10px; z-index: 1;">
-							Done
-						</div>
-
-                    </div>
-                </div>
-                
-                
-                
-            </div>
-
-		
-			
-			<!-- Правая колонка: Текст -->
-			<div class="order-1 lg:order-2 space-y-6 text-left">
-				<h2 class="text-4xl font-bold text-gray-900 mb-4">Economics of Pulltrusion Technology</h2>
-				<p class="text-gray-800 leading-relaxed text-lg">How much will a spool of filament obtained by drawing PET tape cost us? Let's calculate! One 5-liter water bottle yields 18–19 meters of plastic (c-type filament, 1.6–1.75 mm). A standard spool contains 300 meters of plastic. Thus, 1 spool requires 16 five-liter PET bottles. The average price of a 5-liter PET bottle on platforms like Avito is about 5 rubles. Total: 80 rubles for the raw materials needed to produce 1 spool of plastic. Electricity costs should also be taken into account, which are about 3 times less than 7.5 hours of 3D printer operation — exactly how long it takes to fill one spool with plastic.</p>
-				<div class="space-y-3 pt-2">
-					<div class="flex items-center gap-3">
-						<span class="text-2xl">💡</span>
-						<p class="font-normal text-gray-800 text-lg">Printing where access to purchased plastic is difficult, while PET bottles are available almost everywhere!</p>
-					</div>
-					<div class="flex items-center gap-3">
-						<span class="text-2xl">💡</span>
-						<p class="font-normal text-gray-800 text-lg">Saving your time, money, and energy spent on ordering, waiting, and delivering plastic to your printing location. The machine always stands in the lab and produces the required amount of plastic for work</p>
-					</div>
-					<div class="flex items-center gap-3">
-						<span class="text-2xl">💡</span>
-						<p class="font-normal text-gray-800 text-lg">Using plastic obtained from PET containers as draft material during 3D model design iterations (saves $$)</p>
-					</div>                                                                       
-				</div>                 
-			</div>
-		</div>
-	</section>
-</div>
-
-
-<!-- Economics of Pulltrusion Technology -->
-<section id="extruder" class="custom-section bg-gray-100" x-data="{ currentImg: 0, videoPlaying: false, items: [
-        { type: 'image', url: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&q=80&w=1000' },
-        { type: 'image', url: 'https://plus.unsplash.com/premium_photo-1715786200772-4dd36839d0e4?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' },
-    ]}"> 
-    <div class="custom-grid">
-        
-        <!-- Левая колонка: Галерея + Панель шагов под ней -->
-        <div class="order-2 lg:order-1 flex flex-col">
-            <!-- Контейнер галереи -->
-            <div class="relative group aspect-[4/3] flex items-center justify-center overflow-hidden rounded-xl shadow-2xl bg-gray-100 rotate-1 transition-transform duration-300 hover:rotate-0 hover:scale-105 isolation-isolate">     
-                
-                <!-- Картинка -->
-                <template x-if="items[currentImg].type === 'image'">
-                    <img :src="items[currentImg].url" class="w-full h-full object-cover transition-all duration-300 cursor-pointer" alt="Application Areas" @click="openModalGallery(items, currentImg)">
-                </template>
-                
-                <!-- Видео -->
-                <template x-if="items[currentImg].type === 'video'">
-                    <div class="w-full h-full relative group/vid">
-                        
-                        <!-- Состояние 1: Видео НЕ играет (Показываем превью с кнопкой Play) -->
-                        <template x-if="!videoPlaying">
-                            <div class="absolute inset-0 w-full h-full rounded-xl overflow-hidden cursor-pointer z-30"
-                                 @click="openModalGallery(items, currentImg)">
-                                
-                                <!-- Заглушка/фрейм для превью -->
-                                <iframe :src="items[currentImg].url" 
-                                        class="w-full h-full border-0 absolute inset-0 rounded-xl pointer-events-none z-10"
-                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                                        allowfullscreen>
-                                </iframe>
-
-                                <!-- Кнопка Play (запускает видео на месте, строго поверх всего) -->
-                                <div class="absolute inset-0 flex items-center justify-center z-40">
-                                    <button type="button" 
-                                            @click.stop="videoPlaying = true" 
-                                            class="w-20 h-20 rounded-full bg-transparent text-white flex items-center justify-center transform transition-transform hover:scale-110 cursor-pointer">
-                                        <i class="fa-solid fa-play text-2xl ml-1 drop-shadow-md"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </template>
-
-                        <!-- Состояние 2: Видео играет (Активный плеер и прозрачный слой для остановки) -->
-                        <template x-if="videoPlaying">
-                            <div class="absolute inset-0 w-full h-full rounded-xl overflow-hidden z-30">
-                                <iframe :src="items[currentImg].url + '?autoplay=1'" 
-                                        class="w-full h-full border-0 absolute inset-0 rounded-xl z-10"
-                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                                        allowfullscreen>
-                                </iframe>
-                                
-                                <!-- Прозрачный слой поверх плеера для остановки по клику в любом месте видео -->
-                                <div class="absolute inset-0 cursor-pointer bg-transparent z-20"
-                                     @click="videoPlaying = false"
-                                     title="Нажмите, чтобы остановить видео">
-                                </div>
-                            </div>
-                        </template>
-
-                    </div>
-                </template>
-
-                <!-- Кнопки переключения -->
-                <div class="absolute inset-0 flex items-center justify-between px-4 z-50 pointer-events-none">
-                    <button @click="currentImg = (currentImg - 1 + items.length) % items.length" class="pointer-events-auto w-10 h-10 custom-slider-btn rounded-full flex items-center justify-center shadow text-sm cursor-pointer transition-colors bg-white/90 hover:bg-white text-gray-800 opacity-0 group-hover:opacity-100">
-                        <i class="fa-solid fa-chevron-left pointer-events-none"></i>
-                    </button>
-                    <button @click="currentImg = (currentImg + 1) % items.length" class="pointer-events-auto w-10 h-10 custom-slider-btn rounded-full flex items-center justify-center shadow text-sm cursor-pointer transition-colors bg-white/90 hover:bg-white text-gray-800 opacity-0 group-hover:opacity-100">
-                        <i class="fa-solid fa-chevron-right pointer-events-none"></i>
-                    </button>
-                </div>
-
-                <!-- Индикаторы (точки) -->
-                <div class="absolute bottom-4 left-0 right-0 flex justify-center gap-2 z-50">
-                    <template x-for="(item, idx) in items" :key="idx">
-                        <button @click="currentImg = idx" 
-                                class="w-2.5 h-2.5 rounded-full transition-all cursor-pointer shadow"
-                                :class="currentImg === idx ? 'bg-blue-600 w-6' : 'bg-white/70 hover:bg-white'">
-                        </button>
+                    <!-- Картинка -->
+                    <template x-if="media[currentImg] && media[currentImg].type === 'image'">
+                        <img :src="media[currentImg].url" class="w-full h-full object-cover transition-all duration-300" alt="Application Areas" @click="openModalGallery(media, currentImg)">
                     </template>
-                </div>    
-            </div>
-            
-<div style="display: none;">
-            <!-- Панель шагов со скруглением слева и стрелкой справа (с полной окантовкой) -->
-            <div class="max-w-2l w-full mx-auto mt-10 px-4" x-data="{ currentStep: 'delivery' }">
-                <div class="relative p-[1px] bg-gray-200 rounded-l-full shadow-sm"
-                     style="clip-path: polygon(0% 0%, 96% 0%, 100% 50%, 96% 100%, 0% 100%);">
                     
-                    <div class="flex bg-white text-xs font-medium rounded-l-full overflow-hidden w-full"
-                         style="clip-path: polygon(0% 0%, 95.8% 0%, 99.8% 50%, 95.8% 100%, 0% 100%);">
-                        
-                        <!-- Basket -->
-                        <div @click="currentStep = 'basket'" 
-                             :class="currentStep === 'basket' ? 'bg-[#00b4a6] text-white font-bold z-20' : 'text-gray-600 bg-white hover:text-black'"
-                             class="flex-1 py-3 text-center flex items-center justify-center cursor-pointer transition-colors relative rounded-l-full"
-                             style="clip-path: polygon(0% 0%, 100% 0%, 85% 100%, 0% 100%); margin-right: -10px; z-index: 1;">
-                            Basket
+                    <!-- Видео -->
+                    <template x-if="media[currentImg] && media[currentImg].type === 'video'">
+                        <div class="w-full h-full relative group/vid">
+                            <template x-if="!videoPlaying">
+                                <div class="absolute inset-0 w-full h-full rounded-xl overflow-hidden cursor-pointer z-30"
+                                       @click="openModalGallery(media, currentImg)">
+                                    <iframe :src="media[currentImg].url" 
+                                            class="w-full h-full border-0 absolute inset-0 rounded-xl pointer-events-none z-10"
+                                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                            allowfullscreen>
+                                    </iframe>
+                                    <div class="absolute inset-0 flex items-center justify-center z-40">
+                                        <button type="button" 
+                                                @click.stop="videoPlaying = true" 
+                                                class="w-20 h-20 rounded-full bg-transparent text-white flex items-center justify-center transform transition-transform hover:scale-110 cursor-pointer">
+                                            <i class="fa-solid fa-play text-2xl ml-1 drop-shadow-md"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </template>
+                            <template x-if="videoPlaying">
+                                <div class="absolute inset-0 w-full h-full rounded-xl overflow-hidden z-30">
+                                    <iframe :src="media[currentImg].url + '?autoplay=1'" 
+                                            class="w-full h-full border-0 absolute inset-0 rounded-xl z-10"
+                                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                            allowfullscreen>
+                                    </iframe>
+                                    <div class="absolute inset-0 cursor-pointer bg-transparent z-20"
+                                           @click="videoPlaying = false"
+                                           title="Нажмите, чтобы остановить видео">
+                                    </div>
+                                </div>
+                            </template>
                         </div>
+                    </template>
 
-                        <!-- Select -->
-                        <div @click="currentStep = 'select'" 
-                             :class="currentStep === 'select' ? 'bg-[#00b4a6] text-white font-bold z-20' : 'text-gray-600 bg-white hover:text-black'"
-                             class="flex-1 py-3 text-center flex items-center justify-center cursor-pointer transition-colors relative"
-                             style="clip-path: polygon(15% 0%, 100% 0%, 85% 100%, 0% 100%); margin-left: -6px; margin-right: -10px; z-index: 2;">
-                            Select
+                    <!-- Кнопки переключения -->
+                    <div class="absolute inset-0 flex items-center justify-between px-4 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50">
+                        <button @click="currentImg = (currentImg - 1 + media.length) % media.length; videoPlaying = false" class="pointer-events-auto w-10 h-10 custom-slider-btn rounded-full flex items-center justify-center shadow text-sm cursor-pointer transition-colors">
+                            <i class="fa-solid fa-chevron-left pointer-events-none"></i>
+                        </button>
+                        <button @click="currentImg = (currentImg + 1) % media.length; videoPlaying = false" class="pointer-events-auto w-10 h-10 custom-slider-btn rounded-full flex items-center justify-center shadow text-sm cursor-pointer transition-colors">
+                            <i class="fa-solid fa-chevron-right pointer-events-none"></i>
+                        </button>
+                    </div>
+
+                    <!-- Индикаторы (точки) -->
+                    <div class="absolute bottom-4 left-0 right-0 flex justify-center gap-2 z-50">
+                        <template x-for="(item, idx) in media" :key="idx">
+                            <button @click="currentImg = idx; videoPlaying = false" 
+                                    class="w-2.5 h-2.5 rounded-full transition-all cursor-pointer shadow"
+                                    :class="currentImg === idx ? 'bg-blue-600 w-6' : 'bg-white/70 hover:bg-white'">
+                            </button>
+                        </template>
+                    </div>
+                </div>
+
+                <!-- Панель шагов с шевронами -->
+                <div class="step-nav-container w-full" x-show="sec.showSteps" x-cloak>
+                    <div class="step-nav-wrapper">
+                        <div class="step-nav-inner">
+                            <template x-for="(step, idx) in sec.steps" :key="step.id">
+                                <div @click="currentStep = step.id" 
+                                     class="step-btn"
+                                     :class="{
+                                         'active': currentStep === step.id,
+                                         'inactive': currentStep !== step.id,
+                                         'step-btn-first': idx === 0,
+                                         'step-btn-middle': idx > 0 && idx < sec.steps.length - 1,
+                                         'step-btn-last': idx === sec.steps.length - 1
+                                     }"
+                                     :style="idx === 0 ? 'z-index: 1;' : (idx === sec.steps.length - 1 ? 'z-index: ' + sec.steps.length + ';' : 'z-index: ' + (sec.steps.length - idx) + ';')">
+                                    <span class="sm:hidden" x-text="step.short || step.label"></span>
+                                    <span class="hidden sm:inline" x-text="step.label"></span>
+                                </div>
+                            </template>
                         </div>
+                    </div>
+                </div>
 
-                        <!-- Buy -->
-                        <div @click="currentStep = 'buy'" 
-                             :class="currentStep === 'buy' ? 'bg-[#00b4a6] text-white font-bold z-20' : 'text-gray-600 bg-white hover:text-black'"
-                             class="flex-1 py-3 text-center flex items-center justify-center cursor-pointer transition-colors relative"
-                             style="clip-path: polygon(15% 0%, 100% 0%, 85% 100%, 0% 100%); margin-left: -6px; margin-right: -10px; z-index: 2;">
-                            Buy
+                <!-- Подсказки и кнопки: видны ТОЛЬКО на мобилке строго под картинкой -->
+                <div class="block lg:hidden space-y-4 pt-2 text-left">
+                    <template x-for="(hint, idx) in sec.hints" :key="idx">
+                        <div class="flex items-center gap-3 justify-start text-left mb-3">
+                            <span class="text-2xl flex-shrink-0" x-text="hint.emoji"></span>
+                            <p class="font-bold text-gray-800 text-lg text-left">
+                                <span x-text="hint.title"></span> 
+                                <span class="font-normal text-gray-800 text-lg" x-text="hint.text"></span>
+                                <a x-show="hint.youtubeUrl && hint.youtubeUrl.length > 0" :href="hint.youtubeUrl" target="_blank" class="text-red-600 hover:underline font-bold" x-text="hint.youtubeText"></a>
+                            </p>
                         </div>
+                    </template>
+                    
+                    <div class="flex flex-wrap gap-3">
+                        <template x-for="item in sec.items.filter(i => i.type === 'pdf' || i.type === 'zip' || i.type === 'file')">
+                            <a :href="item.url" target="_blank" class="btn-blue-pill px-6 py-3 text-sm inline-flex items-center gap-3 shadow-lg">
+                                <i class="fa-solid" :class="item.type === 'pdf' ? 'fa-file-pdf' : (item.type === 'zip' ? 'fa-file-zipper' : 'fa-download')"></i>
+                                <span x-text="item.title || 'Download File'"></span>
+                            </a>
+                        </template>
+                    </div>
+                </div>
 
-                        <!-- Delivery -->
-                        <div @click="currentStep = 'delivery'" 
-                             :class="currentStep === 'delivery' ? 'bg-[#00b4a6] text-white font-bold z-20' : 'text-gray-600 bg-white hover:text-black'"
-                             class="flex-1 py-3 text-center flex items-center justify-center cursor-pointer transition-colors relative"
-                             style="clip-path: polygon(15% 0%, 100% 0%, 85% 100%, 0% 100%); margin-left: -6px; margin-right: -10px; z-index: 3;">
-                            Delivery
+            </div>
+
+            <!-- 2. Текстовый блок -->
+            <div class="order-1 w-full space-y-6 text-left"
+                 :class="sec.imageLeft ? 'lg:order-2 lg:w-1/2' : 'lg:order-1 lg:w-1/2'">
+                <h2 class="text-4xl font-bold text-gray-900 mb-4" x-text="sec.title"></h2>
+                <p class="text-gray-800 leading-relaxed text-lg" x-text="sec.p1"></p>
+                <p class="text-gray-800 leading-relaxed text-lg" x-text="sec.p2"></p>
+                
+                <!-- Подсказки и кнопки: видны ТОЛЬКО на десктопе под текстом -->
+                <div class="hidden lg:block space-y-4 pt-2">
+                    <template x-for="(hint, idx) in sec.hints" :key="idx">
+                        <div class="flex items-center gap-3 justify-start text-left mb-3">
+                            <span class="text-2xl flex-shrink-0" x-text="hint.emoji"></span>
+                            <p class="font-bold text-gray-800 text-lg text-left">
+                                <span x-text="hint.title"></span> 
+                                <span class="font-normal text-gray-800 text-lg" x-text="hint.text"></span>
+                                <a x-show="hint.youtubeUrl && hint.youtubeUrl.length > 0" :href="hint.youtubeUrl" target="_blank" class="text-red-600 hover:underline font-bold" x-text="hint.youtubeText"></a>
+                            </p>
                         </div>
+                    </template>
 
-                        <!-- Confirm -->
-                        <div @click="currentStep = 'confirm'" 
-                             :class="currentStep === 'confirm' ? 'bg-[#00b4a6] text-white font-bold z-20' : 'text-gray-600 bg-white hover:text-black'"
-                             class="flex-1 py-3 text-center flex items-center justify-center cursor-pointer transition-colors relative"
-                             style="clip-path: polygon(15% 0%, 100% 0%, 85% 100%, 0% 100%); margin-left: -6px; margin-right: -10px; z-index: 2;">
-                            Confirm
-                        </div>
-
-                        <!-- Done -->
-                        <div @click="currentStep = 'done'" 
-                             :class="currentStep === 'done' ? 'bg-[#00b4a6] text-white font-bold z-20' : 'text-gray-600 bg-white hover:text-black'"
-                             class="flex-1 py-3 text-center flex items-center justify-center cursor-pointer transition-colors relative pr-3"
-                             style="clip-path: polygon(15% 0%, 100% 0%, 100% 100%, 0% 100%); margin-left: -6px; z-index: 1;">
-                            Done
-                        </div>
-
+                    <div class="flex flex-wrap gap-3">
+                        <template x-for="item in sec.items.filter(i => i.type === 'pdf' || i.type === 'zip' || i.type === 'file')">
+                            <a :href="item.url" target="_blank" class="btn-blue-pill px-6 py-3 text-sm inline-flex items-center gap-3 shadow-lg">
+                                <i class="fa-solid" :class="item.type === 'pdf' ? 'fa-file-pdf' : (item.type === 'zip' ? 'fa-file-zipper' : 'fa-download')"></i>
+                                <span x-text="item.title || 'Download File'"></span>
+                            </a>
+                        </template>
                     </div>
                 </div>
             </div>
-</div>
-
 
         </div>
-        
-        <!-- Правая колонка: Текст -->
-        <div class="order-1 lg:order-2 space-y-6 text-left">
-            <h2 class="text-4xl font-bold text-gray-900 mb-4">Economics of Pulltrusion Technology</h2>
-            <p class="text-gray-800 leading-relaxed text-lg">How much will a spool of filament obtained by drawing PET tape cost us? Let's calculate! One 5-liter water bottle yields 18–19 meters of plastic (c-type filament, 1.6–1.75 mm). A standard spool contains 300 meters of plastic. Thus, 1 spool requires 16 five-liter PET bottles. The average price of a 5-liter PET bottle on platforms like Avito is about 5 rubles. Total: 80 rubles for the raw materials needed to produce 1 spool of plastic. Electricity costs should also be taken into account, which are about 3 times less than 7.5 hours of 3D printer operation — exactly how long it takes to fill one spool with plastic.</p>
-            <div class="space-y-3 pt-2">
-                <div class="flex items-center gap-3">
-                    <span class="text-2xl">💡</span>
-                    <p class="font-normal  text-gray-800 text-lg">Printing where access to purchased plastic is difficult, while PET bottles are available almost everywhere!</p>
-                </div>
-                <div class="flex items-center gap-3">
-                    <span class="text-2xl">💡</span>
-                    <p class="font-normal text-gray-800 text-lg">Saving your time, money, and energy spent on ordering, waiting, and delivering plastic to your printing location. The machine always stands in the lab and produces the required amount of plastic for work</p>
-                </div>
-                <div class="flex items-center gap-3">
-                    <span class="text-2xl">💡</span>
-                    <p class="font-normal text-gray-800 text-lg">Using plastic obtained from PET containers as draft material during 3D model design iterations (saves $$)</p>
-                </div>                                                             
-            </div>             
-        </div>
-    </div>
-</section>
+    </section>
+</template>
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -4006,6 +1879,7 @@ iframe {
                 lastOrder: { items: [], total: 0 },
 
                 products: PRODUCTS_DATA,
+                sections: SECTIONS_DATA,
                 
                 handleAvatarBase64(event) {
 					const file = event.target.files[0];
@@ -4074,10 +1948,16 @@ iframe {
                     }
                 },
                 
-				// Открытие модального окна с галереей медиа
 				openModalGallery(mediaArray, index) {
-					this.modalMedia = mediaArray;
-					this.modalCurrentIndex = index;
+					// Фильтруем массив, оставляя только изображения и видео
+					const filteredMedia = mediaArray.filter(item => item.type === 'image' || item.type === 'video');
+					
+					// Находим правильный индекс элемента после фильтрации
+					const targetItem = mediaArray[index];
+					const newIndex = filteredMedia.findIndex(item => item === targetItem);
+					
+					this.modalMedia = filteredMedia;
+					this.modalCurrentIndex = newIndex !== -1 ? newIndex : 0;
 					this.modalGalleryOpen = true;
 				},
 
