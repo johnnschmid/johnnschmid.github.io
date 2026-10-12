@@ -294,7 +294,7 @@ const SECTIONS_DATA = [
             { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNe_4MkkcFdYtTsz-bmp9h5Us4Dc1YZEbShd8tlAgs6ZvWqBLZo2yImj0Tt6YX_3Fs4Y2z7YKOoNhOmu17og7QhmoHCjjKg3mIpyFSzY8s9nEMZB7yOeamsx3my26I18WDx_TKTSUsX70VA_jyv6xm1=w1448-h1086-s-no?authuser=1' },
             { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMa8CesIEpP62fioyUSlx2HusbOT0SIyNVyifm-RT_eAHqnQCYb2Xx-vQ1JqqIo2rIjL6ile0PRagnv4LZrJ5R8rJGBnNF_em6l0RmlzqX2eqd3Y8euBciokb1nGV8Lgvz_Wc0zBtzzUkity8WIZUQe=w1086-h1448-s-no?authuser=1' },
             { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMPMjVFjeTQhKKHsiTYoZulXy1wQqUNeM2alF7KLjmps5Ur6HLa9ovWYUtoDUR8FaCfTDKoGI6ZD3CrcOup-mYKMW_y59bhfKHrVorgZ7hNZHyf5i607zN2Uy3gPIz3OW95Viq2-C5H-H7WhqTh55dE=w3579-h2013-s-no?authuser=1' },
-            { type: 'pdf', url: 'https://drive.usercontent.google.com/download?export=download&confirm=t&id=1UR518InM-cStYFx2jpPZP67Vakp5J87L', title: 'Download CV (PDF)' },
+            { type: 'pdf', url: 'https://drive.usercontent.google.com/download?export=download&confirm=t&id=1uBSIVToBbMKUTLBI0SWHxnz_mW9X6sj_', title: 'Download CV (PDF)' },
             //{ type: 'zip', url: 'https://example.com/models.zip', title: 'Download 3D Models (ZIP)' }
         ]
     },
@@ -522,6 +522,59 @@ const SECTIONS_DATA = [
             { type: 'image', url: 'https://dostupsreda.ru/media/images/products/photo/7_lxzElqK.png' },
             { type: 'image', url: 'https://dostupsreda.ru/media/images/products/photo/%D0%A2%D0%B0%D0%BA%D1%82%D0%B8%D0%BB%D1%8C%D0%BD%D0%BE-%D0%B7%D0%B2%D1%83%D0%BA%D0%BE%D0%B2%D0%B0%D1%8F_%D0%BC%D0%BD%D0%B5%D0%BC%D0%BE%D1%81%D1%85%D0%B5%D0%BC%D0%B0_%D0%B4%D0%BB%D1%8F_%D0%BF%D0%BE%D0%BC%D0%B5%D1%89%D0%B5%D0%BD%D0%B8%D1%8F.jpg' },
             { type: 'image', url: 'https://dostupsreda.ru/media/images/products/photo/%D0%A2%D0%B0%D0%BA%D1%82%D0%B8%D0%BB%D1%8C%D0%BD%D0%BE-%D0%B7%D0%B2%D1%83%D0%BA%D0%BE%D0%B2%D0%B0%D1%8F_%D0%BC%D0%BD%D0%B5%D0%BC%D0%BE%D1%81%D1%85%D0%B5%D0%BC%D0%B0_%D0%B4%D0%BB%D1%8F_%D0%BF%D0%B0%D1%80%D0%BA%D0%B0_%D0%BE%D1%82%D0%BA%D1%80%D1%8B%D1%82%D0%BE%D0%B9_%D1%82%D0%B5%D1%80%D1%80%D0%B8%D1%82%D0%BE%D1%80%D0%B8%D0%B8_%D0%B2%D0%BE%D0%BA%D0%B7%D0%B0%D0%BB%D0%B0_%D0%BC%D0%B5%D1%82%D1%80%D0%BE.jpg' },
+            //{ type: 'pdf', url: 'https://example.com/manual.pdf', title: 'Download User Manual (PDF)' },
+            //{ type: 'zip', url: 'https://example.com/models.zip', title: 'Download 3D Models (ZIP)' }
+        ]
+    },
+    { 
+        id: 6,
+        bgClass: 'bg-white',
+        imageLeft: false,
+        aspectClass: 'aspect-[4/4]',
+        showSteps: false,
+        currentStep: 'tape',
+        steps: [
+            { id: 'bottle', label: 'Bottle' },
+            { id: 'tape', label: 'Tape' },
+            { id: 'filament', label: 'Filament', short: 'Fil.' },
+            { id: 'join', label: 'Joining', short: 'Join' },
+            { id: 'spool', label: 'Spool' },
+            { id: 'printing', label: 'Print' }
+        ],
+		title: 'Talking Blood Pressure Monitor "Tyfloton-01"',
+		p1: 'The "Tyfloton-01" is an innovative automatic talking blood pressure monitor with an integrated non-pharmacological blood pressure correction function, specifically designed for blind and visually impaired users. This unique medical technology combines precise blood pressure measurement with non-invasive electro-stimulation therapy via a wrist cuff electrode.',
+		p2: 'Daily 5-minute therapy sessions send targeted electrical impulses to nerve receptors, normalizing vascular wall tone and improving overall blood circulation to help manage hypertension and gradually reduce reliance on medication.',
+
+		hints: [
+			{
+				emoji: '🩺',
+				title: 'Dual-Mode Therapy:',
+				text: 'Combines precise blood pressure measurement with an automated 5-minute non-invasive therapy mode.',
+				youtubeUrl: '',
+				youtubeText: ''
+			},
+			{
+				emoji: '🗣️',
+				title: 'Full Voice Guidance:',
+				text: 'Completely voiced operation for both measurement and therapy modes, with adjustable volume and headphone support.',
+				youtubeUrl: '',
+				youtubeText: ''
+			},
+			{
+				emoji: '💾',
+				title: 'Data Storage:',
+				text: 'Saves measurement history and therapy records directly to the included flash memory card for tracking.',
+				youtubeUrl: '',
+				youtubeText: ''
+			}
+		],
+        
+        items: [
+            { type: 'image', url: 'https://dostupsreda.ru/v3/_next/image?url=https%3A%2F%2Fdostupsreda.ru%2F%2Fmedia%2Fimages%2Fproducts%2Fphoto%2F%25D0%25A2%25D0%25B8%25D1%2584%25D0%25BB%25D0%25BE%25D1%2582%25D0%25BE%25D0%25BD_1_hELFujU.jpg&w=640&q=80' },
+            { type: 'image', url: 'https://dostupsreda.ru/media/images/products/photo/%D0%A2%D0%B8%D1%84%D0%BB%D0%BE%D1%82%D0%BE%D0%BD_2_Rl564Er.png' },
+            { type: 'image', url: 'https://ir-20.ozone.ru/s3/multimedia-1-v/wc1000/6929979331.jpg' },
+            //{ type: 'image', url: 'https://dostupsreda.ru/media/images/products/photo/%D0%A2%D0%B0%D0%BA%D1%82%D0%B8%D0%BB%D1%8C%D0%BD%D0%BE-%D0%B7%D0%B2%D1%83%D0%BA%D0%BE%D0%B2%D0%B0%D1%8F_%D0%BC%D0%BD%D0%B5%D0%BC%D0%BE%D1%81%D1%85%D0%B5%D0%BC%D0%B0_%D0%B4%D0%BB%D1%8F_%D0%BF%D0%BE%D0%BC%D0%B5%D1%89%D0%B5%D0%BD%D0%B8%D1%8F.jpg' },
+            //{ type: 'image', url: 'https://dostupsreda.ru/media/images/products/photo/%D0%A2%D0%B0%D0%BA%D1%82%D0%B8%D0%BB%D1%8C%D0%BD%D0%BE-%D0%B7%D0%B2%D1%83%D0%BA%D0%BE%D0%B2%D0%B0%D1%8F_%D0%BC%D0%BD%D0%B5%D0%BC%D0%BE%D1%81%D1%85%D0%B5%D0%BC%D0%B0_%D0%B4%D0%BB%D1%8F_%D0%BF%D0%B0%D1%80%D0%BA%D0%B0_%D0%BE%D1%82%D0%BA%D1%80%D1%8B%D1%82%D0%BE%D0%B9_%D1%82%D0%B5%D1%80%D1%80%D0%B8%D1%82%D0%BE%D1%80%D0%B8%D0%B8_%D0%B2%D0%BE%D0%BA%D0%B7%D0%B0%D0%BB%D0%B0_%D0%BC%D0%B5%D1%82%D1%80%D0%BE.jpg' },
             //{ type: 'pdf', url: 'https://example.com/manual.pdf', title: 'Download User Manual (PDF)' },
             //{ type: 'zip', url: 'https://example.com/models.zip', title: 'Download 3D Models (ZIP)' }
         ]
