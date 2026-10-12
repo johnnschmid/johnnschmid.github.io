@@ -247,9 +247,9 @@ const SECTIONS_DATA = [
     { 
         id: 1,
         bgClass: 'bg-gray-100', // 'bg-white' или 'bg-gray-100'
-        imageLeft: true,    // true — картинка слева, false — справа
+        imageLeft: true,
         aspectClass: 'aspect-[4/4]',
-        showSteps: false,    // показывать ли панель шагов
+        showSteps: false,
         currentStep: 'tape',
         steps: [
             { id: 'bottle', label: 'Bottle' },
@@ -293,18 +293,17 @@ const SECTIONS_DATA = [
             { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNBCD8DUxFQ5fxJ8R_g9ibfl747ciCVS9mu5spgyPHdGmDLlChmQIISs-A1-bynvZi2UbepPZZ6A4dm-bY_9JM3ZuAnWqIgXVikZVIYSd0vXJmfXaebB1-dffm5BKstlsDZE9EjzWqT91OKwWhMVbO8=w1672-h941-s-no?authuser=1' },
             { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNe_4MkkcFdYtTsz-bmp9h5Us4Dc1YZEbShd8tlAgs6ZvWqBLZo2yImj0Tt6YX_3Fs4Y2z7YKOoNhOmu17og7QhmoHCjjKg3mIpyFSzY8s9nEMZB7yOeamsx3my26I18WDx_TKTSUsX70VA_jyv6xm1=w1448-h1086-s-no?authuser=1' },
             { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMa8CesIEpP62fioyUSlx2HusbOT0SIyNVyifm-RT_eAHqnQCYb2Xx-vQ1JqqIo2rIjL6ile0PRagnv4LZrJ5R8rJGBnNF_em6l0RmlzqX2eqd3Y8euBciokb1nGV8Lgvz_Wc0zBtzzUkity8WIZUQe=w1086-h1448-s-no?authuser=1' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMPMjVFjeTQhKKHsiTYoZulXy1wQqUNeM2alF7KLjmps5Ur6HLa9ovWYUtoDUR8FaCfTDKoGI6ZD3CrcOup-mYKMW_y59bhfKHrVorgZ7hNZHyf5i607zN2Uy3gPIz3OW95Viq2-C5H-H7WhqTh55dE=w3579-h2013-s-no?authuser=1' },
             { type: 'pdf', url: 'https://drive.usercontent.google.com/download?export=download&confirm=t&id=1UR518InM-cStYFx2jpPZP67Vakp5J87L', title: 'Download CV (PDF)' },
-            
-            //https://drive.usercontent.google.com/download?export=download&confirm=t&id=1YMHcb2ZrTu7014qup8AXLSSAJnhL44xX
             //{ type: 'zip', url: 'https://example.com/models.zip', title: 'Download 3D Models (ZIP)' }
         ]
     },
     { 
         id: 2,
         bgClass: 'bg-white', // 'bg-white' или 'bg-gray-100'
-        imageLeft: false,    // true — картинка слева, false — справа
+        imageLeft: false,
         aspectClass: 'aspect-[4/4]',
-        showSteps: true,    // показывать ли панель шагов
+        showSteps: true,
         currentStep: 'tape',
 		title: 'RePet Filament Extruder',
 		p1: 'The RePet Compact is an innovative, compact PET bottle filament extruder that gives you a near-limitless supply of plastic right at your workspace. The extruder is designed for quick and convenient processing of plastic PET bottles into filament suitable both for 3D printing and for use in grass trimmers.',
@@ -376,15 +375,15 @@ const SECTIONS_DATA = [
             { id: 'spool', label: 'Spool' },
             { id: 'printing', label: 'Print' }
         ],
-		title: 'Voice Reader "Voysa"',
-		p1: 'The "Voysa" typhloflashplayer is an advanced specialized device engineered by Krust LLC specifically for blind and visually impaired individuals. It delivers a seamless, fully voice-controlled navigation experience designed to provide intuitive access to talking books, diverse music collections, live radio broadcasts, podcasts, and essential online internet services.',
+		title: 'Audiobook Reader "Voysa"',
+		p1: 'The "Voysa" Audiobook Reader is an advanced specialized device engineered specifically for blind and visually impaired individuals. It delivers a seamless, fully voice-controlled navigation experience designed to provide intuitive access to talking books, diverse music collections, live radio broadcasts, podcasts, and essential online internet services.',
 		p2: 'Featuring a fully voiced interactive menu where every single action is accompanied by clear spoken prompts, it also includes a built-in voice recorder and a convenient bookmarking function. Offering exceptional connectivity, long-lasting battery performance, and extensive media compatibility, it empowers users with complete independence in daily learning, reading, and entertainment.',
 
 		hints: [
 			{
 				emoji: '📚',
 				title: 'Formats & Reading:',
-				text: 'Supports DAISY talking books, specialized LKF typhlo-formats, as well as text files (TXT, DOCX, EPUB, PDF) processed smoothly via an integrated text-to-speech synthesizer.',
+				text: 'Supports DAISY talking books, all audio formats(mp3, aac, ogg), as well as text files (TXT, DOCX, EPUB, PDF) processed smoothly via an integrated text-to-speech synthesizer.',
 				youtubeUrl: '',
 				youtubeText: ''
 			},
@@ -398,7 +397,7 @@ const SECTIONS_DATA = [
 			{
 				emoji: '🔋',
 				title: 'Power & Storage:',
-				text: 'Provides up to 24 hours of continuous operation on a single battery charge, 8GB of internal storage, and expandable support for SD/SDHC/SDXC memory cards up to 64GB.',
+				text: 'Contains 5500mAh LiPo battery, USB Tye-C and Wireless Charging capability. Provides up to 24 hours of continuous operation on a single battery charge, 8GB of internal storage, and expandable support for SD/SDHC/SDXC memory cards up to 64GB.',
 				youtubeUrl: '',
 				youtubeText: ''
 			}
@@ -415,16 +414,16 @@ const SECTIONS_DATA = [
             { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNFyGGvlM5BR8DKtKh_nrIV9QAQDoofiJe7UKhVB_Cm5YMVIUe_pmDegZVrxM4Kq-VmU4s5Bq9iTLd7-2tVYSkPzwoR2Y9a5VITeqxJyyMc3gAWx_njyLxJNauFmNualJV64rydWARCao9_rLadIPr_=w2693-h1649-s-no?authuser=0' },
             { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczO4mGEAEuIS1_7V1m5S7TaznDtYmxeftQPgpShP6tj900LUr7CkZgjsv0gh4865uHiqxlU3GGpoZaYlGWq3tah2ah0f7JGvWP8iYitWl44Hri3WzWhOJXch2v_y8MujY4_-Z8CSFqyJi0Lu0KJHjGQS=w2613-h1613-s-no?authuser=0' },
             { type: 'video', url: 'https://dostupsreda.ru/media/files/materials/%D0%92%D0%BE%D0%B9%D1%81%D0%B0-%D0%B3%D0%B0%D0%B4%D0%B6%D0%B5%D1%82-%D0%BF%D0%BE%D0%BC%D0%BE%D1%89%D0%BD%D0%B8%D0%BA-%D0%BA%D0%BE%D0%BC%D0%BF%D0%B0%D0%BD%D0%B8%D1%8F-%D0%BA%D1%80%D1%83%D1%81%D1%82_0zWbDIF.mp4' },
-            { type: 'pdf', url: 'https://example.com/manual.pdf', title: 'Download User Manual (PDF)' },
+            //{ type: 'pdf', url: 'https://example.com/manual.pdf', title: 'Download User Manual (PDF)' },
             //{ type: 'zip', url: 'https://example.com/models.zip', title: 'Download 3D Models (ZIP)' }
         ]
     },
     { 
         id: 4,
         bgClass: 'bg-white', // 'bg-white' или 'bg-gray-100'
-        imageLeft: false,    // true — картинка слева, false — справа
+        imageLeft: false,
         aspectClass: 'aspect-[4/4]',
-        showSteps: false,    // показывать ли панель шагов
+        showSteps: false,
         currentStep: 'tape',
         steps: [
             { id: 'bottle', label: 'Bottle' },
@@ -470,7 +469,7 @@ const SECTIONS_DATA = [
             { type: 'image', url: 'https://dostupsreda.ru/media/images/products/photo/094_11-03-2024_Komarov.jpg' },
             { type: 'image', url: 'https://dostupsreda.ru/media/images/products/photo/133_11-03-2024_Komarov.jpg' },
             { type: 'video', url: 'https://dostupsreda.ru/media/files/materials/%D0%AD%D0%A0%D0%92%D0%A3_%D0%A1%D0%BE%D0%BA%D0%BE%D0%BB-1.mp4' },
-            { type: 'pdf', url: 'https://example.com/manual.pdf', title: 'Download User Manual (PDF)' },
+            //{ type: 'pdf', url: 'https://example.com/manual.pdf', title: 'Download User Manual (PDF)' },
             //{ type: 'zip', url: 'https://example.com/models.zip', title: 'Download 3D Models (ZIP)' }
         ]
     },
@@ -478,7 +477,7 @@ const SECTIONS_DATA = [
         id: 5,
         bgClass: 'bg-gray-100',
         imageLeft: true,
-        aspectClass: 'aspect-[4/3]',
+        aspectClass: 'aspect-[4/4]',
         showSteps: false,
         currentStep: 'tape',
         steps: [
@@ -489,36 +488,42 @@ const SECTIONS_DATA = [
             { id: 'spool', label: 'Spool' },
             { id: 'printing', label: 'Print' }
         ],
-        title: 'PET Bottle Filament Extruder 4',
-        p1: 'Filament prices haven\'t been pleasing lately at all. It is also frustrating that some parts have to be reprinted multiple times to get the desired results. The process of developing and printing a part can sometimes be quite iterative and meditative. What if you had unlimited plastic? A sort of \'superpower\' — filament-man? Would this help you in your 3D creative work?',
-        p2: 'We present to your attention RePet Compact — a compact PET bottle filament extruder!',
-        
-        hints: [
-            {
-                emoji: '💡',
-                title: 'Hint:',
-                text: 'Find more videos and tutorials on our ',
-                youtubeUrl: 'https://www.youtube.com/@ReInstruments',
-                youtubeText: 'YouTube'
-            },
-            {
-                emoji: '🔥',
-                title: 'Note:',
-                text: 'Join our community group for extra 3D printing tips and advice.',
-                youtubeUrl: '',
-                youtubeText: ''
-            }
-        ],
+		title: 'Tactile Speaking Map',
+		p1: 'The "Labyrinth" tactile-audio mnemoscheme features a dedicated tactile-audio field mounted on a sturdy steel stand. Its main advantage is complete adjustability, allowing users to effortlessly customize the height, rotation angle, and tilt angle for maximum accessibility.',
+		p2: 'The rotation angle around the vertical axis can be adjusted from 0° to 360°, the tilt angle relative to the vertical axis ranges from 0° to 90°, and the height can be adjusted between 700 mm and 1200 mm. Equipped with vandal-proof buttons, it ensures exceptional durability and reliability, while the number of built-in languages can be customized to meet specific client requirements.',
+
+		hints: [
+			{
+				emoji: '🔄',
+				title: 'Full Adjustability:',
+				text: 'Features 360° rotation, 0°-90° tilt adjustment, and a variable height range of 700-1200 mm.',
+				youtubeUrl: '',
+				youtubeText: ''
+			},
+			{
+				emoji: '🛡️',
+				title: 'Durability:',
+				text: 'Built with rugged vandal-proof buttons to guarantee longevity and reliable public operation.',
+				youtubeUrl: '',
+				youtubeText: ''
+			},
+			{
+				emoji: '🌐',
+				title: 'Multilingual Support:',
+				text: 'Customizable language options integrated directly according to the customer\'s specifications.',
+				youtubeUrl: '',
+				youtubeText: ''
+			}
+		],
         
         items: [
-            { type: 'video', url: 'https://drive.google.com/file/d/1SF9vcNE9mLlR-rOrfgBYs9brZMLN31sH/preview' },
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPgBo_7C2KwYIJ29EcqmHAEeoHDVBybO91Sahj1ToHJkACOVb3g30ML3A9b0hHjlYlEcQGDfqFwYMcxBBIyB-EXlrKRQsKIbTNDVMUB-Q0PIoiSc7orZfNCbUUYc66n28OBII436Wof0A8sfKhzE5M=w1440-h1080-s-no?authuser=0' },
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMajsOOUNvj3ylUR2Rq6C250YDWKEZwF-yP_tIhVLd4jZwYn16VqOM5oK4klKnMRE0f8mrSf5D0C0mh3yLApbhti8NayVBFi_DV-XJz2HwLlecokk2qOavro_G8tJaX3LqFJ2wWM70W1xg2L8NSE4so=w1392-h1200-s-no?authuser=0' },
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMUza5zOwyDDewxsqSBPGtAF5k5gr5wcpySktigAYj5pzMhk86tubvlW_DIYmAiuTFnldQvFaVRakSDpTVEc5vi4T5da8U1Ax7rjxwUeSJQK8RUsVPNSaVZpk4j8EgFZtjqvNn1Gqo5vaCtowV2KrJ0=w2757-h1001-s-no?authuser=0' },
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNnaQcdxYmvovBnOlUc7td7HkBe0B2K-Gkgp1mJY4NFz8ow0A0CFN9VGWZKahhbUrXwF7Kxij4NVYNp4TnpbQaz8LoyJTAk_NgTlzkoMh4VaSDDd5hIk-CmpuQAqWwbpvUhZq-QYnAM8NRLzg8TqNOD=w1433-h733-s-no?authuser=0' },
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPBgiV6GHKFfN9aHh9plAubV9hBIi9cgtsooJl_Yc4Ztce1znFFvEp4nY46-k5Pj678VkbQG6zTNwO0VVsaNL6IaZAiTZIinD9BchxUsM-D_y2o4G4d_wIlHvwLEvXTcnGOTh7Qwb6jNbjidavOpTpy=w1924-h1080-s-no?authuser=0' },
+            { type: 'image', url: 'https://dostupsreda.ru/media/images/products/photo/%D0%9B%D0%B0%D0%B1%D0%B8%D1%80%D0%B8%D0%BD%D1%82_2_y8e1Oq9.jpg' },
+            { type: 'image', url: 'https://dostupsreda.ru/media/images/products/photo/%D0%9F%D1%80%D1%8F%D0%BC%D0%BE%D0%B5_%D0%BA%D1%80%D0%B5%D0%BF%D0%BB%D0%B5%D0%BD%D0%B8%D0%B5_a2HhmMD.png' },
+            { type: 'image', url: 'https://dostupsreda.ru/media/images/products/photo/7_lxzElqK.png' },
+            { type: 'image', url: 'https://dostupsreda.ru/media/images/products/photo/%D0%A2%D0%B0%D0%BA%D1%82%D0%B8%D0%BB%D1%8C%D0%BD%D0%BE-%D0%B7%D0%B2%D1%83%D0%BA%D0%BE%D0%B2%D0%B0%D1%8F_%D0%BC%D0%BD%D0%B5%D0%BC%D0%BE%D1%81%D1%85%D0%B5%D0%BC%D0%B0_%D0%B4%D0%BB%D1%8F_%D0%BF%D0%BE%D0%BC%D0%B5%D1%89%D0%B5%D0%BD%D0%B8%D1%8F.jpg' },
+            { type: 'image', url: 'https://dostupsreda.ru/media/images/products/photo/%D0%A2%D0%B0%D0%BA%D1%82%D0%B8%D0%BB%D1%8C%D0%BD%D0%BE-%D0%B7%D0%B2%D1%83%D0%BA%D0%BE%D0%B2%D0%B0%D1%8F_%D0%BC%D0%BD%D0%B5%D0%BC%D0%BE%D1%81%D1%85%D0%B5%D0%BC%D0%B0_%D0%B4%D0%BB%D1%8F_%D0%BF%D0%B0%D1%80%D0%BA%D0%B0_%D0%BE%D1%82%D0%BA%D1%80%D1%8B%D1%82%D0%BE%D0%B9_%D1%82%D0%B5%D1%80%D1%80%D0%B8%D1%82%D0%BE%D1%80%D0%B8%D0%B8_%D0%B2%D0%BE%D0%BA%D0%B7%D0%B0%D0%BB%D0%B0_%D0%BC%D0%B5%D1%82%D1%80%D0%BE.jpg' },
             //{ type: 'pdf', url: 'https://example.com/manual.pdf', title: 'Download User Manual (PDF)' },
-            { type: 'zip', url: 'https://example.com/models.zip', title: 'Download 3D Models (ZIP)' }
+            //{ type: 'zip', url: 'https://example.com/models.zip', title: 'Download 3D Models (ZIP)' }
         ]
     },
 ];

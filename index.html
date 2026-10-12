@@ -400,8 +400,8 @@ iframe {
 /* Базовый стиль для каждой кнопки шага */
 .step-btn {
     flex: 1;
-    padding-top: 0.5rem;
-    padding-bottom: 0.5rem;
+    padding-top: 0.2rem;
+    padding-bottom: 0.2rem;
     text-align: center;
     display: flex;
     align-items: center;
@@ -422,8 +422,8 @@ iframe {
 
 @media (min-width: 1024px) {
     .step-btn {
-        padding-top: 0.75rem;
-        padding-bottom: 0.75rem;
+        padding-top: 0.5rem;
+        padding-bottom: 0.5rem;
         font-size: 0.95rem;
     }
 }
@@ -1350,12 +1350,12 @@ iframe {
             <div class="order-2 w-full flex flex-col gap-6 my-6 lg:my-0"
                  :class="sec.imageLeft ? 'lg:order-1 lg:w-1/2' : 'lg:order-2 lg:w-1/2'">
                 
-				<!-- Слайдер / Медиа -->
-				<div class="relative group flex items-center justify-center overflow-hidden rounded-xl shadow-2xl bg-gray-100 rotate-1 transition-transform duration-300 hover:rotate-0 hover:scale-105 w-full"
-					 :class="sec.aspectClass || 'aspect-[4/3]'"
-					 x-data="{ 
-						 get media() { return sec.items.filter(i => i.type === 'image' || i.type === 'video'); } 
-					 }">
+                <!-- Слайдер / Медиа -->
+                <div class="relative group flex items-center justify-center overflow-hidden rounded-xl shadow-2xl bg-gray-100 rotate-1 transition-transform duration-300 hover:rotate-0 hover:scale-105 w-full"
+                     :class="sec.aspectClass || 'aspect-[4/3]'"
+                     x-data="{ 
+                         get media() { return sec.items.filter(i => i.type === 'image' || i.type === 'video'); } 
+                     }">
                     
                     <!-- Картинка -->
                     <template x-if="media[currentImg] && media[currentImg].type === 'image'">
@@ -1363,40 +1363,41 @@ iframe {
                     </template>
                     
                     <!-- Видео -->
-                    <template x-if="media[currentImg] && media[currentImg].type === 'video'">
-                        <div class="w-full h-full relative group/vid">
-                            <template x-if="!videoPlaying">
-                                <div class="absolute inset-0 w-full h-full rounded-xl overflow-hidden cursor-pointer z-30"
-                                       @click="openModalGallery(media, currentImg)">
-                                    <iframe :src="media[currentImg].url" 
-                                            class="w-full h-full border-0 absolute inset-0 rounded-xl pointer-events-none z-10"
-                                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                                            allowfullscreen>
-                                    </iframe>
-                                    <div class="absolute inset-0 flex items-center justify-center z-40">
-                                        <button type="button" 
-                                                @click.stop="videoPlaying = true" 
-                                                class="w-20 h-20 rounded-full bg-transparent text-white flex items-center justify-center transform transition-transform hover:scale-110 cursor-pointer">
-                                            <i class="fa-solid fa-play text-2xl ml-1 drop-shadow-md"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </template>
-                            <template x-if="videoPlaying">
-                                <div class="absolute inset-0 w-full h-full rounded-xl overflow-hidden z-30">
-                                    <iframe :src="media[currentImg].url + '?autoplay=1'" 
-                                            class="w-full h-full border-0 absolute inset-0 rounded-xl z-10"
-                                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                                            allowfullscreen>
-                                    </iframe>
-                                    <div class="absolute inset-0 cursor-pointer bg-transparent z-20"
-                                           @click="videoPlaying = false"
-                                           title="Нажмите, чтобы остановить видео">
-                                    </div>
-                                </div>
-                            </template>
-                        </div>
-                    </template>
+<!-- Видео (YouTube, Google Drive, Прямая .mp4 ссылка через iframe) -->
+<template x-if="media[currentImg] && media[currentImg].type === 'video'">
+    <div class="w-full h-full relative group/vid">
+        <template x-if="!videoPlaying">
+            <div class="absolute inset-0 w-full h-full rounded-xl overflow-hidden cursor-pointer z-30"
+                 @click="openModalGallery(media, currentImg)">
+                <iframe :src="media[currentImg].url" 
+                        class="w-full h-full border-0 absolute inset-0 rounded-xl pointer-events-none z-10"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen>
+                </iframe>
+                <div class="absolute inset-0 flex items-center justify-center z-40">
+                    <button type="button" 
+                            @click.stop="videoPlaying = true" 
+                            class="w-20 h-20 rounded-full bg-transparent text-white flex items-center justify-center transform transition-transform hover:scale-110 cursor-pointer">
+                        <i class="fa-solid fa-play text-2xl ml-1 drop-shadow-md"></i>
+                    </button>
+                </div>
+            </div>
+        </template>
+        <template x-if="videoPlaying">
+            <div class="absolute inset-0 w-full h-full rounded-xl overflow-hidden z-30">
+                <iframe :src="media[currentImg].url + (media[currentImg].url.includes('?') ? '&' : '?') + 'autoplay=1'" 
+                        class="w-full h-full border-0 absolute inset-0 rounded-xl z-10"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen>
+                </iframe>
+                <div class="absolute inset-0 cursor-pointer bg-transparent z-20"
+                       @click="videoPlaying = false"
+                       title="Нажмите, чтобы остановить видео">
+                </div>
+            </div>
+        </template>
+    </div>
+</template>
 
                     <!-- Кнопки переключения -->
                     <div class="absolute inset-0 flex items-center justify-between px-4 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50">
