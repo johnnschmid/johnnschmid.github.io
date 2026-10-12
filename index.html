@@ -561,14 +561,14 @@ iframe {
 				<span class="relative z-10 font-medium" :class="activeSection === 'home' ? 'text-white font-semibold' : 'text-gray-500 hover:text-gray-800'">Home</span>
 			</a>
 
-			
+<div style="display: none;">			
 			<a href="#shop" 
 			   @click="activeSection = 'shop'" 
 			   class="relative px-6 py-2 text-sm transition-colors">
 				<div x-show="activeSection === 'shop'" class="absolute inset-0 -skew-x-[20deg] transcolor"></div>
 				<span class="relative z-10 font-medium" :class="activeSection === 'shop' ? 'text-white font-semibold' : 'text-gray-500 hover:text-gray-800'">Shop</span>
 			</a>
-
+</div>
 		  
 			<a href="#about" 
 			   @click="activeSection = 'about'" 
@@ -1180,7 +1180,7 @@ iframe {
     </div>
 </div>
     
-    
+<div style="display: none;">
     <!-- HOME / HERO SECTION -->
     <header class="px-4 lg:px-8 py-8 lg:py-12">
         <div class="hero-bg-gradient max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-12 px-8 lg:px-20 py-16 lg:py-24 rounded-xl shadow-xl overflow-hidden">
@@ -1220,7 +1220,11 @@ iframe {
             </div>
         </div>
     </header>
+</div>
 
+
+
+<div style="display: none;">
     <!-- THE PROBLEM WE SOLVE -->
     <section class="py-20 px-8 bg-gray-100">
         <div class="max-w-7xl mx-auto text-center">
@@ -1248,7 +1252,11 @@ iframe {
             </div>
         </div>
     </section>
-
+</div>    
+    
+    
+    
+<div style="display: none;">
     <!-- SHOP SECTION -->
     <section id="shop" class="max-w-7xl mx-auto px-8 py-20">
         <h2 class="text-3xl font-bold mb-10 text-left">Collections</h2>
@@ -1327,7 +1335,7 @@ iframe {
             </template>
         </div>
     </section>
-
+</div>
 
 
 
@@ -1336,7 +1344,8 @@ iframe {
 
 <!-- ДИНАМИЧЕСКИЙ ВЫВОД СЕКЦИЙ ИЗ products.js -->
 <template x-for="sec in sections" :key="sec.id">
-    <section class="custom-section" 
+    <section class="custom-section"
+			 :id="sec.id === 1 ? 'about' : ('section-' + sec.id)"
              :class="sec.bgClass" 
              x-data="{ 
                  currentImg: 0, 
