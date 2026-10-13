@@ -242,7 +242,6 @@ const PRODUCTS_DATA = [
 
 
 
-
 const SECTIONS_DATA = [
     { 
         id: 1,
@@ -294,7 +293,7 @@ const SECTIONS_DATA = [
             { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNe_4MkkcFdYtTsz-bmp9h5Us4Dc1YZEbShd8tlAgs6ZvWqBLZo2yImj0Tt6YX_3Fs4Y2z7YKOoNhOmu17og7QhmoHCjjKg3mIpyFSzY8s9nEMZB7yOeamsx3my26I18WDx_TKTSUsX70VA_jyv6xm1=w1448-h1086-s-no?authuser=1' },
             { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMa8CesIEpP62fioyUSlx2HusbOT0SIyNVyifm-RT_eAHqnQCYb2Xx-vQ1JqqIo2rIjL6ile0PRagnv4LZrJ5R8rJGBnNF_em6l0RmlzqX2eqd3Y8euBciokb1nGV8Lgvz_Wc0zBtzzUkity8WIZUQe=w1086-h1448-s-no?authuser=1' },
             { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMPMjVFjeTQhKKHsiTYoZulXy1wQqUNeM2alF7KLjmps5Ur6HLa9ovWYUtoDUR8FaCfTDKoGI6ZD3CrcOup-mYKMW_y59bhfKHrVorgZ7hNZHyf5i607zN2Uy3gPIz3OW95Viq2-C5H-H7WhqTh55dE=w3579-h2013-s-no?authuser=1' },
-            { type: 'pdf', url: 'https://drive.usercontent.google.com/download?export=download&confirm=t&id=1uBSIVToBbMKUTLBI0SWHxnz_mW9X6sj_', title: 'Download CV (PDF)' },
+            { type: 'pdf', url: 'https://drive.usercontent.google.com/download?export=download&confirm=t&id=1ekCvtUsUVLTkgrTOHB7Qy2cqHE2R5Dab', title: 'Download CV (PDF)' },
             //{ type: 'zip', url: 'https://example.com/models.zip', title: 'Download 3D Models (ZIP)' }
         ]
     },
@@ -404,9 +403,9 @@ const SECTIONS_DATA = [
 		],
         
         items: [
-            { type: 'image', url: 'https://dostupsreda.ru/media/images/products/photo/tiflofleshpleer-vojsa-1-1200.jpg' },
-            { type: 'image', url: 'https://dostupsreda.ru/media/images/products/photo/tiflofleshpleer-vojsa-1200-10.jpg' },
-            { type: 'image', url: 'https://dostupsreda.ru/media/images/products/photo/tiflofleshpleer-vojsa-1200-4.jpg' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNfEF6nfMostqM0HekyJH74E09a2Peigl6F6ft7UKr6tz0WA-H7Uh6QrMQv1xOe_b6rmXJywmOmNBLAa_CpNVzA99FgGQmCqHUQ7VMwf_3MiAzQfjBsvY5pO2MBnhgVpF33CQQNsRhHKD-aV3P5MV2e=w1200-h1200-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPcHu1P2ATLuRzlPGmb45Rq_-etJY-bvQIkWY0WygXdyuKzL5YqeHOfQyOpscnzQWGALiKe1Z4_PtNBSLPphW9raQEuZdlcmCg2LpoHrcEXWa0cJL-N65Cy_FXb0jo__72_jLWpuOTzPSD2iS-oYOin=w1200-h1200-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMrfprUEmCbKHvYsji51NbfPab4hZK6DCi_FAwggeVKRGaan3ydtcTriVa8MI3ZmC_8-PH9-hOqtHQForH2fXiMI4w5f8r0eoMhNh6J4pTG4sVRd6bzl0RkiCuZLLrB-2tCBXIOQLSrMvduhMVj2De_=w1200-h1200-s-no?authuser=0' },
             { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPUKA2GAp0_jWFQa17nQQ62pacUIdJg_btePWZ5IEiYnXoYkdrZmygK21Af69vLufBIYNG827sYfnHWlqofqgDbVZFDFXW1P17psdj3zCRVXdBQHEyhFcXBuGKaADJYk7mWrty1HV74Y6R0wGbXhy7R=w3629-h2013-s-no?authuser=0' },
             { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPVQTEo24_LI01Y7tG5HgQHHQtVVrD-SKbfjMq_PhlpW6SxJGZ3gJVcGaSQA3E9BQAoyAFs23jUVoRXG2XwwgL6UBuhHAd5e6i9QovM_sXutNEioq2WeFiqROJRIEUEq6e5lquirqZOarJBpZKvBHZi=w3629-h2013-s-no?authuser=0' },
             { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPXfZAzWpfBg8uC3JV9WB79XTgIEfMt155BAN1798HFH8OYxeDp_f6W5ehWJiaKZ1wY7Ud0CPh1rmbeWiyeiiEacM0K_PqgWGXhuWo24MokPVyWRMH3zR1F2--Ed8au0jDSpC3wjfO6WXtOIQbsk1Mw=w3629-h2013-s-no?authuser=0' },
@@ -433,8 +432,8 @@ const SECTIONS_DATA = [
             { id: 'spool', label: 'Spool' },
             { id: 'printing', label: 'Print' }
         ],
-		title: 'Handheld Electronic Video Magnifier "Sokol"',
-		p1: 'The "Sokol" handheld electronic video magnifier is your reliable assistant for reading and writing, created to bring comfort to the daily lives of people with visual impairments. It simplifies reading small text on labels, recipes, bills, and newspapers, as well as handwriting and examining fine details.',
+		title: 'Handheld Electronic Video Magnifier',
+		p1: 'The handheld electronic video magnifier is your reliable assistant for reading and writing, created to bring comfort to the daily lives of people with visual impairments. It simplifies reading small text on labels, recipes, bills, and newspapers, as well as handwriting and examining fine details.',
 		p2: 'Featuring a built-in 4.3-inch display designed for users with a visual acuity of 0.03–0.1, it offers dual cameras with automatic switching, 28 color display modes, text recognition (OCR) with speech synthesis, an audio player, and a portable, autonomous design for maximum independence.',
 
 		hints: [
@@ -463,11 +462,18 @@ const SECTIONS_DATA = [
         
         items: [
 
-            { type: 'image', url: 'https://dostupsreda.ru/media/images/products/photo/100_11-03-2024_Komarov.jpg' },
-            { type: 'image', url: 'https://dostupsreda.ru/media/images/products/photo/102_11-03-2024_Komarov.jpg' },
-            { type: 'image', url: 'https://dostupsreda.ru/media/images/products/photo/107_11-03-2024_Komarov.jpg' },
-            { type: 'image', url: 'https://dostupsreda.ru/media/images/products/photo/094_11-03-2024_Komarov.jpg' },
-            { type: 'image', url: 'https://dostupsreda.ru/media/images/products/photo/133_11-03-2024_Komarov.jpg' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMLM6V-0L2I2fxVQvlvXq_YfXxwIqqMIsOXJro-M_gtS1pkFQuz1VkWDRkPeEtw1QufI6_7H6qUObxGcGCgKZt3PHUK4uycnetc_KwWKeiP5RVm25fqkPKloPOTn6hfkU-8lWqBE7q8i4RxjuVgnhIo=w2013-h2013-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczM7J8h3tBmHPyxQz5bhCj0T7RuNFLSwwXgBt4MkqrIr93gvrPKu00FWOTnPe8RiiQbVKCbYzpsbZO6wje8YNE5K3Ds0ZLl9LuaGtTPvAn7qLJ0fFvMJRX9OIZPRpVCUSTRAbkNfnID1yHTVv39t_HM2=w2013-h2013-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMdgAFpjC1fwo5UPuNJ8v-d_eSnvNBcKgdrhcFgKHqbXRIq400H9dtt4RU3QqciwjGoIqf-o6pnZUI_nXK4l11xKF0HnI6u9wLy2i58ez6lIkPM3TYP2MNeUf8fJj0Rltzt1QWoEhgZLYwuYfv14TD9=w2013-h2013-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczM3Ty4PaXERePFooYHqyC3NyBKIphZzZM84gNp2GJfcja_cMLVXdi_HoiNZQ8h_ILzX8j4k3MsCobJFG0h4kedGJVJEP-dDEakVhmfGPJP89T-hWuRNyyP_5fyWXXFJ3VGuv1M0pVC4u5T5TW4L31ae=w2013-h2013-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMfmb1AeUI8cMYp1SEsYN5gYlvvxa90UngQmVDE1eji9lfp1zhocBRUO8kEp_kEyY2VWn7ivOafPY5C-LypXBe4SmKqV_ls8nO17zBx_E4VFN2WCFwZel1lGDFQ4hzPfJ9I6geCeDv326jZXYiSxO1d=w2013-h2013-s-no?authuser=0' },
+            
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPsHknkeoK5YGVQhP7x_PQMkxO9Cek1R4ajTiewDnd3ZOFwSj46FDqKaRtqDcK_gkJMB2jgJiiSC0q4m0JpfZxBiIBtwf6aKP5cg5lbqmxQDiO4DQ9InsNmRdzZLetWunlKhyO4qz4EWpRYFGMtR3Yu=w3629-h2013-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczOL3ujnzoDIcePJ9NJP9F8_W5M0XcINzOZyVRoWVXgLoiRiEcU8k_WEEvhz05GmBPFaVKIRKrl7i_AczSzVAYz9FMM1uPnwPmLuAJhhF2192tfaIn2T9DxEb53ac8WgMucFBtrzU7MyT2pkkKK-nmYU=w3629-h2013-s-no?authuser=0' },            
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNcnKJo2dEO6TYn1e-0tRW-DdqJtSG1_qY1Rya-qICmwhwOeblwnqJu2UFs85BBF7kXkguevCfi_X2zHsF8Y3Y8gB2aJa6pIRQGD06ZwghSiAy6u-Nz7BdKhRCgKz2stmATI5n_hoHl6EuOmceOguJs=w3629-h2013-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPvNJ8avrJq0x2HFj35KTSETSc4v_QVlnBHeiTLoxwGegwGSkR8HiV6TBbyWy7aY0-xW0P1O1GEQlSFHS3C3AI6D7lWfMK731mYM1o9-36yddwkwywzhZR4zcrbPc_U5kXB9ScGwpNMINzOrqQ0vhwZ=w3629-h2013-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMSB_0Be2R_jhpIHfaJbtBEipPnVkXGoDWZlFON6Te7ozH5_IRWI7TSETRejh-x0tIeami14z6ZfH91MZm9EPbWa-hkahIYdQbFY_rQQvHwF1EZUEMs4esweaDSBrvUlDC7uqABc8k1zUaUQL3iL9ji=w3629-h2013-s-no?authuser=0' },
+                        
             { type: 'video', url: 'https://dostupsreda.ru/media/files/materials/%D0%AD%D0%A0%D0%92%D0%A3_%D0%A1%D0%BE%D0%BA%D0%BE%D0%BB-1.mp4' },
             //{ type: 'pdf', url: 'https://example.com/manual.pdf', title: 'Download User Manual (PDF)' },
             //{ type: 'zip', url: 'https://example.com/models.zip', title: 'Download 3D Models (ZIP)' }
@@ -517,11 +523,14 @@ const SECTIONS_DATA = [
 		],
         
         items: [
-            { type: 'image', url: 'https://dostupsreda.ru/media/images/products/photo/%D0%9B%D0%B0%D0%B1%D0%B8%D1%80%D0%B8%D0%BD%D1%82_2_y8e1Oq9.jpg' },
-            { type: 'image', url: 'https://dostupsreda.ru/media/images/products/photo/%D0%9F%D1%80%D1%8F%D0%BC%D0%BE%D0%B5_%D0%BA%D1%80%D0%B5%D0%BF%D0%BB%D0%B5%D0%BD%D0%B8%D0%B5_a2HhmMD.png' },
-            { type: 'image', url: 'https://dostupsreda.ru/media/images/products/photo/7_lxzElqK.png' },
-            { type: 'image', url: 'https://dostupsreda.ru/media/images/products/photo/%D0%A2%D0%B0%D0%BA%D1%82%D0%B8%D0%BB%D1%8C%D0%BD%D0%BE-%D0%B7%D0%B2%D1%83%D0%BA%D0%BE%D0%B2%D0%B0%D1%8F_%D0%BC%D0%BD%D0%B5%D0%BC%D0%BE%D1%81%D1%85%D0%B5%D0%BC%D0%B0_%D0%B4%D0%BB%D1%8F_%D0%BF%D0%BE%D0%BC%D0%B5%D1%89%D0%B5%D0%BD%D0%B8%D1%8F.jpg' },
-            { type: 'image', url: 'https://dostupsreda.ru/media/images/products/photo/%D0%A2%D0%B0%D0%BA%D1%82%D0%B8%D0%BB%D1%8C%D0%BD%D0%BE-%D0%B7%D0%B2%D1%83%D0%BA%D0%BE%D0%B2%D0%B0%D1%8F_%D0%BC%D0%BD%D0%B5%D0%BC%D0%BE%D1%81%D1%85%D0%B5%D0%BC%D0%B0_%D0%B4%D0%BB%D1%8F_%D0%BF%D0%B0%D1%80%D0%BA%D0%B0_%D0%BE%D1%82%D0%BA%D1%80%D1%8B%D1%82%D0%BE%D0%B9_%D1%82%D0%B5%D1%80%D1%80%D0%B8%D1%82%D0%BE%D1%80%D0%B8%D0%B8_%D0%B2%D0%BE%D0%BA%D0%B7%D0%B0%D0%BB%D0%B0_%D0%BC%D0%B5%D1%82%D1%80%D0%BE.jpg' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPqaB3XsLINNOnzPBRwseT093MHZoNRawy-f9Ym0pvvJSR4f6rJvnGpo2TL25RKf9uvXzplCL_vozPtjpUuetS8JPFY5FDO6BjeBa6ClJ4yCdDxaABvlbbRblTYOLMDcH7_MBWa3IYVWrGbxfxyeOnn=w800-h800-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPGGePX5R2GBWlxxmlJeCKbD41rkif05RZP-Zb-SxtpeRgGPhptFJ8yiS7wCOzNBlEsIMj8-ppctHwg_gaCS-mrxx99biP7DTXJtH5XM_k9Seetvdgc3F59QIBPmEsWbcLsjYfnsMd3Nwwa8EI51Pxa=w750-h750-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNu5h_L3BuIL4vdMRIsaaJwvUuGnnW83HYfi9_dlhTc7Zsr6YIWL2q4TJnzIlbGrV1eKAcT48bo02qSiTjqTM-SXugUKWepY-j7Zp21QwjsPsmZj2_d2qjrM814t1L4vCnv63xzrOjSA7jBCEl8yS77=w2013-h2013-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczOU-CMCaAshJtk1XJYx90-AMny5cd96RI8mlDbmJg8STNfjn1rZIPQ71ocH1ias8_TUnb4YT2Kfmo-nU3Nvxfw43ibP7qbMYGwn813k2Otf2_00n-CZinaoLjSQx9YhVNGQTKm_BHOFsReQ9QMsvRH3=w650-h650-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczOFkQSzpfVPFOmaW5Hx-bofU-kO_lwzZpiaZLmAiFccFARXT2jG8-sJLDNg-Wwupm9_5raAWdWLIG0JWpVl2OMitIWmuie67EtxdSO3DEdKY82ondV7d7w8foMJ2h_Q52Ig3pUanso1-DFC9VPdpIzF=w3629-h2013-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczOsPYX2Y2zHeuCoM4KXmHYSqZTjMD8AmV0t5XrqmATPtcc-J3QkcdEY4BUdfoeBbIxzQl0my0Cxzlkz7KIq6dxRWX5nX-2gDNPq5NbpBWt9LAbL5qiyZqHLPq_WY_cAo5jLrxVCx_S8U1GBSpNfj8e2=w3629-h2013-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPQXgDKzw8H7kHIfGzHyJNr6AxpDIYEC1nTTJ6f49m4Bkn9yQuNtKbDpQYYD1N93L26kkpuHbUb4XGXj7Px-EY9sUNSe6AiQYvFJ-YyaX6e19QmdIa1ojXE8qAYJ3sRuIHdihYIJO6NrwR0KzPaxTHV=w3629-h2013-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPynAPcU7qt2GN9R6wEuhkneUOL8_ppr_rRMMn1Aic7vHY8QQHGj7G-QGLBJIV3KBShzOjvt7OQQr60tFJpJlOF-5kF2fQNWUWvaeOwQ2z6vp_PLfIWF0cXbAHXiCpl5je2FDHVm4gg3Y0yZG7YdM-U=w3629-h2013-s-no?authuser=0' },
             //{ type: 'pdf', url: 'https://example.com/manual.pdf', title: 'Download User Manual (PDF)' },
             //{ type: 'zip', url: 'https://example.com/models.zip', title: 'Download 3D Models (ZIP)' }
         ]
@@ -541,8 +550,8 @@ const SECTIONS_DATA = [
             { id: 'spool', label: 'Spool' },
             { id: 'printing', label: 'Print' }
         ],
-		title: 'Talking Blood Pressure Monitor "Tyfloton-01"',
-		p1: 'The "Tyfloton-01" is an innovative automatic talking blood pressure monitor with an integrated non-pharmacological blood pressure correction function, specifically designed for blind and visually impaired users. This unique medical technology combines precise blood pressure measurement with non-invasive electro-stimulation therapy via a wrist cuff electrode.',
+		title: 'Talking Blood Pressure Monitor "Tifloton"',
+		p1: 'The "Tifloton" is an innovative automatic talking blood pressure monitor with an integrated non-pharmacological blood pressure correction function, specifically designed for blind and visually impaired users. This unique medical technology combines precise blood pressure measurement with non-invasive electro-stimulation therapy via a wrist cuff electrode.',
 		p2: 'Daily 5-minute therapy sessions send targeted electrical impulses to nerve receptors, normalizing vascular wall tone and improving overall blood circulation to help manage hypertension and gradually reduce reliance on medication.',
 
 		hints: [
@@ -570,11 +579,18 @@ const SECTIONS_DATA = [
 		],
         
         items: [
-            { type: 'image', url: 'https://dostupsreda.ru/v3/_next/image?url=https%3A%2F%2Fdostupsreda.ru%2F%2Fmedia%2Fimages%2Fproducts%2Fphoto%2F%25D0%25A2%25D0%25B8%25D1%2584%25D0%25BB%25D0%25BE%25D1%2582%25D0%25BE%25D0%25BD_1_hELFujU.jpg&w=640&q=80' },
-            { type: 'image', url: 'https://dostupsreda.ru/media/images/products/photo/%D0%A2%D0%B8%D1%84%D0%BB%D0%BE%D1%82%D0%BE%D0%BD_2_Rl564Er.png' },
-            { type: 'image', url: 'https://ir-20.ozone.ru/s3/multimedia-1-v/wc1000/6929979331.jpg' },
-            //{ type: 'image', url: 'https://dostupsreda.ru/media/images/products/photo/%D0%A2%D0%B0%D0%BA%D1%82%D0%B8%D0%BB%D1%8C%D0%BD%D0%BE-%D0%B7%D0%B2%D1%83%D0%BA%D0%BE%D0%B2%D0%B0%D1%8F_%D0%BC%D0%BD%D0%B5%D0%BC%D0%BE%D1%81%D1%85%D0%B5%D0%BC%D0%B0_%D0%B4%D0%BB%D1%8F_%D0%BF%D0%BE%D0%BC%D0%B5%D1%89%D0%B5%D0%BD%D0%B8%D1%8F.jpg' },
-            //{ type: 'image', url: 'https://dostupsreda.ru/media/images/products/photo/%D0%A2%D0%B0%D0%BA%D1%82%D0%B8%D0%BB%D1%8C%D0%BD%D0%BE-%D0%B7%D0%B2%D1%83%D0%BA%D0%BE%D0%B2%D0%B0%D1%8F_%D0%BC%D0%BD%D0%B5%D0%BC%D0%BE%D1%81%D1%85%D0%B5%D0%BC%D0%B0_%D0%B4%D0%BB%D1%8F_%D0%BF%D0%B0%D1%80%D0%BA%D0%B0_%D0%BE%D1%82%D0%BA%D1%80%D1%8B%D1%82%D0%BE%D0%B9_%D1%82%D0%B5%D1%80%D1%80%D0%B8%D1%82%D0%BE%D1%80%D0%B8%D0%B8_%D0%B2%D0%BE%D0%BA%D0%B7%D0%B0%D0%BB%D0%B0_%D0%BC%D0%B5%D1%82%D1%80%D0%BE.jpg' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNooquinKNtMQYyFF_bW0oxa7pVnAkqy9al4vPSvKEbpbXR2eLY5N7X--M_xEoTeIj6qD5UZWUFC_Fn2U5lgqNCFNf8VY_vzUQsCBwXzdAhaPaPTs-Fx8qyxYkefGejeZL_T8aWgW2sZzjc1qeVo6p3=w640-h640-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMSVTD715EM12qaKCkSUwsdyDl7mdC_7J3GGgVhDqXnXZ7Kguiwwh9tsOey7PpqGG4lk5w4t4cAM9weKdUKluAtDGUg9Rpd4p_kNAYLrJE6bh61EwQUIW3ZrBkyKZNFY7uOqxf6vmGvOZP7steLk73I=w510-h510-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPL_aYYTSP9hiK0l2hn4aHD0MJCgDM6ZFrLfjqUiO8Z67k0uIW1I-xzocxz-_0oZfw7n1BkLZO3rDtJZAV7UGe1Oh0MHLNbXOncN-U8OJq-PbLdJxhz4vslIvnx4HwgrYu-qLowpI-xOjuuYU1OnkTJ=w496-h600-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPwDY7S6twVewB4CMMJ-XOTKDimnxm9l7Oe0J0teVvLTniZMIMW8Ntn2gfkkS1LmOBY1U3rufYojOWJ9cTNprp6GEIjdXhFAEV-mJ-9By-tRSJcsSntfBlRhb8zexLSqJeyBtYA7yRkkjlemunCjQjk=w3629-h2013-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczN8L_NxYfHSAiXdKDc3jizA94uw6s_VY2xJQc-py0Nqs34nnYOZtP-oBUjNC3XEACbdtN6JsJDw5ODVOysMFlsNORRueWbTlF5OFhSdggDPzdKDjNV10t4Z9DZczHom_5GPRxMQMmP-bSDNxMv3n-QN=w3629-h2013-s-no?authuser=0' },
+
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMOsXcvAvS2inIiASKzAOTjxoimJsF-3inY5GeTVe6poKoulESBaJhOUcROZG-oY_NMxnhFivxWpvhhRt8QmC2G8-rBxbBeOAFHYOS9P8nAXh82USkOlFj0iyqEbYibmSzO54DvAITNu6P7iJM58HC2=w3629-h2013-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczOPGe16HWcHgYjKWTfpD4_J2vItRGJmaosqQxJbtgktaxSVUVNN2n3hT7Xh82_ns6bTDVM4hclmHOC2aoUDUYCkkcCe-V9Sf1K4LlE1DyiZ-jfroLSe2x6XfibVmZP9so4lKZwfj_UCDQv3Yi2lEcND=w3629-h2013-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPirch6OVe0ZOkczRjNIaBgedB3Me9zNp_6hdteeTaOgZwqWoSNfoudJJ_eG3i4UBikRjrKuc51GDwqw_Jr7soEDRBFGfoSRohcDesE3yx6Kzi0PPaClQ6JEoL2Vnt4xRQBmSx3H0q_11YV9XTsTeSV=w3629-h2013-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczOOXzcuV_hjts1MY3eSDm7Hov9uoq96dub-kCZ6rktl_ffrrTKR4G7YIh-Kc3z_Kx2cT941sJgktEh9vX980TfRIw3VT-DQlQ4e1gz1Ay95CA5Dd1BMb6rsXpo9Exku3P-G5guVaM4BavTDvOHCBBdL=w1059-h1124-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMPvdXKgAcVSOxef55Mtq8DggMu4caMNe6AcRESLJQCS76KmIfLJ5UIRVJGGzD_EVjC5oktACsjfJzsNGwaycvRTf-JK_ChyWbcPuA3Zao0DZ5hz4BgjAiUtkO3KHMIsyTMl8A3YGjgag4pkbXtlOuJ=w1624-h1231-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczP1RBAxSwlRGjk8Jb4NA__jS5LwcTznSBlqosqjqWzBDcS5D753jEWLz4mLhRsnmr10JSnzFr7GGbL1N8NLGyfTRSwxrJsNrQj1Ou1oulTJnXUYc2iStABNgHHSs0VEHQPmDQxWwNjVjPKoCNKZBYDK=w1629-h1801-s-no?authuser=0' },            
             //{ type: 'pdf', url: 'https://example.com/manual.pdf', title: 'Download User Manual (PDF)' },
             //{ type: 'zip', url: 'https://example.com/models.zip', title: 'Download 3D Models (ZIP)' }
         ]

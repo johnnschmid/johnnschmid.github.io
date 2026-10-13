@@ -512,7 +512,7 @@ iframe {
           <div class="superellipse">
             <span class="logo-text-white">JS</span>
           </div>
-          <span class="logo-label">Projects</span>
+          <span class="logo-label">Dev</span>
         </div>
         
 	<!-- NAVIGATION -->        
@@ -982,12 +982,145 @@ iframe {
 
 
 
+<!-- GLOBAL MEDIA GALLERY MODAL -->
+<div x-show="modalGalleryOpen" x-cloak class="fixed inset-0 z-[120] flex items-center justify-center p-4"
+     @wheel.window.prevent.capture="
+         if (!modalGalleryOpen) return;
+         if ($event.deltaY > 0) {
+             modalNext();
+         } else {
+             modalPrev();
+         }
+     ">
+    <!-- Фоновое затемнение -->
+    <div class="absolute inset-0 bg-black/80 backdrop-blur-md" @click="modalGalleryOpen = false; modalMedia = [];"></div>
+
+    <!-- Контейнер модального окна -->
+    <div class="relative z-10 max-h-[90vh] flex flex-col items-center justify-center"
+         :class="modalMedia[modalCurrentIndex]?.type === 'image' ? 'w-auto' : 'w-full max-w-5xl'"
+         x-transition:enter="transition ease-out duration-300"
+         x-transition:enter-start="opacity-0 scale-95"
+         x-transition:enter-end="opacity-100 scale-100">
+         
+        <!-- Главный контейнер -->
+        <div class="relative flex flex-col items-center justify-center rounded-xl bg-black/50 group overflow-hidden"
+             :class="modalMedia[modalCurrentIndex]?.type === 'image' ? 'w-fit mx-auto' : 'w-full'">
+            
+            <!-- Кнопки управления в правом верхнем углу -->
+            <div class="absolute top-4 right-4 z-[100] hidden md:flex flex-col gap-2">
+                <!-- Кнопка закрытия (крестик) -->
+                <button @click="modalGalleryOpen = false; modalMedia = [];" class="w-10 h-10 rounded-full custom-slider-btn flex items-center justify-center transition-all cursor-pointer shadow-[0_0_30px_rgba(0,0,0,0.99)]">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
+
+<!-- Кнопка скачивания / открытия в новой вкладке -->
+<template x-if="modalMedia[modalCurrentIndex] && modalMedia[modalCurrentIndex].type === 'image'">
+    <a :href="modalMedia[modalCurrentIndex].url" 
+       target="_blank" 
+       download 
+       class="w-10 h-10 rounded-full custom-slider-btn flex items-center justify-center transition-all cursor-pointer shadow-[0_0_30px_rgba(0,0,0,0.99)]" 
+       title="Открыть в новой вкладке и скачать">
+        <i class="fa-solid fa-download text-sm"></i>
+    </a>
+</template>
+            </div>
+
+            <template x-if="modalMedia.length > 0">
+                <div class="w-full flex items-center justify-center">
+                    
+                    <!-- Если это картинка -->
+                    <template x-if="modalMedia[modalCurrentIndex].type === 'image'" :key="modalCurrentIndex">
+                        <div class="flex items-center justify-center overflow-hidden relative select-none max-h-[85vh]"
+                             x-data="{ 
+                                 zoomed: false, 
+                                 posX: 50, 
+                                 posY: 50,
+                                 sensitivity: 1.2,
+                                 toggleZoom(e) {
+                                     this.zoomed = !this.zoomed;
+                                     if (this.zoomed) {
+                                         this.updatePosition(e);
+                                     } else {
+                                         this.posX = 50;
+                                         this.posY = 50;
+                                     }
+                                 },
+                                 updatePosition(e) {
+                                     if (!this.zoomed) return;
+                                     const rect = e.currentTarget.getBoundingClientRect();
+                                     const mouseX = ((e.clientX - rect.left) / rect.width) * 100;
+                                     const mouseY = ((e.clientY - rect.top) / rect.height) * 100;
+                                     
+                                     this.posX = 50 + (mouseX - 50) * this.sensitivity;
+                                     this.posY = 50 + (mouseY - 50) * this.sensitivity;
+                                 }
+                             }"
+                             @click="toggleZoom($event)"
+                             @mousemove="updatePosition($event)"
+                             @mouseleave="zoomed = false; posX = 50; posY = 50;"
+                             :class="zoomed ? 'cursor-zoom-out' : 'cursor-zoom-in'">
+                             
+                            <img :src="modalMedia[modalCurrentIndex].url" 
+                                 @contextmenu.prevent 
+                                 @error="$el.src = modalMedia[modalCurrentIndex].url"
+                                 class="max-h-[85vh] w-auto h-auto object-contain rounded-xl mx-auto transition-transform duration-75 ease-out"
+                                 :style="zoomed ? 'transform: scale(5); transform-origin: ' + posX + '% ' + posY + '%;' : 'transform: scale(1);'">
+                        </div>
+                    </template>
+                    
+<!-- Если это видео (iframe) -->                 
+<template x-if="modalMedia[modalCurrentIndex].type === 'video'">
+    <div class="w-full aspect-video max-h-[85vh] rounded-xl bg-black/60 relative overflow-hidden flex items-center justify-center"
+         @wheel.capture.prevent="
+             if ($event.deltaY > 0) {
+                 modalNext();
+             } else {
+                 modalPrev();
+             }
+         ">
+        
+        <div class="absolute inset-0 w-[200%] h-[200%] -top-[50%] -left-[50%] flex items-center justify-center scale-[0.5]">
+            <iframe :src="modalMedia[modalCurrentIndex].url" @contextmenu.prevent class="w-full h-full border-0 rounded-xl" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+    </div>
+</template>                
+                </div>
+            </template>
+
+            <!-- Стрелки переключения -->
+            <div class="absolute inset-0 flex items-center justify-between px-4 pointer-events-none z-50" x-show="modalMedia.length > 1">
+                <button @click.stop="modalPrev()" class="pointer-events-auto w-12 h-12 rounded-full custom-slider-btn shadow-lg flex items-center justify-center transition-all cursor-pointer">
+                    <i class="fa-solid fa-chevron-left text-lg"></i>
+                </button>
+                <button @click.stop="modalNext()" class="pointer-events-auto w-12 h-12 rounded-full custom-slider-btn shadow-lg flex items-center justify-center transition-all cursor-pointer">
+                    <i class="fa-solid fa-chevron-right text-lg"></i>
+                </button>
+            </div>
+
+            <!-- Индикаторы (точки) -->
+            <div class="absolute bottom-4 left-0 right-0 flex justify-center gap-2 z-50" x-show="modalMedia.length > 1">
+                <template x-for="(item, idx) in modalMedia" :key="idx">
+                    <button @click="modalCurrentIndex = idx" 
+                            class="w-2.5 h-2.5 rounded-full transition-all cursor-pointer shadow-[0_0_6px_rgba(0,0,0,0.9)] border border-white/20"
+                            :class="modalCurrentIndex === idx ? 'bg-blue-500 w-6 shadow-[0_0_8px_rgba(59,130,246,0.8)]' : 'bg-white/70 hover:bg-white'">
+                    </button>
+                </template>
+            </div>
+
+        </div>
+
+        <!-- Индикатор текущего слайда -->
+        <div class="mt-4 text-white/80 text-sm font-medium" x-show="modalMedia.length > 1">
+            <span x-text="modalCurrentIndex + 1"></span> / <span x-text="modalMedia.length"></span>
+        </div>
+        
+    </div>
+</div>
 
 
 
 
-
-
+<div style="display: none;"> 
 
 <!-- GLOBAL MEDIA GALLERY MODAL -->
 <div x-show="modalGalleryOpen" x-cloak class="fixed inset-0 z-[120] flex items-center justify-center p-4">
@@ -1001,40 +1134,97 @@ iframe {
          x-transition:enter-end="opacity-100 scale-100">
          
         <!-- Главный контейнер (картинка/видео + стрелки + крестик + точки) -->
-        <div class="relative w-full flex items-center justify-center rounded-xl bg-black/50 group">
+        <div class="relative w-fit inline-flex flex-col items-center justify-center rounded-xl bg-black/50 group">
             
-            <!-- Кнопка закрытия (крестик) ВНУТРИ верхнего правого угла медиа-контейнера -->
-            <!--
-            <button @click="modalGalleryOpen = false" class="absolute top-4 right-4 z-[100] w-10 h-10 rounded-full custom-slider-btn  flex items-center justify-center transition-all cursor-pointer shadow-[0_0_30px_rgba(0,0,0,0.99)]">
-                <i class="fa-solid fa-xmark text-xl"></i>
-            </button>
-			-->
+            <!-- Кнопки управления в правом верхнем углу (скрыты на мобилках, появляются от 768px и выше) -->
+            <div class="absolute top-4 right-4 z-[100] hidden md:flex flex-col gap-2">
+                <!-- Кнопка закрытия (крестик) -->
+                <button @click="modalGalleryOpen = false; modalMedia = [];" class="w-10 h-10 rounded-full custom-slider-btn flex items-center justify-center transition-all cursor-pointer shadow-[0_0_30px_rgba(0,0,0,0.99)]">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
 
-			<!-- Кнопка закрытия (крестик) скрыта на мобилках и появляется от 768px и выше -->
-			<button @click="modalGalleryOpen = false; modalMedia = [];" class="absolute top-4 right-4 z-[100] w-10 h-10 rounded-full custom-slider-btn hidden md:flex items-center justify-center transition-all cursor-pointer shadow-[0_0_30px_rgba(0,0,0,0.99)]">
-				<i class="fa-solid fa-xmark text-xl"></i>
-			</button>
+<!-- Кнопка скачивания изображения -->
+<template x-if="modalMedia[modalCurrentIndex] && modalMedia[modalCurrentIndex].type === 'image'">
+    <button @click.prevent="
+        fetch(modalMedia[modalCurrentIndex].url)
+            .then(response => response.blob())
+            .then(blob => {
+                const blobUrl = window.URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = blobUrl;
+                link.download = 'image-' + (modalCurrentIndex + 1) + '.jpg';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                window.URL.revokeObjectURL(blobUrl);
+            })
+            .catch(err => {
+                // Если сервер Google блокирует запрос из-за CORS, 
+                // запасной вариант — открытие ссылки в новой вкладке
+                window.open(modalMedia[modalCurrentIndex].url, '_blank');
+            });
+    " class="w-10 h-10 rounded-full custom-slider-btn flex items-center justify-center transition-all cursor-pointer shadow-[0_0_30px_rgba(0,0,0,0.99)]" title="Скачать изображение">
+        <i class="fa-solid fa-download text-sm"></i>
+    </button>
+</template>
+            </div>
 
-
-
-			<template x-if="modalMedia.length > 0">
+            <template x-if="modalMedia.length > 0">
                 <div class="w-full flex flex-col items-center justify-center">
-                    
+					
+<div style="display: none;">                 
                     <!-- Если это картинка -->
                     <template x-if="modalMedia[modalCurrentIndex].type === 'image'">
                         <div class="w-full rounded-xl bg-black/60 shadow-[0_0_60px_rgba(255,255,255,0.45)] flex items-center justify-center overflow-hidden">
                             <img :src="modalMedia[modalCurrentIndex].url" @contextmenu.prevent class="w-full max-h-[85vh] object-cover rounded-xl">
                         </div>
                     </template>
+</div>
+
+<div style="display: _none;"> 
+<!-- Если это картинка -->
+<template x-if="modalMedia[modalCurrentIndex].type === 'image'">
+    <div class="w-full rounded-xl bg-black/60 shadow-[0_0_60px_rgba(255,255,255,0.45)] flex items-center justify-center overflow-hidden relative select-none"
+         x-data="{ 
+             zoomed: false, 
+             posX: 50, 
+             posY: 50,
+             sensitivity: 1.1, // Коэффициент усиления (больше значение — быстрее движение)
+             toggleZoom(e) {
+                 this.zoomed = !this.zoomed;
+                 if (this.zoomed) {
+                     this.updatePosition(e);
+                 }
+             },
+             updatePosition(e) {
+                 if (!this.zoomed) return;
+                 const rect = e.currentTarget.getBoundingClientRect();
+                 // Считаем положение мыши в процентах (0 - 100)
+                 const mouseX = ((e.clientX - rect.left) / rect.width) * 100;
+                 const mouseY = ((e.clientY - rect.top) / rect.height) * 100;
+                 
+                 // Смещаем относительно центра (50%) с учетом коэффициента чувствительности
+                 this.posX = 50 + (mouseX - 50) * this.sensitivity;
+                 this.posY = 50 + (mouseY - 50) * this.sensitivity;
+             }
+         }"
+         @click="toggleZoom($event)"
+         @mousemove="updatePosition($event)"
+         @mouseleave="zoomed = false"
+         :class="zoomed ? 'cursor-zoom-out' : 'cursor-zoom-in'">
+         
+        <img :src="modalMedia[modalCurrentIndex].url" 
+             @contextmenu.prevent 
+             class="max-h-[85vh] object-contain rounded-xl transition-transform duration-75 ease-out"
+             :style="zoomed ? 'transform: scale(5); transform-origin: ' + posX + '% ' + posY + '%;' : 'transform: scale(1);'">
+    </div>
+</template>
+</div>
 
 
-                    <!-- Если это видео (iframe) -->  <!--                 
-                    <template x-if="modalMedia[modalCurrentIndex].type === 'video'">
-                        <iframe :src="modalMedia[modalCurrentIndex].url" @contextmenu.prevent class="w-full aspect-video max-h-[100vh] border-0 rounded-xl shadow-[0_0_60px_rgba(255,255,255,0.45)]" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                    </template> -->
-					
-					
-					<!-- Если это видео (iframe) с принудительным масштабированием -->                 
+
+                    
+                    <!-- Если это видео (iframe) с принудительным масштабированием -->                 
                     <template x-if="modalMedia[modalCurrentIndex].type === 'video'">
                         <div class="w-full aspect-video max-h-[85vh] rounded-xl bg-black/60 shadow-[0_0_60px_rgba(255,255,255,0.45)] relative overflow-hidden flex items-center justify-center">
                             <div class="absolute inset-0 w-[200%] h-[200%] -top-[50%] -left-[50%] flex items-center justify-center scale-[0.5]">
@@ -1042,7 +1232,7 @@ iframe {
                             </div>
                         </div>
                     </template>
-				
+                
                 </div>
             </template>
 
@@ -1077,7 +1267,7 @@ iframe {
 </div>
 
 
-
+</div>
 
 
 
@@ -1360,11 +1550,31 @@ iframe {
                  :class="sec.imageLeft ? 'lg:order-1 lg:w-1/2' : 'lg:order-2 lg:w-1/2'">
                 
                 <!-- Слайдер / Медиа -->
+                <!--
                 <div class="relative group flex items-center justify-center overflow-hidden rounded-xl shadow-2xl bg-gray-100 rotate-1 transition-transform duration-300 hover:rotate-0 hover:scale-105 w-full"
                      :class="sec.aspectClass || 'aspect-[4/3]'"
                      x-data="{ 
                          get media() { return sec.items.filter(i => i.type === 'image' || i.type === 'video'); } 
                      }">
+                -->
+                
+				<!-- Слайдер / Медиа -->
+				<div class="relative group flex items-center justify-center overflow-hidden rounded-xl shadow-2xl bg-gray-100 rotate-1 transition-transform duration-300 hover:rotate-0 hover:scale-105 w-full"
+					 :class="sec.aspectClass || 'aspect-[4/3]'"
+					 x-data="{ 
+						 get media() { return sec.items.filter(i => i.type === 'image' || i.type === 'video'); } 
+					 }"
+					 @wheel.prevent="
+						 if (media.length > 1) {
+							 if ($event.deltaY > 0) {
+								 currentImg = (currentImg + 1) % media.length;
+							 } else {
+								 currentImg = (currentImg - 1 + media.length) % media.length;
+							 }
+							 videoPlaying = false;
+						 }
+					 ">                     
+                     
                     
                     <!-- Картинка -->
                     <template x-if="media[currentImg] && media[currentImg].type === 'image'">
@@ -1725,7 +1935,7 @@ iframe {
         
     </div>
     <div class="mt-20 pt-8 border-t border-gray-50 text-center">
-        <p class="text-gray-400 text-xs tracking-wide">© ReTools GmbH. All rights reserved.</p>
+        <p class="text-gray-400 text-s tracking-wide">© Designed and coded by Johannes Schmid. All rights reserved.</p>
     </div>
      
 <div style="display: none;">
