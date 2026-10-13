@@ -595,4 +595,59 @@ const SECTIONS_DATA = [
             //{ type: 'zip', url: 'https://example.com/models.zip', title: 'Download 3D Models (ZIP)' }
         ]
     },
+    { 
+        id: 7,
+        bgClass: 'bg-gray-100',
+        imageLeft: true,
+        aspectClass: 'aspect-[4/4]',
+        showSteps: false,
+        currentStep: 'tape',
+        steps: [
+            { id: 'bottle', label: 'Bottle' },
+            { id: 'tape', label: 'Tape' },
+            { id: 'filament', label: 'Filament', short: 'Fil.' },
+            { id: 'join', label: 'Joining', short: 'Join' },
+            { id: 'spool', label: 'Spool' },
+            { id: 'printing', label: 'Print' }
+        ],
+		title: 'Braille Computer',
+		p1: 'Braille Computer is a Intel Atom Windows 11 based PC for visually impared people. It runs famous non screen access software, such as NVDA, JAWS and other.',
+		p2: 'Braille Computer allows to install Seika Mini Braille Display.',
+
+		hints: [
+			{
+				emoji: '📚',
+				title: 'Formats & Reading:',
+				text: 'Supports DAISY talking books, all audio formats(mp3, aac, ogg), as well as text files (TXT, DOCX, EPUB, PDF) processed smoothly via an integrated text-to-speech synthesizer.',
+				youtubeUrl: '',
+				youtubeText: ''
+			},
+			{
+				emoji: '🌐',
+				title: 'Connectivity & Online:',
+				text: 'Equipped with built-in 4G LTE (featuring a SIM card slot for cellular calls and internet access), Wi-Fi (2.4 GHz), and Bluetooth 4.2 for wireless headphones or speakers.',
+				youtubeUrl: '',
+				youtubeText: ''
+			},
+			{
+				emoji: '🔋',
+				title: 'Power & Storage:',
+				text: 'Contains 5500mAh LiPo battery, USB Tye-C and Wireless Charging capability. Provides up to 24 hours of continuous operation on a single battery charge, 8GB of internal storage, and expandable support for SD/SDHC/SDXC memory cards up to 64GB.',
+				youtubeUrl: '',
+				youtubeText: ''
+			}
+		],
+        
+        items: [
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczN2mNaCPqcNJrmN011wPlfR6G25FIIcUsxDi5iZENsRxD8F7ia-jdoQ7zveHSFpD3icjZZWkuhefz1-zEhXh9vllDjTxewo-tiPCxwL46BXipumATqVECXjWNgAntRORFSOiSmMNRLcZQQScKA724a6=w1864-h1028-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczOzyzV73ZFicvh0B9KPHqSfe9tF-P_ni8HN4SN-zDI1jbLH8857dlXLJKGrmFsFrp4r-QWbSYxCIjkJCgU1AZv4PQHHkIedFo9NRQpFxtytp2uShDu_5q5hXI82dddMsmAxbiaVvL_7eiJckyJh442I=w3629-h2013-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMrD49-YmvYgj2RI8YR3vo1HYap8H6iP4VLSFq2Y7rLuMtrCa_2VK2piWSuPN8mHyzseQZJxqC4suOk_4BkaFIQeFR_gaDvB3wp0sp_ozqJUs_H8MJqPX4hibMpuWCbRGzR0OTBFTyD0yXPKbXmt3IB=w3629-h2013-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNgb6ks3gu8z98afUAyEMn3shi9A2BK_xT_eaes6bB2l0UJwTGASOnQ3phPhzXATDXbl0Pcscratejq_-VxZzjCPgZhh1-EfLiO2hYVlR6Jz68X9fwV3t6j3JYaWgQu8YRXEK2XAo8JnGtIF2G12WKO=w3629-h2013-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNw6ZT4XtpbajotEmHOJLfAQuxoD1BuMlygAKeC71jT_NgAf-G5PUBAMjHSeJkVWAWThGQ4dbi74RTOdISnuStx0Zmm7u6ysjXHiILCmYNRJLMLSXwG1TRg2McOfeRP3cStYjlcQzjmvM_JFEmjdhlO=w3629-h2013-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNuPGv5aii6Mcg1foKV9_KEVwR3JL0-RkemCa9GHu-iLO0WUfIpVUXBrzrjdKKy1Y8yW4YYaMhqvX280AUYZHa-dHZRPfOiwODM7pAu96n428OwFJPrDHgqKpEoK5Rcn-Jizstuw9Su_qXk9m1018qw=w3629-h2013-s-no?authuser=0' },
+
+            //{ type: 'pdf', url: 'https://example.com/manual.pdf', title: 'Download User Manual (PDF)' },
+            //{ type: 'zip', url: 'https://example.com/models.zip', title: 'Download 3D Models (ZIP)' }
+        ]
+    },
 ];
