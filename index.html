@@ -6,6 +6,27 @@
     <title>Johannes Schmid</title>
     <link rel="icon" type="image/png" href="favicon.png">
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                screens: {
+                    'sm': '640px',
+                    'md': '768px',
+                    'lg': '1024px',
+                    'xl': '1280px',
+                    '2xl': '1536px',
+                    '3xl': '1920px',
+                    '4xl': '2560px', /* Экраны от 2560px и шире (2K / 4K) */
+                    '6xl': '3840px', /* Полноценные 4K мониторы */
+                },
+                extend: {
+                    maxWidth: {
+                        '7xl': '92vw',
+                    }
+                }
+            }
+        }
+    </script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script src="products.js"></script>
     
@@ -352,7 +373,11 @@ iframe {
 }
 
 
-
+@media (min-width: 3000px) {
+    .custom-grid {
+        max-width: 2750px !important; /* Комфортный максимум для 4K, чтобы контент не растягивался слишком сильно */
+    }
+}
 
 
 
@@ -513,6 +538,32 @@ iframe {
             max-width: 2400px !important; /* Ограничение для ультрашироких 4K-мониторов, чтобы строки не были бесконечными */
         }
     }
+    
+/* Автоматическое увеличение текста на 2K и 4K мониторах */
+    @media (min-width: 3000px) {
+        /* Увеличиваем заголовки в динамических секциях */
+        section[id^="section-"] h2, #about h2 {
+            font-size: clamp(4.125rem, 2.5vw, 3.5rem) !important;
+        }
+        /* Увеличиваем основной текст (параграфы) в секциях */
+        section[id^="section-"] p, #about p {
+            font-size: clamp(2.5rem, 1.2vw, 1.45rem) !important;
+            line-height: 1.7 !important;
+        }
+    }    
+    
+/* Увеличение расстояния между картинкой и текстом на 2K и 4K экранах */
+    @media (min-width: 1536px) {
+        .custom-grid {
+            gap: 4rem !important; /* Увеличиваем отступ между колонками */
+        }
+    }
+
+    @media (min-width: 2500px) {
+        .custom-grid {
+            gap: 6rem !important; /* Еще большее комфортное расстояние для 4K-мониторов */
+        }
+    }    
     </style>
     
 </head>
@@ -1756,42 +1807,43 @@ iframe {
                         <img :src="media[currentImg].url" class="w-full h-full object-cover transition-all duration-300" alt="Application Areas" @click="openModalGallery(media, currentImg)">
                     </template>
                     
-                    <!-- Видео -->
-<!-- Видео (YouTube, Google Drive, Прямая .mp4 ссылка через iframe) -->
-<template x-if="media[currentImg] && media[currentImg].type === 'video'">
-    <div class="w-full h-full relative group/vid">
-        <template x-if="!videoPlaying">
-            <div class="absolute inset-0 w-full h-full rounded-xl overflow-hidden cursor-pointer z-30"
-                 @click="openModalGallery(media, currentImg)">
-                <iframe :src="media[currentImg].url" 
-                        class="w-full h-full border-0 absolute inset-0 rounded-xl pointer-events-none z-10"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                        allowfullscreen>
-                </iframe>
-                <div class="absolute inset-0 flex items-center justify-center z-40">
-                    <button type="button" 
-                            @click.stop="videoPlaying = true" 
-                            class="w-20 h-20 rounded-full bg-transparent text-white flex items-center justify-center transform transition-transform hover:scale-110 cursor-pointer">
-                        <i class="fa-solid fa-play text-2xl ml-1 drop-shadow-md"></i>
-                    </button>
-                </div>
-            </div>
-        </template>
-        <template x-if="videoPlaying">
-            <div class="absolute inset-0 w-full h-full rounded-xl overflow-hidden z-30">
-                <iframe :src="media[currentImg].url + (media[currentImg].url.includes('?') ? '&' : '?') + 'autoplay=1'" 
-                        class="w-full h-full border-0 absolute inset-0 rounded-xl z-10"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                        allowfullscreen>
-                </iframe>
-                <div class="absolute inset-0 cursor-pointer bg-transparent z-20"
-                       @click="videoPlaying = false"
-                       title="Нажмите, чтобы остановить видео">
-                </div>
-            </div>
-        </template>
-    </div>
-</template>
+
+					<!-- Видео (YouTube, Google Drive, Прямая .mp4 ссылка через iframe) -->
+					<template x-if="media[currentImg] && media[currentImg].type === 'video'">
+						<div class="w-full h-full relative group/vid">
+							<template x-if="!videoPlaying">
+								<div class="absolute inset-0 w-full h-full rounded-xl overflow-hidden cursor-pointer z-30"
+									 @click="openModalGallery(media, currentImg)">
+									<iframe :src="media[currentImg].url" 
+											class="w-full h-full border-0 absolute inset-0 rounded-xl pointer-events-none z-10"
+											allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+											allowfullscreen>
+									</iframe>
+									<div class="absolute inset-0 flex items-center justify-center z-40">
+										<button type="button" 
+												@click.stop="videoPlaying = true" 
+												class="w-20 h-20 rounded-full bg-transparent text-white flex items-center justify-center transform transition-transform hover:scale-110 cursor-pointer">
+											<i class="fa-solid fa-play text-2xl ml-1 drop-shadow-md"></i>
+										</button>
+									</div>
+								</div>
+							</template>
+							<template x-if="videoPlaying">
+								<div class="absolute inset-0 w-full h-full rounded-xl overflow-hidden z-30">
+									<iframe :src="media[currentImg].url + (media[currentImg].url.includes('?') ? '&' : '?') + 'autoplay=1'" 
+											class="w-full h-full border-0 absolute inset-0 rounded-xl z-10"
+											allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+											allowfullscreen>
+									</iframe>
+									<div class="absolute inset-0 cursor-pointer bg-transparent z-20"
+										   @click="videoPlaying = false"
+										   title="Нажмите, чтобы остановить видео">
+									</div>
+								</div>
+							</template>
+						</div>
+					</template>
+
 
                     <!-- Кнопки переключения -->
                     <div class="absolute inset-0 flex items-center justify-between px-4 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50">
@@ -1871,14 +1923,14 @@ iframe {
                 
                 <!-- Подсказки и кнопки: видны ТОЛЬКО на десктопе под текстом -->
                 <div class="hidden lg:block space-y-4 pt-2">
-                    <template x-for="(hint, idx) in sec.hints" :key="idx">
-                        <div class="flex items-center gap-3 justify-start text-left mb-3">
-                            <span class="text-2xl flex-shrink-0" x-text="hint.emoji"></span>
-                            <p class="font-bold text-gray-800 text-lg text-left">
-                                <span x-text="hint.title"></span> 
-                                <span class="font-normal text-gray-800 text-lg" x-text="hint.text"></span>
-                                <a x-show="hint.youtubeUrl && hint.youtubeUrl.length > 0" :href="hint.youtubeUrl" target="_blank" class="text-red-600 hover:underline font-bold" x-text="hint.youtubeText"></a>
-                            </p>
+					<template x-for="(hint, idx) in sec.hints" :key="idx">
+                        <div class="flex items-center gap-3 justify-start text-left mb-4">
+                            <span class="text-2xl 4xl:text-5xl flex-shrink-0" x-text="hint.emoji"></span>
+                            <div class="text-gray-800 text-lg lg:text-lg 2xl:text-lg 4xl:text-4xl leading-relaxed">
+                                <strong class="leading-relaxed font-bold text-gray-900" x-text="hint.title + ' '"></strong>
+                                <span class="leading-relaxed font-normal" x-text="hint.text"></span>
+                                <a x-show="hint.youtubeUrl && hint.youtubeUrl.length > 0" :href="hint.youtubeUrl" target="_blank" class="text-red-600 hover:underline font-bold ml-1" x-text="hint.youtubeText"></a>
+                            </div>
                         </div>
                     </template>
 
