@@ -567,7 +567,7 @@ iframe {
     </style>
     
 </head>
-<body :class="(selectedProduct || modalGalleryOpen) ? 'overflow-hidden' : ''" x-data="ReTools" :style="{ fontSize: fontSize + 'px' }">
+<body :class="(selectedProduct || modalGalleryOpen) ? 'overflow-hidden' : ''" x-data="ReTools" >
 
     <!-- AUDIO ELEMENT -->
     <audio id="bgMusic" loop>
@@ -2398,6 +2398,10 @@ iframe {
                     if (this.darkMode) {
                         document.documentElement.classList.add('dark');
                     }
+                    
+                    this.$watch('fontSize', (val) => {
+                        document.documentElement.style.fontSize = val + 'px';
+                    });
                 },
                 
 				openModalGallery(mediaArray, index) {
