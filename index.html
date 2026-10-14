@@ -1534,7 +1534,7 @@ iframe {
 
 
 <!-- КРАСИВОЕ СЛАЙДШОУ В СТИЛЕ МАКОВСКОЙ ЗАСТАВКИ -->
-<section class="relative w-full h-[60vh] lg:h-[75vh] bg-transparent overflow-hidden flex items-center justify-center my-8 rounded-[40px] max-w-7xl mx-auto section-fade-edges"
+<section class="relative w-full h-[calc(95vh-4rem)] bg-transparent overflow-hidden flex items-center justify-center my-8 rounded-[40px] max-w-7xl mx-auto section-fade-edges"
          x-data="{
              slides: [],
              currentIndex: 0,
@@ -1585,7 +1585,6 @@ iframe {
                          extracted.sort(() => Math.random() - 0.5);
                      }
                  }
-
                  this.slides = extracted;
 
                  let intervalTime = (typeof SLIDESHOW_CONFIG !== 'undefined' && SLIDESHOW_CONFIG.slideInterval) ? SLIDESHOW_CONFIG.slideInterval : 4000;
@@ -1604,10 +1603,10 @@ iframe {
     <style>
         @keyframes floatText {
             0% {
-                transform: translate(0, 0) scale(0.98);
+                transform: translate(-50px, 0) scale(0.98);
                 opacity: 0; /* Плавное появление из ниоткуда */
             }
-            40% {
+            30% {
                 opacity: 1.0; /* Полная видимость в начале анимации */
             }
             80% {
@@ -1615,7 +1614,7 @@ iframe {
             }
             100% {
                 /* Возвращены исходные направления и расстояния движения */
-                transform: translate(100px, 18px) scale(1.02);
+                transform: translate(50px, -26px) scale(1.02);
                 opacity: 0; /* Плавное растворение перед переключением слайда */
             }
         }
@@ -1627,11 +1626,10 @@ iframe {
         /* Мягкое растворение краев ВСЕЙ СЕКЦИИ в фон страницы */
         .section-fade-edges {
             mask-image: linear-gradient(to bottom, transparent 0%, black 22%, black 78%, transparent 100%), linear-gradient(to right, transparent 0%, black 22%, black 78%, transparent 100%);
-            -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 22%, black 78%, transparent 100%), linear-gradient(to right, transparent 0%, black 22%, black 78%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 12%, black 78%, transparent 100%), linear-gradient(to right, transparent 0%, black 22%, black 78%, transparent 100%);
             mask-composite: intersect;
             -webkit-mask-composite: source-in;
         }
-
     </style>
 
     <!-- Рендер всех слайдов -->
@@ -1650,10 +1648,10 @@ iframe {
             
 
 
-            <!-- Текст ближе к нижней части экрана -->
+<!-- Текст ближе к нижней части экрана с обводкой и тенью -->
             <div class="absolute inset-0 flex items-end justify-center p-8 pb-12 lg:pb-16 pointer-events-none overflow-hidden">
-                <h2 class="animate-floating-text text-3xl lg:text-6xl font-black text-white/80 tracking-wider text-center select-none"
-                    style="filter: drop-shadow(0 0 10px rgba(0,0,0,1)) drop-shadow(0 0 30px rgba(0,0,0,1));"
+                <h2 class="animate-floating-text text-3xl lg:text-6xl font-black text-white/90 tracking-wider text-center select-none"
+                    style="-webkit-text-stroke: 2px black; filter: drop-shadow(0 0 10px rgba(0,0,0,1)) drop-shadow(0 0 30px rgba(0,0,0,1));"
                     x-text="slide.title"
                     x-show="currentIndex === index"
                     x-transition:enter="transition ease-out duration-700"
