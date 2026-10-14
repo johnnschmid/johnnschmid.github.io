@@ -1,5 +1,13 @@
 // products.js
 
+// Настройки слайдшоу
+const SLIDESHOW_CONFIG = {
+    showOnHome: true,          // Показывать ли слайдшоу на главной (true/false)
+    albumsOrder: 'random', // 'sequential' (последовательно) или 'random' (рандомно)
+    imagesOrder: 'random', // 'sequential' (последовательно) или 'random' (рандомно)
+    slideInterval: 5000        // Скорость смены картинок в миллисекундах (например, 4000 = 4 секунды)
+};
+
 const PRODUCTS_DATA = [
     { 
         id: 1, 
@@ -258,7 +266,7 @@ const SECTIONS_DATA = [
             { id: 'spool', label: 'Spool' },
             { id: 'printing', label: 'Print' }
         ],
-        title: 'About me',
+        title: 'About',
 		p1: 'Hi everyone! My name is Johannes Schmid. I am a full-stack electronics developer holding a Master\'s degree in Multichannel Telecommunication Systems from the Ural State Technical University of Telecommunications and Informatics.',
 		p2: 'With extensive experience in developing technical rehabilitation aids for people with disabilities. Im very experienced in embedded systems, firmware (STM32, Linux/Armbian, Android), PCB design (Altium Designer, KiCad), and 3D modeling (SolidWorks, FreeCad), I build innovative solutions that merge hardware and software seamlessly.',
     
@@ -293,6 +301,8 @@ const SECTIONS_DATA = [
             { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNe_4MkkcFdYtTsz-bmp9h5Us4Dc1YZEbShd8tlAgs6ZvWqBLZo2yImj0Tt6YX_3Fs4Y2z7YKOoNhOmu17og7QhmoHCjjKg3mIpyFSzY8s9nEMZB7yOeamsx3my26I18WDx_TKTSUsX70VA_jyv6xm1=w1448-h1086-s-no?authuser=1' },
             { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMa8CesIEpP62fioyUSlx2HusbOT0SIyNVyifm-RT_eAHqnQCYb2Xx-vQ1JqqIo2rIjL6ile0PRagnv4LZrJ5R8rJGBnNF_em6l0RmlzqX2eqd3Y8euBciokb1nGV8Lgvz_Wc0zBtzzUkity8WIZUQe=w1086-h1448-s-no?authuser=1' },
             { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMPMjVFjeTQhKKHsiTYoZulXy1wQqUNeM2alF7KLjmps5Ur6HLa9ovWYUtoDUR8FaCfTDKoGI6ZD3CrcOup-mYKMW_y59bhfKHrVorgZ7hNZHyf5i607zN2Uy3gPIz3OW95Viq2-C5H-H7WhqTh55dE=w3579-h2013-s-no?authuser=1' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNsGgV7C0Q0a1bl8vRrgFSuMOaQYW-7XDA4h1V5TeDkjiiGb17EQWiv3vnVCngLnSs41_gf6LkCQ0dpmBlc9q-fMCtYxiQ264CaRiYZjuDQ5yKTTcjJ2-a8zVzgN5PXb9OsCtGVSpF0HaFOH9MF6wpj=w1086-h1448-s-no?authuser=1' },
+            
             { type: 'pdf', url: 'https://drive.usercontent.google.com/download?export=download&confirm=t&id=1ekCvtUsUVLTkgrTOHB7Qy2cqHE2R5Dab', title: 'Download CV (PDF)' },
             //{ type: 'zip', url: 'https://example.com/models.zip', title: 'Download 3D Models (ZIP)' }
         ]
@@ -352,7 +362,7 @@ const SECTIONS_DATA = [
             { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczM5q7Vb73DAjlDXVzkPN2U3sOrcCl0uZkOvfRzoUR7M8cbzS7HOeCCf2Ojlj18D_88iaoOY2lR6Gg0bsj5Xim97SvtYf-asbjS0gBTQ35c0uUp5btOvZMvOaO2md_SoyfRZshu7aonrXKlHxz_ydUk=w1201-h993-s-no?authuser=0' },			
             { type: 'video', url: 'https://www.youtube.com/embed/ymG4sdoDH3c' },
             { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMajsOOUNvj3ylUR2Rq6C250YDWKEZwF-yP_tIhVLd4jZwYn16VqOM5oK4klKnMRE0f8mrSf5D0C0mh3yLApbhti8NayVBFi_DV-XJz2HwLlecokk2qOavro_G8tJaX3LqFJ2wWM70W1xg2L8NSE4so=w1392-h1200-s-no?authuser=0' },
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMUza5zOwyDDewxsqSBPGtAF5k5gr5wcpySktigAYj5pzMhk86tubvlW_DIYmAiuTFnldQvFaVRakSDpTVEc5vi4T5da8U1Ax7rjxwUeSJQK8RUsVPNSaVZpk4j8EgFZtjqvNn1Gqo5vaCtowV2KrJ0=w2757-h1001-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPUdmve7NyzZid149LHk8yQQSmtVBqXth2lPZJPAPKQKf3oGLpZlt5IOlqHxM0ggdQo6A-WiiCgaM3TnFtZ_dNAsJNQX-SYa3gx7qCkS1akf_0wjxslwt9e6ldjXJ9DEFbEI8DdZduaYtURn5E7Y3He=w1920-h1080-s-no?authuser=0' },
             { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNnaQcdxYmvovBnOlUc7td7HkBe0B2K-Gkgp1mJY4NFz8ow0A0CFN9VGWZKahhbUrXwF7Kxij4NVYNp4TnpbQaz8LoyJTAk_NgTlzkoMh4VaSDDd5hIk-CmpuQAqWwbpvUhZq-QYnAM8NRLzg8TqNOD=w1433-h733-s-no?authuser=0' },
             { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPBgiV6GHKFfN9aHh9plAubV9hBIi9cgtsooJl_Yc4Ztce1znFFvEp4nY46-k5Pj678VkbQG6zTNwO0VVsaNL6IaZAiTZIinD9BchxUsM-D_y2o4G4d_wIlHvwLEvXTcnGOTh7Qwb6jNbjidavOpTpy=w1924-h1080-s-no?authuser=0' },
             { type: 'pdf', url: 'https://drive.usercontent.google.com/download?export=download&confirm=t&id=1YMHcb2ZrTu7014qup8AXLSSAJnhL44xX', title: 'Download Broshure (PDF)' },
@@ -632,7 +642,7 @@ const SECTIONS_DATA = [
 			{
 				emoji: '🔋',
 				title: 'Power & Storage:',
-				text: 'Contains 5500mAh LiPo battery, USB Tye-C and Wireless Charging capability. Provides up to 24 hours of continuous operation on a single battery charge, 8GB of internal storage, and expandable support for SD/SDHC/SDXC memory cards up to 64GB.',
+				text: 'Contains 5500mAh LiPo battery, USB Tye-C and Wireless Charging capability. Provides up to 4 hours of continuous operation on a single battery charge, 64GB of internal storage, and expandable support for SD/SDHC/SDXC memory cards up to 64GB.',
 				youtubeUrl: '',
 				youtubeText: ''
 			}
