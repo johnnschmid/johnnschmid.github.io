@@ -323,18 +323,31 @@ iframe {
 
 /* Универсальная сетка для контента внутри секции */
 .custom-grid {
-    max-width: 80rem;       /* max-w-7xl */
+    max-width: 80rem;       /* Базовое ограничение для обычных экранов */
     margin-left: auto;
     margin-right: auto;
     display: grid;
-    gap: 1.5rem;            /* gap-6 для мобилок (уменьшенное расстояние) */
+    gap: 1.5rem;            /* gap-6 для мобилок */
 }
 
 @media (min-width: 1024px) {
     .custom-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr)); /* md:grid-cols-2 */
-        gap: 2.5rem;        /* md:gap-10 (расстояние между медиа и текстом на ПК) */
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 2.5rem;
         align-items: center;
+    }
+}
+
+/* Автоматическое расширение секций на 2K / 4K мониторах */
+@media (min-width: 1536px) {
+    .custom-grid {
+        max-width: 82vw !important; /* Занимает 92% ширины большого экрана */
+    }
+}
+
+@media (min-width: 2000px) {
+    .custom-grid {
+        max-width: 1750px !important; /* Комфортный максимум для 4K, чтобы контент не растягивался слишком сильно */
     }
 }
 
@@ -484,7 +497,22 @@ iframe {
                 //-webkit-text-stroke: 2.5px black;
             }
         }
-
+/* Принудительное расширение всех контейнеров с max-w-7xl на больших экранах */
+    .max-w-7xl {
+        max-width: 88rem !important; /* ~1400px для обычных экранов */
+    }
+    @media (min-width: 1536px) {
+        .max-w-7xl {
+            max-width: 92vw !important; /* На 2K/4K мониторах сайт займет 92% ширины экрана */
+            padding-left: 2rem;
+            padding-right: 2rem;
+        }
+    }
+    @media (min-width: 2500px) {
+        .max-w-7xl {
+            max-width: 2400px !important; /* Ограничение для ультрашироких 4K-мониторов, чтобы строки не были бесконечными */
+        }
+    }
     </style>
     
 </head>
@@ -1661,7 +1689,7 @@ iframe {
 <!-- Текст с густой тенью-обводкой вместо text-stroke -->
             <div class="absolute inset-0 flex items-end justify-center p-8 pb-12 lg:pb-16 pointer-events-none overflow-hidden">
                 <h2 class="animate-floating-text text-4xl lg:text-6xl font-black text-white tracking-wider text-center select-none"
-                    style="filter:  drop-shadow(0 0 2px rgba(0,0,0,1)) drop-shadow(0 0 2px rgba(0,0,0,1)) drop-shadow(0 0 2px rgba(0,0,0,1));"
+                    style="filter:  drop-shadow(0 0 1px rgba(0,0,0,1)) drop-shadow(0 0 1px rgba(0,0,0,1)) drop-shadow(0 0 1px rgba(0,0,0,1)) drop-shadow(0 0 1px rgba(0,0,0,1)) drop-shadow(0 0 2px rgba(0,0,0,1));"
                     x-text="slide.title"
                     x-show="currentIndex === index"
                     x-transition:enter="transition ease-out duration-700"
