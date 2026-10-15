@@ -1635,7 +1635,7 @@ iframe {
 
 
 <!-- КРАСИВОЕ СЛАЙДШОУ В СТИЛЕ МАКОВСКОЙ ЗАСТАВКИ -->
-<section id="slideshow" class="relative w-full h-[calc(95dvh-4rem)] bg-transparent overflow-hidden flex items-center justify-center my-8 rounded-[40px] max-w-7xl mx-auto section-fade-edges"
+<section id="slideshow" class="relative w-full h-[calc(95dvh-4rem)] bg-transparent overflow-hidden flex items-center justify-center my-8 rounded-[40px] max-w-7xl mx-auto"
          x-data="{
              slides: [],
              currentIndex: 0,
@@ -1718,12 +1718,12 @@ iframe {
             animation: floatText 5s ease-in-out infinite alternate;
         }
 
-        .clean-fade-mask {
-            mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%),
-                        linear-gradient(to bottom, transparent 0%, black 5%, black 95%, transparent 100%);
+		.clean-fade-mask {
+            mask-image: linear-gradient(to right, transparent 0px, black 60px, black calc(100% - 60px), transparent 100%),
+                        linear-gradient(to bottom, transparent 0px, black 60px, black calc(100% - 60px), transparent 100%);
             mask-composite: intersect;
-            -webkit-mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%),
-                                linear-gradient(to bottom, transparent 0%, black 5%, black 95%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to right, transparent 0px, black 60px, black calc(100% - 60px), transparent 100%),
+                                linear-gradient(to bottom, transparent 0px, black 60px, black calc(100% - 60px), transparent 100%);
             -webkit-mask-composite: source-in;
         }
         
@@ -1741,11 +1741,30 @@ iframe {
              :class="currentIndex === index ? 'opacity-100 z-10' : 'opacity-0 z-0'">
 
             <!-- Картинка со сжатым под пропорции контейнером и плавной маской -->
+            
+            <!--
             <img :src="slide.url" 
                  :key="slide.url + index"
                  @error="$el.src = slide.url"
                  class="max-w-full max-h-full object-contain transition-transform duration-[5000ms] ease-out clean-fade-mask relative z-10"
                  :style="currentIndex === index ? 'transform: scale(1.20);' : 'transform: scale(1.15);'">
+			-->
+
+
+            <!-- Картинка во весь экран без рамок внутри -->
+            <!--
+            <img :src="slide.url" 
+                 loading="lazy"
+                 class="relative w-full h-full object-cover transition-transform duration-[5000ms] ease-out scale-100"
+                 :class="currentIndex === index ? 'scale-110' : 'scale-100'">
+			-->
+			
+			<img :src="slide.url" 
+				 :key="slide.url + index"
+				 @error="$el.src = slide.url"
+				 class="max-w-full max-h-full object-contain relative z-10 transition-transform ease-out clean-fade-mask will-change-transform"
+				 style="transition-duration: 5000ms;"
+				 :class="currentIndex === index ? 'scale-100' : 'scale-95'">
 
 			<div class="absolute inset-0 flex items-end justify-center p-8 pb-12 lg:pb-16 pointer-events-none overflow-hidden z-30">
                 <h2 class="animate-floating-text text-4xl lg:text-6xl font-black tracking-wider text-center select-none"
