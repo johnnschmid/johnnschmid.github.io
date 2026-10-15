@@ -420,7 +420,7 @@ const SECTIONS_DATA = [
 			{
 				emoji: '🔋',
 				title: 'Power & Storage:',
-				text: 'Contains 5500mAh LiPo battery, USB Tye-C and Wireless Charging capability. Provides up to 24 hours of continuous operation on a single battery charge, 8GB of internal storage, and expandable support for SD/SDHC/SDXC memory cards up to 64GB.',
+				text: 'Contains 5500mAh LiPo battery, USB Tye-C and Wireless Charging capability. Provides up to 24 hours of continuous operation on a single battery charge, 16GB of internal storage, and expandable support for SD/SDHC/SDXC memory cards up to 64GB.',
 				youtubeUrl: '',
 				youtubeText: ''
 			}
@@ -441,8 +441,164 @@ const SECTIONS_DATA = [
             //{ type: 'zip', url: 'https://example.com/models.zip', title: 'Download 3D Models (ZIP)' }
         ]
     },
+    
+    
+    
     { 
         id: 4,
+        bgClass: 'bg-white', // 'bg-white' или 'bg-gray-100'
+        imageLeft: false,
+        aspectClass: 'aspect-[4/4]',
+        showSteps: false,
+        currentStep: 'tape',
+        steps: [
+            { id: 'bottle', label: 'Bottle' },
+            { id: 'tape', label: 'Tape' },
+            { id: 'filament', label: 'Filament', short: 'Fil.' },
+            { id: 'join', label: 'Joining', short: 'Join' },
+            { id: 'spool', label: 'Spool' },
+            { id: 'printing', label: 'Print' }
+        ],
+		title: 'Screenless Smartphone',
+		p1: 'The Screenless Smartphone is an advanced specialized device engineered specifically for blind and visually impaired individuals. It delivers a seamless, fully voice-controlled navigation experience designed to provide intuitive access to talking books, diverse music collections, live radio broadcasts, podcasts, and essential online internet services.',
+		p2: 'Featuring a fully voiced interactive menu where every single action is accompanied by clear spoken prompts, it also includes a built-in voice recorder and a convenient bookmarking function. Offering exceptional connectivity, long-lasting battery performance, and extensive media compatibility, it empowers users with complete independence in daily learning, reading, and entertainment.',
+
+		hints: [
+			{
+				emoji: '📚',
+				title: 'Formats & Reading:',
+				text: 'Supports DAISY talking books, all audio formats(mp3, aac, ogg), as well as text files (TXT, DOCX, EPUB, PDF) processed smoothly via an integrated text-to-speech synthesizer.',
+				youtubeUrl: '',
+				youtubeText: ''
+			},
+			{
+				emoji: '🌐',
+				title: 'Connectivity & Online:',
+				text: 'Equipped with built-in 4G LTE (featuring a SIM card slot for cellular calls and internet access), Wi-Fi (2.4 GHz), and Bluetooth 4.2 for wireless headphones or speakers.',
+				youtubeUrl: '',
+				youtubeText: ''
+			},
+			{
+				emoji: '🔋',
+				title: 'Power & Storage:',
+				text: 'Contains 5500mAh LiPo battery, USB Tye-C and Wireless Charging capability. Provides up to 24 hours of continuous operation on a single battery charge, 16GB of internal storage, and expandable support for SD/SDHC/SDXC memory cards up to 64GB.',
+				youtubeUrl: '',
+				youtubeText: ''
+			}
+		],
+        
+        items: [
+
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPFTXWtu9jnvi0_vEZSOVqBO_MzwmcNnkHUWezLgKfNl7elPH01JeBi6DPxd7ZCEWHrTkiHj7oC_jVcaBS-Ix-ia5jtMRWE9hqVCSoVt_I6gqdxvPrXuh20DvKE5LoAa4wKdCuKsIUyATdd2egTCaRB=w1300-h800-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPuxYnFp9ahPRlHcogBUUSr2cgDghWUWj8uRi2btBM4ofCh-CiJCYy9x0sxAbB-Ez174A3-jbCBtmPf2PKXegXmGN7Qo7AOJxswIYQMui3fGlR3jUThwPD91Ar3s7rBYoMqWJRKdvpsSvUsII8y-WSP=w1300-h800-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczOnrbBQMt9j8lIfSKnfOzxbTuSjgbSIxOqXTKyz0Lvd3kkOggu65fyg22sczvDbwpwpkc8D0IYm6XrpLVwz4Ujo-__cXQK-jtdHkC8mpTJeaMV8sNNsDUeSc0uFk-TaQv0qF9TYXzHnc1m6-kDbGiIs=w3629-h2013-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczM-cPDWWbnAVelaxrsvzpfjJzkxh-Zcrl3YQidkWE2RTAsDARgwwSeSe73JyUP72gE8HQ9Dx6hRGkM3ynOKpeat5dwqUoBn46TVBiFs0_Tp44cqmqQSYHI4eiw_WrDjw4UknF1nD86oHLnVpKc3euny=w3629-h2013-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPPGCPTpEEkqP0vrb0Ph3FnXhhrWzKu53JN6-d8gJFTxYuBlgzYtjfVRNMZUd57uMYRk8P93Z1sklAG3__hu3sZM7SSYhmMTTe2O5RVkK_UC8yOoTW0P0vLNEyyH2dCA_0jyf_ZAW3Qf8NPtgy6uF4t=w3629-h2013-s-no?authuser=0' },
+            
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNJ584hq2-gWcMgJL4HA4Q-FA4S09BkzkBUsrauXE5h50O1GaAqMtDXQOzy34EuInmVEJpQopb5sZoQA4ClKzvzbadh9Waput_-IyEAXyznOoNIsqyklborEmkcWjnlzUGQlIKBDCs_5bLfyaC-RjZD=w3629-h2013-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczONiD-a4ueD5_0ZpwhRi9VtPZkA5LqjCW9KzksfTZDJkJySCpUbORy4S4kvOXblYWcZAZpKmnBTlOgbf2ATmgG3adA9dqngj3Uh7WCCVTLkZYVO6Bhl8lIyEX2U0HE6gwdm6N-zaGvccqUVCRjZnTSS=w3629-h2013-s-no?authuser=0' },            
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczOuPRldyENJYqLKQ5CuZc4FuZ9RkuesJoNmS4W-nRp2WiKiyNsk0QaD-3gIUTq1uj9zIYSCH0ih0qk37ul3cYKabILHtyG4-SmZzgklNrFBeuxZLqZT-o2KNljwG7qtVIzNTQgqmXaAsGnVJiPmIsnv=w3629-h2013-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNNH_HznD1uOtS2Q9Rxs3pbBSF-PwQ2vLaS6hr2GSUAVVIRxOvSnm4FcysFYSx5wREzpjyy7KXKUYlFtYdQJM2zJ1__VYltpQ8MEgebTXgZGqgZqjo63bTaFrA1EmSV0AwcLbiqSOiKjcILpq_645af=w2029-h1141-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPqd1a9yfv_YrnWMqkOXrXkJgSbvjAZy9MwH3kXtxQzVxvw-7ddLwerTkMg05x69pTuR9VQJyJrxl0V-LRR6Kgl3gVQsUjZXx9IfVOd0xFb1npxqvM4Dyb99NtY-FgfuXpzBx3Kph7wznh-ujYORrfa=w1889-h1089-s-no?authuser=0' },
+
+
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMY25IibjH8P6pHvJVgvRkG9V1jss1xjkZOLsKD8XqUVcdtBJdpgcqwjGYFNWDYV6i2Z-LLJ0bWPZkzc-tAWjCa8GFGd1afWS_39N6aXNLHz7NQXD2HUD66VR4Dd_Ttf6X8wbdnu587NhLZgGQ8ZxE-=w1561-h1541-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczM9hqghCSxBnP9BDdUXFMYGF-m28ROHbRDimhBtpPc3Ujvfl_eONqz-iY23-knwVGWxE3sVvcvBjOXzW7Av2_u_cD4M3Ik1QXJbN4sT2lG7qrZsicSfNRE5Pgc4YQDyXY3X85cQY81dwQ31zCV0fn92=w1553-h1697-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMBuyGwCSu90MgejVbNpseJdY_lB2L4W0bXsjEdwFz8DmDRzVhmPQGZ4sYZHjQDfrP-bftn8v0aBxGfVWELaTRkeoCVznvIEMotmikvys_HMaXHv01cl7ZBk0SwLh-YLvVPJZsNs8iD81YYbh6LhhVz=w2661-h997-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczO4vOl7y7x9p3FV_ox7oIC9n4K2ATm1x2s6guyTU_kHfNWCOEeEY56Y2hldSNxdD3wy3VPqcA0_QkRObdAHBoE4BghrCaJY5HnANrxpyWmOj6aITDJor8VnTBl2N8MZ1duEc-plSEwSUGyGDIyeqxaG=w2645-h1053-s-no?authuser=0' },
+
+
+
+                        
+            //{ type: 'video', url: 'https://dostupsreda.ru/media/files/materials/%D0%AD%D0%A0%D0%92%D0%A3_%D0%A1%D0%BE%D0%BA%D0%BE%D0%BB-1.mp4' },
+            //{ type: 'pdf', url: 'https://example.com/manual.pdf', title: 'Download User Manual (PDF)' },
+            //{ type: 'zip', url: 'https://example.com/models.zip', title: 'Download 3D Models (ZIP)' }
+        ]
+    },    
+    
+    
+    
+
+
+
+
+    { 
+        id: 5,
+        bgClass: 'bg-gray-100', // 'bg-white' или 'bg-gray-100'
+        imageLeft: true,
+        aspectClass: 'aspect-[4/4]',
+        showSteps: false,
+        currentStep: 'tape',
+        steps: [
+            { id: 'bottle', label: 'Bottle' },
+            { id: 'tape', label: 'Tape' },
+            { id: 'filament', label: 'Filament', short: 'Fil.' },
+            { id: 'join', label: 'Joining', short: 'Join' },
+            { id: 'spool', label: 'Spool' },
+            { id: 'printing', label: 'Print' }
+        ],
+		title: 'Pocket Audiobook Reader',
+		p1: 'The Pocket Audiobook Reader is an advanced specialized device engineered specifically for blind and visually impaired individuals. It delivers a seamless, fully voice-controlled navigation experience designed to provide intuitive access to talking books, diverse music collections, live radio broadcasts, podcasts, and essential online internet services.',
+		p2: 'Featuring a fully voiced interactive menu where every single action is accompanied by clear spoken prompts, it also includes a built-in voice recorder and a convenient bookmarking function. Offering exceptional connectivity, long-lasting battery performance, and extensive media compatibility, it empowers users with complete independence in daily learning, reading, and entertainment.',
+
+		hints: [
+			{
+				emoji: '📚',
+				title: 'Formats & Reading:',
+				text: 'Supports DAISY talking books, all audio formats(mp3, aac, ogg), as well as text files (TXT, DOCX, EPUB, PDF) processed smoothly via an integrated text-to-speech synthesizer.',
+				youtubeUrl: '',
+				youtubeText: ''
+			},
+			{
+				emoji: '🌐',
+				title: 'Connectivity & Online:',
+				text: 'Equipped with built-in Wi-Fi (2.4 GHz), and Bluetooth 4.0 for wireless headphones or speakers.',
+				youtubeUrl: '',
+				youtubeText: ''
+			},
+			{
+				emoji: '🔋',
+				title: 'Power & Storage:',
+				text: 'Contains 3500mAh LiPo battery, USB Tye-C and Wireless Charging capability. Provides up to 24 hours of continuous operation on a single battery charge, 8GB of internal storage, and expandable support for SD/SDHC/SDXC memory cards up to 64GB.',
+				youtubeUrl: '',
+				youtubeText: ''
+			}
+		],
+        
+        items: [
+
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMkDe_3vGT3m-rTb7LgbESvtt-zg3BA5g3tKqfobk4CtTEx4hDLkRMqMkIQ8vaEmWcR3TwfSlsUj_sjRDdnwjV5EBsAHSeL9n7uyJ3aD3hADgdkYD9YnxxBMuMzG3-JoCAqBFHxWbKe4b8fVuERGgBo=w1279-h832-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczO_g4IoUN3Pfi4KJsdzQ6G-8Zgq6345659GhMEtIPGEYJMeLIQNF4kFUcDnTZyfqQATThgMwRXTQjqtbfBYrDq3dXcfaak3hCzpIFEvqYLBMDLUNpm2fSVwWTR0ySsXRB67lnHm5P5-Ry0JceMUYMs-=w3629-h2013-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNUcTny5LkZiAy5OSiv2UwScZQwcsKHLBINGZGLGdK8XREUMKG8TYnYkIaDeDaL_D2oUiaAqZIrxYtyMNoEwCJvY7yAyTfEWN-7uMppBXX8IopzqfQLBURgeTya296hSM-qNZeViu3atuFM_9i4BvEs=w3629-h2013-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczO9ae3pdj2qu7rsMtAqqQWCRwe3YveMliPSVmr_JQ8oLmo_5nCtymByt96EKhIa2-16_M1l7wYI-6_sUGxp_eJdj2UATqpfh2c013maSs2ju1zGL_cZ66KiHhpKT9PmXuCRcN5PmAADlPn8ogbNNfpL=w3629-h2013-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczODyAo57HFApBjtCkkCOWOOf1zsEkWrD20xU-tEEPfYOGrYUIkmvoeG1P6OvI9LKUkbB3lpVg5DxCCFebQU1nRoL8cChM0QJp7pUZkZzK7rVQKHJpMuWvAByuyK00ZRsgPiduu99JTxCgVSUmxV5D73=w3629-h2013-s-no?authuser=0' },
+            
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNnBzQO357QxZhfuizFtpQYkjDj-0wItlGNfhVxGp_s2ssVYXhCZoXaWu2r69CaAVjHmnLPXY6ck26LQGe_Di_1C72pw1BWLXSKfBpn_-SCkACDJGRVIEcz7PYkyky0-iyGTvkMfn6YuQg2y45EuFZz=w3629-h2013-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNL6ALsfIXp5Je8hBbbyzg-2XcH0evpgncQnW7F2KYTKG_uhug4tj9bRXMQlflQqxw6b2eYQ9lOsYU1qgjXQCXrdHh-XbrgRVEyT4RmVHVPAdetpU50qcfwBO2dryV-Srb6YAM5up_14pIUA5V42PG4=w921-h1753-s-no?authuser=0' },            
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNbz6QmSS3XYA61vX6SKngrYls0WGthPexJyjF5dibSlmAFBtH4Zx49zkp8FQQIeyuBCmLtHB6KWSSBmRoF7XADIA-ivHjoKbjyXWmYnLl7w2lihZIBL4fBwyzy_vf7vEhlWIAqAZVH5wKOSALDIRsf=w961-h1745-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNBnRz5WRGG2TEahVx1XNo841go8b-zOUl7BS3YQCxUzw7mdQ5Ta3U7xK-JwnyJPabJ4YPCMQKGF9_rwcL6lJktWVWD8UGbBbDrmVmL3drPucfJWwEtC68zPneJsI7o-J71xuvnSBOnreGmTIzNricL=w1369-h1637-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczM6djZwqilrlM7lVs6pvNgyrvt0Kd4Zx2KToWl4eX19MvgEfi-dfR8g8h7X_cGNE8w0lnv7WIchjUmhfoydl3b8nEVTj61grAzX_eNt65h5IURIcD8RT5cPjt9wxtDVIJfgFw4c4IWk8Jns2BQEsRoB=w829-h1713-s-no?authuser=0' },
+
+
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPqqwrvOpLKqyMy1OpQXLTLiLK03cZD6KKYzgInPLVhheyJx_vmxdFl0rd4mfBKBxvFvWOoBJSzPD2Xk3ezijOFNCoiLEh-Os-DVBe8PErT6ZLp00DTW8V5P6a8bQulI1tOcFR4lLrJ1KPosgFPbJx8=w1221-h1465-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNtBivlq5LC-p_IeVcxRM--nW4Scifzf8_SJJ8GjElPyK4GPW7RGyer4QgtIeZ4-k3rUL1U4xSibvfaFa2zHgYjxR2Ebqo2n0i8ax8inTZ-TZTm9fhL8odvNu3obEqPlbCZxwIyN60d8HpJ8o973cYQ=w729-h1781-s-no?authuser=0' },
+
+
+                        
+            //{ type: 'video', url: 'https://dostupsreda.ru/media/files/materials/%D0%AD%D0%A0%D0%92%D0%A3_%D0%A1%D0%BE%D0%BA%D0%BE%D0%BB-1.mp4' },
+            //{ type: 'pdf', url: 'https://example.com/manual.pdf', title: 'Download User Manual (PDF)' },
+            //{ type: 'zip', url: 'https://example.com/models.zip', title: 'Download 3D Models (ZIP)' }
+        ]
+    },    
+    
+    
+    
+    
+    
+    
+    
+    { 
+        id: 6,
         bgClass: 'bg-white', // 'bg-white' или 'bg-gray-100'
         imageLeft: false,
         aspectClass: 'aspect-[4/4]',
@@ -497,6 +653,21 @@ const SECTIONS_DATA = [
             { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNcnKJo2dEO6TYn1e-0tRW-DdqJtSG1_qY1Rya-qICmwhwOeblwnqJu2UFs85BBF7kXkguevCfi_X2zHsF8Y3Y8gB2aJa6pIRQGD06ZwghSiAy6u-Nz7BdKhRCgKz2stmATI5n_hoHl6EuOmceOguJs=w3629-h2013-s-no?authuser=0' },
             { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPvNJ8avrJq0x2HFj35KTSETSc4v_QVlnBHeiTLoxwGegwGSkR8HiV6TBbyWy7aY0-xW0P1O1GEQlSFHS3C3AI6D7lWfMK731mYM1o9-36yddwkwywzhZR4zcrbPc_U5kXB9ScGwpNMINzOrqQ0vhwZ=w3629-h2013-s-no?authuser=0' },
             { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMSB_0Be2R_jhpIHfaJbtBEipPnVkXGoDWZlFON6Te7ozH5_IRWI7TSETRejh-x0tIeami14z6ZfH91MZm9EPbWa-hkahIYdQbFY_rQQvHwF1EZUEMs4esweaDSBrvUlDC7uqABc8k1zUaUQL3iL9ji=w3629-h2013-s-no?authuser=0' },
+
+
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPmxTsuY_GG8Shc1QbOhCSvkrwQNScHKRiRAjDyym2dAc6GLyRoHZ4tY-9yjVmfaCKUNqVMLhpr9Zt4Xd84DN4Mk1QYebsyHvvvoU55GBpqDYjxhQrWfbzYKax30I0-oP837hG3OJ22t3W1zbRvUfDp=w1383-h927-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPtkBA2CIk-mVJASxoGXZqQ7O7JHuBNR2zOPOpgw8qxvZH5QfuJs2p7N76vFEBZYgH2fm6xvsn5DAFfD3s2RLPAtG7I_jmgY6o7hevpUdOIW9IxguI3SmTBX-h-8TjhJRgchpiu5_lwJg1TqLkQ-BJ9=w3629-h2013-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMls9T78gGntgAA4_wiZHh4YMeyYh_3__DSSB2eYR-8Um7jtXqA9VqxGRuaWAq0kqJzUI3KHSPRO_URU1oLxjCEHbwUFUnesiunRaUlZx4gfnaMd3UpyPJSiS_Bm0SThty_ixZ4uGAhRqtPcp0TiDCw=w3629-h2013-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczOyEv2yRjmoXcrKyc0zdVeRooBy9Z4uwn9KwOe2QxbYlmwrgiiro_OcqZIeGs2dkuuG2Yz3HnX0X0K7Pb9hSRZlJty5i3DmyrwYG63SJibYRVpeAqpgop5QIN5LYVgAvB0A7qMUbJwAnzFdNZMdLXDt=w3629-h2013-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNuzmhFPqshm3Z7WV1Nz1FQIn4UBVICiS7C2Z9huJH15niXQDWPbaY9x7dafGW7HybPEMhMYdpoSwMotYf4vgL_m3Z2faHiUcmfEvM-Ad_a0wY49mSEektfC9M8IiXNG_gZMhoE9h_qyUMLUWeKOsv3=w3629-h2013-s-no?authuser=0' },         
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNQzbLNjqWbrZJtck69gkVI5038jXsJ2psGOEUFsKvpuYCow4HRXfOS-I8Ud1VYvl4H4-9BznSQx42hNArfHaJDX7Y4CKcOWAvAZiuenEqsaEhKlzi8_KK1Ex5nR4VevhJyAdAFIMIRJZqk2Vbb9YwN=w3629-h2013-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczP_qeUD1O1Uoh_kzH7_1kOCjhtx_20pfPWDFj58Af3-7Gfzhb7XAvq7mJ7e14UM68fkfLc7f3TAQLSR_p7UWmP_HwWMotkP_lcYDIrZbfmvcrAXmJd7rVw96zOV713UPLv8ECbole7QlikUEzJYOphq=w3629-h2013-s-no?authuser=0' },            
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczOkIJerVb2rTZa1-SMClJVCjnPFQ6P81XH9Iv4DPvpnKD11ulsgTfhArO5U-zXY98o93hl4E56DtbGq732yNjpm7eTntfk235FsaxPXpQfOTRc2Ql0SY3JsUagEHWJ29CwZVyjU6_NqugqgmRdLYNwo=w3629-h2013-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczONZgchlgAFtfec2fBJkIPdTCUeBqyBV7LrySD4JC6ik_M5s0SCczwdgfoRaQn0DqkZZecWuMrUFf7JoXHLOHqKVIdx3d4KMea0gQVKKRsc2F6h6kWhXgXV756cCK6R9w_ziqErwWGH6GSWxKGAJHzZ=w3629-h2013-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMUmQDnvCS39TMF-2B7h8SN4rvsKOblSrhTz9ymUgLsZNVdhil1fLMY5YPILzPcp-hebvZg0M65dqNnpbHJd1MkLT6iMK_wls3Q-IaWkH-mKmxqBlzfx8wmoa1GW4U7pukEUvyAVhm3z5WdbwQOh5ts=w3629-h2013-s-no?authuser=0' },
+			{ type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczOSfYoPPDihVj2-UiM8cx6lfIslVqW3Iu0ESoA_7SbMlbBJfnjb_kdxCaoexVklajeHNNyUVI_XpEz--7uLJaAO11LJ4ySBL4izNERN2hqPDo4uRxjJJeeXTIsiaCiO_voABvX-2P_ja8HY_YaWpP74=w3629-h2013-s-no?authuser=0' },
+
+
                         
             { type: 'video', url: 'https://dostupsreda.ru/media/files/materials/%D0%AD%D0%A0%D0%92%D0%A3_%D0%A1%D0%BE%D0%BA%D0%BE%D0%BB-1.mp4' },
             //{ type: 'pdf', url: 'https://example.com/manual.pdf', title: 'Download User Manual (PDF)' },
@@ -504,7 +675,7 @@ const SECTIONS_DATA = [
         ]
     },
     { 
-        id: 5,
+        id: 7,
         bgClass: 'bg-gray-100',
         imageLeft: true,
         aspectClass: 'aspect-[4/4]',
@@ -563,7 +734,7 @@ const SECTIONS_DATA = [
         ]
     },
     { 
-        id: 6,
+        id: 8,
         bgClass: 'bg-white',
         imageLeft: false,
         aspectClass: 'aspect-[4/4]',
@@ -606,7 +777,7 @@ const SECTIONS_DATA = [
 		],
         
         items: [
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNooquinKNtMQYyFF_bW0oxa7pVnAkqy9al4vPSvKEbpbXR2eLY5N7X--M_xEoTeIj6qD5UZWUFC_Fn2U5lgqNCFNf8VY_vzUQsCBwXzdAhaPaPTs-Fx8qyxYkefGejeZL_T8aWgW2sZzjc1qeVo6p3=w640-h640-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPboquXHcSqWSrx-EwH6w6cRw-uu0_Oa0rOx4DMekNjxR6aI-CylXuFTJbQvp-DZIDkVpMc5E5f2c4RLp14yTxNS0BzJGKulVDVRpofEQH89W71JAFMXoNOyVkzHGSjdlf31jA9nakjdS1-PE0uO6rF=w1254-h1254-s-no?authuser=0' },
             { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMSVTD715EM12qaKCkSUwsdyDl7mdC_7J3GGgVhDqXnXZ7Kguiwwh9tsOey7PpqGG4lk5w4t4cAM9weKdUKluAtDGUg9Rpd4p_kNAYLrJE6bh61EwQUIW3ZrBkyKZNFY7uOqxf6vmGvOZP7steLk73I=w510-h510-s-no?authuser=0' },
             { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPL_aYYTSP9hiK0l2hn4aHD0MJCgDM6ZFrLfjqUiO8Z67k0uIW1I-xzocxz-_0oZfw7n1BkLZO3rDtJZAV7UGe1Oh0MHLNbXOncN-U8OJq-PbLdJxhz4vslIvnx4HwgrYu-qLowpI-xOjuuYU1OnkTJ=w496-h600-s-no?authuser=0' },
             { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPwDY7S6twVewB4CMMJ-XOTKDimnxm9l7Oe0J0teVvLTniZMIMW8Ntn2gfkkS1LmOBY1U3rufYojOWJ9cTNprp6GEIjdXhFAEV-mJ-9By-tRSJcsSntfBlRhb8zexLSqJeyBtYA7yRkkjlemunCjQjk=w3629-h2013-s-no?authuser=0' },
@@ -618,15 +789,17 @@ const SECTIONS_DATA = [
             { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczOOXzcuV_hjts1MY3eSDm7Hov9uoq96dub-kCZ6rktl_ffrrTKR4G7YIh-Kc3z_Kx2cT941sJgktEh9vX980TfRIw3VT-DQlQ4e1gz1Ay95CA5Dd1BMb6rsXpo9Exku3P-G5guVaM4BavTDvOHCBBdL=w1059-h1124-s-no?authuser=0' },
             { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMPvdXKgAcVSOxef55Mtq8DggMu4caMNe6AcRESLJQCS76KmIfLJ5UIRVJGGzD_EVjC5oktACsjfJzsNGwaycvRTf-JK_ChyWbcPuA3Zao0DZ5hz4BgjAiUtkO3KHMIsyTMl8A3YGjgag4pkbXtlOuJ=w1624-h1231-s-no?authuser=0' },
             { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczP1RBAxSwlRGjk8Jb4NA__jS5LwcTznSBlqosqjqWzBDcS5D753jEWLz4mLhRsnmr10JSnzFr7GGbL1N8NLGyfTRSwxrJsNrQj1Ou1oulTJnXUYc2iStABNgHHSs0VEHQPmDQxWwNjVjPKoCNKZBYDK=w1629-h1801-s-no?authuser=0' },
+            { type: 'video', url: 'https://www.youtube.com/embed/4ymA_2buJZ0' },
             { type: 'video', url: 'https://www.youtube.com/embed/VbBEVBd04SU' },
             { type: 'video', url: 'https://www.youtube.com/embed/9ck88ZL7JQA' },  
             { type: 'video', url: 'https://www.youtube.com/embed/vH6aYH5--d4' },              
-            //{ type: 'pdf', url: 'https://example.com/manual.pdf', title: 'Download User Manual (PDF)' },
+            //{ type: 'pdf', url: 'https://drive.google.com/file/d/1WIUw-T5Bs6EJUH6hmj3C1r9S4iSmuF_4/view?usp=sharing', title: 'Download Article (PDF)' },
+            { type: 'pdf', url: 'https://drive.usercontent.google.com/download?export=download&confirm=t&id=1WIUw-T5Bs6EJUH6hmj3C1r9S4iSmuF_4', title: 'Download Article (PDF)' },
             //{ type: 'zip', url: 'https://example.com/models.zip', title: 'Download 3D Models (ZIP)' }
         ]
     },
     { 
-        id: 7,
+        id: 9,
         bgClass: 'bg-gray-100',
         imageLeft: true,
         aspectClass: 'aspect-[4/4]',
@@ -681,7 +854,7 @@ const SECTIONS_DATA = [
         ]
     },
     { 
-        id: 8,
+        id: 10,
         bgClass: 'bg-white',
         imageLeft: false,
         aspectClass: 'aspect-[4/4]',
@@ -752,7 +925,7 @@ const SECTIONS_DATA = [
         ]
     },
     { 
-        id: 9,
+        id: 11,
         bgClass: 'bg-gray-100',
         imageLeft: true,
         aspectClass: 'aspect-[4/4]',
