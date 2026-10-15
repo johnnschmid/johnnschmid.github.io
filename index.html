@@ -1765,7 +1765,7 @@ iframe {
 				 class="rounded-[60px] max-w-full max-h-full object-contain relative z-10 transition-transform ease-out clean-fade-mask will-change-transform"
 				 style="transition-duration: 5000ms;"
 				 :class="currentIndex === index ? 'scale-100' : 'scale-95'">
-
+<!--
 			<div class="absolute inset-0 flex items-end justify-center p-8 pb-12 lg:pb-16 pointer-events-none overflow-hidden z-30">
                 <h2 class="animate-floating-text text-4xl lg:text-6xl font-black tracking-wider text-center select-none"
                     style="color: rgba(255, 255, 255, 1.0); filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.9));"
@@ -1776,6 +1776,23 @@ iframe {
                     x-transition:enter-end="scale-100">
                 </h2>
             </div>         
+-->
+
+
+
+            <!-- Текст ближе к нижней части экрана -->
+			<div class="absolute inset-0 flex items-end justify-center p-8 pb-12 lg:pb-16 pointer-events-none overflow-hidden z-30">
+                <h2 class="animate-floating-text text-3xl lg:text-6xl font-black text-white tracking-wider text-center select-none "
+					style="filter: drop-shadow(0 0 3px rgba(0, 0, 0, 1)) "
+                    x-text="slide.title"
+                    x-show="currentIndex === index"
+                    x-transition:enter="transition ease-out duration-700"
+                    x-transition:enter-start="opacity-0 scale-90"
+                    x-transition:enter-end="opacity-100 scale-100">
+                </h2>
+            </div>
+
+
             
             
         </div>
