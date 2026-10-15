@@ -253,8 +253,8 @@ const PRODUCTS_DATA = [
 const SECTIONS_DATA = [
     { 
         id: 1,
-        bgClass: 'bg-gray-100', // 'bg-white' или 'bg-gray-100'
-        imageLeft: true,
+        //bgClass: 'bg-gray-100', // 'bg-white' или 'bg-gray-100'
+        //imageLeft: true,
         aspectClass: 'aspect-[4/4]',
         showSteps: false,
         currentStep: 'tape',
@@ -316,8 +316,8 @@ const SECTIONS_DATA = [
     },
     { 
         id: 2,
-        bgClass: 'bg-white', // 'bg-white' или 'bg-gray-100'
-        imageLeft: false,
+        //bgClass: 'bg-white', // 'bg-white' или 'bg-gray-100'
+        //imageLeft: false,
         aspectClass: 'aspect-[4/4]',
         showSteps: true,
         currentStep: 'tape',
@@ -385,8 +385,8 @@ const SECTIONS_DATA = [
     },
     { 
         id: 3,
-        bgClass: 'bg-gray-100',
-        imageLeft: true,
+        //bgClass: 'bg-gray-100',
+        //imageLeft: true,
         aspectClass: 'aspect-[4/4]',
         showSteps: false,
         currentStep: 'tape',
@@ -446,8 +446,8 @@ const SECTIONS_DATA = [
     
     { 
         id: 4,
-        bgClass: 'bg-white', // 'bg-white' или 'bg-gray-100'
-        imageLeft: false,
+        //bgClass: 'bg-white', // 'bg-white' или 'bg-gray-100'
+        //imageLeft: false,
         aspectClass: 'aspect-[4/4]',
         showSteps: false,
         currentStep: 'tape',
@@ -524,8 +524,8 @@ const SECTIONS_DATA = [
 
     { 
         id: 5,
-        bgClass: 'bg-gray-100', // 'bg-white' или 'bg-gray-100'
-        imageLeft: true,
+        //bgClass: 'bg-gray-100', // 'bg-white' или 'bg-gray-100'
+        //imageLeft: true,
         aspectClass: 'aspect-[4/4]',
         showSteps: false,
         currentStep: 'tape',
@@ -599,8 +599,8 @@ const SECTIONS_DATA = [
     
     { 
         id: 6,
-        bgClass: 'bg-white', // 'bg-white' или 'bg-gray-100'
-        imageLeft: false,
+        //bgClass: 'bg-white', // 'bg-white' или 'bg-gray-100'
+        //imageLeft: false,
         aspectClass: 'aspect-[4/4]',
         showSteps: false,
         currentStep: 'tape',
@@ -676,8 +676,8 @@ const SECTIONS_DATA = [
     },
     { 
         id: 7,
-        bgClass: 'bg-gray-100',
-        imageLeft: true,
+        //bgClass: 'bg-gray-100',
+        //imageLeft: true,
         aspectClass: 'aspect-[4/4]',
         showSteps: false,
         currentStep: 'tape',
@@ -735,8 +735,8 @@ const SECTIONS_DATA = [
     },
     { 
         id: 8,
-        bgClass: 'bg-white',
-        imageLeft: false,
+        //bgClass: 'bg-white',
+        //imageLeft: false,
         aspectClass: 'aspect-[4/4]',
         showSteps: false,
         currentStep: 'tape',
@@ -800,8 +800,8 @@ const SECTIONS_DATA = [
     },
     { 
         id: 9,
-        bgClass: 'bg-gray-100',
-        imageLeft: true,
+        //bgClass: 'bg-gray-100',
+        //imageLeft: true,
         aspectClass: 'aspect-[4/4]',
         showSteps: false,
         currentStep: 'tape',
@@ -855,8 +855,8 @@ const SECTIONS_DATA = [
     },
     { 
         id: 10,
-        bgClass: 'bg-white',
-        imageLeft: false,
+        //bgClass: 'bg-white',
+        //imageLeft: false,
         aspectClass: 'aspect-[4/4]',
         showSteps: false,
         currentStep: 'tape',
@@ -926,8 +926,8 @@ const SECTIONS_DATA = [
     },
     { 
         id: 11,
-        bgClass: 'bg-gray-100',
-        imageLeft: true,
+        //bgClass: 'bg-gray-100',
+        //imageLeft: true,
         aspectClass: 'aspect-[4/4]',
         showSteps: false,
         currentStep: 'tape',

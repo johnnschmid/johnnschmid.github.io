@@ -1774,10 +1774,10 @@ iframe {
 
 
 <!-- ДИНАМИЧЕСКИЙ ВЫВОД СЕКЦИЙ ИЗ products.js -->
-<template x-for="sec in sections" :key="sec.id">
+<template x-for="(sec, index) in sections" :key="sec.id">
     <section class="custom-section"
-			 :id="sec.id === 1 ? 'about' : ('section-' + sec.id)"
-             :class="sec.bgClass" 
+             :id="sec.id === 1 ? 'about' : ('section-' + sec.id)"
+             :class="sec.bgClass || (index % 2 === 0 ? 'bg-gray-100' : 'bg-white')" 
              x-data="{ 
                  currentImg: 0, 
                  videoPlaying: false,
@@ -1788,7 +1788,7 @@ iframe {
             
             <!-- 1. Блок с картинкой, шагами и мобильной подсказкой -->
             <div class="order-2 w-full flex flex-col gap-6 my-6 lg:my-0"
-                 :class="sec.imageLeft ? 'lg:order-1 lg:w-1/2' : 'lg:order-2 lg:w-1/2'">
+                 :class="(sec.imageLeft !== undefined ? sec.imageLeft : index % 2 === 0) ? 'lg:order-1 lg:w-1/2' : 'lg:order-2 lg:w-1/2'">
                 
                 <!-- Слайдер / Медиа -->
                 <!--
@@ -1936,7 +1936,7 @@ iframe {
 
             <!-- 2. Текстовый блок -->
             <div class="order-1 w-full space-y-6 text-left"
-                 :class="sec.imageLeft ? 'lg:order-2 lg:w-1/2' : 'lg:order-1 lg:w-1/2'">
+                 :class="(sec.imageLeft !== undefined ? sec.imageLeft : index % 2 === 0) ? 'lg:order-2 lg:w-1/2' : 'lg:order-1 lg:w-1/2'">
                 <h2 class="text-4xl font-bold text-gray-900 mb-4" x-text="sec.title"></h2>
                 <p class="text-gray-800 leading-relaxed text-lg" x-text="sec.p1"></p>
                 <p class="text-gray-800 leading-relaxed text-lg" x-text="sec.p2"></p>
