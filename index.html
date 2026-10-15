@@ -1635,7 +1635,7 @@ iframe {
 
 
 <!-- КРАСИВОЕ СЛАЙДШОУ В СТИЛЕ МАКОВСКОЙ ЗАСТАВКИ -->
-<section id="slideshow" class="relative w-full h-[calc(95dvh-4rem)] bg-transparent overflow-hidden flex items-center justify-center my-8 rounded-[40px] max-w-7xl mx-auto"
+<section id="slideshow" class="relative w-full h-[calc(95dvh-4rem)] overflow-hidden flex items-center justify-center my-8 max-w-7xl mx-auto"
          x-data="{
              slides: [],
              currentIndex: 0,
@@ -1719,11 +1719,11 @@ iframe {
         }
 
 		.clean-fade-mask {
-            mask-image: linear-gradient(to right, transparent 0px, black 60px, black calc(100% - 60px), transparent 100%),
-                        linear-gradient(to bottom, transparent 0px, black 60px, black calc(100% - 60px), transparent 100%);
+            mask-image: linear-gradient(to right, transparent 0px, black 80px, black calc(100% - 80px), transparent 100%),
+                        linear-gradient(to bottom, transparent 0px, black 80px, black calc(100% - 80px), transparent 100%);
             mask-composite: intersect;
-            -webkit-mask-image: linear-gradient(to right, transparent 0px, black 60px, black calc(100% - 60px), transparent 100%),
-                                linear-gradient(to bottom, transparent 0px, black 60px, black calc(100% - 60px), transparent 100%);
+            -webkit-mask-image: linear-gradient(to right, transparent 0px, black 80px, black calc(100% - 80px), transparent 100%),
+                                linear-gradient(to bottom, transparent 0px, black 80px, black calc(100% - 80px), transparent 100%);
             -webkit-mask-composite: source-in;
         }
         
@@ -1762,7 +1762,7 @@ iframe {
 			<img :src="slide.url" 
 				 :key="slide.url + index"
 				 @error="$el.src = slide.url"
-				 class="max-w-full max-h-full object-contain relative z-10 transition-transform ease-out clean-fade-mask will-change-transform"
+				 class="rounded-[60px] max-w-full max-h-full object-contain relative z-10 transition-transform ease-out clean-fade-mask will-change-transform"
 				 style="transition-duration: 5000ms;"
 				 :class="currentIndex === index ? 'scale-100' : 'scale-95'">
 
