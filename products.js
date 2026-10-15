@@ -286,11 +286,18 @@ const SECTIONS_DATA = [
             youtubeText: ''
         },
         {
-            emoji: '💡',
-            title: 'Hint:',
-            text: 'Check out my professional background and projects on my ',
+            emoji: '🌍',
+            title: 'Watch',
+            text: 'new videos on my ',
             youtubeUrl: 'https://www.youtube.com/@ReInstruments',
             youtubeText: 'YouTube'
+        },
+        {
+            emoji: '🌍',
+            title: 'Feel free ',
+            text: 'to visit my ',
+            youtubeUrl: 'https://github.com/ivandevel/',
+            youtubeText: 'GitHub'
         }
     ],
         
@@ -319,6 +326,13 @@ const SECTIONS_DATA = [
 		p2: 'The extruder does not take up much space on the desk, consumes only 10 Watts of power, and saves you money on purchasing consumables.',
 
 		hints: [
+			{
+				emoji: '💡',
+				title: 'For more information:',
+				text: 'Visit our',
+				youtubeUrl: 'https://reinstruments.github.io',
+				youtubeText: 'Product Page'
+			},		
 			{
 				emoji: '💡',
 				title: 'Superpower:',
@@ -533,6 +547,9 @@ const SECTIONS_DATA = [
 		],
         
         items: [
+			{ type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMXBScKsORDQbmnYR2yrv1ducHtr89Q9HCzhtC0Ep2FXH_4c5ylgXtUBxjvTqCqaM00XkiO_mxfeR9niArKqRJpEuBEDOtSGNonlD93rYJ8t-1CxlW_c4oYhQHWIxvitAI4jmK2fCGyKZz8wuWkWrYk=w1000-h667-s-no?authuser=0' },
+			{ type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczOa3icSBjdj0f8hG4s2XLVGLnivU9585werT96BgoqmQqytYqdqfH75r7mO_kw1UfMqxGL0VtptiXPkktTia7rn7VyX_N_U5gyxuLilYblBvmovYt8tjdIf7F7TNtAGf607qp2xC0I10ALV4F0fE3Gm=w1000-h667-s-no?authuser=0' },
+			{ type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczOwIAkVelvap88G0YIfIWMPvCfc7o4O_0bvpahrK12uAGy7KhLWFfdbsoorlbjcoTbHt5M9e8pnTWHfF1hDKVha_IV4IyZwST9sisedjPPJYKju1VGG5oybFCn8JT77GWTAXZMLSXRhGUcp4qr6DhKU=w1000-h667-s-no?authuser=0' },
             { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPqaB3XsLINNOnzPBRwseT093MHZoNRawy-f9Ym0pvvJSR4f6rJvnGpo2TL25RKf9uvXzplCL_vozPtjpUuetS8JPFY5FDO6BjeBa6ClJ4yCdDxaABvlbbRblTYOLMDcH7_MBWa3IYVWrGbxfxyeOnn=w800-h800-s-no?authuser=0' },
             { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPGGePX5R2GBWlxxmlJeCKbD41rkif05RZP-Zb-SxtpeRgGPhptFJ8yiS7wCOzNBlEsIMj8-ppctHwg_gaCS-mrxx99biP7DTXJtH5XM_k9Seetvdgc3F59QIBPmEsWbcLsjYfnsMd3Nwwa8EI51Pxa=w750-h750-s-no?authuser=0' },
             { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNu5h_L3BuIL4vdMRIsaaJwvUuGnnW83HYfi9_dlhTc7Zsr6YIWL2q4TJnzIlbGrV1eKAcT48bo02qSiTjqTM-SXugUKWepY-j7Zp21QwjsPsmZj2_d2qjrM814t1L4vCnv63xzrOjSA7jBCEl8yS77=w2013-h2013-s-no?authuser=0' },
@@ -600,7 +617,10 @@ const SECTIONS_DATA = [
             { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPirch6OVe0ZOkczRjNIaBgedB3Me9zNp_6hdteeTaOgZwqWoSNfoudJJ_eG3i4UBikRjrKuc51GDwqw_Jr7soEDRBFGfoSRohcDesE3yx6Kzi0PPaClQ6JEoL2Vnt4xRQBmSx3H0q_11YV9XTsTeSV=w3629-h2013-s-no?authuser=0' },
             { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczOOXzcuV_hjts1MY3eSDm7Hov9uoq96dub-kCZ6rktl_ffrrTKR4G7YIh-Kc3z_Kx2cT941sJgktEh9vX980TfRIw3VT-DQlQ4e1gz1Ay95CA5Dd1BMb6rsXpo9Exku3P-G5guVaM4BavTDvOHCBBdL=w1059-h1124-s-no?authuser=0' },
             { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMPvdXKgAcVSOxef55Mtq8DggMu4caMNe6AcRESLJQCS76KmIfLJ5UIRVJGGzD_EVjC5oktACsjfJzsNGwaycvRTf-JK_ChyWbcPuA3Zao0DZ5hz4BgjAiUtkO3KHMIsyTMl8A3YGjgag4pkbXtlOuJ=w1624-h1231-s-no?authuser=0' },
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczP1RBAxSwlRGjk8Jb4NA__jS5LwcTznSBlqosqjqWzBDcS5D753jEWLz4mLhRsnmr10JSnzFr7GGbL1N8NLGyfTRSwxrJsNrQj1Ou1oulTJnXUYc2iStABNgHHSs0VEHQPmDQxWwNjVjPKoCNKZBYDK=w1629-h1801-s-no?authuser=0' },            
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczP1RBAxSwlRGjk8Jb4NA__jS5LwcTznSBlqosqjqWzBDcS5D753jEWLz4mLhRsnmr10JSnzFr7GGbL1N8NLGyfTRSwxrJsNrQj1Ou1oulTJnXUYc2iStABNgHHSs0VEHQPmDQxWwNjVjPKoCNKZBYDK=w1629-h1801-s-no?authuser=0' },
+            { type: 'video', url: 'https://www.youtube.com/embed/VbBEVBd04SU' },
+            { type: 'video', url: 'https://www.youtube.com/embed/9ck88ZL7JQA' },  
+            { type: 'video', url: 'https://www.youtube.com/embed/vH6aYH5--d4' },              
             //{ type: 'pdf', url: 'https://example.com/manual.pdf', title: 'Download User Manual (PDF)' },
             //{ type: 'zip', url: 'https://example.com/models.zip', title: 'Download 3D Models (ZIP)' }
         ]
@@ -621,8 +641,8 @@ const SECTIONS_DATA = [
             { id: 'printing', label: 'Print' }
         ],
 		title: 'Braille Computer',
-		p1: 'Braille Computer is a Intel Atom Windows 11 based PC for visually impared people. It runs famous non screen access software, such as NVDA, JAWS and other.',
-		p2: 'Braille Computer allows to install Seika Mini Braille Display.',
+		p1: 'Braille Computer is a Intel Atom Windows 11 based PC for visually impared people. It runs famous screenless computer control software, such as NVDA, JAWS and other.',
+		p2: 'Braille Computer allows to install and plug Seika Mini Braille Display.',
 
 		hints: [
 			{
@@ -655,6 +675,136 @@ const SECTIONS_DATA = [
             { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNgb6ks3gu8z98afUAyEMn3shi9A2BK_xT_eaes6bB2l0UJwTGASOnQ3phPhzXATDXbl0Pcscratejq_-VxZzjCPgZhh1-EfLiO2hYVlR6Jz68X9fwV3t6j3JYaWgQu8YRXEK2XAo8JnGtIF2G12WKO=w3629-h2013-s-no?authuser=0' },
             { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNw6ZT4XtpbajotEmHOJLfAQuxoD1BuMlygAKeC71jT_NgAf-G5PUBAMjHSeJkVWAWThGQ4dbi74RTOdISnuStx0Zmm7u6ysjXHiILCmYNRJLMLSXwG1TRg2McOfeRP3cStYjlcQzjmvM_JFEmjdhlO=w3629-h2013-s-no?authuser=0' },
             { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNuPGv5aii6Mcg1foKV9_KEVwR3JL0-RkemCa9GHu-iLO0WUfIpVUXBrzrjdKKy1Y8yW4YYaMhqvX280AUYZHa-dHZRPfOiwODM7pAu96n428OwFJPrDHgqKpEoK5Rcn-Jizstuw9Su_qXk9m1018qw=w3629-h2013-s-no?authuser=0' },
+
+            //{ type: 'pdf', url: 'https://example.com/manual.pdf', title: 'Download User Manual (PDF)' },
+            //{ type: 'zip', url: 'https://example.com/models.zip', title: 'Download 3D Models (ZIP)' }
+        ]
+    },
+    { 
+        id: 8,
+        bgClass: 'bg-white',
+        imageLeft: false,
+        aspectClass: 'aspect-[4/4]',
+        showSteps: false,
+        currentStep: 'tape',
+        
+        steps: [
+            { id: 'bottle', label: 'Bottle' },
+            { id: 'tape', label: 'Tape' },
+            { id: 'filament', label: 'Filament', short: 'Fil.' },
+            { id: 'join', label: 'Joining', short: 'Join' },
+            { id: 'spool', label: 'Spool' },
+            { id: 'printing', label: 'Print' }
+        ],
+		title: 'Induction loop transmitter',
+		p1: 'An induction loop transmitter (often called a loop driver or amplifier) is the core electronic device in an audio frequency induction loop system (AFILS) or Hearing Loop. It takes an audio signal and drives an electrical current through a perimeter wire to create a wireless magnetic field.',
+		p2: 'An induction loop amplifier generates an inductive or electromagnetic signal that can be received by hearing aids with a built-in telephone coil or a neck loop. For this purpose, an induction loop or induction loop is needed.',
+
+		hints: [
+            {
+                emoji: '🎤',
+                title: 'Audio Input:',
+                text: ' Connects to sound sources like microphones, television audio, public address (PA) systems, or mixing boards.',
+                youtubeUrl: '',
+                youtubeText: ''
+            },
+            {
+                emoji: '⚡',
+                title: 'Current Conversion:',
+                text: 'Unlike standard audio amplifiers that push voltage to speakers, an induction loop transmitter is engineered to send a high-integrity electrical current through a loop of copper wire.',
+                youtubeUrl: '',
+                youtubeText: ''
+            },
+            {
+                emoji: '🧲',
+                title: 'Magnetic Field Generation:',
+                text: ' The current flowing through the wire loop creates an invisible, fluctuating magnetic field that matches the audio signal.',
+                youtubeUrl: '',
+                youtubeText: ''
+            },
+            {
+                emoji: '🦻',
+                title: 'Direct Reception:',
+                text: 'Hearing aids or cochlear implants switched to the "T" (telecoil) setting, or portable loop receivers pick up this magnetic signal cleanly without background room noise or echo.',
+                youtubeUrl: '',
+                youtubeText: ''
+            }
+        ],
+        
+        items: [
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMcmiV4drED0Sfgu623aNRmUL3jFvh-LM4orR2xOVbn8_R-PbK2kgaNJhsnvhR3trGn3qlQhAo9YJZ1WZrBCYwEb9GEf8cirv6LiB68rNNofzDOmB6sa72uoV8b9S4CchC6ACN-uILmTNpkXqwh6fse=w2013-h2013-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNMAy-aapX9E47-7QtN88pGoyl6nF-rKk5cOmXayWFeezFv6oukITgr2U9hckuChVYAouKxtywsJPAJM7yMWD_dTNkj4CKCco9L3GTQWvDMkfO-J-fscKRDgmyUx07ToJPaodldV1fXr4o_fvc1uQUU=w2013-h2013-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNScIUQELIC7cDgB0iwHOO8bfWAHUd0L_tdCb9RaCqcPJ_x-Xo9lquLyedkmPcDfguOTKVRnD-Yk_pxQt3syP1cIaEi7WF23NVLkRBL7VKppebu3fEX02dwpZ3vjbqQ5MJKdxGWuDz9-YL3XuoQOH6i=w2015-h2013-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMWOgMEJrm88UOB_pRjq0DzhwLAoKlkpJxBleQukA0ZCl4VigPBcpNxkh7oQp8H1vIUruqDtWZ2hos23FCqKG78Arr7vNxkv0eTNMWVCQtQVPEvxF-l5j9A7Srg_0dSA_AymuZaCS-MlMgKf8WIm7Dw=w2013-h2013-s-no?authuser=0' },
+
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPbDpWdQSIMjognIYlLaDdCcjWrnFEfuC2MBO3Ijo3l-ZRMaD76CbEPAOvrXxd8mXHTv0WguL4DDJALQtCbk43ZFqEgxhOOu9MmReKXa3PzoyAvjwbdz4KwGBSh7KZ869oti3CoPsKsP1zSCTHVou8r=w768-h614-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPXgz6CvlxwFUcoJahX_yKaFWyhYaiqzLKSlMtRhxkewtEF0kNqYJZ09DDt6ZrUXbz5mtqtnAcRSEippAH0ReFKG77sqA5ULhFn-9Uu2205Og2jpylI8dspJW0QbPqjfb_l3n1uUI0GMG9jtYq1nOGF=w450-h460-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNKl8Nzjrn7P4NmGvETcswGfKliU-PZp8ITSFro3MqubEdj69vtMWd8kXhLrrcCW48kY1Gw3QuohAZwGHOMHAOnGm1Ykyg2kvT8sVAjaa5uGqTL6PonRBDg6Mgep7O6A4k_gnZtUnOMRIBVbWWJ_Oxc=w768-h614-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMBHi-kmhgLcP4CKLQXED3W4U1B52IdeFBB7JJkt4RtuVhkCOVlTQHU7NNHk4XLPKstAa3MDj4DeLmWXsVnl7GJHEXO1wiYh2SiOhfvkNnsMm_Ekd46epqPNhUoHRFnKiehuuuQda8XXMQozPaSukoS=w1000-h707-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNzypdemW7LlGIwTyvm1b35lzG0Z__JI6zRiXmzc67kkzhI-KxqNMdG4XmYgP3_Ed5jjStagRmZFc_E1JEHRcWtebg7d-xaZcjqqQYYwE_-dtLA9phE_iuLZYZS4Z1CqDHjRHFh17zYinMxkF3FF8qr=w538-h415-s-no?authuser=0' },
+
+                        
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczO-eIAeit1kpNkjyCZXtvUMJGAbGu4lig2NllGd35Hy__DUu5eFtmtza__N3XarzF9YvBmf8-73VowehWPiSjBRdFvA3gswWlhwkJ_5y91BQPPtEhBu4P_kjGCqmckAPp7I_czrmwJtLPM0y1cHoZwE=w1965-h833-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNtArYjvetDyzvpZyHfKQDNkrAdqLf1qGYrnXpszBkwsCU80KMDpa_PFUMcCc68QlmaN59U24sV-L4RZg2fLn4mk7IpfD6adJLfzSE9Q_6o0ga-rIw6Hz-j9VcT3QHiZnsIOIZsSv-ZCIGVtYxAWqpe=w1854-h493-s-no?authuser=0' },
+
+            //{ type: 'pdf', url: 'https://example.com/manual.pdf', title: 'Download User Manual (PDF)' },
+            //{ type: 'zip', url: 'https://example.com/models.zip', title: 'Download 3D Models (ZIP)' }
+        ]
+    },
+    { 
+        id: 9,
+        bgClass: 'bg-gray-100',
+        imageLeft: true,
+        aspectClass: 'aspect-[4/4]',
+        showSteps: false,
+        currentStep: 'tape',
+        
+        steps: [
+            { id: 'bottle', label: 'Bottle' },
+            { id: 'tape', label: 'Tape' },
+            { id: 'filament', label: 'Filament', short: 'Fil.' },
+            { id: 'join', label: 'Joining', short: 'Join' },
+            { id: 'spool', label: 'Spool' },
+            { id: 'printing', label: 'Print' }
+        ],
+		title: 'Recording speaking button',
+		p1: 'The NOTT audio-tactile information device is an innovative alternative to traditional Braille signs and pictograms. It features a tactile button that, when pressed, plays a pre-recorded message. A key advantage of the NOTT "talking" sign is that messages can be recorded directly, without the need for SD cards or flash drives—simply press the button on the back of the unit and speak your message.',
+		p2: 'Where can this device be used? The NOTT talking sign is recommended for use in socially significant facilities, such as schools, pharmacies, libraries, theaters, nursing homes, hospitals, and rehabilitation centers.',
+
+		hints: [
+			{
+				emoji: '📚',
+				title: 'Audio Capabilities:',
+				text: 'All audio formats(mp3, aac, ogg) include recording capability',
+				youtubeUrl: '',
+				youtubeText: ''
+			},			
+			{
+				emoji: '🌐',
+				title: 'Connectivity:',
+				text: 'Equipped with USB-C device allows to upload audio files via Mass Storage',
+				youtubeUrl: '',
+				youtubeText: ''
+			},
+			{
+				emoji: '🔋',
+				title: 'Power & Storage:',
+				text: 'Contains 500mAh LiPo battery, USB Tye-C Charging capability. Provides up to 1 year of standby operation on a single battery charge, 4GB of internal storage',
+				youtubeUrl: '',
+				youtubeText: ''
+			}
+		],
+        
+        items: [
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMALUGGYkweYg1-boJJsW6AriR_7ob1iDgmlyJhkDPdrZhvZWEVb4baDrqrLdoRlkweKsK-T2IWEwLneFeuDxLSQjBhKibMm6r_e6XtGWG5IMcKFyeaOdUM1GHv1EZDxLMMDG3ivIUWLa7M1jKgXzyd=w1100-h1100-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPtrqnuhPy6tDoktI8XA6FcSbOR8b9liTk1qCPSpdV4McIKt1zfB64kRlfnk_iCZcdEsxf2RMo1Y9McB5Tbyc_d3gvin6G0ySQLdxJBQJadQX8JbBhc8RueNlS89OXJah4ZNHklcHDN7qdG-cYjlit_=w1100-h1100-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczM0iaaH8_P2MJfR-o4o5wEqub7Jb5VXtVGI6pu48dS40oLuJyszEkJ_2lIkPLdbQx3f4jWRFAF_UncGnTu4WPAJVO4PJdvbVQDWq-qA2Bo-xwai9hCseKVJX90oNj3b6WMC9oaqGFZl0tXMEwbKkpnG=w1100-h1100-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNngwQaOCy5wYCQldbj7UET3ZY0MSL-Fk6bQPHUEYG8JNifgF3JvUoBov6tOmt54xaoHrpAGJmLYmhJEgykkwbTdDtAHMQGgvjwcLhBGwAlQTNURwD29uIlR6lhf_E6RNMGGBBKptEJ_nkap7-SBSf7=w1100-h1100-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczP-WihpgEVyZb6n1Rya0OOKSUTgg7Nh-khpOTDvU-MjL0GYFdGiZNL86qDsXrmSal15ujEFG3J_yvvE-A_osIpYpmHGTXgc3vr85AxArIDuLyBs0Oz64Q32RoZquz6ca1WjYOCNYS0WaYXWtaJpYHq3=w1100-h1100-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczN-FFtv_d7gzBLG4JeqyFKvPvA4Rbc7m_y9CucyClO7PkWDHNIE1Fg-1UUUJoWISALF2gqk5XARVtMazE85ckDaSRA5uQmzhSUmg-MwFxTY-zW8AamItO1OhO4F3NBQeyNvtQ0MoeNvqNSs2EPkHFLc=w1150-h1150-s-no?authuser=0' },
+
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNYq_xVsfKtnmfPQ9DOw-QtT8PNbS7S0rl4lsBoXEdT1NXmmc4bHlUTgTY_wJ4NznTAEiLuOFGSrmTQc7VmftihDKejVfB1FM5lUlWB5nOhe43EPPqjsvNcMyBuZ6EObvmh9vMh-LVnAox3QSbVMbuE=w1097-h834-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPy7X1Po9xkaOby5Zb_YpKOGHSQ4AaGfnDYL5NtoYC2AfeKuqtBdtw1znhhDAc7Dvi3V44SwXWtK2XGd4KNLR7yMXJPQiYLWGjpxE_PVbqJyRdnvMY_1S287-wfUvhpJbYRLsYtYlhBheS1Re65huIR=w1367-h957-s-no?authuser=0' },
 
             //{ type: 'pdf', url: 'https://example.com/manual.pdf', title: 'Download User Manual (PDF)' },
             //{ type: 'zip', url: 'https://example.com/models.zip', title: 'Download 3D Models (ZIP)' }

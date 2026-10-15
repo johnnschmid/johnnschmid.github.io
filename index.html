@@ -27,6 +27,12 @@
             }
         }
     </script>
+    
+		<!-- Three.js и STL Loader для 3D-просмотра -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/STLLoader.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+	
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script src="products.js"></script>
     
@@ -538,6 +544,13 @@ iframe {
             max-width: 2400px !important; /* Ограничение для ультрашироких 4K-мониторов, чтобы строки не были бесконечными */
         }
     }
+
+    @media (min-width: 300px) {
+        .max-w-7xl {
+            max-width: 2800px !important; /* Ограничение для ультрашироких 4K-мониторов, чтобы строки не были бесконечными */
+        }
+    }
+
     
 /* Автоматическое увеличение текста на 2K и 4K мониторах */
     @media (min-width: 3000px) {
@@ -567,7 +580,7 @@ iframe {
     </style>
     
 </head>
-<body :class="(selectedProduct || modalGalleryOpen) ? 'overflow-hidden' : ''" x-data="ReTools" >
+<body :class="(selectedProduct || modalGalleryOpen) ? 'overflow-hidden' : ''" x-data="ReTools" @scroll.window="handleScroll">
 
     <!-- AUDIO ELEMENT -->
     <audio id="bgMusic" loop>
@@ -639,44 +652,45 @@ iframe {
         </div>
 -->
 
-		<!-- NAVIGATION -->
-		<div class="hidden lg:flex items-center gap-8 text-sm font-medium" x-data="{ activeSection: 'home' }">
+<!-- NAVIGATION -->
+		<div class="hidden lg:flex items-center gap-8 text-sm font-medium">
 			
-		   
 			<a href="#" 
-			   @click="activeSection = 'home'" 
+			   @click.prevent="activeSection = 'home'; isScrollingByClick = true; window.scrollTo({top: 0, behavior: 'smooth'}); setTimeout(() => isScrollingByClick = false, 600);" 
 			   class="relative px-6 py-2 text-sm transition-colors rounded-l-full">
 				<div x-show="activeSection === 'home'" class="absolute inset-0 -skew-x-[20deg] transcolor"></div>
 				<span class="relative z-10 font-medium" :class="activeSection === 'home' ? 'text-white font-semibold' : 'text-gray-500 hover:text-gray-800'">Home</span>
 			</a>
-
-<div style="display: none;">			
+<div style="display: none;">		  
 			<a href="#shop" 
-			   @click="activeSection = 'shop'" 
+			   @click.prevent="activeSection = 'shop'; isScrollingByClick = true; document.getElementById('shop').scrollIntoView({behavior: 'smooth'}); setTimeout(() => isScrollingByClick = false, 600);" 
 			   class="relative px-6 py-2 text-sm transition-colors">
 				<div x-show="activeSection === 'shop'" class="absolute inset-0 -skew-x-[20deg] transcolor"></div>
 				<span class="relative z-10 font-medium" :class="activeSection === 'shop' ? 'text-white font-semibold' : 'text-gray-500 hover:text-gray-800'">Shop</span>
 			</a>
 </div>
-		  
 			<a href="#about" 
-			   @click="activeSection = 'about'" 
+			   @click.prevent="activeSection = 'about'; isScrollingByClick = true; document.getElementById('about').scrollIntoView({behavior: 'smooth'}); setTimeout(() => isScrollingByClick = false, 600);" 
 			   class="relative px-6 py-2 text-sm transition-colors">
 				<div x-show="activeSection === 'about'" class="absolute inset-0 -skew-x-[20deg] transcolor"></div>
 				<span class="relative z-10 font-medium" :class="activeSection === 'about' ? 'text-white font-semibold' : 'text-gray-500 hover:text-gray-800'">About</span>
 			</a>
-
 			
 			<a href="#contact" 
-			   @click="activeSection = 'contact'" 
+			   @click.prevent="activeSection = 'contact'; isScrollingByClick = true; document.getElementById('contact').scrollIntoView({behavior: 'smooth'}); setTimeout(() => isScrollingByClick = false, 600);" 
 			   class="relative px-6 py-2 text-sm transition-colors rounded-r-full">
 				<div x-show="activeSection === 'contact'" class="absolute inset-0 -skew-x-[20deg] transcolor"></div>
 				<span class="relative z-10 font-medium" :class="activeSection === 'contact' ? 'text-white font-semibold' : 'text-gray-500 hover:text-gray-800'">Contact</span>
 			</a>
-
+<div style="display: none;">
+			<a href="#slideshow" 
+			   @click.prevent="activeSection = 'slideshow'; isScrollingByClick = true; document.getElementById('slideshow').scrollIntoView({behavior: 'smooth'}); setTimeout(() => isScrollingByClick = false, 600);" 
+			   class="relative px-6 py-2 text-sm transition-colors rounded-r-full">
+				<div x-show="activeSection === 'slideshow'" class="absolute inset-0 -skew-x-[20deg] transcolor"></div>
+				<span class="relative z-10 font-medium" :class="activeSection === 'slideshow' ? 'text-white font-semibold' : 'text-gray-500 hover:text-gray-800'">Slideshow</span>
+			</a>
+</div>
 		</div>
-
-
 
 
 
@@ -1616,14 +1630,264 @@ iframe {
     </section>
 </div>
 
- <style>
 
-</style>
 
 
 
 <!-- КРАСИВОЕ СЛАЙДШОУ В СТИЛЕ МАКОВСКОЙ ЗАСТАВКИ -->
-<section class="relative w-full h-[calc(95dvh-4rem)] bg-transparent overflow-hidden flex items-center justify-center my-8 rounded-[40px] max-w-7xl mx-auto section-fade-edges"
+<section id="slideshow" class="relative w-full h-[calc(95dvh-4rem)] bg-transparent overflow-hidden flex items-center justify-center my-8 rounded-[40px] max-w-7xl mx-auto section-fade-edges"
+         x-data="{
+             slides: [],
+             currentIndex: 0,
+             timer: null,
+             showSlideshow: true,
+             initSlides() {
+                 if (typeof SLIDESHOW_CONFIG !== 'undefined' && SLIDESHOW_CONFIG.showOnHome === false) {
+                     this.showSlideshow = false;
+                     return;
+                 }
+
+                 let extracted = [];
+                 if (typeof SECTIONS_DATA !== 'undefined' && SECTIONS_DATA.length > 0) {
+                     let sections = [...SECTIONS_DATA];
+                     
+                     let albumsOrder = (typeof SLIDESHOW_CONFIG !== 'undefined') ? SLIDESHOW_CONFIG.albumsOrder : 'sequential';
+                     if (albumsOrder === 'random') {
+                         sections.sort(() => Math.random() - 0.5);
+                     }
+
+                     sections.forEach(sec => {
+                         if (sec.items && sec.items.length > 0) {
+                             let images = sec.items.filter(item => item.type === 'image');
+                             
+                             if (images.length > 0) {
+                                 let imagesOrder = (typeof SLIDESHOW_CONFIG !== 'undefined') ? SLIDESHOW_CONFIG.imagesOrder : 'sequential';
+                                 if (imagesOrder === 'random') {
+                                     images.sort(() => Math.random() - 0.5);
+                                 }
+
+                                 images.forEach(item => {
+                                     extracted.push({
+                                         url: item.url,
+                                         title: sec.title
+                                     });
+                                 });
+                             }
+                         }
+                     });
+
+                     let imagesOrder = (typeof SLIDESHOW_CONFIG !== 'undefined') ? SLIDESHOW_CONFIG.imagesOrder : 'sequential';
+                     if (albumsOrder === 'random' && imagesOrder === 'random') {
+                         extracted.sort(() => Math.random() - 0.5);
+                     }
+                 }
+                 this.slides = extracted;
+
+                 let intervalTime = (typeof SLIDESHOW_CONFIG !== 'undefined' && SLIDESHOW_CONFIG.slideInterval) ? SLIDESHOW_CONFIG.slideInterval : 4000;
+
+                 if (this.slides.length > 0) {
+                     this.timer = setInterval(() => {
+                         this.currentIndex = (this.currentIndex + 1) % this.slides.length;
+                     }, intervalTime);
+                 }
+             }
+         }"
+         x-init="initSlides()"
+         x-show="showSlideshow">
+
+<style>
+        @keyframes floatText {
+            0% {
+                transform: translate(-50px, 0) scale(0.98);
+            }
+            100% {
+                transform: translate(50px, -26px) scale(1.02);
+            }
+        }
+        .animate-floating-text {
+            /* Оставляем только смещение и масштаб, убирая скачки opacity из ключевых кадров */
+            animation: floatText 5s ease-in-out infinite alternate;
+        }
+
+        .clean-fade-mask {
+            mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%),
+                        linear-gradient(to bottom, transparent 0%, black 5%, black 95%, transparent 100%);
+            mask-composite: intersect;
+            -webkit-mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%),
+                                linear-gradient(to bottom, transparent 0%, black 5%, black 95%, transparent 100%);
+            -webkit-mask-composite: source-in;
+        }
+        
+        .section-fade-edges {
+            mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%), linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%), linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%);
+            mask-composite: intersect;
+            -webkit-mask-composite: source-in;
+        }
+    </style>
+
+<!-- Рендер всех слайдов -->
+    <template x-for="(slide, index) in slides" :key="index">
+        <div class="absolute inset-0 w-full h-full transition-opacity duration-700 ease-in-out flex items-center justify-center overflow-hidden"
+             :class="currentIndex === index ? 'opacity-100 z-10' : 'opacity-0 z-0'">
+
+            <!-- Картинка со сжатым под пропорции контейнером и плавной маской -->
+            <img :src="slide.url" 
+                 :key="slide.url + index"
+                 @error="$el.src = slide.url"
+                 class="max-w-full max-h-full object-contain transition-transform duration-[5000ms] ease-out clean-fade-mask relative z-10"
+                 :style="currentIndex === index ? 'transform: scale(1.20);' : 'transform: scale(0.95);'">
+
+			<div class="absolute inset-0 flex items-end justify-center p-8 pb-12 lg:pb-16 pointer-events-none overflow-hidden z-30">
+                <h2 class="animate-floating-text text-4xl lg:text-6xl font-black tracking-wider text-center select-none"
+                    style="color: rgba(255, 255, 255, 0.8); filter: drop-shadow(0 0 10px rgba(0, 0, 0, 1.0));"
+                    x-text="slide.title"
+                    x-show="currentIndex === index"
+                    x-transition:enter="transition-transform ease-out duration-700"
+                    x-transition:enter-start="scale-90"
+                    x-transition:enter-end="scale-100">
+                </h2>
+            </div>
+            
+            
+            
+            
+            
+        </div>
+    </template>
+</section>
+
+
+
+
+<div style="display: none;">
+<!-- КРАСИВОЕ СЛАЙДШОУ В СТИЛЕ МАКОВСКОЙ ЗАСТАВКИ -->
+<section id="slideshow" class="relative w-full h-[calc(95dvh-4rem)] bg-transparent overflow-hidden flex items-center justify-center my-8 rounded-[40px] max-w-7xl mx-auto "
+         x-data="{
+             slides: [],
+             currentIndex: 0,
+             timer: null,
+             showSlideshow: true,
+             initSlides() {
+                 if (typeof SLIDESHOW_CONFIG !== 'undefined' && SLIDESHOW_CONFIG.showOnHome === false) {
+                     this.showSlideshow = false;
+                     return;
+                 }
+
+                 let extracted = [];
+                 if (typeof SECTIONS_DATA !== 'undefined' && SECTIONS_DATA.length > 0) {
+                     let sections = [...SECTIONS_DATA];
+                     
+                     let albumsOrder = (typeof SLIDESHOW_CONFIG !== 'undefined') ? SLIDESHOW_CONFIG.albumsOrder : 'sequential';
+                     if (albumsOrder === 'random') {
+                         sections.sort(() => Math.random() - 0.5);
+                     }
+
+                     sections.forEach(sec => {
+                         if (sec.items && sec.items.length > 0) {
+                             let images = sec.items.filter(item => item.type === 'image');
+                             
+                             if (images.length > 0) {
+                                 let imagesOrder = (typeof SLIDESHOW_CONFIG !== 'undefined') ? SLIDESHOW_CONFIG.imagesOrder : 'sequential';
+                                 if (imagesOrder === 'random') {
+                                     images.sort(() => Math.random() - 0.5);
+                                 }
+
+                                 images.forEach(item => {
+                                     extracted.push({
+                                         url: item.url,
+                                         title: sec.title
+                                     });
+                                 });
+                             }
+                         }
+                     });
+
+                     let imagesOrder = (typeof SLIDESHOW_CONFIG !== 'undefined') ? SLIDESHOW_CONFIG.imagesOrder : 'sequential';
+                     if (albumsOrder === 'random' && imagesOrder === 'random') {
+                         extracted.sort(() => Math.random() - 0.5);
+                     }
+                 }
+                 this.slides = extracted;
+
+                 let intervalTime = (typeof SLIDESHOW_CONFIG !== 'undefined' && SLIDESHOW_CONFIG.slideInterval) ? SLIDESHOW_CONFIG.slideInterval : 4000;
+
+                 if (this.slides.length > 0) {
+                     this.timer = setInterval(() => {
+                         this.currentIndex = (this.currentIndex + 1) % this.slides.length;
+                     }, intervalTime);
+                 }
+             }
+         }"
+         x-init="initSlides()"
+         x-show="showSlideshow">
+
+    <style>
+        @keyframes floatText {
+            0% {
+                transform: translate(-50px, 0) scale(0.98);
+                opacity: 0;
+            }
+            30% {
+                opacity: 1.0;
+            }
+            80% {
+                opacity: 0.0;
+            }
+            100% {
+                transform: translate(50px, -26px) scale(1.02);
+                opacity: 0;
+            }
+        }
+        .animate-floating-text {
+            animation: floatText 5s ease-in-out infinite alternate;
+        }
+
+.image-fade-mask {
+            mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%),
+                        linear-gradient(to bottom, transparent 0%, black 5%, black 95%, transparent 100%);
+            mask-composite: intersect;
+            -webkit-mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%),
+                                linear-gradient(to bottom, transparent 0%, black 5%, black 95%, transparent 100%);
+            -webkit-mask-composite: source-in;
+        }
+    </style>
+
+    <!-- Рендер всех слайдов -->
+    <template x-for="(slide, index) in slides" :key="index">
+        <div class="absolute inset-0 w-full h-full transition-opacity duration-700 ease-in-out flex items-center justify-center overflow-hidden"
+             :class="currentIndex === index ? 'opacity-100 z-10' : 'opacity-0 z-0'">
+
+            <!-- Картинка с маской прозрачности по краям и скейлом от 80% до 110% -->
+            <img :src="slide.url" 
+                 :key="slide.url + index"
+                 @error="$el.src = slide.url"
+                 class="absolute inset-0 w-full h-full object-cover transition-transform duration-[5000ms] ease-out image-fade-mask"
+                 :style="currentIndex === index ? 'transform: scale(1.0);' : 'transform: scale(0.9);'">
+
+            <!-- Текст -->
+            <div class="absolute inset-0 flex items-end justify-center p-8 pb-12 lg:pb-16 pointer-events-none overflow-hidden z-30">
+                <h2 class="animate-floating-text text-4xl lg:text-6xl font-black text-white tracking-wider text-center select-none"
+                    style="filter: drop-shadow(0 0 1px rgba(0,0,0,1)) drop-shadow(0 0 1px rgba(0,0,0,1)) drop-shadow(0 0 1px rgba(0,0,0,1)) drop-shadow(0 0 1px rgba(0,0,0,1)) drop-shadow(0 0 2px rgba(0,0,0,1));"
+                    x-text="slide.title"
+                    x-show="currentIndex === index"
+                    x-transition:enter="transition ease-out duration-700"
+                    x-transition:enter-start="opacity-0 scale-90"
+                    x-transition:enter-end="opacity-100 scale-100">
+                </h2>
+            </div>
+        </div>
+    </template>
+</section>
+</div>
+
+
+
+
+
+<div style="display: none;">
+<!-- КРАСИВОЕ СЛАЙДШОУ В СТИЛЕ МАКОВСКОЙ ЗАСТАВКИ -->
+<section id="slideshow" class="relative w-full h-[calc(95dvh-4rem)] bg-transparent overflow-hidden flex items-center justify-center my-8 rounded-[40px] max-w-7xl mx-auto"
          x-data="{
              slides: [],
              currentIndex: 0,
@@ -1708,36 +1972,43 @@ iframe {
             }
         }
         .animate-floating-text {
-            /* Возвращена исходная скорость анимации текста (9s) */
+            /* корость анимации текста */
             animation: floatText 5s ease-in-out infinite alternate;
         }
 
         /* Мягкое растворение краев ВСЕЙ СЕКЦИИ в фон страницы */
         .section-fade-edges {
             mask-image: linear-gradient(to bottom, transparent 0%, black 22%, black 78%, transparent 100%), linear-gradient(to right, transparent 0%, black 22%, black 78%, transparent 100%);
-            -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 12%, black 78%, transparent 100%), linear-gradient(to right, transparent 0%, black 22%, black 78%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 22%, black 78%, transparent 100%), linear-gradient(to right, transparent 0%, black 22%, black 78%, transparent 100%);
             mask-composite: intersect;
             -webkit-mask-composite: source-in;
         }
+        
+        
+
+.shadow
+{
+    -moz-box-shadow:inset 0px 0px 6px 6px rgba(255,255,255,1);
+    -webkit-box-shadow:inset 0px 0px 6px 6px rgba(255,255,255,1);
+    box-shadow:inset 0px 0px 6px 6px rgba(255,255,255,1);
+}
     </style>
 
     <!-- Рендер всех слайдов -->
     <template x-for="(slide, index) in slides" :key="index">
         <div class="absolute inset-0 w-full h-full transition-opacity duration-700 ease-in-out flex items-center justify-center overflow-hidden"
              :class="currentIndex === index ? 'opacity-100 z-10' : 'opacity-0 z-0'">
-            
-            <!-- Фоновое размытие для глубины -->
-            <img :src="slide.url" class="absolute inset-0 w-full h-full object-cover filter blur-2xl scale-110 opacity-30 pointer-events-none">
 
-            <!-- Картинка во весь экран без рамок внутри -->
+			<!-- Чистая картинка с корректным переключением масштаба без конфликта классов -->
             <img :src="slide.url" 
-                 loading="lazy"
-                 class="relative w-full h-full object-cover transition-transform duration-[5000ms] ease-out scale-100"
-                 :class="currentIndex === index ? 'scale-110' : 'scale-100'">
+                 :key="slide.url + index"
+                 @error="$el.src = slide.url"
+                 class="absolute inset-0 w-full h-full object-cover transition-transform duration-[5000ms] ease-out"
+                 :class="currentIndex === index ? 'scale-110' : 'scale-75'">
             
 
 
-<!-- Текст с густой тенью-обводкой вместо text-stroke -->
+			<!-- Текст с густой тенью-обводкой вместо text-stroke -->
             <div class="absolute inset-0 flex items-end justify-center p-8 pb-12 lg:pb-16 pointer-events-none overflow-hidden">
                 <h2 class="animate-floating-text text-4xl lg:text-6xl font-black text-white tracking-wider text-center select-none"
                     style="filter:  drop-shadow(0 0 1px rgba(0,0,0,1)) drop-shadow(0 0 1px rgba(0,0,0,1)) drop-shadow(0 0 1px rgba(0,0,0,1)) drop-shadow(0 0 1px rgba(0,0,0,1)) drop-shadow(0 0 2px rgba(0,0,0,1));"
@@ -1751,7 +2022,7 @@ iframe {
         </div>
     </template>
 </section>
-
+</div>
 
 
 
@@ -1802,10 +2073,15 @@ iframe {
 					 ">                     
                      
                     
-                    <!-- Картинка -->
-                    <template x-if="media[currentImg] && media[currentImg].type === 'image'">
-                        <img :src="media[currentImg].url" class="w-full h-full object-cover transition-all duration-300" alt="Application Areas" @click="openModalGallery(media, currentImg)">
-                    </template>
+					<!-- Картинка с защитой от сбоев загрузки -->
+					<template x-if="media[currentImg] && media[currentImg].type === 'image'">
+						<img :src="media[currentImg].url" 
+							 :key="media[currentImg].url + currentImg"
+							 @error="$el.src = media[currentImg].url"
+							 class="w-full h-full object-cover transition-all duration-300" 
+							 alt="Application Areas" 
+							 @click="openModalGallery(media, currentImg)">
+					</template>
                     
 
 					<!-- Видео (YouTube, Google Drive, Прямая .mp4 ссылка через iframe) -->
@@ -1847,23 +2123,23 @@ iframe {
 
                     <!-- Кнопки переключения -->
                     <div class="absolute inset-0 flex items-center justify-between px-4 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50">
-                        <button @click="currentImg = (currentImg - 1 + media.length) % media.length; videoPlaying = false" class="pointer-events-auto w-10 h-10 custom-slider-btn rounded-full flex items-center justify-center shadow text-sm cursor-pointer transition-colors">
+                        <button @click="currentImg = (currentImg - 1 + media.length) % media.length; videoPlaying = false" class="pointer-events-auto w-10 h-10 rounded-full custom-slider-btn shadow-lg flex items-center justify-center text-sm cursor-pointer transition-colors">
                             <i class="fa-solid fa-chevron-left pointer-events-none"></i>
                         </button>
-                        <button @click="currentImg = (currentImg + 1) % media.length; videoPlaying = false" class="pointer-events-auto w-10 h-10 custom-slider-btn rounded-full flex items-center justify-center shadow text-sm cursor-pointer transition-colors">
+                        <button @click="currentImg = (currentImg + 1) % media.length; videoPlaying = false" class="pointer-events-auto w-10 h-10 rounded-full custom-slider-btn shadow-lg flex items-center justify-center text-sm cursor-pointer transition-colors">
                             <i class="fa-solid fa-chevron-right pointer-events-none"></i>
                         </button>
                     </div>
 
-                    <!-- Индикаторы (точки) -->
-                    <div class="absolute bottom-4 left-0 right-0 flex justify-center gap-2 z-50">
-                        <template x-for="(item, idx) in media" :key="idx">
-                            <button @click="currentImg = idx; videoPlaying = false" 
-                                    class="w-2.5 h-2.5 rounded-full transition-all cursor-pointer shadow"
-                                    :class="currentImg === idx ? 'bg-blue-600 w-6' : 'bg-white/70 hover:bg-white'">
-                            </button>
-                        </template>
-                    </div>
+					<!-- Индикаторы (точки) -->
+					<div class="absolute bottom-4 left-0 right-0 flex justify-center gap-2 z-50">
+						<template x-for="(item, idx) in media" :key="idx">
+							<button @click="currentImg = idx; videoPlaying = false" 
+									class="w-2.5 h-2.5 rounded-full transition-all cursor-pointer shadow-[0_0_4px_rgba(0,0,0,1)]"
+									:class="currentImg === idx ? 'bg-blue-600 w-6' : 'bg-white/70 hover:bg-white'">
+							</button>
+						</template>
+					</div>
                 </div>
 
                 <!-- Панель шагов с шевронами -->
@@ -1921,9 +2197,9 @@ iframe {
                 <p class="text-gray-800 leading-relaxed text-lg" x-text="sec.p1"></p>
                 <p class="text-gray-800 leading-relaxed text-lg" x-text="sec.p2"></p>
                 
-                <!-- Подсказки и кнопки: видны ТОЛЬКО на десктопе под текстом -->
-                <div class="hidden lg:block space-y-4 pt-2">
-					<template x-for="(hint, idx) in sec.hints" :key="idx">
+				<!-- Подсказки и кнопки: видны ТОЛЬКО на десктопе под текстом -->
+                <div class="hidden lg:block pt-8">
+                    <template x-for="(hint, idx) in sec.hints" :key="idx">
                         <div class="flex items-center gap-3 justify-start text-left mb-4">
                             <span class="text-2xl 4xl:text-5xl flex-shrink-0" x-text="hint.emoji"></span>
                             <div class="text-gray-800 text-lg lg:text-lg 2xl:text-lg 4xl:text-4xl leading-relaxed">
@@ -1934,9 +2210,10 @@ iframe {
                         </div>
                     </template>
 
-                    <div class="flex flex-wrap gap-3">
+                    <!-- Добавлен класс mt-6 (или mt-8) только для блока кнопок, не затрагивая подсказки -->
+                    <div class="flex flex-wrap gap-3 mt-12">
                         <template x-for="item in sec.items.filter(i => i.type === 'pdf' || i.type === 'zip' || i.type === 'file')">
-                            <a :href="item.url" target="_blank" class="btn-blue-pill px-6 py-3 text-sm inline-flex items-center gap-3 shadow-lg">
+                            <a :href="item.url" target="_blank" class="btn-blue-pill px-6 py-3 4xl:px-12 4xl:py-6 text-sm lg:text-lg 4xl:text-4xl inline-flex items-center gap-3 shadow-lg">
                                 <i class="fa-solid" :class="item.type === 'pdf' ? 'fa-file-pdf' : (item.type === 'zip' ? 'fa-file-zipper' : 'fa-download')"></i>
                                 <span x-text="item.title || 'Download File'"></span>
                             </a>
@@ -2302,7 +2579,8 @@ iframe {
                 selectedProduct: null,
                 newReviewText: '',
                 newReviewRating: 0, 
-
+activeSection: 'home',
+isScrollingByClick: false,
                 // Auth states
                 authEmail: '',
                 authPassword: '',
@@ -2679,9 +2957,42 @@ iframe {
 						
 						alert('Ваш профиль был полностью удален.');
 					}
-				}
+				},
+handleScroll() {
+    if (this.isScrollingByClick) return;
+
+    const scrollPosition = window.scrollY + 300;
+    const documentHeight = document.documentElement.scrollHeight;
+
+    // ИСПРАВЛЕНИЕ: если доскроллили почти до низа страницы, принудительно активируем contact
+    if ((window.innerHeight + window.scrollY) >= documentHeight - 160) {
+        this.activeSection = 'contact';
+        return;
+    }
+
+    const navLinks = document.querySelectorAll('nav .hidden.lg\\:flex a[href^="#"]');
+    let currentActive = 'home';
+
+    navLinks.forEach(link => {
+        const href = link.getAttribute('href');
+        if (!href || href === '#') return;
+        if (link.closest('[style*="display: none"]')) return;
+
+        const targetId = href.substring(1);
+        const targetElement = document.getElementById(targetId);
+
+        if (targetElement) {
+            const elementOffset = targetElement.offsetTop;
+            if (scrollPosition >= elementOffset) {
+                currentActive = targetId;
+            }
+        }
+    });
+
+    this.activeSection = currentActive;
+},
             }))
-        })
+        });
         
 window.addEventListener("mousemove", (e) => {
     const posX = e.clientX;
@@ -2690,24 +3001,22 @@ window.addEventListener("mousemove", (e) => {
     const cursorDot = document.querySelector(".cursor-dot");
     const cursorOutline = document.querySelector(".cursor-outline");
 
-    // The dot moves instantly because it has no 'left/top' transition in CSS
+    // Add this null safety check
+    if (!cursorDot || !cursorOutline) return;
+
     cursorDot.style.left = posX + "px";
     cursorDot.style.top = posY + "px";
 
-    // The outline "trails" because the CSS transition (0.15s) slows its movement
     cursorOutline.style.left = posX + "px";
     cursorOutline.style.top = posY + "px";
 });
 
-// Optional: Hover effect to match UDD style
 document.addEventListener('mouseover', (e) => {
-    // Check if the hovered element (or its parent) is a button, link, or has the cursor-pointer class
     if (e.target.closest('button, a, .cursor-pointer')) {
         const outline = document.querySelector(".cursor-outline");
-        const dot = document.querySelector(".cursor-dot");
-        
-        outline.style.transform = 'translate(-50%, -50%) scale(1.8)';
-        //dot.style.opacity = '0.5';
+        if (outline) {
+            outline.style.transform = 'translate(-50%, -50%) scale(1.8)';
+        }
     }
 });
 
@@ -2716,15 +3025,15 @@ document.addEventListener('mouseout', (e) => {
         const outline = document.querySelector(".cursor-outline");
         const dot = document.querySelector(".cursor-dot");
         
-        outline.style.transform = 'translate(-50%, -50%) scale(1)';
-        dot.style.opacity = '1';
+        if (outline) outline.style.transform = 'translate(-50%, -50%) scale(1)';
+        if (dot) dot.style.opacity = '1';
     }
 });
 
-// Add these listeners below your animate() function
 window.addEventListener("mousedown", () => {
     const outline = document.querySelector(".cursor-outline");
-    // Increase size and add a glowing shadow on press
+    if (!outline) return;
+    
     outline.style.transform = 'translate(-50%, -50%) scale(3.2)';
     outline.style.boxShadow = '0 0 20px rgba(45, 91, 255, 0.4)';
     outline.style.backgroundColor = 'rgba(45, 91, 255, 0.5)';
@@ -2732,7 +3041,8 @@ window.addEventListener("mousedown", () => {
 
 window.addEventListener("mouseup", () => {
     const outline = document.querySelector(".cursor-outline");
-    // Return to original size and remove shadow on release
+    if (!outline) return;
+    
     outline.style.transform = 'translate(-50%, -50%) scale(1)';
     outline.style.boxShadow = '0 0 0 rgba(45, 91, 255, 0)';
     outline.style.backgroundColor = 'rgba(45, 91, 255, 0.5)';
