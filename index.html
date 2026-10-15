@@ -1745,7 +1745,7 @@ iframe {
                  :key="slide.url + index"
                  @error="$el.src = slide.url"
                  class="max-w-full max-h-full object-contain transition-transform duration-[5000ms] ease-out clean-fade-mask relative z-10"
-                 :style="currentIndex === index ? 'transform: scale(1.20);' : 'transform: scale(0.95);'">
+                 :style="currentIndex === index ? 'transform: scale(1.20);' : 'transform: scale(1.15);'">
 
 			<div class="absolute inset-0 flex items-end justify-center p-8 pb-12 lg:pb-16 pointer-events-none overflow-hidden z-30">
                 <h2 class="animate-floating-text text-4xl lg:text-6xl font-black tracking-wider text-center select-none"
@@ -1756,10 +1756,7 @@ iframe {
                     x-transition:enter-start="scale-90"
                     x-transition:enter-end="scale-100">
                 </h2>
-            </div>
-            
-            
-            
+            </div>         
             
             
         </div>
@@ -1824,7 +1821,8 @@ iframe {
 							 @error="$el.src = media[currentImg].url"
 							 class="w-full h-full object-cover transition-all duration-300" 
 							 alt="Application Areas" 
-							 @click="openModalGallery(media, currentImg)">
+							 @click="openModalGallery(media, currentImg)"
+							 loading="lazy">
 					</template>
                     
 
@@ -1925,7 +1923,7 @@ iframe {
                     <div class="flex flex-wrap gap-3">
                         <template x-for="item in sec.items.filter(i => i.type === 'pdf' || i.type === 'zip' || i.type === 'file')">
                             <a :href="item.url" target="_blank" class="btn-blue-pill px-6 py-3 text-sm inline-flex items-center gap-3 shadow-lg">
-                                <i class="fa-solid" :class="item.type === 'pdf' ? 'fa-file-pdf' : (item.type === 'zip' ? 'fa-file-zipper' : 'fa-download')"></i>
+                                <i class="fa-solid text-lg" :class="item.type === 'pdf' ? 'fa-file-pdf' : (item.type === 'zip' ? 'fa-file-zipper' : 'fa-download')"></i>
                                 <span x-text="item.title || 'Download File'"></span>
                             </a>
                         </template>
@@ -1958,7 +1956,7 @@ iframe {
                     <div class="flex flex-wrap gap-3 mt-12">
                         <template x-for="item in sec.items.filter(i => i.type === 'pdf' || i.type === 'zip' || i.type === 'file')">
                             <a :href="item.url" target="_blank" class="btn-blue-pill px-6 py-3 4xl:px-12 4xl:py-6 text-sm lg:text-lg 4xl:text-4xl inline-flex items-center gap-3 shadow-lg">
-                                <i class="fa-solid" :class="item.type === 'pdf' ? 'fa-file-pdf' : (item.type === 'zip' ? 'fa-file-zipper' : 'fa-download')"></i>
+                                <i class="fa-solid text-xl 4xl:text-4xl" :class="item.type === 'pdf' ? 'fa-file-pdf' : (item.type === 'zip' ? 'fa-file-zipper' : 'fa-download')"></i>
                                 <span x-text="item.title || 'Download File'"></span>
                             </a>
                         </template>
@@ -2157,14 +2155,14 @@ iframe {
 </div> 
                 <div class="flex flex-col items-center gap-2">
                     <div class="bg-gray-50 p-3 rounded-xl border border-gray-100 w-full aspect-square max-w-[144px] flex items-center justify-center shadow-sm">
-                        <img id="dynamicQR" src="" class="w-full h-full object-contain">
+                        <img id="dynamicQR" src="" class="w-full h-full object-contain" loading="lazy">
                     </div>
                     <p class="text-[10px] font-bold text-gray-400 uppercase tracking-tighter text-center">Homepage</p>
                 </div>
 <div style="display: none;">
                 <div class="flex flex-col items-center gap-2">
                     <div class="bg-gray-50 p-3 rounded-xl border border-gray-100 w-full aspect-square max-w-[144px] flex items-center justify-center shadow-sm">
-                        <img id="dynamicQR2" src="" class="w-full h-full object-contain">
+                        <img id="dynamicQR2" src="" class="w-full h-full object-contain" loading="lazy">
                     </div>
                     <p class="text-[10px] font-bold text-gray-400 uppercase tracking-tighter text-center">eBay</p>
                 </div>
