@@ -1699,9 +1699,18 @@ iframe {
         @keyframes floatText {
             0% {
                 transform: translate(-50px, 0) scale(0.98);
+                opacity: 0; /* Плавное появление из ниоткуда */
+            }
+            30% {
+                opacity: 0.6; /* Полная видимость в начале анимации */
+            }
+            80% {
+                opacity: 0.0; /* Держать видимость почти до конца */
             }
             100% {
+                /* направления и расстояния движения */
                 transform: translate(50px, -26px) scale(1.02);
+                opacity: 0; /* Плавное растворение перед переключением слайда */
             }
         }
         .animate-floating-text {
@@ -1719,8 +1728,8 @@ iframe {
         }
         
         .section-fade-edges {
-            mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%), linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%);
-            -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%), linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%);
+            mask-image: linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%), linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%), linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
             mask-composite: intersect;
             -webkit-mask-composite: source-in;
         }
@@ -1740,7 +1749,7 @@ iframe {
 
 			<div class="absolute inset-0 flex items-end justify-center p-8 pb-12 lg:pb-16 pointer-events-none overflow-hidden z-30">
                 <h2 class="animate-floating-text text-4xl lg:text-6xl font-black tracking-wider text-center select-none"
-                    style="color: rgba(255, 255, 255, 0.8); filter: drop-shadow(0 0 10px rgba(0, 0, 0, 1.0));"
+                    style="color: rgba(255, 255, 255, 1.0); filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.9));"
                     x-text="slide.title"
                     x-show="currentIndex === index"
                     x-transition:enter="transition-transform ease-out duration-700"
@@ -1758,271 +1767,6 @@ iframe {
 </section>
 
 
-
-
-<div style="display: none;">
-<!-- КРАСИВОЕ СЛАЙДШОУ В СТИЛЕ МАКОВСКОЙ ЗАСТАВКИ -->
-<section id="slideshow" class="relative w-full h-[calc(95dvh-4rem)] bg-transparent overflow-hidden flex items-center justify-center my-8 rounded-[40px] max-w-7xl mx-auto "
-         x-data="{
-             slides: [],
-             currentIndex: 0,
-             timer: null,
-             showSlideshow: true,
-             initSlides() {
-                 if (typeof SLIDESHOW_CONFIG !== 'undefined' && SLIDESHOW_CONFIG.showOnHome === false) {
-                     this.showSlideshow = false;
-                     return;
-                 }
-
-                 let extracted = [];
-                 if (typeof SECTIONS_DATA !== 'undefined' && SECTIONS_DATA.length > 0) {
-                     let sections = [...SECTIONS_DATA];
-                     
-                     let albumsOrder = (typeof SLIDESHOW_CONFIG !== 'undefined') ? SLIDESHOW_CONFIG.albumsOrder : 'sequential';
-                     if (albumsOrder === 'random') {
-                         sections.sort(() => Math.random() - 0.5);
-                     }
-
-                     sections.forEach(sec => {
-                         if (sec.items && sec.items.length > 0) {
-                             let images = sec.items.filter(item => item.type === 'image');
-                             
-                             if (images.length > 0) {
-                                 let imagesOrder = (typeof SLIDESHOW_CONFIG !== 'undefined') ? SLIDESHOW_CONFIG.imagesOrder : 'sequential';
-                                 if (imagesOrder === 'random') {
-                                     images.sort(() => Math.random() - 0.5);
-                                 }
-
-                                 images.forEach(item => {
-                                     extracted.push({
-                                         url: item.url,
-                                         title: sec.title
-                                     });
-                                 });
-                             }
-                         }
-                     });
-
-                     let imagesOrder = (typeof SLIDESHOW_CONFIG !== 'undefined') ? SLIDESHOW_CONFIG.imagesOrder : 'sequential';
-                     if (albumsOrder === 'random' && imagesOrder === 'random') {
-                         extracted.sort(() => Math.random() - 0.5);
-                     }
-                 }
-                 this.slides = extracted;
-
-                 let intervalTime = (typeof SLIDESHOW_CONFIG !== 'undefined' && SLIDESHOW_CONFIG.slideInterval) ? SLIDESHOW_CONFIG.slideInterval : 4000;
-
-                 if (this.slides.length > 0) {
-                     this.timer = setInterval(() => {
-                         this.currentIndex = (this.currentIndex + 1) % this.slides.length;
-                     }, intervalTime);
-                 }
-             }
-         }"
-         x-init="initSlides()"
-         x-show="showSlideshow">
-
-    <style>
-        @keyframes floatText {
-            0% {
-                transform: translate(-50px, 0) scale(0.98);
-                opacity: 0;
-            }
-            30% {
-                opacity: 1.0;
-            }
-            80% {
-                opacity: 0.0;
-            }
-            100% {
-                transform: translate(50px, -26px) scale(1.02);
-                opacity: 0;
-            }
-        }
-        .animate-floating-text {
-            animation: floatText 5s ease-in-out infinite alternate;
-        }
-
-.image-fade-mask {
-            mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%),
-                        linear-gradient(to bottom, transparent 0%, black 5%, black 95%, transparent 100%);
-            mask-composite: intersect;
-            -webkit-mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%),
-                                linear-gradient(to bottom, transparent 0%, black 5%, black 95%, transparent 100%);
-            -webkit-mask-composite: source-in;
-        }
-    </style>
-
-    <!-- Рендер всех слайдов -->
-    <template x-for="(slide, index) in slides" :key="index">
-        <div class="absolute inset-0 w-full h-full transition-opacity duration-700 ease-in-out flex items-center justify-center overflow-hidden"
-             :class="currentIndex === index ? 'opacity-100 z-10' : 'opacity-0 z-0'">
-
-            <!-- Картинка с маской прозрачности по краям и скейлом от 80% до 110% -->
-            <img :src="slide.url" 
-                 :key="slide.url + index"
-                 @error="$el.src = slide.url"
-                 class="absolute inset-0 w-full h-full object-cover transition-transform duration-[5000ms] ease-out image-fade-mask"
-                 :style="currentIndex === index ? 'transform: scale(1.0);' : 'transform: scale(0.9);'">
-
-            <!-- Текст -->
-            <div class="absolute inset-0 flex items-end justify-center p-8 pb-12 lg:pb-16 pointer-events-none overflow-hidden z-30">
-                <h2 class="animate-floating-text text-4xl lg:text-6xl font-black text-white tracking-wider text-center select-none"
-                    style="filter: drop-shadow(0 0 1px rgba(0,0,0,1)) drop-shadow(0 0 1px rgba(0,0,0,1)) drop-shadow(0 0 1px rgba(0,0,0,1)) drop-shadow(0 0 1px rgba(0,0,0,1)) drop-shadow(0 0 2px rgba(0,0,0,1));"
-                    x-text="slide.title"
-                    x-show="currentIndex === index"
-                    x-transition:enter="transition ease-out duration-700"
-                    x-transition:enter-start="opacity-0 scale-90"
-                    x-transition:enter-end="opacity-100 scale-100">
-                </h2>
-            </div>
-        </div>
-    </template>
-</section>
-</div>
-
-
-
-
-
-<div style="display: none;">
-<!-- КРАСИВОЕ СЛАЙДШОУ В СТИЛЕ МАКОВСКОЙ ЗАСТАВКИ -->
-<section id="slideshow" class="relative w-full h-[calc(95dvh-4rem)] bg-transparent overflow-hidden flex items-center justify-center my-8 rounded-[40px] max-w-7xl mx-auto"
-         x-data="{
-             slides: [],
-             currentIndex: 0,
-             timer: null,
-             showSlideshow: true,
-             initSlides() {
-                 // Проверка настройки отображения на главной из product.js
-                 if (typeof SLIDESHOW_CONFIG !== 'undefined' && SLIDESHOW_CONFIG.showOnHome === false) {
-                     this.showSlideshow = false;
-                     return;
-                 }
-
-                 let extracted = [];
-                 if (typeof SECTIONS_DATA !== 'undefined' && SECTIONS_DATA.length > 0) {
-                     let sections = [...SECTIONS_DATA];
-                     
-                     // 1. Порядок альбомов (секций)
-                     let albumsOrder = (typeof SLIDESHOW_CONFIG !== 'undefined') ? SLIDESHOW_CONFIG.albumsOrder : 'sequential';
-                     if (albumsOrder === 'random') {
-                         sections.sort(() => Math.random() - 0.5);
-                     }
-
-                     sections.forEach(sec => {
-                         if (sec.items && sec.items.length > 0) {
-                             let images = sec.items.filter(item => item.type === 'image');
-                             
-                             if (images.length > 0) {
-                                 // 2. Порядок картинок внутри каждого альбома
-                                 let imagesOrder = (typeof SLIDESHOW_CONFIG !== 'undefined') ? SLIDESHOW_CONFIG.imagesOrder : 'sequential';
-                                 if (imagesOrder === 'random') {
-                                     images.sort(() => Math.random() - 0.5);
-                                 }
-
-                                 // Добавляем ВСЕ картинки из альбома в общий пул
-                                 images.forEach(item => {
-                                     extracted.push({
-                                         url: item.url,
-                                         title: sec.title
-                                     });
-                                 });
-                             }
-                         }
-                     });
-
-                     // Если нужен полностью рандомный порядок вообще всех собранных слайдов между альбомами
-                     let imagesOrder = (typeof SLIDESHOW_CONFIG !== 'undefined') ? SLIDESHOW_CONFIG.imagesOrder : 'sequential';
-                     if (albumsOrder === 'random' && imagesOrder === 'random') {
-                         extracted.sort(() => Math.random() - 0.5);
-                     }
-                 }
-                 this.slides = extracted;
-
-                 let intervalTime = (typeof SLIDESHOW_CONFIG !== 'undefined' && SLIDESHOW_CONFIG.slideInterval) ? SLIDESHOW_CONFIG.slideInterval : 4000;
-
-                 if (this.slides.length > 0) {
-                     this.timer = setInterval(() => {
-                         this.currentIndex = (this.currentIndex + 1) % this.slides.length;
-                     }, intervalTime);
-                 }
-             }
-         }"
-         x-init="initSlides()"
-         x-show="showSlideshow">
-
-    <!-- Стили для плавающего текста и мягкого растворения границ всей СЕКЦИИ в фон -->
-    <style>
-        @keyframes floatText {
-            0% {
-                transform: translate(-50px, 0) scale(0.98);
-                opacity: 0; /* Плавное появление из ниоткуда */
-            }
-            30% {
-                opacity: 1.0; /* Полная видимость в начале анимации */
-            }
-            80% {
-                opacity: 0.0; /* Держать видимость почти до конца */
-            }
-            100% {
-                /* Возвращены исходные направления и расстояния движения */
-                transform: translate(50px, -26px) scale(1.02);
-                opacity: 0; /* Плавное растворение перед переключением слайда */
-            }
-        }
-        .animate-floating-text {
-            /* корость анимации текста */
-            animation: floatText 5s ease-in-out infinite alternate;
-        }
-
-        /* Мягкое растворение краев ВСЕЙ СЕКЦИИ в фон страницы */
-        .section-fade-edges {
-            mask-image: linear-gradient(to bottom, transparent 0%, black 22%, black 78%, transparent 100%), linear-gradient(to right, transparent 0%, black 22%, black 78%, transparent 100%);
-            -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 22%, black 78%, transparent 100%), linear-gradient(to right, transparent 0%, black 22%, black 78%, transparent 100%);
-            mask-composite: intersect;
-            -webkit-mask-composite: source-in;
-        }
-        
-        
-
-.shadow
-{
-    -moz-box-shadow:inset 0px 0px 6px 6px rgba(255,255,255,1);
-    -webkit-box-shadow:inset 0px 0px 6px 6px rgba(255,255,255,1);
-    box-shadow:inset 0px 0px 6px 6px rgba(255,255,255,1);
-}
-    </style>
-
-    <!-- Рендер всех слайдов -->
-    <template x-for="(slide, index) in slides" :key="index">
-        <div class="absolute inset-0 w-full h-full transition-opacity duration-700 ease-in-out flex items-center justify-center overflow-hidden"
-             :class="currentIndex === index ? 'opacity-100 z-10' : 'opacity-0 z-0'">
-
-			<!-- Чистая картинка с корректным переключением масштаба без конфликта классов -->
-            <img :src="slide.url" 
-                 :key="slide.url + index"
-                 @error="$el.src = slide.url"
-                 class="absolute inset-0 w-full h-full object-cover transition-transform duration-[5000ms] ease-out"
-                 :class="currentIndex === index ? 'scale-110' : 'scale-75'">
-            
-
-
-			<!-- Текст с густой тенью-обводкой вместо text-stroke -->
-            <div class="absolute inset-0 flex items-end justify-center p-8 pb-12 lg:pb-16 pointer-events-none overflow-hidden">
-                <h2 class="animate-floating-text text-4xl lg:text-6xl font-black text-white tracking-wider text-center select-none"
-                    style="filter:  drop-shadow(0 0 1px rgba(0,0,0,1)) drop-shadow(0 0 1px rgba(0,0,0,1)) drop-shadow(0 0 1px rgba(0,0,0,1)) drop-shadow(0 0 1px rgba(0,0,0,1)) drop-shadow(0 0 2px rgba(0,0,0,1));"
-                    x-text="slide.title"
-                    x-show="currentIndex === index"
-                    x-transition:enter="transition ease-out duration-700"
-                    x-transition:enter-start="opacity-0 scale-90"
-                    x-transition:enter-end="opacity-100 scale-100">
-                </h2>
-            </div>
-        </div>
-    </template>
-</section>
-</div>
 
 
 
