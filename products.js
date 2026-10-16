@@ -8,6 +8,12 @@ const SLIDESHOW_CONFIG = {
     slideInterval: 5000        // Скорость смены картинок в миллисекундах (например, 4000 = 4 секунды)
 };
 
+// Настройки магазина: true — скрыть магазин отовсюду, false — показывать
+const SHOP_CONFIG = {
+    hideShop: true 
+};
+
+
 const PRODUCTS_DATA = [
     { 
         id: 1, 
@@ -250,9 +256,16 @@ const PRODUCTS_DATA = [
 
 
 
+
+
+
+
+
 const SECTIONS_DATA = [
     { 
-        id: 1,
+        id: 'about',
+        menuTitle: 'About',
+        inMenu: true,        
         //bgClass: 'bg-gray-100', // 'bg-white' или 'bg-gray-100'
         //imageLeft: true,
         aspectClass: 'aspect-[4/4]',
@@ -302,15 +315,14 @@ const SECTIONS_DATA = [
     ],
         
         items: [
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMnarTecFfHzuyWZSogkoioJ8vU28hqGTMfHOmcTWBPSN6K5oQT8sF6znd4u1s-v0ogSQ4leuZHmektU9PDosnIhKL1kkB608sFuqiHkcLhRIjgWuFpRcoG0dYZpKzsqRGz6oizE_Bg359WwFgXkKpL=w1672-h941-s-no?authuser=1' },
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczM8-sEEDgwskzz0WmAKjwdsSQioTMhEatMr1FN6zmXjef2Swb-oDQipVq9ZElQcV8tdcQIczW9b2JbKk-voJypJsgf2liuuuHwJ1Dx4ZhoqeaxeDG37yGqVy6HgSIzohcH6ZjpQJo-eHUMatAUtb3Rv=w1254-h1254-s-no?authuser=1' },
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNBCD8DUxFQ5fxJ8R_g9ibfl747ciCVS9mu5spgyPHdGmDLlChmQIISs-A1-bynvZi2UbepPZZ6A4dm-bY_9JM3ZuAnWqIgXVikZVIYSd0vXJmfXaebB1-dffm5BKstlsDZE9EjzWqT91OKwWhMVbO8=w1672-h941-s-no?authuser=1' },
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPZRTf_gXLW9xhnW6L2e1TGJh9ZhT1qjGjvwodNOW9I-_-Vo7Yrgey8lu-GfVxAVzFw7iKxJKYp56k0_5kKR5ylS0RJhxw4fGd79rrL73DQXzuZYqEfshfc1Qtuy3A5sxI1HWY9OyuO2idigCX95bTX=w2684-h2013-s-no?authuser=1' },
-            //{ type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNe_4MkkcFdYtTsz-bmp9h5Us4Dc1YZEbShd8tlAgs6ZvWqBLZo2yImj0Tt6YX_3Fs4Y2z7YKOoNhOmu17og7QhmoHCjjKg3mIpyFSzY8s9nEMZB7yOeamsx3my26I18WDx_TKTSUsX70VA_jyv6xm1=w1448-h1086-s-no?authuser=1' },
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMa8CesIEpP62fioyUSlx2HusbOT0SIyNVyifm-RT_eAHqnQCYb2Xx-vQ1JqqIo2rIjL6ile0PRagnv4LZrJ5R8rJGBnNF_em6l0RmlzqX2eqd3Y8euBciokb1nGV8Lgvz_Wc0zBtzzUkity8WIZUQe=w1086-h1448-s-no?authuser=1' },
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMPMjVFjeTQhKKHsiTYoZulXy1wQqUNeM2alF7KLjmps5Ur6HLa9ovWYUtoDUR8FaCfTDKoGI6ZD3CrcOup-mYKMW_y59bhfKHrVorgZ7hNZHyf5i607zN2Uy3gPIz3OW95Viq2-C5H-H7WhqTh55dE=w3579-h2013-s-no?authuser=1' },
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNsGgV7C0Q0a1bl8vRrgFSuMOaQYW-7XDA4h1V5TeDkjiiGb17EQWiv3vnVCngLnSs41_gf6LkCQ0dpmBlc9q-fMCtYxiQ264CaRiYZjuDQ5yKTTcjJ2-a8zVzgN5PXb9OsCtGVSpF0HaFOH9MF6wpj=w1086-h1448-s-no?authuser=1' },
-
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczOQiNR_dCT9NJdrOMRciviGI9Xniz3o3UKrxrzqhMEayFu4j-QZoHNgpRWJewA5E3sBSn4y3l4k47c3qJiOBd_LM56hA-wX2p3W5aVmd9fOLjO1rD13T3vCnAqph-oN9ZqrIi1z1iqdspN5D3cFKO9m=w1672-h941-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczO-QI0JVauvjrRFzHUV7ajCskSRXlRdGWq9eyaVNL4n7VKuTFk5klTefWSKPvywln7GR7k_xKLvaOXCQGTcihyRgJxc8MUeWZljdxWTvfYBNEo-PucQ3UDLMxbDp3dEMX7MB6VFn4VTr0hUw-dxrHgq=w1254-h1254-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczM1ifx-4RcXRrorgBBB7h5l45bsiwe6Zg5A1Jos0UTj6J6CQaDB0MxK5lXfSAmMcLNMCbVtsFJorCQKM_FAK9gso8JVjMELcC607Cptv_oH0mDLWKSaYFA94OaUNWXKgN5iYYegqSi-9GLCT_CyfDzG=w1672-h941-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNT_khzmI-rGjatjwp_LMi5WCPlMJsntOt6Ufr27Nk7gsJdyk59WLP-vr67XaKg7nYAsU6YGeOX9GnOubUQ_TQDlG8yIPbZfYl5j9UEkg2A-ywS2R-JVjOc79giyk7mZwMA_UpZKcQ-lKHn5aWCzQIU=w1448-h1086-s-no?authuser=0' },            
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczOn-1ERV_ERENsK40J2qPSKQxeIVCA0ZsZwpvII5kcghhPDzfwk6sgtDheE3qAHrJrBGA5jwoLlviLoZcNqpdsa0ww1qqlAJ8MspSdLo2-zWDcHT-PdoGU1sYZq1tyO7VpYo3Z_9e1gJqhhvz5LRl9T=w1086-h1448-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPEJ4a1tC40W2t_0FfPZAzSEqfAFDbHmRI8aAaEO2J2rGL1YGduG8qcbh25KGrWrKIvrFK9_LyCui0DafsiQfoYTvQ9gjV3SxAVzXfoAF0oUuCw2D1UJvt7mXVq6UI8hjwvYNHGdbixCg3Xr6o5_Wt_=w3579-h2013-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPed9rTIz5vxA6aWzJ5MtqTKjoF-i8WjTWRMlK46sJVeUgBSgJzZC0ItmqhRqUygq3zp9wsuffC9GnKxYh6v-hHcdIgJVhdIPaXHsLEkAxuH9F8sAwUg2enyijdM93jjjolDd3GFt2iNmP4zEbEdHwi=w1086-h1448-s-no?authuser=0' },
+			{ type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNIS1ttqPvFb0x_RYyEq9C8VeLK4ccWlJFOq-Mnr2JlJtgGdDkaTCFg3m9bitvl-kpjhsQIYsALyczbfI_FMsBNXLypSBXmfDQZXKEyPd2yfrsV-JjNp6UVuHvKNb9DgF2YEL0n-5YXm3U4CX1rm-Ky=w1087-h1447-s-no?authuser=0' },
             { type: 'pdf', url: 'https://drive.usercontent.google.com/download?export=download&confirm=t&id=1ekCvtUsUVLTkgrTOHB7Qy2cqHE2R5Dab', title: 'Resume (PDF)' },
             { type: 'pdf', url: 'https://drive.usercontent.google.com/download?export=download&confirm=t&id=1QGFVjjxCcYgPwY4ZYbELje0WaiO815ox', title: 'Diplom (PDF)' },
             { type: 'pdf', url: 'https://drive.usercontent.google.com/download?export=download&confirm=t&id=19hlV3huYqnUShDzTAaF40CnnsKkgj6Ti', title: 'Certificate (PDF)' },
@@ -318,7 +330,9 @@ const SECTIONS_DATA = [
         ]
     },
     { 
-        id: 2,
+        id: 'repet',
+		menuTitle: 'RePet',
+        inMenu: true,        
         //bgClass: 'bg-white', // 'bg-white' или 'bg-gray-100'
         //imageLeft: false,
         aspectClass: 'aspect-[4/4]',
@@ -382,12 +396,18 @@ const SECTIONS_DATA = [
             { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPUdmve7NyzZid149LHk8yQQSmtVBqXth2lPZJPAPKQKf3oGLpZlt5IOlqHxM0ggdQo6A-WiiCgaM3TnFtZ_dNAsJNQX-SYa3gx7qCkS1akf_0wjxslwt9e6ldjXJ9DEFbEI8DdZduaYtURn5E7Y3He=w1920-h1080-s-no?authuser=0' },
             { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNnaQcdxYmvovBnOlUc7td7HkBe0B2K-Gkgp1mJY4NFz8ow0A0CFN9VGWZKahhbUrXwF7Kxij4NVYNp4TnpbQaz8LoyJTAk_NgTlzkoMh4VaSDDd5hIk-CmpuQAqWwbpvUhZq-QYnAM8NRLzg8TqNOD=w1433-h733-s-no?authuser=0' },
             { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPBgiV6GHKFfN9aHh9plAubV9hBIi9cgtsooJl_Yc4Ztce1znFFvEp4nY46-k5Pj678VkbQG6zTNwO0VVsaNL6IaZAiTZIinD9BchxUsM-D_y2o4G4d_wIlHvwLEvXTcnGOTh7Qwb6jNbjidavOpTpy=w1924-h1080-s-no?authuser=0' },
+            
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNIv81Q1y_onHusiXBLynFkdq8tLIrAcNLXGXW5NG6oiou4VWzb1MQ0hwDQV7R5D019g6JCTH7gp4WQ78XF_8uqT-XYsS8S3YVUN6GmzJ1CmfgNeNiVcZh3RshZPh-ZhhnYCVqbvlOMhs1HucYzNzUR=w1587-h1319-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMGh65X55TTR_QmctKxAOMB9Y2_ZA6DlVCwJcee7yhAm_3WGIrUyv-YpYxw-8osn-_V6su0VxDdQ2zeRTWcFtHql88idIV8kmMnEw0Y0GpdhTMOwWDPzsJ_UjRpv958ko-rsbua7zRRfUKa9s-hjD3Q=w1365-h1061-s-no?authuser=0' },
+            
             { type: 'pdf', url: 'https://drive.usercontent.google.com/download?export=download&confirm=t&id=1YMHcb2ZrTu7014qup8AXLSSAJnhL44xX', title: 'Flyer (PDF)' },
             //{ type: 'zip', url: 'https://example.com/models.zip', title: 'Download 3D Models (ZIP)' }
         ]
     },
     { 
-        id: 3,
+        id: 'voysa',
+		menuTitle: 'Voysa',
+        inMenu: false,        
         //bgClass: 'bg-gray-100',
         //imageLeft: true,
         aspectClass: 'aspect-[4/4]',
@@ -430,15 +450,37 @@ const SECTIONS_DATA = [
 		],
         
         items: [
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNfEF6nfMostqM0HekyJH74E09a2Peigl6F6ft7UKr6tz0WA-H7Uh6QrMQv1xOe_b6rmXJywmOmNBLAa_CpNVzA99FgGQmCqHUQ7VMwf_3MiAzQfjBsvY5pO2MBnhgVpF33CQQNsRhHKD-aV3P5MV2e=w1200-h1200-s-no?authuser=0' },
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPcHu1P2ATLuRzlPGmb45Rq_-etJY-bvQIkWY0WygXdyuKzL5YqeHOfQyOpscnzQWGALiKe1Z4_PtNBSLPphW9raQEuZdlcmCg2LpoHrcEXWa0cJL-N65Cy_FXb0jo__72_jLWpuOTzPSD2iS-oYOin=w1200-h1200-s-no?authuser=0' },
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMrfprUEmCbKHvYsji51NbfPab4hZK6DCi_FAwggeVKRGaan3ydtcTriVa8MI3ZmC_8-PH9-hOqtHQForH2fXiMI4w5f8r0eoMhNh6J4pTG4sVRd6bzl0RkiCuZLLrB-2tCBXIOQLSrMvduhMVj2De_=w1200-h1200-s-no?authuser=0' },
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPUKA2GAp0_jWFQa17nQQ62pacUIdJg_btePWZ5IEiYnXoYkdrZmygK21Af69vLufBIYNG827sYfnHWlqofqgDbVZFDFXW1P17psdj3zCRVXdBQHEyhFcXBuGKaADJYk7mWrty1HV74Y6R0wGbXhy7R=w3629-h2013-s-no?authuser=0' },
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPVQTEo24_LI01Y7tG5HgQHHQtVVrD-SKbfjMq_PhlpW6SxJGZ3gJVcGaSQA3E9BQAoyAFs23jUVoRXG2XwwgL6UBuhHAd5e6i9QovM_sXutNEioq2WeFiqROJRIEUEq6e5lquirqZOarJBpZKvBHZi=w3629-h2013-s-no?authuser=0' },
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPXfZAzWpfBg8uC3JV9WB79XTgIEfMt155BAN1798HFH8OYxeDp_f6W5ehWJiaKZ1wY7Ud0CPh1rmbeWiyeiiEacM0K_PqgWGXhuWo24MokPVyWRMH3zR1F2--Ed8au0jDSpC3wjfO6WXtOIQbsk1Mw=w3629-h2013-s-no?authuser=0' },
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMRW-mAWP60weYUKMKUetAuZrDC9D-xq2EgAFQMtkc3KZPZDSDpK9VfBqdD4zwSJdBZugcokP6hptQViqoSLXIDByft9qF8E7dfIJhF97c7qc9ZBmQCsokJeghYRc8WIKWNLGwL5g8SKOs_im2TBJnW=w2897-h1749-s-no?authuser=0' },
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNFyGGvlM5BR8DKtKh_nrIV9QAQDoofiJe7UKhVB_Cm5YMVIUe_pmDegZVrxM4Kq-VmU4s5Bq9iTLd7-2tVYSkPzwoR2Y9a5VITeqxJyyMc3gAWx_njyLxJNauFmNualJV64rydWARCao9_rLadIPr_=w2693-h1649-s-no?authuser=0' },
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczO4mGEAEuIS1_7V1m5S7TaznDtYmxeftQPgpShP6tj900LUr7CkZgjsv0gh4865uHiqxlU3GGpoZaYlGWq3tah2ah0f7JGvWP8iYitWl44Hri3WzWhOJXch2v_y8MujY4_-Z8CSFqyJi0Lu0KJHjGQS=w2613-h1613-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczM8wzHdzKCS054gLbSXuJvpaX8y_IIWeI1Bm8ZJ4nF1upbE4QSzUVrhffJiJVzNAJYBv3coTW-B1074PMT72xFVNlcsXYOnab6sVlvOOKIUcng_G8YZB0k7uu9pdo6XawpE0sBFrDkHBmIUdQpL3Yq8=w1200-h1200-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczOFRX_D6prTBoAwMkZ7ol00Wk2avM6KduX-ZKBi0HM3OXn8vGPxqlgQVZYfONK-37-18z9RvgbI4ARzVH255C669dW16KYh8REv-aELgqIonmXQ1ZFXP1e2WA52vEkwLtMJJdJWKsZvOMxqCWMUzVLs=w1280-h1280-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPADpP80j_IocPN1Msxj4XrVuvKzpXrf5I0HKR-YzR6s92IrAT6ZV2fclUkR6RlIF_9elaajCgtGLW97vNZmEf4bZXrPL0ilvEO-HTbJW-NFbwvgmK9p4oWiC_ce4jmRm3ihswWZMFJYRpKggr4EtJQ=w1200-h1200-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczOx-p-GHd4zA4kEwtP-Jkz3Xq5PSabnL48RBHofm51TbL5EF20Qy3umd6Bwf-CSRv9ydWNlT1kqnB4MbPijPNBLGkxWfTcRYhzJN-s5MOs5caMQ4qFS939_2vd1TdrZ-Cj468Zp2_uxmq_y2gysuJXG=w1200-h1200-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPruogwW4B2tVQ4RKpD5mGsDJmDgPa1_4CruYkr5PAJiJeOfyr-KIxtd9MD4-6yew7EBsUl5ZIxgJCh9XvuXdB67KUQOt8gpfNGarBflwk-5RaOcLY_8pkh-5D1MPJHPCVjH8rvblqRBEhGWvRUgkNx=w1200-h1200-s-no?authuser=0' },
+			{ type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczOm9IoSIu3u_uQwh2x_9CboKaLX33scJmX07_k3p3xXxWyJbmUNmE-Q4eP1MsQu8yNRGXr_RXoMIVDsfFwLLHMXlkr6OZVeWvGBaiG2-r-rppR3QYdJMH4aeYc_r1uQA0u8wD9SiF0YT7ey6Ac4C7-B=w1510-h2013-s-no?authuser=0' }, 
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczN_fNEj9fPTw63cw2EQydwGFwLELhyZpeiQph7X76t2De8mJgiBijA9z6PGwI972tHFye-GPQzzk-Q-FAjEnAJ31zj840JSGSQQmbqP-hnuq5SfmHysvHfnYbbyht1zzfsbas0Ve3oc7J73Oti0hPRH=w1200-h1200-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPy-xiiLZzHYDtZZADkz3SXxXR5cwrOxTwobq3NGxwQl-k4dklSIT1YpoZmMC5ou3_ah0W33izBSetiTMO3kmSiuHwIC2fd3GtOEn76PhBYaDVJxkFCU9H-ykdP49WJYa7Rm0jOPCBSjOuASPwq42dz=w1200-h1200-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPRmFsvDuDvgcKMAXSKCtTLVLirAbPwNBcHiW4BiMTpzEbThhZHazYPpEHOGslNmMtjTomr0gbf53rRydpMhXztXIHlMvacsziBCdKG8ZnXmxRZ7ppb8ovkZEESe9sevM2KrsWcKRb9gnJC_HTucWgx=w1200-h1200-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPedDht_q4P2W2VsV38nUWHka2aBhboWGdOnv_QwNgXqVtINoAaPsAnxYshiU6R8LCbHET0n2J2_6GMPCQ8uzu7KPXz38Z4wvrSqUxgy2VwUKwLxV1X4kxP_rt2MjyFSUF5gcOEhhLBOURI1d88Nic1=w1200-h1200-s-no?authuser=0' },
+
+            
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMeeXH50JBHnH5vKemlompPEMOhPLp5bsN1Fcnqjf8_W0OOxyqy5iK37dwtFT57gcYQI-Kjy-AbW1NG0zR7a66oCVLjBUD7p8NpeB05EO5XzDURE9ZQbwwKBklFH0pNjXo3YZzZU3YD1qcFSETFFKjG=w3629-h2013-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczOhNoqLMzZvVPOrvnZBUlL9sf92wDwMiajm5v1E3nL8VSPVuBrVshYiNeiDfY-tPKNX5bd4L_rbqlBOS0hacLo3QDLlrCE8MdnOVLiSew08aKggrX5xLGSAZwKAoVgz4yrdfBkX9eVTj2VR78xqDMrR=w3629-h2013-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczP60HNpHzED4CpXiaGsyFlFPgBvEQ3Vrsy1RyRStdb96AWPmb6RI-ZKTwSXVYcvOEI2YEJIYx1d8ww8fZ140nm9IOPrclNdof3zeMaSkm6wzFSndVpvegqhIh12ZKn8w5AWr1sZc9RBqVNRyNNM_GbA=w3629-h2013-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczM1mNt5_6Y7JT0UjXfEcfJHrGlntnAcjLyU4agA3XhJa1QSvlmafgMfUrtz2XUORU5gmrvFABHy3LCA8sPn6wf3JgGGso3EhK4-g7ZSgfOSBy5RXkjERH7oOvGoW3Xxma_GkXwMy70OCTknzTe88Q3W=w3629-h2013-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPrHuz-uUpluaEV9SeyGvqY3Y63Y5zmfKhjr0-xhYEOw7E3bWB55T2Bsl9HSmgt_16XCbB5JdL5S_xNJtyz3rku143_JY3iduorQY_F5Ltj4Ne310Ku_obyVZ1R4BdL32tijkOKZW7UzvuqDKn-q5MC=w3629-h2013-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPd3qQdFrHjanaA_5i3vgDJiiQj0Y0GzqJCduDP8PqJOds9DaG45tKVo8WAZyWn8tOmlNAZHpbh0gJ6QxHZ-OwW0W2qGnX-o_sP4J7vjii1IUQHF-OL7lsbEZIkxJHdNE5_4nn4sOL0CigZqaC-f_Iz=w3629-h2013-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNXFEXpCUQjNAU6ABZUetQVTfbCFXmu2JPdPEO5vE9HHMr2vTJ3j0NXZ9LtH3okGCJ8UPMTpKOlLiZ4Bd7hbeCZmhryPgFtSHcFkpsuRb-fAa8P-OeWm27b8JBV3TzhLNQbPsKQ4Cxr8CBYBUjs7LyZ=w3629-h2013-s-no?authuser=0' },
+            
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczOkPV7jZQ-1G0STUsP3BkWMsZGvEcpavkInhjVFOOCMl2QTWmRPX7jpxcsueE8E34UKGOkvL-SxcWcNIdLvVG6EFoykLyM9D205UTjBPYgkX35Oo4HbmyGE7C-kGF76KumTZAZm6oOV4cR_NfnQzrmj=w2065-h1239-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNLraRB64GziVM92N0Sg7XUi9ZahtnhMBWAi5Xbd9ndEhaU0X4SSaMuva9k3y4miHkiW1L6xM9-GpaKA6xjC6pfYgteDEMxzaK3AyQhq8LLI-HH40us3QiRot_vn2MWFBySEtAhEVkEmQxInA0_xpa-=w2693-h1649-s-no?authuser=0' },            
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPB0kGFGvJbsonB4eAUBJoUeTK4UAMe5ndCheFyKtY9UhmeR_kZCu6ND9xyktj1WosiDq3Xq2qV6dFH4PoYCxMOcIXWD_QDM4MFhFmmCRen_1UV_lLquj2U83-ZEmbEVNCgpT6ULoLAsnsTF3VJ9LO9=w2485-h1129-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMYLdvQB_fsXQ4jtr8blKs_PqpRG5QnzuFWqrf6MpSO7a9qAHmVcq1_TB3tImutA3sl6Gu-w8fUvAbraPEGfDGWtP-cA7G8sTkK8B1T0rMT4hZY_-9XhBYgmOC-4N-oLxdCvJjnYD6DUfE3wZGArwZk=w2397-h1221-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMxvKgmGmccKoxzEobAhVCaGVURSqrmkIMhj-1r7axFXmuq9WDoxJa8UBfSHc4knr0szVH5d3DrPYhWgWdMxh5hKQHA66n0HeFBODumTbm44lpV0sBMBr_JQAq0jvwngwjLoyMhgDc_y_HQWnCxeGr1=w1669-h1749-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczP5xszeA_Hdep4_iOuDUh8LcriOp4VPOpPeRTy450g27-iptaVCxVkjRZOHNXTnuJBSLYAxA0hQ7H9hJQA0peLKG-uE-p1O0hdzVv5QmbbjUYF3cZhuif-fok2TDMNV_PQV8apiXZS1iInWZOh-Kget=w1809-h1497-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczO9V2wm9m1rHAVoou6ug2wfCTtRufjrjcU22c4izeio74y4oXw5LKTQTPwbTodFdzQE184PgLAdc4wBhl3FaAW_k-lLyctX1badIEEZaCx8yZ3S3jqXeTUuuNyeU5O-Oe9JhJnAj2oIczbbGSJbDne8=w2897-h1749-s-no?authuser=0' },
+            
+
+           
+            
             { type: 'video', url: 'https://dostupsreda.ru/media/files/materials/%D0%92%D0%BE%D0%B9%D1%81%D0%B0-%D0%B3%D0%B0%D0%B4%D0%B6%D0%B5%D1%82-%D0%BF%D0%BE%D0%BC%D0%BE%D1%89%D0%BD%D0%B8%D0%BA-%D0%BA%D0%BE%D0%BC%D0%BF%D0%B0%D0%BD%D0%B8%D1%8F-%D0%BA%D1%80%D1%83%D1%81%D1%82_0zWbDIF.mp4' },
             //{ type: 'pdf', url: 'https://example.com/manual.pdf', title: 'Download User Manual (PDF)' },
             //{ type: 'zip', url: 'https://example.com/models.zip', title: 'Download 3D Models (ZIP)' }
@@ -446,7 +488,9 @@ const SECTIONS_DATA = [
     },
     
     { 
-        id: 4,
+        id: 'saned',
+		menuTitle: 'Saned',
+        inMenu: false,        
         //bgClass: 'bg-gray-100',
         //imageLeft: true,
         aspectClass: 'aspect-[4/4]',
@@ -489,16 +533,16 @@ const SECTIONS_DATA = [
 		],
         
         items: [
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNhFJZA_nLoHV-nCPbjXHRD_EAD4SWelr6XBBkC8az3voXM3aGy-mU9At1Mya0_m2dygpBWuAp9tpXGjM78Q42TzzOAWbQNrGFaXH3ffIwT9zNc3fdnTmTQJW0r9pGkQUMHBM7yKfWU8AWuZ9l42ygp=w1280-h896-s-no?authuser=0' },
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczOL6NIkTFbIQFhb3errCyepI47IGfYNEn2062H_d0SzDwZvilv_lg76aI__zLzmtPFbng31oR_dvnco4Eqz-8STeAfuno7FBfOBoyzBhatUOzxLxHPduz-FNSj9BemXGA8XTk0bKtZ9_p0GRfhoxUm-=w1280-h851-s-no?authuser=0' },
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczOrmiYJdUpzJyNdeAyMTpoJlaZTu1KkuawtiUmdyIH8Rqdgzsvb48IRQLzYq4C-SWybfpwrt0-eB56oA-AVzXTMxzU65L26zB-9n1bFQlmZZPApdkm1SO2d5udQuPT47dKIMPHpNMeP3zzLccRm9IIy=w1280-h853-s-no?authuser=0' },
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNPskKGUKhKlzgLPzzO645LOJB5-NQ7N6DD_MHytIcx89TDJJ1YU0ZwPHEC156ktYN4O19Zw6CruUC7zWMU-enhf1kOi6LQHrz4g5pt5h5DZxIO7ARqy86cONajK5Zopo1IdHuhCWzJs0os6WVblJOD=w1280-h875-s-no?authuser=0' },
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNtO9sSoGIlzoHg2Z8K9PDqw0wvECPHICesWhbdEaQE8WqUHxQeeQysfBqGDybVi7n1CwUCdOgwQYzo8X2BLEmL99aIwM8XPQ_nFrdLjtXzqTnl9VeIBCg96s3PRiHkODpYyjuQD3_LOZJLgy5Y0IgQ=w3397-h1884-s-no?authuser=0' },
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczO80K6-3QUivrRDSBvuhcrSGN3zL1i4od2rEK1fPRrDWKPOEjg0slJuqQcfmTUyYBFyTJFE-OK-DOgD6CCK5-GgQjrmZ0ToOZagxJBhglv57kwqK7Hsoxx-dWFI17fXxcaQVUc4gfyyn4ZOc3h7L0wT=w3397-h1884-s-no?authuser=0' },
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPgBaODclTBjsp-uOu2J8zsorU_KwSR3DLpZ_jSFsfANAZ9blPvfJQOlm4X5y-4cRX8WX88ZxUa5wZxSQuTvnDjB6cpcCsRKvFgK1NiRbqcDaAKnPJgxHlmBfKmQh8rjzi67RKR2vQDOSEVb7obm67s=w3397-h1884-s-no?authuser=0' },
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczO4yXaOJplIU51zTzXg-XpudJhLQPivvPEyfEeFLzyWLhDCiJ7krkY-EDVxyA53UCpxXmRMWUQ73FG9IPXvq7sRkjucq9yd4dzLHZc_SFna42bIR1yUOMQy3WVr8BxAbqYkLPyIe57MpHt-R_kcPGGe=w3397-h1884-s-no?authuser=0' },
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczOQOKmYzswtX-1vaz4MT6J4dMzCYBeOxsD5R6PfJ6IH0hp4WPWAu9DpL5XXzmWZPjjOOCZGJJqFLcuTM9hPM0B12_gBoHfTUy6ok21kfhouzbrqqbRcfIRwOFPU1BEyajqe14pUMxK8p4TmYB2kjzjD=w3397-h1884-s-no?authuser=0' },
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPwP8xc6VbZWUsmDSCTm3p1YfGfFq_1oUw797hPj6MY8FQ9ZMjb65dLQWfI2QcU5fqxI-T0sYtLBt5c-nW7MWexVUhSYkuCQxWcAyA7gzFwII8NZ24k0E0grUlh0QfS75nBCqadmxN6W2OZ_QDVndLa=w3397-h1884-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNdQUL7x8M2DEJ91s1BAixDoUVXUaUaYkuEEzHFM1V5aXh0UMl7DtJtQ0KS_-fkGsARGn1ncM8LN3OBxwf26dzmpyZE8A8Q11LOkGWafgCR5YmGlQ3a514zMNrM8Gl_fqad3pB0k_qyCcQu8u2CjTwP=w1280-h896-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPfNFUZnMYN0dYTNm_aE-sdfQE9glJmns0aGqnnJDeaZ97P4CzU3E4gBePWmd_hwkt3BRm0_7xLd8GFOW3uNeTNQ-oJNBuXHLKmionGSDABFDIBfw4LtcxJiTy4vaoCmiAQ3Fz3A8pBIxr-4FflxpBA=w1280-h851-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczP_SlamTUmcVf7WFsyGHfZfQvP2MvSoc1cqTmJGrT8evtX5treRNYPUH_mRWBXhhnHqAw4eVN7FpZPl1mFTnkGbMTXvHq2sQMtgJYYG6Ne7EN9ZUuiUw8GBLsv-G9hBnD9SjV_SnMUs_dLTnENr9L4S=w1280-h853-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczOowHvOqtackUq8zvM-iqNIsoYu-s6eSMvgPtgby69H9RMC8VNiyYLnmP9-akEU9WuCwwFtQXfIufIqvPQdTtm1-f1M0ADsa02n6nUci7yBNVXT927KpGOakDnoI2b3t-nagwTjaM6j5wt7Naf1QWMv=w1280-h875-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMpMNpDyVJvt4G1Wm1NFwcKKf9xylEJPWMPjMvsQgt-c1FFlyMrJvdSYtfVU1zyUETKDh_bre_wuMvdIstt5qTs1sObK3KH5La4QZB_JnRcZlOH9vRf_p0XjHNgmMAneWVDfKW3bzQC1FV5ZVhXoUlt=w3629-h2013-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczN-CvrVltcXCSj5ApfuQBAdvfVCownMLZNpX16KkZr-ytTP8FaNpxICTG-Cq7DF7zwKBoIRxO6PPOGM8NQCTsRq--XqFRUTib-G2aEMZtSqtV_Po9zC8fngm-LKF4Z_JqmFU66fruL_mD8B2NfgT_0U=w3629-h2013-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNS-Wj0LiLEGP_dxCu82TDZw8NLdHMqZKNZ0F4yC17zh8n9EzNpsjaBFQqHRoZFEmd2yoSAfcmaAwDNjxIL34ZNjsC0M9gyvCbQ-Y1WVIbjXdj1X8gPIfDP09-2Vu_Kgq9d1xQfgVx5O5Rs711tA9Oe=w3629-h2013-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNP9zobkMNLnxTssjECbTj7w4DIUxOeO9eAJSXq3AV145KSVesrEIUXxelgEuQIj67Bs1g8j32wmHYElSk9SZsB0m4agyhUW_fONbjleSvyAdSraO12RZ7JuVRsemFgmz9HZt-Q9LIoZ_AigvTa3ToN=w3629-h2013-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMAwHwjt0Keszgy1Ls39yF45sP0wH-1NR-rdCCxxy6XEFVeh7ObwE2h9EORC0HxCmRtvWQT35nLY3Lrx8fHJ4P2zFF-aX8L758JVzwIlYLDgv9YCRpfFkFTyPkjN6vBcje2RqvgJmlNPKGOLIRLb-zu=w3629-h2013-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNlhwNKx2wOWM5DZG-hCvNamAt-jiyfa1b1H9k9z72h8PWdUE6wVfWyzL7z_tZdbY7abfH-ipxi_peE2ebMPvcMQJsaYFjINOcWESlWLuxisMETNB7yQVbrMym6qvFaBniFtd6eYl7m08Ao6myvx6iz=w3629-h2013-s-no?authuser=0' },
             //{ type: 'video', url: 'https://dostupsreda.ru/media/files/materials/%D0%92%D0%BE%D0%B9%D1%81%D0%B0-%D0%B3%D0%B0%D0%B4%D0%B6%D0%B5%D1%82-%D0%BF%D0%BE%D0%BC%D0%BE%D1%89%D0%BD%D0%B8%D0%BA-%D0%BA%D0%BE%D0%BC%D0%BF%D0%B0%D0%BD%D0%B8%D1%8F-%D0%BA%D1%80%D1%83%D1%81%D1%82_0zWbDIF.mp4' },
             //{ type: 'pdf', url: 'https://example.com/manual.pdf', title: 'Download User Manual (PDF)' },
             //{ type: 'zip', url: 'https://example.com/models.zip', title: 'Download 3D Models (ZIP)' }
@@ -506,7 +550,9 @@ const SECTIONS_DATA = [
     },    
     
     { 
-        id: 5,
+        id: 'blindphone',
+        menuTitle: 'Blindphone',
+        inMenu: false,        
         //bgClass: 'bg-white', // 'bg-white' или 'bg-gray-100'
         //imageLeft: false,
         aspectClass: 'aspect-[4/4]',
@@ -550,23 +596,23 @@ const SECTIONS_DATA = [
         
         items: [
 
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPFTXWtu9jnvi0_vEZSOVqBO_MzwmcNnkHUWezLgKfNl7elPH01JeBi6DPxd7ZCEWHrTkiHj7oC_jVcaBS-Ix-ia5jtMRWE9hqVCSoVt_I6gqdxvPrXuh20DvKE5LoAa4wKdCuKsIUyATdd2egTCaRB=w1300-h800-s-no?authuser=0' },
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPuxYnFp9ahPRlHcogBUUSr2cgDghWUWj8uRi2btBM4ofCh-CiJCYy9x0sxAbB-Ez174A3-jbCBtmPf2PKXegXmGN7Qo7AOJxswIYQMui3fGlR3jUThwPD91Ar3s7rBYoMqWJRKdvpsSvUsII8y-WSP=w1300-h800-s-no?authuser=0' },
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczOnrbBQMt9j8lIfSKnfOzxbTuSjgbSIxOqXTKyz0Lvd3kkOggu65fyg22sczvDbwpwpkc8D0IYm6XrpLVwz4Ujo-__cXQK-jtdHkC8mpTJeaMV8sNNsDUeSc0uFk-TaQv0qF9TYXzHnc1m6-kDbGiIs=w3629-h2013-s-no?authuser=0' },
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczM-cPDWWbnAVelaxrsvzpfjJzkxh-Zcrl3YQidkWE2RTAsDARgwwSeSe73JyUP72gE8HQ9Dx6hRGkM3ynOKpeat5dwqUoBn46TVBiFs0_Tp44cqmqQSYHI4eiw_WrDjw4UknF1nD86oHLnVpKc3euny=w3629-h2013-s-no?authuser=0' },
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPPGCPTpEEkqP0vrb0Ph3FnXhhrWzKu53JN6-d8gJFTxYuBlgzYtjfVRNMZUd57uMYRk8P93Z1sklAG3__hu3sZM7SSYhmMTTe2O5RVkK_UC8yOoTW0P0vLNEyyH2dCA_0jyf_ZAW3Qf8NPtgy6uF4t=w3629-h2013-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNC8R_gmBFj1kCfr6Ue3SgQLwyUle_JczVSnyfhqIkmpkytIK4cC2Y19dvPfwZFzuGV4giEeGMAIAoEpVY6PIvolCqFEgvKichvwxQwQlBuQB8qK2jsQYY-yjl09owlBHDJD8D5pK_xychr51zcygt_=w1300-h800-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczM4O-BlJqC7HTEZ1QG3udhzc7jnQNci2AkDUGyoMJJCPGL5-klB8J1CJrbPm_LfLCk02YU_67cX397eGB6uUkgrga5bNq3vgpnYaZ5LxBmM6SM-kB2mXwsx8BCsuEr_ttjf3VKJMwZ9tET3NJBgHEyr=w1300-h800-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMhjRiNZQD1Qa3Au-Fi8TVmiacHf8yyJUgJ0ixcPXtyXmLQxlvWhielyuzXwbJJkzbSVm9loRKEj6QwSvV2zWD3j1cNh6eWebpmpsiGtFy5CM8Ih4CgxGqUTd635QM3rG1bgFmfMOzwDR4cVnGK3-bP=w3629-h2013-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMP9CQ56Q-yOMBME9IZG6UA3vFhxJiAZ_3vaTMzpY45Ken4uijfZjRug2A6j4W_w18alkTIog_j0Dzcq7t10Sc2mJazmTqtY61ezS5VxKVQ-L_-fAJ4zhm_JJqogQ1Xk_9fj6kExNJPZuJV4x-qw8uZ=w3629-h2013-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPWtjveEK30fTLyAJjQw3SjW3Ukiy2OCoQ-DuW6V8DsS98O5XAsHDUdozjOlqDPjz9k_hdY4cy0Ij8TgpRhJnYpfC4rAetJMgNl157CjqtbAovnPvrpzztdYpQWCeEdm3_oA9B9EuLw_6m1uPo38-Dc=w3629-h2013-s-no?authuser=0' },
             
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNJ584hq2-gWcMgJL4HA4Q-FA4S09BkzkBUsrauXE5h50O1GaAqMtDXQOzy34EuInmVEJpQopb5sZoQA4ClKzvzbadh9Waput_-IyEAXyznOoNIsqyklborEmkcWjnlzUGQlIKBDCs_5bLfyaC-RjZD=w3629-h2013-s-no?authuser=0' },
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczONiD-a4ueD5_0ZpwhRi9VtPZkA5LqjCW9KzksfTZDJkJySCpUbORy4S4kvOXblYWcZAZpKmnBTlOgbf2ATmgG3adA9dqngj3Uh7WCCVTLkZYVO6Bhl8lIyEX2U0HE6gwdm6N-zaGvccqUVCRjZnTSS=w3629-h2013-s-no?authuser=0' },            
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczOuPRldyENJYqLKQ5CuZc4FuZ9RkuesJoNmS4W-nRp2WiKiyNsk0QaD-3gIUTq1uj9zIYSCH0ih0qk37ul3cYKabILHtyG4-SmZzgklNrFBeuxZLqZT-o2KNljwG7qtVIzNTQgqmXaAsGnVJiPmIsnv=w3629-h2013-s-no?authuser=0' },
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNNH_HznD1uOtS2Q9Rxs3pbBSF-PwQ2vLaS6hr2GSUAVVIRxOvSnm4FcysFYSx5wREzpjyy7KXKUYlFtYdQJM2zJ1__VYltpQ8MEgebTXgZGqgZqjo63bTaFrA1EmSV0AwcLbiqSOiKjcILpq_645af=w2029-h1141-s-no?authuser=0' },
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPqd1a9yfv_YrnWMqkOXrXkJgSbvjAZy9MwH3kXtxQzVxvw-7ddLwerTkMg05x69pTuR9VQJyJrxl0V-LRR6Kgl3gVQsUjZXx9IfVOd0xFb1npxqvM4Dyb99NtY-FgfuXpzBx3Kph7wznh-ujYORrfa=w1889-h1089-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczOxb9n5JsCu4VLDHT5CADt7qto9jOqVPeUn_16L0gfHXxbi-3vkpDkoagfymATAVaic0dVFFgv_wm97swS7C4Y5aMvsxnR_FOj3jvRyrW8Gi3acwkUOhwcfInQDFQngnljxADOraG7UUTRmR1Bc_6qL=w3629-h2013-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczOH40Qb2oUMUVb3rvakBWCGuBX0HfLM1PS1JYVKlfcOd5sA514omvatnmrOcFa-NYD-MCstZalUX6OsRgrAIxELl5TevdWvItGOtOSC5bUqwbK3Fvzd-VjR6sYOdB6rlzVNXVcncbK1JRZnCsZi-t9A=w3629-h2013-s-no?authuser=0' },            
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPWcP8njCZjpfUhYuEBEr4nCUnrO5LsL91uOloV65EjKr6LwtjKiVc_NT_bhoAUOEJI43vUdB76EzmRgWEgiutcmHbbGmzQRoX6CKFjazQ4zAblSSXxinLtpovXGtDZuh_DayJFvV46W6jryQKjpJHO=w3629-h2013-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczOwR3-rwQJM6fwS5RuWwvLvjuZIniJOYQ4JvkIvy6rz-EM-KL23XIm4GrMYLauBGauAp4kzp-DXtIcKalPLoOz8aPXmKSo20zFsmVKEvVKCcLp8SXBdk5F_EZegTvkybwHGGr4TXMu8FC7JQKtwX9Ff=w1889-h1089-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPKHwzo31OmAjbVA21m82Snu3zk3vIK-7XGpYDqs9VXfY7-MuldjAGL_mgtEi-IoTcVspaAdMWa0MXwOZry6VuV2SLqAG3_M6yssz3FpLFZR1sAREbVuicTPALlfJh_YcrBKbESt9QxkJYWZs5upiBB=w2029-h1141-s-no?authuser=0' },
 
 
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMY25IibjH8P6pHvJVgvRkG9V1jss1xjkZOLsKD8XqUVcdtBJdpgcqwjGYFNWDYV6i2Z-LLJ0bWPZkzc-tAWjCa8GFGd1afWS_39N6aXNLHz7NQXD2HUD66VR4Dd_Ttf6X8wbdnu587NhLZgGQ8ZxE-=w1561-h1541-s-no?authuser=0' },
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczM9hqghCSxBnP9BDdUXFMYGF-m28ROHbRDimhBtpPc3Ujvfl_eONqz-iY23-knwVGWxE3sVvcvBjOXzW7Av2_u_cD4M3Ik1QXJbN4sT2lG7qrZsicSfNRE5Pgc4YQDyXY3X85cQY81dwQ31zCV0fn92=w1553-h1697-s-no?authuser=0' },
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMBuyGwCSu90MgejVbNpseJdY_lB2L4W0bXsjEdwFz8DmDRzVhmPQGZ4sYZHjQDfrP-bftn8v0aBxGfVWELaTRkeoCVznvIEMotmikvys_HMaXHv01cl7ZBk0SwLh-YLvVPJZsNs8iD81YYbh6LhhVz=w2661-h997-s-no?authuser=0' },
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczO4vOl7y7x9p3FV_ox7oIC9n4K2ATm1x2s6guyTU_kHfNWCOEeEY56Y2hldSNxdD3wy3VPqcA0_QkRObdAHBoE4BghrCaJY5HnANrxpyWmOj6aITDJor8VnTBl2N8MZ1duEc-plSEwSUGyGDIyeqxaG=w2645-h1053-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczN5TR73LFlhsHF66NMDdhVMdIvR9WwYrmXE35X7vXDRoiA3AgOtL9XBOJuKfHBac-XUdelVUKihomLwiTn9TyPwtIzJFgqllmmQ0kBkWX-sT7EIe-rTSjtrx5Wkrn8zuXDN6Q7pkmVdkSA9Hc2VwnLW=w1561-h1541-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPix1lQoMAZMojWH_BJKe9ghhhsT9LhBVQC0nvndJMycOe45jFTLII4e03gS0VVRAca1MQHxkdx4Bjt_ZKVNvWiAhaqhkH79Ayk5BmFq7vsIQMDp59Wa0rAalSijK6gv75J23KWXjIu4xsA8-UBkMUR=w1553-h1697-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczOtlyJfxKt3xPu6VGhMzo_uncv7wyv4pstI22JstOz0N8MAgMw0mx5Fy8FWkgxDuTpVyhiP0nMbyCUtR14WmH5WaT680f17_u0TF3G6Le8YUZsJ_MpYv46BwdRaFz75QN46_Mw8RkTzycnLTgIiqQkx=w2661-h997-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNsIbo1tsFqZKAItNFj8mH0IvinAU5OiLXYx64aHBGv2c0A9QvSORoiVAJwxoe6toJ8GSTXZGgr2Fj4xNP3GSzc-uXKrDNE3ZTdt1UkQlvdMcxcFgEUDIcDs29ManH9lwYB8LQSU66VqjpO6I5aQfNU=w2645-h1053-s-no?authuser=0' },
 
 
 
@@ -584,7 +630,9 @@ const SECTIONS_DATA = [
 
 
     { 
-        id: 6,
+        id: 'miniplayer',
+        menuTitle: 'Mini player',
+        inMenu: false,        
         //bgClass: 'bg-gray-100', // 'bg-white' или 'bg-gray-100'
         //imageLeft: true,
         aspectClass: 'aspect-[4/4]',
@@ -659,7 +707,9 @@ const SECTIONS_DATA = [
     
     
     { 
-        id: 7,
+        id: 'lupa',
+        menuTitle: 'HVUA',
+        inMenu: false,
         //bgClass: 'bg-white', // 'bg-white' или 'bg-gray-100'
         //imageLeft: false,
         aspectClass: 'aspect-[4/4]',
@@ -702,32 +752,32 @@ const SECTIONS_DATA = [
 		],
         
         items: [
-
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMLM6V-0L2I2fxVQvlvXq_YfXxwIqqMIsOXJro-M_gtS1pkFQuz1VkWDRkPeEtw1QufI6_7H6qUObxGcGCgKZt3PHUK4uycnetc_KwWKeiP5RVm25fqkPKloPOTn6hfkU-8lWqBE7q8i4RxjuVgnhIo=w2013-h2013-s-no?authuser=0' },
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczM7J8h3tBmHPyxQz5bhCj0T7RuNFLSwwXgBt4MkqrIr93gvrPKu00FWOTnPe8RiiQbVKCbYzpsbZO6wje8YNE5K3Ds0ZLl9LuaGtTPvAn7qLJ0fFvMJRX9OIZPRpVCUSTRAbkNfnID1yHTVv39t_HM2=w2013-h2013-s-no?authuser=0' },
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMdgAFpjC1fwo5UPuNJ8v-d_eSnvNBcKgdrhcFgKHqbXRIq400H9dtt4RU3QqciwjGoIqf-o6pnZUI_nXK4l11xKF0HnI6u9wLy2i58ez6lIkPM3TYP2MNeUf8fJj0Rltzt1QWoEhgZLYwuYfv14TD9=w2013-h2013-s-no?authuser=0' },
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczM3Ty4PaXERePFooYHqyC3NyBKIphZzZM84gNp2GJfcja_cMLVXdi_HoiNZQ8h_ILzX8j4k3MsCobJFG0h4kedGJVJEP-dDEakVhmfGPJP89T-hWuRNyyP_5fyWXXFJ3VGuv1M0pVC4u5T5TW4L31ae=w2013-h2013-s-no?authuser=0' },
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMfmb1AeUI8cMYp1SEsYN5gYlvvxa90UngQmVDE1eji9lfp1zhocBRUO8kEp_kEyY2VWn7ivOafPY5C-LypXBe4SmKqV_ls8nO17zBx_E4VFN2WCFwZel1lGDFQ4hzPfJ9I6geCeDv326jZXYiSxO1d=w2013-h2013-s-no?authuser=0' },
-            
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPsHknkeoK5YGVQhP7x_PQMkxO9Cek1R4ajTiewDnd3ZOFwSj46FDqKaRtqDcK_gkJMB2jgJiiSC0q4m0JpfZxBiIBtwf6aKP5cg5lbqmxQDiO4DQ9InsNmRdzZLetWunlKhyO4qz4EWpRYFGMtR3Yu=w3629-h2013-s-no?authuser=0' },
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczOL3ujnzoDIcePJ9NJP9F8_W5M0XcINzOZyVRoWVXgLoiRiEcU8k_WEEvhz05GmBPFaVKIRKrl7i_AczSzVAYz9FMM1uPnwPmLuAJhhF2192tfaIn2T9DxEb53ac8WgMucFBtrzU7MyT2pkkKK-nmYU=w3629-h2013-s-no?authuser=0' },            
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNcnKJo2dEO6TYn1e-0tRW-DdqJtSG1_qY1Rya-qICmwhwOeblwnqJu2UFs85BBF7kXkguevCfi_X2zHsF8Y3Y8gB2aJa6pIRQGD06ZwghSiAy6u-Nz7BdKhRCgKz2stmATI5n_hoHl6EuOmceOguJs=w3629-h2013-s-no?authuser=0' },
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPvNJ8avrJq0x2HFj35KTSETSc4v_QVlnBHeiTLoxwGegwGSkR8HiV6TBbyWy7aY0-xW0P1O1GEQlSFHS3C3AI6D7lWfMK731mYM1o9-36yddwkwywzhZR4zcrbPc_U5kXB9ScGwpNMINzOrqQ0vhwZ=w3629-h2013-s-no?authuser=0' },
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMSB_0Be2R_jhpIHfaJbtBEipPnVkXGoDWZlFON6Te7ozH5_IRWI7TSETRejh-x0tIeami14z6ZfH91MZm9EPbWa-hkahIYdQbFY_rQQvHwF1EZUEMs4esweaDSBrvUlDC7uqABc8k1zUaUQL3iL9ji=w3629-h2013-s-no?authuser=0' },
-
-
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPmxTsuY_GG8Shc1QbOhCSvkrwQNScHKRiRAjDyym2dAc6GLyRoHZ4tY-9yjVmfaCKUNqVMLhpr9Zt4Xd84DN4Mk1QYebsyHvvvoU55GBpqDYjxhQrWfbzYKax30I0-oP837hG3OJ22t3W1zbRvUfDp=w1383-h927-s-no?authuser=0' },
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPtkBA2CIk-mVJASxoGXZqQ7O7JHuBNR2zOPOpgw8qxvZH5QfuJs2p7N76vFEBZYgH2fm6xvsn5DAFfD3s2RLPAtG7I_jmgY6o7hevpUdOIW9IxguI3SmTBX-h-8TjhJRgchpiu5_lwJg1TqLkQ-BJ9=w3629-h2013-s-no?authuser=0' },
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMls9T78gGntgAA4_wiZHh4YMeyYh_3__DSSB2eYR-8Um7jtXqA9VqxGRuaWAq0kqJzUI3KHSPRO_URU1oLxjCEHbwUFUnesiunRaUlZx4gfnaMd3UpyPJSiS_Bm0SThty_ixZ4uGAhRqtPcp0TiDCw=w3629-h2013-s-no?authuser=0' },
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczOyEv2yRjmoXcrKyc0zdVeRooBy9Z4uwn9KwOe2QxbYlmwrgiiro_OcqZIeGs2dkuuG2Yz3HnX0X0K7Pb9hSRZlJty5i3DmyrwYG63SJibYRVpeAqpgop5QIN5LYVgAvB0A7qMUbJwAnzFdNZMdLXDt=w3629-h2013-s-no?authuser=0' },
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNuzmhFPqshm3Z7WV1Nz1FQIn4UBVICiS7C2Z9huJH15niXQDWPbaY9x7dafGW7HybPEMhMYdpoSwMotYf4vgL_m3Z2faHiUcmfEvM-Ad_a0wY49mSEektfC9M8IiXNG_gZMhoE9h_qyUMLUWeKOsv3=w3629-h2013-s-no?authuser=0' },         
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNQzbLNjqWbrZJtck69gkVI5038jXsJ2psGOEUFsKvpuYCow4HRXfOS-I8Ud1VYvl4H4-9BznSQx42hNArfHaJDX7Y4CKcOWAvAZiuenEqsaEhKlzi8_KK1Ex5nR4VevhJyAdAFIMIRJZqk2Vbb9YwN=w3629-h2013-s-no?authuser=0' },
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczP_qeUD1O1Uoh_kzH7_1kOCjhtx_20pfPWDFj58Af3-7Gfzhb7XAvq7mJ7e14UM68fkfLc7f3TAQLSR_p7UWmP_HwWMotkP_lcYDIrZbfmvcrAXmJd7rVw96zOV713UPLv8ECbole7QlikUEzJYOphq=w3629-h2013-s-no?authuser=0' },            
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczOkIJerVb2rTZa1-SMClJVCjnPFQ6P81XH9Iv4DPvpnKD11ulsgTfhArO5U-zXY98o93hl4E56DtbGq732yNjpm7eTntfk235FsaxPXpQfOTRc2Ql0SY3JsUagEHWJ29CwZVyjU6_NqugqgmRdLYNwo=w3629-h2013-s-no?authuser=0' },
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczONZgchlgAFtfec2fBJkIPdTCUeBqyBV7LrySD4JC6ik_M5s0SCczwdgfoRaQn0DqkZZecWuMrUFf7JoXHLOHqKVIdx3d4KMea0gQVKKRsc2F6h6kWhXgXV756cCK6R9w_ziqErwWGH6GSWxKGAJHzZ=w3629-h2013-s-no?authuser=0' },
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMUmQDnvCS39TMF-2B7h8SN4rvsKOblSrhTz9ymUgLsZNVdhil1fLMY5YPILzPcp-hebvZg0M65dqNnpbHJd1MkLT6iMK_wls3Q-IaWkH-mKmxqBlzfx8wmoa1GW4U7pukEUvyAVhm3z5WdbwQOh5ts=w3629-h2013-s-no?authuser=0' },
-			{ type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczOSfYoPPDihVj2-UiM8cx6lfIslVqW3Iu0ESoA_7SbMlbBJfnjb_kdxCaoexVklajeHNNyUVI_XpEz--7uLJaAO11LJ4ySBL4izNERN2hqPDo4uRxjJJeeXTIsiaCiO_voABvX-2P_ja8HY_YaWpP74=w3629-h2013-s-no?authuser=0' },
-
+			//Commmon views
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMnve3i_ybYY_DeQIImx_Ewp3wuV6O889RTW-usXsaNQ8_ezbXYqDicvZRf1pZQNxQcoMBIsMpfcRbqH8RDxdGAW9qvAzkEtWr2P5758oES97oeWRDVKVcJMs3qx9ipOLTnxRu03A7AU1HzXzuAeyQM=w2013-h2013-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNCauu0v-UOj_FKjuLb487QScaUAUSEWAh0B1KOzd1sRf49AdQIMsN08eKUWsUgrFRk7wmMu6NFy12VRQbh7Jih0f2ATzOp7siBznBU9pktJxtHim5L0Pa6Zb4v7FuURsJtDp-cPb1yQ2t7HDGqpYft=w2013-h2013-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczOKySc1ZgjL6TDPy5zBOp8BHzQlq6J8pYCbk83W1sjetfo4jpxnq1agziGsHUeOnxs2QK1ZIKQD9vxYvh8fui4YbRg8dgMeUzCRt6qAgl3OBlx-pH62easiTxYTpwgDr1HqXsuQZFg6hrhs6R25M93B=w2013-h2013-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNxVVucMYpxcn3OpCkWl_OUz6GpicoKfUP4pPRGRSuY8qhSjFJTHsq_qg8HVIb299ciah0pnOqvq8rfm3R3HnGq8P6K828mFi0TImBsIdMHU4ZYB-z9FN2lM6LEUrqhJSk_scmChLbhh9iJc3ssNH3u=w2013-h2013-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMf7r-W79kVq85sEApPXfoaKPaNizKmU3msFKoce92f6lr6KDHZvPAIZt_-WR8iKHQnfJbg-LHovo4S2bjU-O6Qa-y31fB7r4c5qMDJA-mDCfk90UiRvFGTWpZ1MHqCUOC90y75ObjVhhpA2ugazkJn=w2013-h2013-s-no?authuser=0' },
+            //PCB & Schematics
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczP3lFkoqGQo3Ne-Bnf8tjuMB4Hhu0Z10oGk-Pda27ym6sOhcYWcyJJaB4HXDDsiUJYVPCm6em4bLwHRMWuV_PjOOaR7vJQGmtSaU93riTYIEBogVq_pF-EidxefLHASyJZLTcswlSShbPZ6XIjXBGHF=w3397-h1884-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMLT8l31zp3EO7PVm94rkif58g1rL8WSIib_68E_Ef-H7pQ9YfTiOSg2ipNgNs4uBVcia3KTlWr7qk7L-VHCm16x9iqlhCBihQqRAEwIUJXH5Iho-aviI4LnNZh5U0C56PW2-qa-DHnT2_YCW6p_HXo=w3397-h1884-s-no?authuser=0' },            
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczOY3qIgc23yLc720dNzoGMLUCQS4yFORBrVSsaBP858zpg9RS8GwIfXkjw7PhXxz5a5kF4bFR9ujfytNu19kXxKVzBJPhJPST4pl7joihDL1T9HeEyqurn7-0fw3B3DWZQYL_mMaqpEqWJxm2iP_30h=w3397-h1884-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczOyXwNtdbUMvc3fp74_zismR_IIKqAJa7K7OhRffrNIFijQar15PLuIiF9vlDR5qtLiAbij-GA3G7eGilh4DWKLHVu79S4CpqathJPSEyiueIPMoVmDD7TcMFKbcJikX8MM8UuZRCqkmZ_DXvyL9WE8=w3397-h1884-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPZsIpr2UQ4pBP5B_PZ4DWnfJhveyGXkfhih13Jse2BUa8KpQBh1zLQEchSRH6i6-ldc2dMW3O4GYq0GT0lsU8fdCJszi3gtpHvSp7llm6FveqnUWT6dFjx9JAuaaK8T3ZWTwWnTEZ_Ov5gc49_w7tU=w3397-h1884-s-no?authuser=0' },
+			{ type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMSd-3HU1DKGh-s0QTUH0p9Zfz4ejP2_5LbdNVaM8n3F0YCYpr4mGgaoQiay_YDHb9rCtAy9z2sd_ofCvHWxQrkg10jvm9EXTKpKq3TMWoJouIDZHFzWYMKj9ToEdftRHf3HRPRXujfRccolT9xmV6A=w3397-h1884-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczM6S_FqP9x77dhmFJr53SQHx_SolTu4vG4PQDbRocWrZEZLIQwB3-arwQuF4mvaClwEoeYhCFM_fcRutU8m5oDJc-b8bhevMNv5M-z08GKwckaU6nz0h3gwymRTqkn3fSHq2BOuFK-Bq4wm_tDeWa53=w3397-h1884-s-no?authuser=0' },
+			//Enclosure
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczOMg1RhasuYijPRm9s6eMpbZBSREBddlTe6g5zDJ5rtStJj3_pB1hfQDKXpbmRi3NqywxApOU1w_jTuWUQpFwxZ7k2RkmiRwOGk50ocYNFozPaJA29VmLDuTRtaWvS1ARn3OxEPDvvq-Qs6yu8SLOqO=w1383-h927-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczP_OD61dn0rqGmF4v6O8J5E9RgZ4rWNj8WGa5Te3OTrtzI9b_HUc-ZtmxJZt9aPVq43Ft7NIJhHZ6Ey8ftmNALittAxzWMBZAc_z9CjDW9YQsufsKJax6yIoUSzpgpdFAxCxxYaVCbbM2KNPK6aVlhq=w3629-h2013-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczOtD29MTGbelPUHfVpPyS6_KGFPXsyE0nCWxdC4xRSEtQX713SMSt56_bBlrwIDXkA8yKKBB6TwfM80SdGx-c7FqMstNVxIE4bgDzGAP13_XIpTp9Dx1_Mhgn5ODNq2RRwkSkGPLhOXWBN4SizmrPCi=w3629-h2013-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMAYG6LPS4vUhzGTnOmbDIQqcjfSJWvhLNv4MM790x3nDmcyTvlL4x173fpZhdoMPtRG62CNblXHR6XVLDVgVLATAlTGLa_vfogT1MAe6R2nqk_y0znNd0NiI42Sj1HiHvNaAp4x3c9RsSIirRF8-va=w3629-h2013-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNEqulYknyrLwfyfmW8Grgy6t37JVDHkwh7yPSTAAILFKiH2d97X8st6DCNZ6U0QLmZjNjbZSZ4Ng-gWalXQMOcH8h6CEqaObNAaVaKtBR4uaVg92HsSYTP00-fbFTsGaFFnRshvnMPXgYPGdJsV3Nz=w3629-h2013-s-no?authuser=0' },         
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczO99JYjo2jn6Yj5f8hg8XBgE-9nWcb2u1N4j8suYPqNBIFcz96Ayof8vzEQRqqm1h1uqRpacVbt8yByJ4Tc19zHwjAgC9d_s9Nh9iuVvWHBy0ABjAkdfNuMYb9zEfvXvhcTPwYHZqxWk7AohxVla8SC=w3629-h2013-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczND38b8hy7ykf8bF883GDdLf7JkMF11YMtYwMxkh7aJZGL0C7YJaAslMdcFh50Dv7R-6mjpbEN9uqXzPh-8tZ_TDsvIPIcrS_QcFlr4dJ2N_P4gdxT9nh8_qENyr0rcu_Q_dXEmJlZZ1kf6yJbHBgsS=w3629-h2013-s-no?authuser=0' },            
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczOg4A9I32E9OtNh9JSdSix_A4X0kCURkcEwrhBekh5LsmjvRGPLbglYdc7VO0GrjjV9J5v2GDmq1dRzl_Vm2GRbbQKpA4j5VhvHDTNcutzCcKsEUpruAjRGq6zoJfzjiIEeSa9a8PhJbngiY6nUxjIN=w3629-h2013-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPyQ5FMOidkVPToqhqbaUHsqugqonFT8UQ0IOd191OcCC0ga4jy9MpodSdXMSW6nfqQ1Wr2paczvGmayQx4UIIwajyGFkqQ0sV3kjHe3IToWxz9-6toBxXcg5tVXg0pF2sLJXOWVVfzyOnUw9JZMikU=w3629-h2013-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPpncDJTaeCPf4uOXx5HoUJqLGf0II4eDSNjU308vgBWuk3OcT4UDQj56xzjWspJ_vxjuKwf71A5jYkHkahVHV2vvJEfXE8Rv7xL4LshNcv-jZTOY5rrinu5ncfd32J6vVieC-TObbbAQhHBRlhSFo5=w3629-h2013-s-no?authuser=0' },
+			{ type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczN9s_Wtjw9P6inNCigN3yVnRJ-qZ5dcbFOx_1mE8Jj3xvQBPs1-GmeZnJ_tY0gLlbSs-ie62F7S4YIVg858gB-rhfD1atlcTMBLe3wyjr63BdLJ90XME_ZL89iHbKM9cYQxedeQ_pN6odCMy3anGlxN=w3629-h2013-s-no?authuser=0' },
 
                         
             { type: 'video', url: 'https://dostupsreda.ru/media/files/materials/%D0%AD%D0%A0%D0%92%D0%A3_%D0%A1%D0%BE%D0%BA%D0%BE%D0%BB-1.mp4' },
@@ -736,7 +786,9 @@ const SECTIONS_DATA = [
         ]
     },
     { 
-        id: 8,
+        id: 'mnemo',
+        menuTitle: 'TSM',
+        inMenu: false,        
         //bgClass: 'bg-gray-100',
         //imageLeft: true,
         aspectClass: 'aspect-[4/4]',
@@ -779,23 +831,34 @@ const SECTIONS_DATA = [
 		],
         
         items: [
-			{ type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMXBScKsORDQbmnYR2yrv1ducHtr89Q9HCzhtC0Ep2FXH_4c5ylgXtUBxjvTqCqaM00XkiO_mxfeR9niArKqRJpEuBEDOtSGNonlD93rYJ8t-1CxlW_c4oYhQHWIxvitAI4jmK2fCGyKZz8wuWkWrYk=w1000-h667-s-no?authuser=0' },
-			{ type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczOa3icSBjdj0f8hG4s2XLVGLnivU9585werT96BgoqmQqytYqdqfH75r7mO_kw1UfMqxGL0VtptiXPkktTia7rn7VyX_N_U5gyxuLilYblBvmovYt8tjdIf7F7TNtAGf607qp2xC0I10ALV4F0fE3Gm=w1000-h667-s-no?authuser=0' },
-			{ type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczOwIAkVelvap88G0YIfIWMPvCfc7o4O_0bvpahrK12uAGy7KhLWFfdbsoorlbjcoTbHt5M9e8pnTWHfF1hDKVha_IV4IyZwST9sisedjPPJYKju1VGG5oybFCn8JT77GWTAXZMLSXRhGUcp4qr6DhKU=w1000-h667-s-no?authuser=0' },
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPqaB3XsLINNOnzPBRwseT093MHZoNRawy-f9Ym0pvvJSR4f6rJvnGpo2TL25RKf9uvXzplCL_vozPtjpUuetS8JPFY5FDO6BjeBa6ClJ4yCdDxaABvlbbRblTYOLMDcH7_MBWa3IYVWrGbxfxyeOnn=w800-h800-s-no?authuser=0' },
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPGGePX5R2GBWlxxmlJeCKbD41rkif05RZP-Zb-SxtpeRgGPhptFJ8yiS7wCOzNBlEsIMj8-ppctHwg_gaCS-mrxx99biP7DTXJtH5XM_k9Seetvdgc3F59QIBPmEsWbcLsjYfnsMd3Nwwa8EI51Pxa=w750-h750-s-no?authuser=0' },
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNu5h_L3BuIL4vdMRIsaaJwvUuGnnW83HYfi9_dlhTc7Zsr6YIWL2q4TJnzIlbGrV1eKAcT48bo02qSiTjqTM-SXugUKWepY-j7Zp21QwjsPsmZj2_d2qjrM814t1L4vCnv63xzrOjSA7jBCEl8yS77=w2013-h2013-s-no?authuser=0' },
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczOU-CMCaAshJtk1XJYx90-AMny5cd96RI8mlDbmJg8STNfjn1rZIPQ71ocH1ias8_TUnb4YT2Kfmo-nU3Nvxfw43ibP7qbMYGwn813k2Otf2_00n-CZinaoLjSQx9YhVNGQTKm_BHOFsReQ9QMsvRH3=w650-h650-s-no?authuser=0' },
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczOFkQSzpfVPFOmaW5Hx-bofU-kO_lwzZpiaZLmAiFccFARXT2jG8-sJLDNg-Wwupm9_5raAWdWLIG0JWpVl2OMitIWmuie67EtxdSO3DEdKY82ondV7d7w8foMJ2h_Q52Ig3pUanso1-DFC9VPdpIzF=w3629-h2013-s-no?authuser=0' },
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczOsPYX2Y2zHeuCoM4KXmHYSqZTjMD8AmV0t5XrqmATPtcc-J3QkcdEY4BUdfoeBbIxzQl0my0Cxzlkz7KIq6dxRWX5nX-2gDNPq5NbpBWt9LAbL5qiyZqHLPq_WY_cAo5jLrxVCx_S8U1GBSpNfj8e2=w3629-h2013-s-no?authuser=0' },
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPQXgDKzw8H7kHIfGzHyJNr6AxpDIYEC1nTTJ6f49m4Bkn9yQuNtKbDpQYYD1N93L26kkpuHbUb4XGXj7Px-EY9sUNSe6AiQYvFJ-YyaX6e19QmdIa1ojXE8qAYJ3sRuIHdihYIJO6NrwR0KzPaxTHV=w3629-h2013-s-no?authuser=0' },
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPynAPcU7qt2GN9R6wEuhkneUOL8_ppr_rRMMn1Aic7vHY8QQHGj7G-QGLBJIV3KBShzOjvt7OQQr60tFJpJlOF-5kF2fQNWUWvaeOwQ2z6vp_PLfIWF0cXbAHXiCpl5je2FDHVm4gg3Y0yZG7YdM-U=w3629-h2013-s-no?authuser=0' },
+			{ type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPGif5PwXyUCBVYFdNg4jwK7_Q3Zebjbi5d30FVM9xN84Um4Xvu8dQKhjrvWZUF8sHASiQD3RGFqRpD0yrlv650EOv6czN73U85Rr4aHt8Iz2nJcvZ9j3hN6_UvBY0Se4sqy4aqVzW4tGu4hT8fa5_V=w800-h800-s-no?authuser=0' },
+			{ type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczM9eK-WyNp5JA2UwYuT4T5R-uAufrC3-QfN9k1Lef0Q7EgEgmMf7nR_9rws7VohOiyP2p_mGw8cc_KpttNhcAXgUqiYnjcEsu_njUQ-e5rnD1pT_GyYkSefuISGfSxIKqAnd_avVqFxCjkffI18LuEv=w750-h750-s-no?authuser=0' },
+			{ type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNjCdp_EPl77TailSyrt-N00hjInktGxsIS8nX4qvwBSvxIJY_czdgvCj6fprSANpoc60yQZClbXlyCzOEbee6VbOKRhfx-EPwFJwHNkA22l4ahHdv-HMSjld2mazKmm8gfrq-vrPDnvCi58jMroL48=w1000-h1000-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPG7inwGoGQyel1RUaValmh-1p3fZFSzqaBKa3oZWyGlcytxwhzHTne8hu9lp9Z8Y2X8P6Shsh_U3nkfMgFzuOE0M9wUZ6C9qIt2gaJ7Pc2vQByqYH8j34BtVeNpPqvWdPJiaAeLNr7jevdNTx42PIN=w1920-h1920-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczOKv1Vpe9aEqp0f5T7YaFgaUkUtEUlscIC3M7GFvIhZ92nf6AnTRNpVSSDS0tbjxePSZfrXIKSq8EU87UyUvaHSq23txYYy_MIIWbNSGv7h4sNI6Pyr1uqpuHV18FAYlWpVc9v-FzNVhy3XPdM983WR=w650-h650-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczOIab7nbtyCXEcUc4jmsnqtdymh9ynvYK43tJTzdsXLuVsK8B3-67qRn5eN6xX_Ju4CWT-v7Y2h8DbSdD78h3WuhXymbGBhMc6Ene6u5x6u4x9cHM7yhFr0-sPrfWOXue6uBIk7mg6sBd-nzERlGya1=w1000-h667-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPDmOPxM7zR_JKwoGL67kWch4KnshO6fgAGsKb6i-HmyFkozPk2tBS7ZZdvxK9rjvphEjtCQzxGnw3hvpzld1Y55Uv1UkL7I_-qK2lOLBlE2Fwlnm7-6SHsqUsTYSFF35Da1cXkvifeiyEiIkuqrTtx=w1000-h667-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNwCCfYJi7Wn30kLY-fQYHECiMrZEqvu3lmW8QlfUaSjMMWaL0zgUoGCgsqls6gZdJcxZQGrrUXG15vxaUk__d3-tECL7Vd91c9SbvAAM3BO2aOFtjgmX04slozfPKUjp6CtoeJB0mSbZl5PixckZxu=w1000-h667-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczM1ppgg1rb07H-rTqPgP6YM4-AFibyRF9o_QMhW6xNNrSpDRdtgBQXIeG619bCg8t3d6p4DHY5T75CyisYyqzjC6tIKnrFBwPtRTh2jgrKLbI4zSQef3PyDwLmu81AxNRs3jeT63ASBiOC-lyVdEefK=w1000-h667-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczO14_XsvTB4HiWTIEmat86UV5B5qMUYf48y2-1IamqkkKE_t1fAQehWPGEyw1qG7rkdmMQ0Cv966GZJc_se2FtpALDIMtpjZcFiTa1VFKlNNwsHTQPxQ0GmWmJqEzxcD70gZ5N4YbeFkT2YcUQf-Kky=w1000-h667-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPrtyRDw7PAIEhfczEB1nK2E3ATgeZUx6xVrq5uWrWoe-b1FSO_ygaC-uppWw_dQkNwyqY_ZwAptC_Fd462YMBFRJzmCATuavc6WdQktGc1OT15XHnPRYsrYPROxgv2osKbyPnwJw6JLW3s4WtbTrAF=w600-h600-s-no?authuser=0' },
+            
+			{ type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPdEVLb4AAv3lmmUvVR0ejF2W4BIBmFxK3AqZFhuxEC8RZ_rQoH42PdU_IGA4Wu_DwApgnxKQu4ynXoDZIUPSR0hIbEleJI9RGNWYHVC32ux8jrv9iJ0JSMEiQUughOY24MGx0Gvw3EnAoB7uEgpVOW=w1603-h1071-s-no?authuser=0' },
+			{ type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMuf1D-G9uxm73V0R0kHrAkIHZ5aiUZJPZSm1LNICsngCGf3BNQ2oEpNtg8TasEUtNX_yAE3OHtkZvtAynHq5BlU2HcAKR98k_udr9eWoq8vpB0sG3ZaljpXRwIP-t6FRu7KCVThiJ6toZroVvQGSKo=w3629-h2013-s-no?authuser=0' },
+			{ type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczOuC32mRuEZsOtJstFgfTHXbbGfGOLN-X-YeJrZv9C56JOKtb-3SfpA5GNGI68u_g_Timf19Cn0-bBFEwhnMnNTBviY6kPlG32jLiwbhha6UbtgV247Bz_CdbovyUHL324hmi59JNWqzv8Z4KDmOh1q=w3629-h2013-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMAe29j-1s60Jg2aWI5_opCDEgQaOFsvFc6XgTiIqVO7MvnSBth6zCDeFznfcPiPiQe1HbQZa4GObSTvxfMNcVPlfraud2z_EjUdyIcQzCjG4d4KHDwNfX5h0gX5lnKSKhyfNSd-mnPdQ43bTyQdR-o=w3629-h2013-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNBpegnJLGc67bcBSSj3pzsU2Z1J_9HMs6cpC2xkv8n9PEDo1GjzAhTOarBkBDHCjC9-4-wAbFrOJsEu2LOPlSWO2XYVZHU_9y3X6bioE4M2CHmurpNrR9SgoA-w5rDmDf-i3Z5Mdp-NFKte-KaXN7x=w3629-h2013-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMnu1NWz71mx8fYXpNhoOcxO1KXg3_s46pRv2eCVVWVOGZaR0JSp8n6TzyrDePEXJ5dQ4kqfyH2-BE-eJLkb9UrZnHrujHXMurZVE7L6z7aKjBSjxAxwcB60d1OeNxFjsaxMwTeL372ao2qjP8XvUXS=w3629-h2013-s-no?authuser=0' },           
+            
+            
             //{ type: 'pdf', url: 'https://example.com/manual.pdf', title: 'Download User Manual (PDF)' },
             //{ type: 'zip', url: 'https://example.com/models.zip', title: 'Download 3D Models (ZIP)' }
         ]
     },
     { 
-        id: 9,
+        id: 'bpm',
+        menuTitle: 'BPM',
+        inMenu: false,        
         //bgClass: 'bg-white',
         //imageLeft: false,
         aspectClass: 'aspect-[4/4]',
@@ -838,22 +901,37 @@ const SECTIONS_DATA = [
 		],
         
         items: [
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPboquXHcSqWSrx-EwH6w6cRw-uu0_Oa0rOx4DMekNjxR6aI-CylXuFTJbQvp-DZIDkVpMc5E5f2c4RLp14yTxNS0BzJGKulVDVRpofEQH89W71JAFMXoNOyVkzHGSjdlf31jA9nakjdS1-PE0uO6rF=w1254-h1254-s-no?authuser=0' },
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMSVTD715EM12qaKCkSUwsdyDl7mdC_7J3GGgVhDqXnXZ7Kguiwwh9tsOey7PpqGG4lk5w4t4cAM9weKdUKluAtDGUg9Rpd4p_kNAYLrJE6bh61EwQUIW3ZrBkyKZNFY7uOqxf6vmGvOZP7steLk73I=w510-h510-s-no?authuser=0' },
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPL_aYYTSP9hiK0l2hn4aHD0MJCgDM6ZFrLfjqUiO8Z67k0uIW1I-xzocxz-_0oZfw7n1BkLZO3rDtJZAV7UGe1Oh0MHLNbXOncN-U8OJq-PbLdJxhz4vslIvnx4HwgrYu-qLowpI-xOjuuYU1OnkTJ=w496-h600-s-no?authuser=0' },
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPwDY7S6twVewB4CMMJ-XOTKDimnxm9l7Oe0J0teVvLTniZMIMW8Ntn2gfkkS1LmOBY1U3rufYojOWJ9cTNprp6GEIjdXhFAEV-mJ-9By-tRSJcsSntfBlRhb8zexLSqJeyBtYA7yRkkjlemunCjQjk=w3629-h2013-s-no?authuser=0' },
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczN8L_NxYfHSAiXdKDc3jizA94uw6s_VY2xJQc-py0Nqs34nnYOZtP-oBUjNC3XEACbdtN6JsJDw5ODVOysMFlsNORRueWbTlF5OFhSdggDPzdKDjNV10t4Z9DZczHom_5GPRxMQMmP-bSDNxMv3n-QN=w3629-h2013-s-no?authuser=0' },
-
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMOsXcvAvS2inIiASKzAOTjxoimJsF-3inY5GeTVe6poKoulESBaJhOUcROZG-oY_NMxnhFivxWpvhhRt8QmC2G8-rBxbBeOAFHYOS9P8nAXh82USkOlFj0iyqEbYibmSzO54DvAITNu6P7iJM58HC2=w3629-h2013-s-no?authuser=0' },
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczOPGe16HWcHgYjKWTfpD4_J2vItRGJmaosqQxJbtgktaxSVUVNN2n3hT7Xh82_ns6bTDVM4hclmHOC2aoUDUYCkkcCe-V9Sf1K4LlE1DyiZ-jfroLSe2x6XfibVmZP9so4lKZwfj_UCDQv3Yi2lEcND=w3629-h2013-s-no?authuser=0' },
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPirch6OVe0ZOkczRjNIaBgedB3Me9zNp_6hdteeTaOgZwqWoSNfoudJJ_eG3i4UBikRjrKuc51GDwqw_Jr7soEDRBFGfoSRohcDesE3yx6Kzi0PPaClQ6JEoL2Vnt4xRQBmSx3H0q_11YV9XTsTeSV=w3629-h2013-s-no?authuser=0' },
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczOOXzcuV_hjts1MY3eSDm7Hov9uoq96dub-kCZ6rktl_ffrrTKR4G7YIh-Kc3z_Kx2cT941sJgktEh9vX980TfRIw3VT-DQlQ4e1gz1Ay95CA5Dd1BMb6rsXpo9Exku3P-G5guVaM4BavTDvOHCBBdL=w1059-h1124-s-no?authuser=0' },
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMPvdXKgAcVSOxef55Mtq8DggMu4caMNe6AcRESLJQCS76KmIfLJ5UIRVJGGzD_EVjC5oktACsjfJzsNGwaycvRTf-JK_ChyWbcPuA3Zao0DZ5hz4BgjAiUtkO3KHMIsyTMl8A3YGjgag4pkbXtlOuJ=w1624-h1231-s-no?authuser=0' },
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczP1RBAxSwlRGjk8Jb4NA__jS5LwcTznSBlqosqjqWzBDcS5D753jEWLz4mLhRsnmr10JSnzFr7GGbL1N8NLGyfTRSwxrJsNrQj1Ou1oulTJnXUYc2iStABNgHHSs0VEHQPmDQxWwNjVjPKoCNKZBYDK=w1629-h1801-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMFXyFMmUAnrr5uQEtGNdwFvOl-w0FBhR4191J_O03zmG1C968Ym0nmHoj-bORY1THfa5JCwASQluSosc1K5oPdwYGZlI1QvOQO76I1dmiskxyO-ZYCNF4pAekdltH_RuvVNajapmvgtnpOFsvhM3Gz=w1254-h1254-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczOksJ36cIo_RQ4PKMsDrWpZSgUM3wV3HEC6vWX2DemxHj67zOYeVhZcdrovdWochGglxCilX20go-CzV5dBctY04E-rH0yXF5T1cbljHmRoNcWSmd0BXre4MRixlNwqEBhZLJWoBUQnsWo1RLblXNSp=w939-h1136-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNBX5YFbUEEBA3467vDv8J1JAKDTFE2CoUkr7UmXiSdCVXBvifldR9rgnAutwx1HnaQ7Nv5fjX3pqg-jvR_exhdHg-yw56Rt-hO4IZyMRp1iGOT8CSZvoVX7R1pTA0uV65YCeKC6hcEf6Z7JYU4U6gv=w1024-h1024-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNs0ldRW-rrHmKO2689b___Rk711NxjPBZgfMJ8eF0u7MSv_EIKFUbk7FXWKhuy4FZoajdBORDj8C0BojkH0m6FTwN1kkk4W0wIuwnEyhIA0fPXjWWJn8Xn2L37gUsTAZIviNZO5Wt1kOUIIrlvr4kR=w1280-h844-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPmiScynaRvWWmJqKt1PiwWbDgOt72MUUQuph2TUD5eo2yCkoPrQNr80Yb4diX-gUmK_R1BR_l4fzX-J5F63xNDB2r1SeDbVrHpL3wNHoXRix6-NiQTwqc1cg2Z6PqhwewxSyUeBgXqEmsy-utU76gT=w1280-h844-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNMfKc77w4dMYzmi8idOb4DKQhvYgcxMXhlH6hpg0avMaGSMAJxM02TQLBwAzIi6mDCL5LYI81WE9b7Mc_lqKwMgHaUdAsJ5YZgs2wB8JlzzIqfAaBbyyiESPFW-8ysro2SxcJ6gX2QQMbOQPEucF6_=w1280-h844-s-no?authuser=0' },
+            
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczOUpQWPc3fCKPQWX31_DsteCSowMGWLn4J9TetrYzmdyLJokyep-VcOQyvyG_debnPl2Xa3ZOoNas-PWCF2KNp_CQB7fV9Tw3xQCGAQI5CrxU8qO8dFPgqy2O_FnL2WYYvO9P2n0h8-yfkqSoThb_hx=w1499-h1203-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczM9n4lSxFSjb7em784wnu1z1KFHePOwv2BkGq5F8Cqtnrsu14vkI1vJHLwuu46UvwmRX9_I2YnpL1zQhZ0l3RKlNgNd8ZDGSBUQ3_8lGoMeqvW60SxxuMRn1B_PreMC6qhSFoZ4bGfFhovw43oW7vTG=w3629-h2013-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNL__v76oRrOTWCglcht7VzL9cz7TFiVizT-usLL6NM1erB1DN-GMuGGLrIxS6FmfOsiqrpQKqSShxasprUkOjeGSa7H3miQukHl1rmMnVSTcb7KMti9vcOuVmq33bVlQFwhEji-QjTGUfvcZXfJaz-=w3629-h2013-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczOL5IKv7M5q9dYeAuetqT69Vf60Qy05nUoLgMpgVx0J2Hw69VKi6w7OKbdhvI9jkJc1r-H7ZF5_PLTaZ-llu4TKSnpn_gqVFF3nvH0aSoV5Vf84oQKOxeuKFOwOb501AC0-3GqpsKsHWKnQyXfKDagr=w3629-h2013-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMzaQr4UjEUZ9CFAl6FthsgJYNbtTaJ4zWiPssGEjBZhcN7MSraXE72cVibC3-KwOJ7zdTt10msaHed1ZAjjTVKAh_vGrJbJNnmLdbZbon-v5cM1dyaAIj0Ksjqaprv2CBC83LEthkZl47mVt0zUMqQ=w3629-h2013-s-no?authuser=0' },           
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNoNFfsQ7J9MiJavq7J69hNyQSCdFFUo31PUdq0U0FFtVJPGMMHdvFfi3KVFcbgNX66LnMlf1Pu3Qy_0K_P28Ec-6uNTLkeKO4eYrOI9I1MWxfGyEFpuk2LLZVKca0rqR2F7AsJekRQsoHWc1SlovDy=w3629-h2013-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNRAnzEoeKiVW9JtBdfBRO-ftp-NuWbJepspj5H11DaO7F1TvqyBpwQrPnUuKGEyza_c7AN-_DUTbzhFd25soShrv72rCuAFd6WW38pqyNqVnq8v5k7jXWl1RKCRkZ-QCkQz9E_p___8Iw-3_W9mHpA=w3629-h2013-s-no?authuser=0' },
+            
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMy4UC8dof-G-DKT-ph7hV614fES6FlEramJRA_qpFTZ6oV39YC2nKY8v-6W5dsm8fB-WEK7IOsRNb72Ea7tVOSdGqLyJdp3my1T13Q87LNslQ233W2P_xZ7LuBTtX1LWg6USprXc0LQpUfbFcskonJ=w1393-h1521-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNWlDw6hsz8CRrlgZPAdvhf116ukpB5Edpnr25Cv1h2MuX5_adCb4gQQ6TbQ2bJEcg0CEwDMxB4cTzNb9ftS4__feZvdBS0bMQt_XaOAeGyquVySUw5Hwlmlta1UrzQ0G8m5jg6rp1QEiZTn3N2BNgL=w1059-h1124-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczOw76-Lb2u3-Laqr2KJoEgOeGfGWHx4YqZZ-HwHZmF32dbIvWVfFdl0q2Brj92SrmvovKeb_arSdJapWAM76k_wUThMAsjKcb99B7SGcYssPSj9qkUpNvbyFR-c1Xm_Q1CxWlmx8oATFWYLzA3NuBC_=w1624-h1231-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNATHQ7Ay8GYvSGAEiGv4-kQi40ZcVgXcQywrKTYYT9QkFxb4yOUA4JUrqR9nimvJVek_GaMPsa5Ecv_5uu3KCIafdtWbs7yQclT3IUxBMhg4gIkFE77Bb4QQHD7lFm9EDlPM1Lkst06ziKHNPQj9JM=w1507-h937-s-no?authuser=0' }, 
+            
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNwTuylGtDlrzSk6JVsdZOgGIrV859Q2OmWAl1neSCeuoXN3kRztlg5x1g8Ag2bdpqS2n6S_YzlnKfGua1f7SR04Ggjrf1gl1CyeHna0VZuB2inMZhQDvsaGr-TLLknABRdFkP-oRQmAw_N4pdRHuXb=w1559-h895-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczM0uaGVxG5egb6JeLnUYI9mx9gmQsZ_GtroMwj_kux_TSwskTbZ1iTqRjvSQjBaa5HaR9dTNSCFJ-GFLsYgu_5dQyOrg3ShMIhmzVJ7VdYZNz9yTGuf2pDNeCetPLyTBdy9pgIQMGTwvwyHcitarj3Z=w1629-h1801-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczN_TVppIirJkKRg8upcc8F3WggEJBb0ZXe6fqJK35V3iZvn2vFGzZ9erH_JbWmybC4uJ2r8Z9tm9QAF1ljAOlEX-Qr12m_VAXKW3A4ficLMJ88zx8Cf-cy7ankhMcMmpcNJeuJxJYYWc3kc-bbQtx0g=w2571-h1706-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNmhcL-003tozq9cIkqEAhZOXdLrsUd9NZDvBLqZuIzeLuQMBXNlMnIxfRcOpm7UNkL5WQHePQ4kuvnN2ZN7hrDb5OsrpA_xwBf8jFC_GYZuPjegE_mwCtkhFIS4N2E9jY7nZFwv89MQYZrMl8dY84X=w562-h800-s-no?authuser=0' },                       
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczP3Aj7kHLP6vN23uD-C_xlQ2Ip-AbHKYUQgvMOd1fnbR5Idop89nzrBId3EGoxKIECTtGn1j2aInKsVAyW19dIidgsLZYXsNykPUjvXJxeZW_XAFbszEaNw1m07VMaSAUXLuy3rIA2-0PMFgcDcmW76=w759-h555-s-no?authuser=0' },  
+                        
             { type: 'video', url: 'https://www.youtube.com/embed/4ymA_2buJZ0' },
             { type: 'video', url: 'https://www.youtube.com/embed/VbBEVBd04SU' },
             { type: 'video', url: 'https://www.youtube.com/embed/9ck88ZL7JQA' },  
             { type: 'video', url: 'https://www.youtube.com/embed/vH6aYH5--d4' },              
+            
             //{ type: 'pdf', url: 'https://drive.google.com/file/d/1WIUw-T5Bs6EJUH6hmj3C1r9S4iSmuF_4/view?usp=sharing', title: 'Download Article (PDF)' },
             { type: 'pdf', url: 'https://drive.usercontent.google.com/download?export=download&confirm=t&id=1WIUw-T5Bs6EJUH6hmj3C1r9S4iSmuF_4', title: 'Article (PDF)' },
             { type: 'pdf', url: 'https://drive.usercontent.google.com/download?export=download&confirm=t&id=1Q1vDmfcmrTQSMCtIJvE6_MMx-7YihwHL', title: 'Manual (PDF)' },
@@ -862,7 +940,9 @@ const SECTIONS_DATA = [
         ]
     },
     { 
-        id: 10,
+        id: 'braille',
+        menuTitle: 'BrailleDock',
+        inMenu: false,        
         //bgClass: 'bg-gray-100',
         //imageLeft: true,
         aspectClass: 'aspect-[4/4]',
@@ -905,19 +985,21 @@ const SECTIONS_DATA = [
 		],
         
         items: [
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczN2mNaCPqcNJrmN011wPlfR6G25FIIcUsxDi5iZENsRxD8F7ia-jdoQ7zveHSFpD3icjZZWkuhefz1-zEhXh9vllDjTxewo-tiPCxwL46BXipumATqVECXjWNgAntRORFSOiSmMNRLcZQQScKA724a6=w1864-h1028-s-no?authuser=0' },
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczOzyzV73ZFicvh0B9KPHqSfe9tF-P_ni8HN4SN-zDI1jbLH8857dlXLJKGrmFsFrp4r-QWbSYxCIjkJCgU1AZv4PQHHkIedFo9NRQpFxtytp2uShDu_5q5hXI82dddMsmAxbiaVvL_7eiJckyJh442I=w3629-h2013-s-no?authuser=0' },
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMrD49-YmvYgj2RI8YR3vo1HYap8H6iP4VLSFq2Y7rLuMtrCa_2VK2piWSuPN8mHyzseQZJxqC4suOk_4BkaFIQeFR_gaDvB3wp0sp_ozqJUs_H8MJqPX4hibMpuWCbRGzR0OTBFTyD0yXPKbXmt3IB=w3629-h2013-s-no?authuser=0' },
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNgb6ks3gu8z98afUAyEMn3shi9A2BK_xT_eaes6bB2l0UJwTGASOnQ3phPhzXATDXbl0Pcscratejq_-VxZzjCPgZhh1-EfLiO2hYVlR6Jz68X9fwV3t6j3JYaWgQu8YRXEK2XAo8JnGtIF2G12WKO=w3629-h2013-s-no?authuser=0' },
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNw6ZT4XtpbajotEmHOJLfAQuxoD1BuMlygAKeC71jT_NgAf-G5PUBAMjHSeJkVWAWThGQ4dbi74RTOdISnuStx0Zmm7u6ysjXHiILCmYNRJLMLSXwG1TRg2McOfeRP3cStYjlcQzjmvM_JFEmjdhlO=w3629-h2013-s-no?authuser=0' },
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNuPGv5aii6Mcg1foKV9_KEVwR3JL0-RkemCa9GHu-iLO0WUfIpVUXBrzrjdKKy1Y8yW4YYaMhqvX280AUYZHa-dHZRPfOiwODM7pAu96n428OwFJPrDHgqKpEoK5Rcn-Jizstuw9Su_qXk9m1018qw=w3629-h2013-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczOXJPWITf8oD1nL12JIzofw5F-UKQA68u1_00hcBUBypcwEiKgq-ZiiUANT79xWUw3IZFiHL78whf5U-PdrcVU7zHhX2HjFHd0wL99JrpP1Z67LlfmCfOkuLTSIl-IPmnqoYrf7qEyZZ9BmTx6yUpHP=w1864-h1028-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczOsZoulXXuMp4F9bM3s9U5JOfJWAG-GivALFJn1nSnSZ8tTS2JYJYVw0HE0PgGGRLaTjS0DIcvrm4sJxpqNaXvqERtMaxwXwqeLPZpORJ3IguhcC_DqcY9WRlQ-qTey8yuSU8geQk6P8WaFsY_rnAOz=w3397-h1884-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczN9KKrsTxjCyWXbS_tOwmgQYjsOUFha-Jdp_STu2ezZbRGMH5T-3Pr0SePKzVmPoCI8auAdX4RpNhvIXjlZeOacGQ66aHjUR6NK80cECLa0xZsrPREMSVR9sykte4M7itw6RkQ0DRPikV-yBlhnWsSd=w3397-h1884-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczOJcTZx0MkZf5yl4oVv_v6DXZYXLcXaU4Kxi_J8BVastChkARQtRU7rVpSaIsA7gFHaTp9XDBYTeO98s3xMhWBY2m2MvRxurZnwqt4OBKhFpU5HefCuRfZx12RtYmdFFWTN1SGWjxdz67cioYcSujQ4=w3397-h1884-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNaFw_Xy5gwqXbiGWY8qgLwo2-V_oMFdxsB0bcwQru7Xsyh19jwHu6C56l_KfiQ0KsAapw8LmGUqdup8XE9YEfJWdb0H5fdp5HiGtbr2obvOtj0oodnE5GffSJIwGv8gcQ8wrurTPZEBHEyPxXtMRaP=w3397-h1884-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczO7vx9825ADAaadrO8IQzLiAujhntk-ry42d9NtAUclTWuuRW9nF0_XiyJDcX1kP5YfWTF-AWdxxAP7kkwzVt8DzbDuCzoAlYt8Uq6xHPk-w7S4RSZ7utoGwT31c-SBYR60IcO3iLtjobiE-hI-9szr=w3397-h1884-s-no?authuser=0' },
 
             //{ type: 'pdf', url: 'https://example.com/manual.pdf', title: 'Download User Manual (PDF)' },
             //{ type: 'zip', url: 'https://example.com/models.zip', title: 'Download 3D Models (ZIP)' }
         ]
     },
     { 
-        id: 11,
+        id: 'ils',
+        menuTitle: 'ILS',
+        inMenu: false,        
         //bgClass: 'bg-white',
         //imageLeft: false,
         aspectClass: 'aspect-[4/4]',
@@ -968,27 +1050,105 @@ const SECTIONS_DATA = [
         ],
         
         items: [
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMcmiV4drED0Sfgu623aNRmUL3jFvh-LM4orR2xOVbn8_R-PbK2kgaNJhsnvhR3trGn3qlQhAo9YJZ1WZrBCYwEb9GEf8cirv6LiB68rNNofzDOmB6sa72uoV8b9S4CchC6ACN-uILmTNpkXqwh6fse=w2013-h2013-s-no?authuser=0' },
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNMAy-aapX9E47-7QtN88pGoyl6nF-rKk5cOmXayWFeezFv6oukITgr2U9hckuChVYAouKxtywsJPAJM7yMWD_dTNkj4CKCco9L3GTQWvDMkfO-J-fscKRDgmyUx07ToJPaodldV1fXr4o_fvc1uQUU=w2013-h2013-s-no?authuser=0' },
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNScIUQELIC7cDgB0iwHOO8bfWAHUd0L_tdCb9RaCqcPJ_x-Xo9lquLyedkmPcDfguOTKVRnD-Yk_pxQt3syP1cIaEi7WF23NVLkRBL7VKppebu3fEX02dwpZ3vjbqQ5MJKdxGWuDz9-YL3XuoQOH6i=w2015-h2013-s-no?authuser=0' },
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMWOgMEJrm88UOB_pRjq0DzhwLAoKlkpJxBleQukA0ZCl4VigPBcpNxkh7oQp8H1vIUruqDtWZ2hos23FCqKG78Arr7vNxkv0eTNMWVCQtQVPEvxF-l5j9A7Srg_0dSA_AymuZaCS-MlMgKf8WIm7Dw=w2013-h2013-s-no?authuser=0' },
-
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNHIsnVrkNDEXMM9nEcdKgfp1PhuCMOMY5imkfS1366-M5A4q1ZDZ2tLp11jXnHoBhhj0DGyFylGsxR4BTqYUfM20FTl70LquehZ3PLX1l2Y17Vy7GZXVuvgLEl94tKjD2u8ovs2Fls9j1m55ilgHxj=w1109-h944-s-no?authuser=0' },
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPKvK07DtRRvY7xwkZINF1yzf7u4nYG_tdmI-rzny91n2o5OiFFWgAv-jwKhnlgzg2htZyK6y_zMxwTJvotxv8pkoJpkU7Nvim4BGA_bcMrnqwdHNbJ9If1HD0cLYlG0GUTUojVcSbJxAwpeZvjYQwy=w944-h1126-s-no?authuser=0' },
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPCR2YMUzGu8C2h0OmMR94sf2fiqCSlJihXoBrPNb42syZrcdFMwLvIYd2lnR5VjyujzzE0U7Vq8-lceWFz3axhB0chdZINlLUqJgn5DsCHJPaxlws83S-a_sITb0euyXADssHPoFn8x5zfD0B9VtrQ=w1920-h1080-s-no?authuser=0' },
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMBHi-kmhgLcP4CKLQXED3W4U1B52IdeFBB7JJkt4RtuVhkCOVlTQHU7NNHk4XLPKstAa3MDj4DeLmWXsVnl7GJHEXO1wiYh2SiOhfvkNnsMm_Ekd46epqPNhUoHRFnKiehuuuQda8XXMQozPaSukoS=w1000-h707-s-no?authuser=0' },
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNzypdemW7LlGIwTyvm1b35lzG0Z__JI6zRiXmzc67kkzhI-KxqNMdG4XmYgP3_Ed5jjStagRmZFc_E1JEHRcWtebg7d-xaZcjqqQYYwE_-dtLA9phE_iuLZYZS4Z1CqDHjRHFh17zYinMxkF3FF8qr=w538-h415-s-no?authuser=0' },
-
-                        
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczO-eIAeit1kpNkjyCZXtvUMJGAbGu4lig2NllGd35Hy__DUu5eFtmtza__N3XarzF9YvBmf8-73VowehWPiSjBRdFvA3gswWlhwkJ_5y91BQPPtEhBu4P_kjGCqmckAPp7I_czrmwJtLPM0y1cHoZwE=w1965-h833-s-no?authuser=0' },
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNtArYjvetDyzvpZyHfKQDNkrAdqLf1qGYrnXpszBkwsCU80KMDpa_PFUMcCc68QlmaN59U24sV-L4RZg2fLn4mk7IpfD6adJLfzSE9Q_6o0ga-rIw6Hz-j9VcT3QHiZnsIOIZsSv-ZCIGVtYxAWqpe=w1854-h493-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMkvGo7acNGUs0o-HqFaIK-zExow0VurwlGi5u1q6QyxrTl10CmhGFWz2Y6TIxM01YikCP_-GC5vtMdkzfDX07c0ppEmjspSRwtkikVWoiZ-tv4E5Ik64Wzbp6IP03fm8SJf9gIonaX64G9TRwN7Bmc=w1623-h1080-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPpaUeHxHjD43okob39uvVPflo61eBlv7nlH1kQ1d5xIhuGlCZxiWGC2mJaQkC9YljO_bpa9v_9iuygEdTl0WquRUqkK20QBdUvDDAd2mhjaMtX2OTV4D1nm0Vj4Wa0qqsvPNNcvhXp0H9gr8bW-iwW=w1623-h1080-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMUg7Pe1D40FQ2DRkPZW_Rw4UNVojhWiyi-I3RJT-aJR8pkKha3_r09u8jw6VIftMPpTWiC_99QmaS55R9hNioJOYWS6Mj_-1mgj9SXbdSgNPNhuVwWdtEZ8DfA-bItuRzbD4sBl19CnGKJH_p7N36g=w718-h1080-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczM-LKFj76M28BGr7tnFEFnw-ivxY8SJ9cld-dH_6jNFoyEQr9pDZyF_9DBtp8JBoPNh7xwoYyVl9NzoP5dSBDdzU1VlMrVZblIc5fibxcCFLlXQR92W0CX1W9jIqiG26EAqL4QC74hPL7MWCO2eSG4j=w1623-h1080-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczOibR477eyePyWzwGoxPDal_HHPKjctHEUSPYhxJfsbBqoJuPoFcMjGBbrqB_mgNueeEcXGPYbKJLcoPy8XGvjTsQWBq_dCA04-pnVzNUCflvNNs6StZAgfoKQWhCLC_r6SCYEPxcfczxAMQn3yLoeB=w1623-h1080-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMwv5js5FLTAhl5j5AAD5IW5JJ5wB6O_LecZYzac_qIrmN4NYuxCYvYRdNaSoDi_Tep6smjHBJ1rInYjJb-H49O_Wj1pljraghNxVcBhhGGkiAtg8MgMhpFn-OvCqV8dnPl24nhaSiZ6ns8ppESA0lg=w1623-h1080-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczOsherARr20FXqfkrIJD2Be3ro2iOL3rBDnPJZMThKMxU-o7d3oiRAo9Jw5TiJxfXLuCs3ccLoCm3rAWBU7uVPS5au8eB5KyKNWrRTdRzQX2052FaV-W_g6fixjoyDnoq6XmbWJEAJigKoks73tt85a=w1623-h1080-s-no?authuser=0' },
+            
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMIfeCx3TMXB4y81s5CCauz7KPYZ2lLGs0OscD4ujn_PjuqgqqRfBfLh5LhNbkMQI7uz6g93H-I-zhB_k6vxNx18juU2F19uxV5yETrVWoYr9lK-5dnsmfu4QafZs8DazC08Vg6MNentfRjbJAFefeV=w850-h850-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczO3VlHN_lsPxJgrG8Oh0oyU89XKwKxjXWOspnzS4m5WJMeWfT5W8wf6nh3lJBcAX_Uahkm_o454U7v03oZoFTUJAo2M8J2xuH8XByE-d32sVg9Vtkj4cyBaKZDewVukjcE4wNZBIuGl9w-QEoANsiEU=w808-h575-s-no?authuser=0' },                      
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMKdtERoGrS9hDUxi5hFkxkegTIh3MQAG38xDKWLsKosn9nwxaZhyEzy6YxmL3IYkKqRDFZKpNROp0oRduXY7dIjE28VWusRXE8dy2709rWSXV8V6W_l5Wp3fTaNj9ukgA8meAXmf9ZPx13L_nj2jb7=w2013-h2013-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNv6XrsOkobWjC7wyjZnyl17vMwDmKAGDj0TIZsg-mfEFgldZH5ao-ZbSY9nGkw78wlLJ4TdXCx1pQkWqjGGAyFFasDPLw3vrEFU_DtTzm8ysCqn-fe96TjW8e7jLewrqwVAnf5C910qCZM3z7I7Qkw=w2013-h2013-s-no?authuser=0' },
+            
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczO9NkWJU9LAC7Dm1rnjyAF3Btb03BnflJBiRqCH49RfWoYEzvIUZO7VmkjrLr-3yIVLUig9mAqgfonxQOuJwQvNAHC1cc4bD6OfqwkF0MvKyBIQxVvlAzghSf_2eh9Xv9kCBOVNpbHglGRE7O8a5gy_=w1739-h1080-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPm-JWyd5MXHNgS96OLsgdSHACDTRdhOiza7VSdh4GnlOhh97AZ8-_KPO3SwQLAo4pMSG0RJX9uvgSclSbK_YsyI36zhq_XJLnwup1rulMu7l3xFR4oWf99GrevRPkbhOc9y1Iyv3bwCVz1QizpMJ6k=w1024-h642-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczP68ckMBpCi9N97yAI9c8PHHPyYHXe_RjIGPV9QQfkSRmDE8aNYOi1GGoirF4vDXnqqn2qiShpOjSKeEAfcpQrKA0NhJab0NwB2VxFv8t94xF7qFiedPBuSihmaKkvOTiO61jrUJ5G4CaWoLEG2UdoD=w1269-h1080-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMeX-2a-T0Ygyrdd2QswmPd_7rD8DoRGKZsRTnPmllQTCLzcvLslf6hiwZ0BD3lHg3-38xhB8GDaKDZg-nSQvZVT-TaRvb62Au5vYevfuL14sWV5SwXNbMrKSA0fXmPbUzukyT0SdmLvnUliEqKwYM-=w1056-h1080-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczN8845SQKLCnNpii_KOyJAaB8WPseJQ2Dvj8rRHpZ4xmOKbCp71QM9E-z9PjXVzsCc2jXpNv-GYaztKCn2wcMm0X2mo5eJ9kj8-9QXVxEDMYPyu52WJVmkEbVbgB56raflLJ80RmY7dafQrvuRymH22=w1152-h921-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPGqwbeWf1J-962ZSyuaQHdgo1nYBth5XIouZy17tJJzEy1ndXOcFU6VTjfBNaHDuLusyqLrGZfvTogsA3qDMvaHddJmA25r8Z6rW1EvsqaTWLqgfSefaK3Qg3OrULHAawHuGdzBTQ9FipUMrp2qYcv=w1000-h707-s-no?authuser=0' },
+            
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczOwYoDyaQM5unkfu-hXL4BEuU5dZNn3gvgvfgfNAELwHP9eQj65GdhUhE95cy0cbOiq50eU8Xa-3W4FyHSxj3zQdeJ_n6IErdSmXL5mFLJJbhAgZH7DHvEVAk7QfTXKf0p4Rk6fWiBBLKLr7MXcoiLJ=w1400-h1080-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPOWKP5JZr5ZwDkPEJ8H4dIWPxQBzyNEJwANms3-zGwYuBR_2uTkSmWEEzZNV6PIppAf4tMzFqQUvT07ebZ_0L2BOcyagaRS6lKoo1NXrTV6Ed5YcM8Rlh_Ii8yJtMRFO7qx8e_sXFk0Y1QAVrObBwK=w905-h1080-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMeqQy4oE4gwDSoCYRRyTmwUcy4f1UXm360Q9XY7yg4G52j-i-7SKmZW7Mylo8CjZPbJaenP73CSD3Zp3N8CM-ndrcTa9-m_NiJ9zx5Rv5Rx-QAM454d5xkGNUvoFxIWny9Olhdx2GILhXE4lQo5kAc=w2371-h1275-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMUKpXY8l3k3vmBfLGmhFX-ULt73677wkO2mLG76WwPr1eRKHO1p6XVTevtkUuAV_C4MyquxPxUuKZYIRiGE_T5iw0CsCT3KyEPttVyOdXUqn-wgh2aqtQpiijMYVJLs3yPPz1nt5PlZA0uc6z84AKm=w1920-h1080-s-no?authuser=0' },
+            
+            
 
             //{ type: 'pdf', url: 'https://example.com/manual.pdf', title: 'Download User Manual (PDF)' },
             //{ type: 'zip', url: 'https://example.com/models.zip', title: 'Download 3D Models (ZIP)' }
         ]
     },
     { 
-        id: 12,
+        id: 'radiobutton',
+        menuTitle: 'Callbutton',
+        inMenu: false,        
+        //bgClass: 'bg-gray-100',
+        //imageLeft: true,
+        aspectClass: 'aspect-[4/4]',
+        showSteps: false,
+        currentStep: 'tape',
+        
+        steps: [
+            { id: 'bottle', label: 'Bottle' },
+            { id: 'tape', label: 'Tape' },
+            { id: 'filament', label: 'Filament', short: 'Fil.' },
+            { id: 'join', label: 'Joining', short: 'Join' },
+            { id: 'spool', label: 'Spool' },
+            { id: 'printing', label: 'Print' }
+        ],
+		title: 'Speaking Emergency Button',
+		p1: 'The Speaking Emergency Button audio-tactile information device is an innovative alternative to traditional Braille signs and pictograms. It features a tactile button that, when pressed, plays a pre-recorded message. A key advantage of the Speaking Emergency Button "talking" sign is that messages can be recorded directly, without the need for SD cards or flash drives—simply press the button on the back of the unit and speak your message.',
+		p2: 'Where can this device be used? The Speaking Emergency Button is recommended for use in socially significant facilities, such as schools, pharmacies, libraries, theaters, nursing homes, hospitals, and rehabilitation centers. Different RF bands and protocols allows to connect this device to diferent Smart House solutions',
+
+		hints: [
+			{
+				emoji: '📚',
+				title: 'Audio Capabilities:',
+				text: 'All audio formats(mp3, aac, ogg) include recording capability',
+				youtubeUrl: '',
+				youtubeText: ''
+			},			
+			{
+				emoji: '🌐',
+				title: 'Connectivity:',
+				text: 'Equipped with built-in Wi-Fi (2.4 GHz), RF (433 MHz) and Bluetooth 4.2. USB-C connector allows to configure and upload audio files via Mass Storage.',
+				youtubeUrl: '',
+				youtubeText: ''
+			},
+			{
+				emoji: '🔋',
+				title: 'Power & Storage:',
+				text: 'Contains CR2032 lithium battery, USB Tye-C Charging capability. Provides up to 1 year of standby operation on a single battery charge, 4GB of internal storage',
+				youtubeUrl: '',
+				youtubeText: ''
+			}
+		],
+        
+        items: [
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczN8YCFB_ZYKoFaYTigX3ERHvVJJ-004tR9T-T-CMPgQDJ0nBPNr6pnQDJ4CRZDY80kZk7x0WZ0DqEzGB4ZpREOjX5O0a-RfUprfh-Cqb7Fozy98xA31R1-226m8Q1thMo0p10C33yiinyyDLcJxFBAh=w1587-h1586-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPn9P8GgFLmmdqHidl2WSXwgVWf2EQtZkGRwpBQdcxobxwVsaYOjo9DlOgNlh49Do3VGsv_u-2VQZyMY_OXtEeaZXw4lXjQSS7nbtBDiV-qIcTBzYgdl3yhAIIw_oYQiW3IXrz7S2Yl9AVVPsKdHpcz=w2013-h2013-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczObjie9H-TV-cRSDnF8nS2NRytu-8JjApSNycw-bdSrmB1NUnFqAsKNWKJYCWAnRY5Uoe1LWOe8iJFvssUmZPe8DFEJAeiUw5muLttvxjUvEr1LyaCt7JZEdk66DlOd5ubssVyUQHdvHXUyEK7fZGoG=w2013-h2013-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczOBe682K8XO2jwZWfbrHM0HBmaq5dbQgIg4oFyxpglQ5Ihxc6RjdffvaQeqytxj6QI5kHbdYUZzR-ApedHZ0Spu2wmJtODDPWzKDtd8cU9xrJr0oTfEd5QGiOQY357SoyaVTz-Ye_mbUbV1wpYZ4fQ7=w1100-h1100-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMw5wQW6WghdTACYiriu26fiPdFH01y6_HYcfNHNCP0i7vCGHHvuOwEtFw4V5hS5UM1GES2in8YJYJKTlflUdqS0uGTWPPt333JQXW0XpWGjuL5n9fXh8Jsk98UvoRUVFoDRpUxH8AvuGOgQmXQarQr=w1100-h1100-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPlaCEsQ7n3huNsEbMU8q8i0TcmqQp8l5GESc-eH2kGEU-LoJYQoeYUtlrwBB29wJy_IeMja6Z4seIWNaE4djSdpKgSSlmwisUOcstNWIvdet7WhE7l--7RYeFdWPNi_oJu-zTYNAjsIX9ocljohJco=w3629-h2013-s-no?authuser=0' },
+
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczOQGZCUMoQEuaC0l87h9n9XEGU71fk3qPLZDCrEdVFCN6NxNVVCT59A6G3j36O0bUsb2ymg-IeuI9-Rc0n3BtyZkIzwZZN7thEwwCZ7q7cOIsKsF66sCA67_ygAz7OZ1djFjwKDnp0m9qjqQVdBrQxK=w3629-h2013-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNXO798Je40CaglOvRmcLtQKCquKJTrCKFbcjQ2WCVpGlDv6EusZ4HBvT5dfc4RylEvT9h6qYflUSzr9fCnzCIFSQtKoIjvFInyAjKK-p7_CuSB4JV2l9s6xJ1VBcUq72JKCyS3BU4u-xT5mkLR55iw=w3629-h2013-s-no?authuser=0' },
+
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNBxN1gvOzEb4Ub79SxzOPCkUr9ObEsITwzLTgwzRGeTfXnror-XhWa566iR99dO_VYbo6Pntpf-zVNRC9zx-ZVn1v_XM22hj2nHzwyv6V9R_Rgpyk89iL4s00V6XTXDdC3w-9c_GFyQWfHrzNrCqRl=w3629-h2013-s-no?authuser=0' },
+            //{ type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNXO798Je40CaglOvRmcLtQKCquKJTrCKFbcjQ2WCVpGlDv6EusZ4HBvT5dfc4RylEvT9h6qYflUSzr9fCnzCIFSQtKoIjvFInyAjKK-p7_CuSB4JV2l9s6xJ1VBcUq72JKCyS3BU4u-xT5mkLR55iw=w3629-h2013-s-no?authuser=0' },
+
+            //{ type: 'pdf', url: 'https://example.com/manual.pdf', title: 'Download User Manual (PDF)' },
+            //{ type: 'zip', url: 'https://example.com/models.zip', title: 'Download 3D Models (ZIP)' }
+        ]
+    },    
+    { 
+        id: 'voicebutton',
+        menuTitle: 'Talking Table',
+        inMenu: false,        
         //bgClass: 'bg-gray-100',
         //imageLeft: true,
         aspectClass: 'aspect-[4/4]',

@@ -413,6 +413,40 @@ iframe {
     }
 }
 
+@media (min-width: 1536px) {
+    .step-nav-container {
+        margin-top: 3.5rem; /* Отступ для 2K мониторов */
+    }
+}
+
+@media (min-width: 2500px) {
+    .step-nav-container {
+        margin-top: 3rem; /* Комфортный большой отступ для 4K мониторов */
+    }
+}
+
+/* Увеличение высоты панели и текста на 2K и 4K мониторах */
+@media (min-width: 1536px) {
+    .step-nav-wrapper,
+    .step-nav-inner {
+        border-radius: 9999px 0 0 9999px;
+    }
+    .step-btn {
+        font-size: 1.15rem !important; /* Увеличенный размер текста */
+        padding-top: 0.8rem !important;  /* Увеличенная высота панели */
+        padding-bottom: 0.8rem !important;
+    }
+}
+
+@media (min-width: 2500px) {
+    .step-btn {
+        font-size: 1.5rem !important;    /* Еще крупнее текст для 4K */
+        padding-top: 1.2rem !important;  /* Пропорционально большая высота панели */
+        padding-bottom: 1.2rem !important;
+    }
+}
+
+
 /* Внешняя рамка-окантовка со стрелкой справа */
 .step-nav-wrapper {
     position: relative;
@@ -553,17 +587,17 @@ iframe {
 
     
 /* Автоматическое увеличение текста на 2K и 4K мониторах */
-    @media (min-width: 3000px) {
-        /* Увеличиваем заголовки в динамических секциях */
-        section[id^="section-"] h2, #about h2 {
-            font-size: clamp(4.125rem, 2.5vw, 3.5rem) !important;
-        }
-        /* Увеличиваем основной текст (параграфы) в секциях */
-        section[id^="section-"] p, #about p {
-            font-size: clamp(2.5rem, 1.2vw, 1.45rem) !important;
-            line-height: 1.7 !important;
-        }
-    }    
+@media (min-width: 3000px) {
+    /* Увеличиваем заголовки во всех динамических секциях */
+    .custom-section h2 {
+        font-size: clamp(2.5rem, 2.5vw, 4.125rem) !important;
+    }
+    /* Увеличиваем основной текст (параграфы) во всех секциях */
+    .custom-section p {
+        font-size: clamp(1.45rem, 1.2vw, 2.5rem) !important;
+        line-height: 1.7 !important;
+    }
+}  
     
 /* Увеличение расстояния между картинкой и текстом на 2K и 4K экранах */
     @media (min-width: 1536px) {
@@ -652,29 +686,36 @@ iframe {
         </div>
 -->
 
+
+
+
 <!-- NAVIGATION -->
-		<div class="hidden lg:flex items-center gap-8 text-sm font-medium">
-			
+		<div class="hidden lg:flex items-center gap-8 text-sm font-medium">			
 			<a href="#" 
 			   @click.prevent="activeSection = 'home'; isScrollingByClick = true; window.scrollTo({top: 0, behavior: 'smooth'}); setTimeout(() => isScrollingByClick = false, 600);" 
 			   class="relative px-6 py-2 text-sm transition-colors rounded-l-full">
 				<div x-show="activeSection === 'home'" class="absolute inset-0 -skew-x-[20deg] transcolor"></div>
 				<span class="relative z-10 font-medium" :class="activeSection === 'home' ? 'text-white font-semibold' : 'text-gray-500 hover:text-gray-800'">Home</span>
 			</a>
-<div style="display: none;">		  
-			<a href="#shop" 
-			   @click.prevent="activeSection = 'shop'; isScrollingByClick = true; document.getElementById('shop').scrollIntoView({behavior: 'smooth'}); setTimeout(() => isScrollingByClick = false, 600);" 
-			   class="relative px-6 py-2 text-sm transition-colors">
-				<div x-show="activeSection === 'shop'" class="absolute inset-0 -skew-x-[20deg] transcolor"></div>
-				<span class="relative z-10 font-medium" :class="activeSection === 'shop' ? 'text-white font-semibold' : 'text-gray-500 hover:text-gray-800'">Shop</span>
-			</a>
-</div>
-			<a href="#about" 
-			   @click.prevent="activeSection = 'about'; isScrollingByClick = true; document.getElementById('about').scrollIntoView({behavior: 'smooth'}); setTimeout(() => isScrollingByClick = false, 600);" 
-			   class="relative px-6 py-2 text-sm transition-colors">
-				<div x-show="activeSection === 'about'" class="absolute inset-0 -skew-x-[20deg] transcolor"></div>
-				<span class="relative z-10 font-medium" :class="activeSection === 'about' ? 'text-white font-semibold' : 'text-gray-500 hover:text-gray-800'">About</span>
-			</a>
+			
+	<template x-if="!shopConfig.hideShop">
+		<a href="#shop" 
+		   @click.prevent="activeSection = 'shop'; isScrollingByClick = true; document.getElementById('shop').scrollIntoView({behavior: 'smooth'}); setTimeout(() => isScrollingByClick = false, 600);" 
+		   class="relative px-6 py-2 text-sm transition-colors">
+			<div x-show="activeSection === 'shop'" class="absolute inset-0 -skew-x-[20deg] transcolor"></div>
+			<span class="relative z-10 font-medium" :class="activeSection === 'shop' ? 'text-white font-semibold' : 'text-gray-500 hover:text-gray-800'">Shop</span>
+		</a>
+	</template>
+	
+<!-- 2. ДИНАМИЧЕСКИЕ ПУНКТЫ МЕНЮ (включая About, Extruder, Voysa и т.д., у которых inMenu: true) -->
+    <template x-for="sec in sections.filter(s => s.inMenu)" :key="sec.id">
+        <a :href="'#' + sec.id" 
+           @click.prevent="activeSection = sec.id; isScrollingByClick = true; document.getElementById(sec.id).scrollIntoView({behavior: 'smooth'}); setTimeout(() => isScrollingByClick = false, 600);" 
+           class="relative px-6 py-2 text-sm transition-colors">
+            <div x-show="activeSection === sec.id" class="absolute inset-0 -skew-x-[20deg] transcolor"></div>
+            <span class="relative z-10 font-medium" :class="activeSection === sec.id ? 'text-white font-semibold' : 'text-gray-500 hover:text-gray-800'" x-text="sec.menuTitle || sec.title"></span>
+        </a>
+    </template>
 			
 			<a href="#contact" 
 			   @click.prevent="activeSection = 'contact'; isScrollingByClick = true; document.getElementById('contact').scrollIntoView({behavior: 'smooth'}); setTimeout(() => isScrollingByClick = false, 600);" 
@@ -778,13 +819,13 @@ iframe {
 			</template>
 
             <!-- Корзина -->
-            <div class="relative cursor-pointer" @click="showCart = true; view = 'bag'">
+			<div class="relative cursor-pointer" @click="showCart = true; view = 'bag'" x-show="!shopConfig.hideShop" x-cloak>
                 <i class="fa-solid fa-cart-shopping text-gray-400"></i>
                 <span class="absolute -top-2 -right-2 bg-blue-600 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center" x-text="cart.reduce((sum, item) => sum + item.qty, 0)"></span>
             </div>
 
             <!-- Кнопка Shop Now -->
-            <a href="#shop" class="btn-blue-pill px-6 py-2 text-sm hidden md:flex">Shop Now</a>          
+            <a href="#shop" class="btn-blue-pill px-6 py-2 text-sm hidden md:flex" x-show="!shopConfig.hideShop" x-cloak>Shop Now</a>          
         </div>
     </nav>
 
@@ -1547,91 +1588,6 @@ iframe {
     </section>
 </div>    
     
-    
-    
-<div style="display: none;">
-    <!-- SHOP SECTION -->
-    <section id="shop" class="max-w-7xl mx-auto px-8 py-20">
-        <h2 class="text-3xl font-bold mb-10 text-left">Collections</h2>
-        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-8"> <template x-for="p in visibleProducts" :key="p.id">
-                <div class="bg-white p-4 lg:p-5 rounded-xl border border-gray-100 card-shadow group flex flex-col">
-                    
-			<div class="relative aspect-square mb-4 overflow-hidden rounded-xl bg-gray-50">
-				
-				<!-- YouTube видео для карточки в каталоге -->
-				<template x-if="p.youtubeId && p.currentImg === p.images.length">
-					<div class="w-full h-full relative z-30 pointer-events-auto bg-black">
-						<iframe class="w-full h-full"
-								:src="'https://www.youtube.com/embed/' + p.youtubeId.split('?')[0] + '?controls=0&modestbranding=1'" 
-								title="YouTube preview player" 
-								frameborder="0" 
-								allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-								allowfullscreen>
-						</iframe>
-					</div>
-				</template>
-
-				<!-- Google Диск видео для карточки в каталоге -->
-				<template x-if="p.videoUrl && p.currentImg === p.images.length">
-					<div class="w-full h-full relative z-30 pointer-events-auto bg-black overflow-hidden">
-						<iframe class="absolute top-1/2 left-1/2 w-[130%] h-[130%] -translate-x-1/2 -translate-y-1/2 pointer-events-auto"
-								:src="p.videoUrl"
-								title="Google Drive preview player" 
-								frameborder="0" 
-								allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-								allowfullscreen>
-						</iframe>
-					</div>
-				</template>
-
-				<template x-if="(!p.youtubeId && !p.videoUrl) || p.currentImg < p.images.length">
-					<img :src="p.images[p.currentImg]" 
-						 class="w-full h-full object-cover cursor-none hover:scale-105 transition-transform duration-500"
-						 @click="selectedProduct = p">
-				</template>
-				
-				<div class="absolute inset-0 hidden lg:flex items-center justify-between px-2 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-40" 
-					 x-show="(((p.youtubeId || p.videoUrl) ? 1 : 0) + p.images.length) > 1">
-					<button @click.stop="prevImg(p)" class="pointer-events-auto w-8 h-8 custom-slider-btn rounded-full flex items-center justify-center shadow text-xs">
-						<i class="fa-solid fa-chevron-left pointer-events-none"></i>
-					</button>
-					<button @click.stop="nextImg(p)" class="pointer-events-auto w-8 h-8 custom-slider-btn rounded-full flex items-center justify-center shadow text-xs">
-						<i class="fa-solid fa-chevron-right pointer-events-none"></i>
-					</button>
-				</div>
-			</div>
-
-                    <h3 class="font-bold text-sm lg:text-base text-gray-800 cursor-none hover:text-blue-600 truncate" x-text="p.name" @click="selectedProduct = p"></h3>
-                    
-                    <div class="flex items-center gap-1 my-1">
-                        <template x-for="star in [1, 2, 3, 4, 5]">
-                            <i class="text-[10px]" :class="p.rating >= star ? 'fa-solid fa-star text-yellow-400' : 'fa-regular fa-star text-gray-300'"></i>
-                        </template>
-                        <span class="text-[10px] text-gray-400 ml-1" x-text="`(${p.rating}.0)`"></span>
-                    </div>
-
-                    <div class="flex gap-2 my-3">
-                        <template x-for="cObj in p.colors" :key="cObj.hex">
-                            <div class="color-dot" 
-                                 :style="{ backgroundColor: cObj.hex }" 
-                                 :class="p.selectedColor.hex === cObj.hex ? 'active' : ''"
-                                 @click="p.selectedColor = cObj"></div>
-                        </template>
-                    </div>
-
-                    <p class="text-blue-600 font-black text-base lg:text-lg mt-auto" x-text="formatPrice(p.price)"></p>
-                    <div class="flex gap-2 mt-4">
-                        <button @click="addToCart(p)" class="btn-blue-pill flex-1 py-3 text-[9px] lg:text-[10px] uppercase tracking-wider ml-0.5 mr-0.5">Add to Cart</button>
-                        <button @click="selectedProduct = p" class="hidden lg:flex w-10 h-10 btn-outline-pill border-none bg-gray-50 text-gray-400 hover:text-blue-600"><i class="fa-solid fa-eye text-xs"></i></button>
-                    </div>
-                </div>
-            </template>
-        </div>
-    </section>
-</div>
-
-
-
 
 
 <!-- КРАСИВОЕ СЛАЙДШОУ В СТИЛЕ МАКОВСКОЙ ЗАСТАВКИ -->
@@ -1764,7 +1720,8 @@ iframe {
 				 @error="$el.src = slide.url"
 				 class="rounded-[50px] max-w-full max-h-full object-contain relative z-10 transition-transform ease-out clean-fade-mask will-change-transform"
 				 style="transition-duration: 5000ms;"
-				 :class="currentIndex === index ? 'scale-100' : 'scale-95'">
+				 :class="currentIndex === index ? 'scale-100' : 'scale-95'"
+				 loading="lazy">
 <!--
 			<div class="absolute inset-0 flex items-end justify-center p-8 pb-12 lg:pb-16 pointer-events-none overflow-hidden z-30">
                 <h2 class="animate-floating-text text-4xl lg:text-6xl font-black tracking-wider text-center select-none"
@@ -1798,6 +1755,96 @@ iframe {
         </div>
     </template>
 </section>
+    
+    
+
+    <!-- SHOP SECTION -->
+    <section id="shop" class="max-w-7xl mx-auto px-8 py-20" x-show="!shopConfig.hideShop" x-cloak>
+        <h2 class="text-3xl font-bold mb-10 text-left">Collections</h2>
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-8"> <template x-for="p in visibleProducts" :key="p.id">
+                <div class="bg-white p-4 lg:p-5 rounded-xl border border-gray-100 card-shadow group flex flex-col">
+                    
+			<div class="relative aspect-square mb-4 overflow-hidden rounded-xl bg-gray-50">
+				
+				<!-- YouTube видео для карточки в каталоге -->
+				<template x-if="p.youtubeId && p.currentImg === p.images.length">
+					<div class="w-full h-full relative z-30 pointer-events-auto bg-black">
+						<iframe class="w-full h-full"
+								:src="'https://www.youtube.com/embed/' + p.youtubeId.split('?')[0] + '?controls=0&modestbranding=1'" 
+								title="YouTube preview player" 
+								frameborder="0" 
+								allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+								allowfullscreen>
+						</iframe>
+					</div>
+				</template>
+
+				<!-- Google Диск видео для карточки в каталоге -->
+				<template x-if="p.videoUrl && p.currentImg === p.images.length">
+					<div class="w-full h-full relative z-30 pointer-events-auto bg-black overflow-hidden">
+						<iframe class="absolute top-1/2 left-1/2 w-[130%] h-[130%] -translate-x-1/2 -translate-y-1/2 pointer-events-auto"
+								:src="p.videoUrl"
+								title="Google Drive preview player" 
+								frameborder="0" 
+								allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+								allowfullscreen>
+						</iframe>
+					</div>
+				</template>
+
+				<template x-if="(!p.youtubeId && !p.videoUrl) || p.currentImg < p.images.length">
+					<img :src="p.images[p.currentImg]"
+						:key="p.images[p.currentImg] + p.currentImg"
+						@error="$el.src = p.images[p.currentImg]"
+						 class="w-full h-full object-cover cursor-none hover:scale-105 transition-transform duration-500"
+						 @click="selectedProduct = p">
+				</template>
+				
+				<div class="absolute inset-0 hidden lg:flex items-center justify-between px-2 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-40" 
+					 x-show="(((p.youtubeId || p.videoUrl) ? 1 : 0) + p.images.length) > 1">
+					<button @click.stop="prevImg(p)" class="pointer-events-auto w-8 h-8 custom-slider-btn rounded-full flex items-center justify-center shadow text-xs">
+						<i class="fa-solid fa-chevron-left pointer-events-none"></i>
+					</button>
+					<button @click.stop="nextImg(p)" class="pointer-events-auto w-8 h-8 custom-slider-btn rounded-full flex items-center justify-center shadow text-xs">
+						<i class="fa-solid fa-chevron-right pointer-events-none"></i>
+					</button>
+				</div>
+			</div>
+
+                    <h3 class="font-bold text-sm lg:text-base text-gray-800 cursor-none hover:text-blue-600 truncate" x-text="p.name" @click="selectedProduct = p"></h3>
+                    
+                    <div class="flex items-center gap-1 my-1">
+                        <template x-for="star in [1, 2, 3, 4, 5]">
+                            <i class="text-[10px]" :class="p.rating >= star ? 'fa-solid fa-star text-yellow-400' : 'fa-regular fa-star text-gray-300'"></i>
+                        </template>
+                        <span class="text-[10px] text-gray-400 ml-1" x-text="`(${p.rating}.0)`"></span>
+                    </div>
+
+                    <div class="flex gap-2 my-3">
+                        <template x-for="cObj in p.colors" :key="cObj.hex">
+                            <div class="color-dot" 
+                                 :style="{ backgroundColor: cObj.hex }" 
+                                 :class="p.selectedColor.hex === cObj.hex ? 'active' : ''"
+                                 @click="p.selectedColor = cObj"></div>
+                        </template>
+                    </div>
+
+                    <p class="text-blue-600 font-black text-base lg:text-lg mt-auto" x-text="formatPrice(p.price)"></p>
+                    <div class="flex gap-2 mt-4">
+                        <button @click="addToCart(p)" class="btn-blue-pill flex-1 py-3 text-[9px] lg:text-[10px] uppercase tracking-wider ml-0.5 mr-0.5">Add to Cart</button>
+                        <button @click="selectedProduct = p" class="hidden lg:flex w-10 h-10 btn-outline-pill border-none bg-gray-50 text-gray-400 hover:text-blue-600"><i class="fa-solid fa-eye text-xs"></i></button>
+                    </div>
+                </div>
+            </template>
+        </div>
+    </section>
+
+
+
+
+
+
+
 
 
 
@@ -1809,7 +1856,7 @@ iframe {
 <!-- ДИНАМИЧЕСКИЙ ВЫВОД СЕКЦИЙ ИЗ products.js -->
 <template x-for="(sec, index) in sections" :key="sec.id">
     <section class="custom-section"
-             :id="sec.id === 1 ? 'about' : ('section-' + sec.id)"
+             :id="sec.id" 
              :class="sec.bgClass || (index % 2 === 0 ? 'bg-gray-100' : 'bg-white')" 
              x-data="{ 
                  currentImg: 0, 
@@ -1871,7 +1918,8 @@ iframe {
 									<iframe :src="media[currentImg].url" 
 											class="w-full h-full border-0 absolute inset-0 rounded-xl pointer-events-none z-10"
 											allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-											allowfullscreen>
+											allowfullscreen
+											loading="lazy">
 									</iframe>
 									<div class="absolute inset-0 flex items-center justify-center z-40">
 										<button type="button" 
@@ -1887,7 +1935,8 @@ iframe {
 									<iframe :src="media[currentImg].url + (media[currentImg].url.includes('?') ? '&' : '?') + 'autoplay=1'" 
 											class="w-full h-full border-0 absolute inset-0 rounded-xl z-10"
 											allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-											allowfullscreen>
+											allowfullscreen
+											loading="lazy">
 									</iframe>
 									<div class="absolute inset-0 cursor-pointer bg-transparent z-20"
 										   @click="videoPlaying = false"
@@ -2359,6 +2408,7 @@ iframe {
                 newReviewRating: 0, 
 activeSection: 'home',
 isScrollingByClick: false,
+shopConfig: SHOP_CONFIG,
                 // Auth states
                 authEmail: '',
                 authPassword: '',
@@ -2739,29 +2789,42 @@ isScrollingByClick: false,
 handleScroll() {
     if (this.isScrollingByClick) return;
 
-    const scrollPosition = window.scrollY + 300;
+    const scrollPosition = window.scrollY + window.innerHeight / 3;
     const documentHeight = document.documentElement.scrollHeight;
 
-    // ИСПРАВЛЕНИЕ: если доскроллили почти до низа страницы, принудительно активируем contact
-    if ((window.innerHeight + window.scrollY) >= documentHeight - 160) {
+    // Если доскроллили до самого низа (контакты)
+    if ((window.innerHeight + window.scrollY) >= documentHeight - 100) {
         this.activeSection = 'contact';
         return;
     }
 
-    const navLinks = document.querySelectorAll('nav .hidden.lg\\:flex a[href^="#"]');
+    // Собираем список всех активных ID для меню: 'home' + все секции с inMenu + 'shop' + 'contact'
+    let validIds = ['home'];
+
+    if (this.sections && Array.isArray(this.sections)) {
+        this.sections.forEach(sec => {
+            if (sec.inMenu && sec.id) {
+                validIds.push(sec.id);
+            }
+        });
+    }
+
+    if (!this.shopConfig || !this.shopConfig.hideShop) {
+        validIds.push('shop');
+    }
+    
+    validIds.push('contact');
+
     let currentActive = 'home';
 
-    navLinks.forEach(link => {
-        const href = link.getAttribute('href');
-        if (!href || href === '#') return;
-        if (link.closest('[style*="display: none"]')) return;
-
-        const targetId = href.substring(1);
+    // Проверяем видимость секций
+    validIds.forEach(targetId => {
         const targetElement = document.getElementById(targetId);
-
         if (targetElement) {
-            const elementOffset = targetElement.offsetTop;
-            if (scrollPosition >= elementOffset) {
+            const elementTop = targetElement.offsetTop;
+            const elementBottom = elementTop + targetElement.offsetHeight;
+
+            if (scrollPosition >= elementTop && scrollPosition < elementBottom) {
                 currentActive = targetId;
             }
         }
@@ -2769,6 +2832,10 @@ handleScroll() {
 
     this.activeSection = currentActive;
 },
+
+
+
+
             }))
         });
         
