@@ -14,6 +14,27 @@ const SHOP_CONFIG = {
 };
 
 
+
+// Отдельный массив для 3D CAD секции
+const CAD_MODELS_DATA = [
+    {
+        name: 'Extruder Assembly',
+        fileUrl: 'https://drive.usercontent.google.com/download?export=download&confirm=t&id=1KjaDCmBSuc0_EDkZCfWAW1WTets-klAV', // Ссылка на ваш STEP файл
+        type: 'step'
+    },
+    {
+        name: 'Tape Spacer',
+        fileUrl: 'models/spacer.stl',    // Ссылка на ваш STL файл
+        type: 'stl'
+    },
+    {
+        name: 'Heater Spring',
+        fileUrl: 'models/spring.step',   // Ссылка на ваш STEP файл
+        type: 'step'
+    }
+];
+
+
 const PRODUCTS_DATA = [
     { 
         id: 1, 
@@ -316,12 +337,12 @@ const SECTIONS_DATA = [
         
         items: [
             { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczOQiNR_dCT9NJdrOMRciviGI9Xniz3o3UKrxrzqhMEayFu4j-QZoHNgpRWJewA5E3sBSn4y3l4k47c3qJiOBd_LM56hA-wX2p3W5aVmd9fOLjO1rD13T3vCnAqph-oN9ZqrIi1z1iqdspN5D3cFKO9m=w1672-h941-s-no?authuser=0' },
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczO-QI0JVauvjrRFzHUV7ajCskSRXlRdGWq9eyaVNL4n7VKuTFk5klTefWSKPvywln7GR7k_xKLvaOXCQGTcihyRgJxc8MUeWZljdxWTvfYBNEo-PucQ3UDLMxbDp3dEMX7MB6VFn4VTr0hUw-dxrHgq=w1254-h1254-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNDvB3okrLOmK6vM88FsuuhMgcPfymf3qpAE5p4yWQn3ohIMhwT8sCzB6AxFBB4Gux3IdKNGTcdCKdu5Lr0OFKWtwdkR4ypvrA0wbRFs6xIdRFvHN2r0Ofa2iPxJVYde8HbaszDe-MkCKaOv5ov6FDo=w1086-h1448-s-no?authuser=0' },
             { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczM1ifx-4RcXRrorgBBB7h5l45bsiwe6Zg5A1Jos0UTj6J6CQaDB0MxK5lXfSAmMcLNMCbVtsFJorCQKM_FAK9gso8JVjMELcC607Cptv_oH0mDLWKSaYFA94OaUNWXKgN5iYYegqSi-9GLCT_CyfDzG=w1672-h941-s-no?authuser=0' },
             { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNT_khzmI-rGjatjwp_LMi5WCPlMJsntOt6Ufr27Nk7gsJdyk59WLP-vr67XaKg7nYAsU6YGeOX9GnOubUQ_TQDlG8yIPbZfYl5j9UEkg2A-ywS2R-JVjOc79giyk7mZwMA_UpZKcQ-lKHn5aWCzQIU=w1448-h1086-s-no?authuser=0' },            
             { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczOn-1ERV_ERENsK40J2qPSKQxeIVCA0ZsZwpvII5kcghhPDzfwk6sgtDheE3qAHrJrBGA5jwoLlviLoZcNqpdsa0ww1qqlAJ8MspSdLo2-zWDcHT-PdoGU1sYZq1tyO7VpYo3Z_9e1gJqhhvz5LRl9T=w1086-h1448-s-no?authuser=0' },
             { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPEJ4a1tC40W2t_0FfPZAzSEqfAFDbHmRI8aAaEO2J2rGL1YGduG8qcbh25KGrWrKIvrFK9_LyCui0DafsiQfoYTvQ9gjV3SxAVzXfoAF0oUuCw2D1UJvt7mXVq6UI8hjwvYNHGdbixCg3Xr6o5_Wt_=w3579-h2013-s-no?authuser=0' },
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPed9rTIz5vxA6aWzJ5MtqTKjoF-i8WjTWRMlK46sJVeUgBSgJzZC0ItmqhRqUygq3zp9wsuffC9GnKxYh6v-hHcdIgJVhdIPaXHsLEkAxuH9F8sAwUg2enyijdM93jjjolDd3GFt2iNmP4zEbEdHwi=w1086-h1448-s-no?authuser=0' },
+            //{ type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPed9rTIz5vxA6aWzJ5MtqTKjoF-i8WjTWRMlK46sJVeUgBSgJzZC0ItmqhRqUygq3zp9wsuffC9GnKxYh6v-hHcdIgJVhdIPaXHsLEkAxuH9F8sAwUg2enyijdM93jjjolDd3GFt2iNmP4zEbEdHwi=w1086-h1448-s-no?authuser=0' },
 			{ type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNIS1ttqPvFb0x_RYyEq9C8VeLK4ccWlJFOq-Mnr2JlJtgGdDkaTCFg3m9bitvl-kpjhsQIYsALyczbfI_FMsBNXLypSBXmfDQZXKEyPd2yfrsV-JjNp6UVuHvKNb9DgF2YEL0n-5YXm3U4CX1rm-Ky=w1087-h1447-s-no?authuser=0' },
             { type: 'pdf', url: 'https://drive.usercontent.google.com/download?export=download&confirm=t&id=1ekCvtUsUVLTkgrTOHB7Qy2cqHE2R5Dab', title: 'Resume (PDF)' },
             { type: 'pdf', url: 'https://drive.usercontent.google.com/download?export=download&confirm=t&id=1QGFVjjxCcYgPwY4ZYbELje0WaiO815ox', title: 'Diplom (PDF)' },
