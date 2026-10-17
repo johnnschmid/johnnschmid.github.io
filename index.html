@@ -1770,8 +1770,10 @@ iframe {
 <section id="cad-viewer-section" class="custom-section bg-gray-100 py-12">
     <div class="max-w-7xl mx-auto px-4">
         
-        <!-- Контейнер просмотрщика увеличенной высоты -->
-        <div class="relative w-full h-[500px] lg:h-[750px] bg-slate-200 dark:bg-gray-800 rounded-3xl overflow-hidden shadow-2xl border border-gray-200 dark:border-gray-700 select-none">
+
+
+        <!-- Контейнер просмотрщика -->
+        <div class="relative w-full h-[600px] bg-slate-200 dark:bg-gray-800 rounded-3xl overflow-hidden shadow-2xl border border-gray-200 dark:border-gray-700 select-none">
             
             <!-- WebGL Canvas -->
             <div id="cad-viewport" class="w-full h-full cursor-grab active:cursor-grabbing"></div>
@@ -1789,17 +1791,7 @@ iframe {
 
             <!-- Панель управления (Верхняя левая) -->
             <div class="absolute top-4 left-4 z-10 w-72 lg:w-80 bg-white/90 dark:bg-gray-900/90 backdrop-blur-md p-4 rounded-2xl shadow-xl border border-gray-200/80 dark:border-gray-700/80 flex flex-col gap-3">
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center gap-2.5">
-                        <div class="p-2 bg-blue-600 rounded-lg text-white">
-                            <i class="fa-solid fa-cube text-base"></i>
-                        </div>
-                        <div>
-                            <h3 class="font-bold text-gray-900 dark:text-white text-sm leading-tight">3D CAD Viewer</h3>
-                            <p class="text-[11px] text-gray-500">STL & STEP Importer</p>
-                        </div>
-                    </div>
-                </div>
+
 
                 <!-- Кнопка загрузки и Демо -->
                 <div class="flex flex-col gap-2">
@@ -1916,127 +1908,7 @@ iframe {
 
 
   
-  
-<!-- 3D CAD VIEWER SECTION -->
-<section id="cad-viewer-section" class="custom-section bg-gray-100 py-12">
-    <div class="max-w-7xl mx-auto px-4">
-        
-        <!-- Контейнер просмотрщика увеличенной высоты -->
-        <div class="relative w-full h-[500px] lg:h-[750px] bg-slate-200 dark:bg-gray-800 rounded-3xl overflow-hidden shadow-2xl border border-gray-200 dark:border-gray-700 select-none">
-            
-            <!-- WebGL Canvas -->
-            <div id="cad-viewport" class="w-full h-full cursor-grab active:cursor-grabbing"></div>
-
-            <!-- Drag & Drop Overlay -->
-            <div id="cad-drop-overlay" class="absolute inset-0 bg-blue-600/20 backdrop-blur-sm border-4 border-dashed border-blue-600 z-50 flex flex-col items-center justify-center opacity-0 pointer-events-none transition-opacity duration-200">
-                <div class="bg-white dark:bg-gray-900 p-8 rounded-2xl shadow-2xl flex flex-col items-center gap-4 text-center">
-                    <i class="fa-solid fa-cloud-arrow-up text-5xl text-blue-600 animate-bounce"></i>
-                    <div>
-                        <p class="text-xl font-bold text-gray-800 dark:text-white">Перетащите 3D CAD файл сюда</p>
-                        <p class="text-sm text-gray-500 mt-1">Поддерживаются форматы .STL, .STEP, .STP</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Панель управления (Верхняя левая) -->
-            <div class="absolute top-4 left-4 z-10 w-72 lg:w-80 bg-white/90 dark:bg-gray-900/90 backdrop-blur-md p-4 rounded-2xl shadow-xl border border-gray-200/80 dark:border-gray-700/80 flex flex-col gap-3">
-                
-
-			<!-- Кнопки выбора моделей (динамически из CAD_MODELS_DATA) -->
-			<div class="grid grid-cols-3 gap-1 mt-1">
-				<template x-for="model in CAD_MODELS_DATA" :key="model.name">
-					<button @click="loadCadModelFile(model)" 
-							class="px-2 py-1.5 bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 text-[11px] font-semibold rounded-lg transition-colors truncate"
-							x-text="model.name">
-					</button>
-				</template>
-			</div>
-
-                <!-- Инфо-панель -->
-                <div class="bg-gray-50 dark:bg-gray-800/50 rounded-xl p-2.5 border border-gray-100 dark:border-gray-700 text-[11px] space-y-1">
-                    <div class="flex justify-between text-gray-600 dark:text-gray-400">
-                        <span class="font-medium">Файл:</span>
-                        <span id="cad-info-filename" class="text-gray-900 dark:text-gray-200 font-semibold truncate max-w-[130px]">Demo (Gear)</span>
-                    </div>
-                    <div class="flex justify-between text-gray-600 dark:text-gray-400">
-                        <span class="font-medium">Статус:</span>
-                        <span id="cad-info-status" class="text-emerald-600 font-medium">Готов</span>
-                    </div>
-                    <div class="flex justify-between text-gray-600 dark:text-gray-400">
-                        <span class="font-medium">Треугольники:</span>
-                        <span id="cad-info-triangles" class="text-gray-800 dark:text-gray-300 font-mono">0</span>
-                    </div>
-                </div>
-
-                <!-- Wireframe & Section Cut -->
-                <div class="flex items-center justify-between pt-1 border-t border-gray-100 dark:border-gray-800">
-                    <span class="text-xs font-medium text-gray-600 dark:text-gray-300">Сетка (Wireframe)</span>
-                    <label class="relative inline-flex items-center cursor-pointer">
-                        <input type="checkbox" id="cad-wireframe-toggle" class="sr-only peer">
-                        <div class="w-8 h-4 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-blue-600"></div>
-                    </label>
-                </div>
-
-                <div class="pt-2 border-t border-gray-100 dark:border-gray-800 space-y-2">
-                    <div class="flex items-center justify-between">
-                        <span class="text-xs font-semibold text-gray-700 dark:text-gray-300 flex items-center gap-1.5">
-                            <i class="fa-solid fa-scissors text-blue-600"></i> Разрез (Section Cut)
-                        </span>
-                        <label class="relative inline-flex items-center cursor-pointer">
-                            <input type="checkbox" id="cad-section-toggle" class="sr-only peer">
-                            <div class="w-8 h-4 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-blue-600"></div>
-                        </label>
-                    </div>
-
-                    <div id="cad-section-controls" class="hidden space-y-2 text-[11px] pt-1">
-                        <div class="flex items-center justify-between">
-                            <span class="text-gray-500 font-medium">Ось:</span>
-                            <div class="flex bg-gray-100 dark:bg-gray-800 p-0.5 rounded-lg text-xs">
-                                <button id="cad-axis-x-btn" onclick="setCadCutAxis('X')" class="px-2 py-0.5 rounded-md font-semibold text-gray-600 dark:text-gray-300">X</button>
-                                <button id="cad-axis-y-btn" onclick="setCadCutAxis('Y')" class="px-2 py-0.5 rounded-md font-semibold text-gray-600 dark:text-gray-300">Y</button>
-                                <button id="cad-axis-z-btn" onclick="setCadCutAxis('Z')" class="px-2 py-0.5 rounded-md font-semibold text-gray-600 dark:text-gray-300">Z</button>
-                            </div>
-                        </div>
-
-                        <div class="space-y-1">
-                            <div class="flex justify-between text-gray-500">
-                                <span>Позиция:</span>
-                                <span id="cad-cut-pos-val" class="font-semibold text-gray-700 dark:text-gray-300">0%</span>
-                            </div>
-                            <input type="range" id="cad-cut-slider" min="-100" max="100" value="0" class="w-full accent-blue-600 cursor-pointer">
-                        </div>
-
-                        <div class="flex items-center justify-between pt-1">
-                            <span class="text-gray-500 font-medium">Инвертировать</span>
-                            <input type="checkbox" id="cad-invert-cut-toggle" class="rounded text-blue-600 focus:ring-blue-500 h-3.5 w-3.5">
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Правая панель ракурсов -->
-            <div class="absolute bottom-4 right-4 z-10 flex flex-col gap-2">
-                <div class="bg-white/90 dark:bg-gray-900/90 backdrop-blur-md p-1.5 rounded-xl shadow-md border border-gray-200 dark:border-gray-700 flex flex-col gap-1">
-                    <span class="text-[9px] font-bold text-gray-400 text-center uppercase tracking-wider">Виды</span>
-                    <div class="grid grid-cols-2 gap-1">
-                        <button onclick="setCadStandardView('iso')" class="px-2 py-1 bg-gray-100 hover:bg-blue-50 dark:bg-gray-800 dark:hover:bg-blue-900/30 text-gray-700 dark:text-gray-200 font-semibold text-[11px] rounded-lg transition-colors flex items-center justify-center gap-1">
-                            <i class="fa-solid fa-cube text-[9px]"></i> ISO
-                        </button>
-                        <button onclick="setCadStandardView('front')" class="px-2 py-1 bg-gray-100 hover:bg-blue-50 dark:bg-gray-800 dark:hover:bg-blue-900/30 text-gray-700 dark:text-gray-200 font-semibold text-[11px] rounded-lg transition-colors">Front</button>
-                        <button onclick="setCadStandardView('top')" class="px-2 py-1 bg-gray-100 hover:bg-blue-50 dark:bg-gray-800 dark:hover:bg-blue-900/30 text-gray-700 dark:text-gray-200 font-semibold text-[11px] rounded-lg transition-colors">Top</button>
-                        <button onclick="setCadStandardView('right')" class="px-2 py-1 bg-gray-100 hover:bg-blue-50 dark:bg-gray-800 dark:hover:bg-blue-900/30 text-gray-700 dark:text-gray-200 font-semibold text-[11px] rounded-lg transition-colors">Right</button>
-                    </div>
-                </div>
-
-                <button onclick="resetCadCameraView()" class="w-full h-8 bg-white/90 dark:bg-gray-900/90 hover:bg-white text-gray-700 dark:text-gray-200 rounded-xl shadow-md border border-gray-200 dark:border-gray-700 flex items-center justify-center transition-all gap-1.5 font-medium text-xs">
-                    <i class="fa-solid fa-compress text-xs"></i> Вписать
-                </button>
-            </div>
-
-        </div>
-    </div>
-</section> 
-  
+ 
   
   
   
@@ -3429,17 +3301,21 @@ function fitCadCameraToModel(group) {
 
     const maxDim = Math.max(cadSize.x, cadSize.y, cadSize.z);
     const fov = cadCamera.fov * (Math.PI / 180);
-    let cameraDistance = Math.abs(maxDim / Math.sin(fov / 2)) * 1.5;
+    
+    // Исправлено: заменено на тангенс и подобран идеальный масштаб для заполнения фрейма
+    let cameraDistance = (maxDim / (2 * Math.tan(fov / 2))) * 1.0;
 
-    cadCamera.position.set(cameraDistance * 0.8, cameraDistance * 0.8, cameraDistance * 0.8);
+    cadCamera.position.set(cameraDistance * 0.7, cameraDistance * 0.5, cameraDistance * 0.7);
     cadCamera.lookAt(0, 0, 0);
 
-    cadCamera.near = cameraDistance / 100;
+    cadCamera.near = Math.max(0.01, cameraDistance / 100);
     cadCamera.far = cameraDistance * 100;
     cadCamera.updateProjectionMatrix();
 
-    cadControls.target.set(0, 0, 0);
-    cadControls.update();
+    if (typeof cadControls !== 'undefined' && cadControls) {
+        cadControls.target.set(0, 0, 0);
+        cadControls.update();
+    }
 
     const grid = cadScene.getObjectByName("cadGridHelper");
     if (grid) {
@@ -3465,7 +3341,8 @@ function setCadCutAxis(axis) {
 function updateCadClippingPlane() {
     if (!isCadClippingEnabled) return;
 
-    const isInverted = document.getElementById('cad-invert-cut-toggle').checked;
+    // Инвертируем логику состояния чекбокса (ставим ! перед получением .checked)
+    const isInverted = !document.getElementById('cad-invert-cut-toggle').checked;
     const sliderVal = parseFloat(document.getElementById('cad-cut-slider').value) / 100;
 
     let normal = new THREE.Vector3();
@@ -3515,21 +3392,40 @@ function resetCadCameraView() {
     }
 }
 
+// Универсальная функция установки стандартных видов с идеальным вписыванием модели
 function setCadStandardView(viewType) {
-    if (!cadModelGroup) return;
+    if (!cadCamera || !cadControls) return;
 
-    const maxDim = Math.max(cadSize.x, cadSize.y, cadSize.z) || 50;
-    const dist = maxDim * 2.2;
-    let targetX = 0, targetY = 0, targetZ = 0;
+    // Берем актуальный максимальный размер модели (если cadSize уже вычислен)
+    const maxDim = Math.max(cadSize.x || 50, cadSize.y || 50, cadSize.z || 50);
+    const fov = cadCamera.fov * (Math.PI / 180);
+    let cameraDistance = (maxDim / (2 * Math.tan(fov / 2))) * 1.0; // Тот самый крупный масштаб
 
+    // Устанавливаем позицию камеры в зависимости от выбранного вида
     switch (viewType) {
-        case 'top': targetY = dist; targetZ = 0.0001; break;
-        case 'front': targetZ = dist; break;
-        case 'right': targetX = dist; break;
-        case 'iso': default: targetX = dist * 0.7; targetY = dist * 0.7; targetZ = dist * 0.7; break;
+        case 'iso':
+            cadCamera.position.set(cameraDistance * 0.7, cameraDistance * 0.5, cameraDistance * 0.7);
+            break;
+        case 'front':
+            cadCamera.position.set(0, 0, cameraDistance);
+            break;
+        case 'top':
+            cadCamera.position.set(0, cameraDistance, 0);
+            break;
+        case 'right':
+            cadCamera.position.set(cameraDistance, 0, 0);
+            break;
+        default:
+            cadCamera.position.set(cameraDistance * 0.7, cameraDistance * 0.5, cameraDistance * 0.7);
     }
 
-    cadCamera.position.set(targetX, targetY, targetZ);
+    // Направление взгляда строго на центр модели (0, 0, 0)
+    cadCamera.lookAt(0, 0, 0);
+
+    cadCamera.near = Math.max(0.01, cameraDistance / 100);
+    cadCamera.far = cameraDistance * 100;
+    cadCamera.updateProjectionMatrix();
+
     cadControls.target.set(0, 0, 0);
     cadControls.update();
 }
@@ -3625,47 +3521,6 @@ function updateCadUIStatus(filename, status, triangles) {
     document.getElementById('cad-info-status').innerText = status;
     document.getElementById('cad-info-triangles').innerText = Number(triangles).toLocaleString();
 }
-
-
-
-function loadCadModelFile(model) {
-    if (!model || !model.fileUrl) {
-        alert("Ссылка на файл не указана");
-        return;
-    }
-
-    updateCadUIStatus(model.name, "Загрузка файла...", 0);
-
-    fetch(model.fileUrl)
-        .then(response => {
-            if (!response.ok) throw new Error("Не удалось загрузить файл с сервера");
-            return response.arrayBuffer();
-        })
-        .then(buffer => {
-            if (model.type === 'stl' || model.fileUrl.endsWith('.stl')) {
-                parseCadSTL(buffer, model.name);
-            } else if (model.type === 'step' || model.type === 'stp' || model.fileUrl.endsWith('.step') || model.fileUrl.endsWith('.stp')) {
-                parseCadSTEP(buffer, model.name);
-            } else {
-                alert("Неизвестный формат файла");
-                updateCadUIStatus(model.name, "Ошибка формата", 0);
-            }
-        })
-        .catch(err => {
-            console.error(err);
-            alert("Ошибка загрузки: " + err.message + "\nУбедитесь, что файл существует и сайт запущен через локальный сервер (например, Live Server).");
-            updateCadUIStatus(model.name, "Ошибка загрузки", 0);
-        });
-}
-
-// Автозагрузка первой модели из массива при старте страницы
-window.addEventListener('load', () => {
-    setTimeout(() => {
-        if (typeof CAD_MODELS_DATA !== 'undefined' && CAD_MODELS_DATA.length > 0) {
-            loadCadModelFile(CAD_MODELS_DATA[0]);
-        }
-    }, 300);
-});
  </script>
 
 

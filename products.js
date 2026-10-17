@@ -17,11 +17,13 @@ const SHOP_CONFIG = {
 
 // Отдельный массив для 3D CAD секции
 const CAD_MODELS_DATA = [
+/*
     {
         name: 'Extruder Assembly',
         fileUrl: 'https://drive.usercontent.google.com/download?export=download&confirm=t&id=1KjaDCmBSuc0_EDkZCfWAW1WTets-klAV', // Ссылка на ваш STEP файл
         type: 'step'
     },
+*/   
     {
         name: 'Tape Spacer',
         fileUrl: 'models/spacer.stl',    // Ссылка на ваш STL файл
