@@ -1212,7 +1212,8 @@ iframe {
                                  @contextmenu.prevent 
                                  @error="$el.src = modalMedia[modalCurrentIndex].url"
                                  class="max-h-[85vh] w-auto h-auto object-contain rounded-xl mx-auto transition-transform duration-75 ease-out"
-                                 :style="zoomed ? 'transform: scale(5); transform-origin: ' + posX + '% ' + posY + '%;' : 'transform: scale(1);'">
+                                 :style="zoomed ? 'transform: scale(5); transform-origin: ' + posX + '% ' + posY + '%;' : 'transform: scale(1);'"
+                                 loading="lazy">
                         </div>
                     </template>
                     
@@ -1329,44 +1330,47 @@ iframe {
                     </template>
 </div>
 
+
+
+
 <div style="display: _none;"> 
-<!-- Если это картинка -->
-<template x-if="modalMedia[modalCurrentIndex].type === 'image'">
-    <div class="w-full rounded-xl bg-black/60 shadow-[0_0_60px_rgba(255,255,255,0.45)] flex items-center justify-center overflow-hidden relative select-none"
-         x-data="{ 
-             zoomed: false, 
-             posX: 50, 
-             posY: 50,
-             sensitivity: 1.1, // Коэффициент усиления (больше значение — быстрее движение)
-             toggleZoom(e) {
-                 this.zoomed = !this.zoomed;
-                 if (this.zoomed) {
-                     this.updatePosition(e);
-                 }
-             },
-             updatePosition(e) {
-                 if (!this.zoomed) return;
-                 const rect = e.currentTarget.getBoundingClientRect();
-                 // Считаем положение мыши в процентах (0 - 100)
-                 const mouseX = ((e.clientX - rect.left) / rect.width) * 100;
-                 const mouseY = ((e.clientY - rect.top) / rect.height) * 100;
-                 
-                 // Смещаем относительно центра (50%) с учетом коэффициента чувствительности
-                 this.posX = 50 + (mouseX - 50) * this.sensitivity;
-                 this.posY = 50 + (mouseY - 50) * this.sensitivity;
-             }
-         }"
-         @click="toggleZoom($event)"
-         @mousemove="updatePosition($event)"
-         @mouseleave="zoomed = false"
-         :class="zoomed ? 'cursor-zoom-out' : 'cursor-zoom-in'">
-         
-        <img :src="modalMedia[modalCurrentIndex].url" 
-             @contextmenu.prevent 
-             class="max-h-[85vh] object-contain rounded-xl transition-transform duration-75 ease-out"
-             :style="zoomed ? 'transform: scale(5); transform-origin: ' + posX + '% ' + posY + '%;' : 'transform: scale(1);'">
-    </div>
-</template>
+					<!-- Если это картинка -->
+					<template x-if="modalMedia[modalCurrentIndex].type === 'image'">
+						<div class="w-full rounded-xl bg-black/60 shadow-[0_0_60px_rgba(255,255,255,0.45)] flex items-center justify-center overflow-hidden relative select-none"
+							 x-data="{ 
+								 zoomed: false, 
+								 posX: 50, 
+								 posY: 50,
+								 sensitivity: 1.1, // Коэффициент усиления (больше значение — быстрее движение)
+								 toggleZoom(e) {
+									 this.zoomed = !this.zoomed;
+									 if (this.zoomed) {
+										 this.updatePosition(e);
+									 }
+								 },
+								 updatePosition(e) {
+									 if (!this.zoomed) return;
+									 const rect = e.currentTarget.getBoundingClientRect();
+									 // Считаем положение мыши в процентах (0 - 100)
+									 const mouseX = ((e.clientX - rect.left) / rect.width) * 100;
+									 const mouseY = ((e.clientY - rect.top) / rect.height) * 100;
+									 
+									 // Смещаем относительно центра (50%) с учетом коэффициента чувствительности
+									 this.posX = 50 + (mouseX - 50) * this.sensitivity;
+									 this.posY = 50 + (mouseY - 50) * this.sensitivity;
+								 }
+							 }"
+							 @click="toggleZoom($event)"
+							 @mousemove="updatePosition($event)"
+							 @mouseleave="zoomed = false"
+							 :class="zoomed ? 'cursor-zoom-out' : 'cursor-zoom-in'">
+							 
+							<img :src="modalMedia[modalCurrentIndex].url" 
+								 @contextmenu.prevent 
+								 class="max-h-[85vh] object-contain rounded-xl transition-transform duration-75 ease-out"
+								 :style="zoomed ? 'transform: scale(5); transform-origin: ' + posX + '% ' + posY + '%;' : 'transform: scale(1);'" loading="lazy">
+						</div>
+					</template>
 </div>
 
 

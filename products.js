@@ -322,15 +322,15 @@ const SECTIONS_DATA = [
             youtubeText: ''
         },
         {
-            emoji: '🌍',
+            emoji: '▶️',
             title: 'Watch',
-            text: 'new videos on my ',
+            text: 'new videos on',
             youtubeUrl: 'https://www.youtube.com/@ReInstruments',
             youtubeText: 'YouTube'
         },
         {
             emoji: '🌍',
-            title: 'Feel free ',
+            title: 'Feel free',
             text: 'to visit my ',
             youtubeUrl: 'https://github.com/ivandevel/',
             youtubeText: 'GitHub'
@@ -367,21 +367,28 @@ const SECTIONS_DATA = [
 
 		hints: [
 			{
-				emoji: '💡',
-				title: 'For more information:',
-				text: 'Visit our',
+				emoji: '🌍',
+				title: 'Visit',
+				text: 'our',
 				youtubeUrl: 'https://reinstruments.github.io',
 				youtubeText: 'Product Page'
-			},		
+			},
 			{
-				emoji: '💡',
-				title: 'Superpower:',
-				text: 'Turn recycled plastic bottles into unlimited 3D printer filament, saving money and time. Visit our channel on ',
+				emoji: '▶️',
+				title: 'Visit',
+				text: 'product channel on',
 				youtubeUrl: 'https://www.youtube.com/@ReInstruments',
 				youtubeText: 'YouTube'
 			},
 			{
 				emoji: '💡',
+				title: 'Purpose:',
+				text: 'Turn plastic PET bottles into 3D printer filament, saving money and time.',
+				youtubeUrl: '',
+				youtubeText: ''
+			},
+			{
+				emoji: '🔌',
 				title: 'Efficiency:',
 				text: 'Consumes only 10 Watts of power while saving you money on consumable materials.',
 				youtubeUrl: '',
@@ -413,17 +420,23 @@ const SECTIONS_DATA = [
 		],
         
         items: [
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczM5q7Vb73DAjlDXVzkPN2U3sOrcCl0uZkOvfRzoUR7M8cbzS7HOeCCf2Ojlj18D_88iaoOY2lR6Gg0bsj5Xim97SvtYf-asbjS0gBTQ35c0uUp5btOvZMvOaO2md_SoyfRZshu7aonrXKlHxz_ydUk=w1201-h993-s-no?authuser=0' },			
-            { type: 'video', url: 'https://www.youtube.com/embed/ymG4sdoDH3c' },
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMajsOOUNvj3ylUR2Rq6C250YDWKEZwF-yP_tIhVLd4jZwYn16VqOM5oK4klKnMRE0f8mrSf5D0C0mh3yLApbhti8NayVBFi_DV-XJz2HwLlecokk2qOavro_G8tJaX3LqFJ2wWM70W1xg2L8NSE4so=w1392-h1200-s-no?authuser=0' },
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPUdmve7NyzZid149LHk8yQQSmtVBqXth2lPZJPAPKQKf3oGLpZlt5IOlqHxM0ggdQo6A-WiiCgaM3TnFtZ_dNAsJNQX-SYa3gx7qCkS1akf_0wjxslwt9e6ldjXJ9DEFbEI8DdZduaYtURn5E7Y3He=w1920-h1080-s-no?authuser=0' },
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNnaQcdxYmvovBnOlUc7td7HkBe0B2K-Gkgp1mJY4NFz8ow0A0CFN9VGWZKahhbUrXwF7Kxij4NVYNp4TnpbQaz8LoyJTAk_NgTlzkoMh4VaSDDd5hIk-CmpuQAqWwbpvUhZq-QYnAM8NRLzg8TqNOD=w1433-h733-s-no?authuser=0' },
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPBgiV6GHKFfN9aHh9plAubV9hBIi9cgtsooJl_Yc4Ztce1znFFvEp4nY46-k5Pj678VkbQG6zTNwO0VVsaNL6IaZAiTZIinD9BchxUsM-D_y2o4G4d_wIlHvwLEvXTcnGOTh7Qwb6jNbjidavOpTpy=w1924-h1080-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczODA556kXVdOWozG3WVVaS7-BtQvxKR4wCl6OJLhbnmG6OmEqZohhzRacfR51Q-L467uS21zU7kbSfxDahspLXYOZAChMd8F-Xjjy4FfNCK7qpEQBXacUwnN7IuGcgEtgEEpSpnz_7s09bP-UmxuWSr=w1066-h1008-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczOamM289SEkng7GpO6sedf71EQNQgIUTlWQ9lHgUFUeSo5huWodmRu9Fda2jEuM1sxN5-ZvWQCvYbcBBbA56tKjPScmcyfL-vGZoWPt-b5rakVuzVB_0WstsQUMCh9CvofdiHbwTqkM1OLvGGVxCXda=w1500-h1000-s-no?authuser=0' },
+            //{ type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczM5q7Vb73DAjlDXVzkPN2U3sOrcCl0uZkOvfRzoUR7M8cbzS7HOeCCf2Ojlj18D_88iaoOY2lR6Gg0bsj5Xim97SvtYf-asbjS0gBTQ35c0uUp5btOvZMvOaO2md_SoyfRZshu7aonrXKlHxz_ydUk=w1201-h993-s-no?authuser=0' },
+            //{ type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczODA556kXVdOWozG3WVVaS7-BtQvxKR4wCl6OJLhbnmG6OmEqZohhzRacfR51Q-L467uS21zU7kbSfxDahspLXYOZAChMd8F-Xjjy4FfNCK7qpEQBXacUwnN7IuGcgEtgEEpSpnz_7s09bP-UmxuWSr=w1066-h1008-s-no?authuser=0' },
+            //{ type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczODA556kXVdOWozG3WVVaS7-BtQvxKR4wCl6OJLhbnmG6OmEqZohhzRacfR51Q-L467uS21zU7kbSfxDahspLXYOZAChMd8F-Xjjy4FfNCK7qpEQBXacUwnN7IuGcgEtgEEpSpnz_7s09bP-UmxuWSr=w1066-h1008-s-no?authuser=0' },
+            //{ type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczODA556kXVdOWozG3WVVaS7-BtQvxKR4wCl6OJLhbnmG6OmEqZohhzRacfR51Q-L467uS21zU7kbSfxDahspLXYOZAChMd8F-Xjjy4FfNCK7qpEQBXacUwnN7IuGcgEtgEEpSpnz_7s09bP-UmxuWSr=w1066-h1008-s-no?authuser=0' },
+        
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMzub_T7Lu9gJqcjqml_COm910r53hHsWHtRV1NjXTXVD0Qn_kN2I9SdK6B45iBmkuTsD3YwJiWs1YhZrCLq57AvCXvpuFywyVvMqtryIR3J3jYbA91TG-YQ0fcImJvxmygxqEVSt4Vlr7l3alDmf1E=w1365-h768-s-no?authuser=0' },
             
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNcv8xa5LvGe2QcbbCIAZaXqU6KnsSxfWVfsS6VqNOTWPAS4NYfrlaCOytrmWqlnNuRvlddMaoHILy-CRD5XbJyh4xkDvSVFx61MGuegDBb0Tm__y1mypzIK_qcRGJpJ7dzWPqf23eVfXdN8PwFze7h=w1369-h768-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczP47Yzw0ge0sC8AP4jOgeozOogNmKlUOgfTlm4Qx_eQ23isWjw2o20LaWuNPTDfGyDUt3HegFIoSGtIcdN5UGQ3BYxjE7nx9GJV1e_kuTYwOSjTA5KC8nHAhYoTou-8NbJp9GDB3dYm_M6V2e_3YFrI=w1920-h1080-s-no?authuser=0' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczOsn7kKj85me6n0YI4WSEafR4-XQ5Uog42KxC3fL-AjYQXtGz7JY4u4UPEbHrcPiF1-TuR1LmPSTk-J8utPEZBj0CZDBtmsaosTZXtqB-V_HScnnx_Z5lIFKybbQQRat7IqmKV63CTskr3E93mFOu6H=w1100-h943-s-no?authuser=0' },
             { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNIv81Q1y_onHusiXBLynFkdq8tLIrAcNLXGXW5NG6oiou4VWzb1MQ0hwDQV7R5D019g6JCTH7gp4WQ78XF_8uqT-XYsS8S3YVUN6GmzJ1CmfgNeNiVcZh3RshZPh-ZhhnYCVqbvlOMhs1HucYzNzUR=w1587-h1319-s-no?authuser=0' },
             { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMGh65X55TTR_QmctKxAOMB9Y2_ZA6DlVCwJcee7yhAm_3WGIrUyv-YpYxw-8osn-_V6su0VxDdQ2zeRTWcFtHql88idIV8kmMnEw0Y0GpdhTMOwWDPzsJ_UjRpv958ko-rsbua7zRRfUKa9s-hjD3Q=w1365-h1061-s-no?authuser=0' },
-            
-            { type: 'pdf', url: 'https://drive.usercontent.google.com/download?export=download&confirm=t&id=1YMHcb2ZrTu7014qup8AXLSSAJnhL44xX', title: 'Flyer (PDF)' },
+            { type: 'video', url: 'https://www.youtube.com/embed/ymG4sdoDH3c' },
+            { type: 'pdf', url: 'https://drive.usercontent.google.com/download?export=download&confirm=t&id=1YMHcb2ZrTu7014qup8AXLSSAJnhL44xX', title: 'Product booklet (PDF)' },
+            { type: 'pdf', url: 'https://drive.usercontent.google.com/download?export=download&confirm=t&id=1YMHcb2ZrTu7014qup8AXLSSAJnhL44xX', title: 'Quick start guide (PDF)' },
             //{ type: 'zip', url: 'https://example.com/models.zip', title: 'Download 3D Models (ZIP)' }
         ]
     },
