@@ -649,6 +649,15 @@ iframe {
 }
 
 /* Адаптивная обводка для мобилок и десктопа */
+        /* Точки слайдера: d = min(10px, доступная ширина / сумма ширин точек и промежутков) */
+        .dots-row {
+            --d: min(10px, calc((100cqw - 32px) / (1.6 * var(--n) + 0.8)));
+            gap: calc(var(--d) * 0.6);
+        }
+        .dots-row .dot-btn { height: var(--d); padding: 0; border: 0; }
+        @supports not (width: 1cqw) {
+            .dots-row { --d: 10px !important; gap: 8px; }
+        }
         .slideshow-paused .animate-floating-text { animation-play-state: paused; }
         .animate-floating-text {
             /* -webkit-text-stroke: 1px black; */
@@ -2127,13 +2136,18 @@ iframe {
                     </div>
 
                     <!-- Индикаторы (точки) -->
-                    <div class="absolute bottom-4 left-0 right-0 flex justify-center gap-2 z-50">
-                        <template x-for="(item, idx) in media" :key="idx">
-                            <button @click="currentImg = idx; videoPlaying = false" 
-                                    class="w-2.5 h-2.5 rounded-full transition-all cursor-pointer shadow-[0_0_4px_rgba(0,0,0,1)]"
-                                    :class="currentImg === idx ? 'bg-blue-600 w-6' : 'bg-white/70 hover:bg-white'">
-                            </button>
-                        </template>
+                    <!-- Размер точек подстраивается под ширину картинки: 10px максимум, при большом числе картинок уменьшаются -->
+                    <div class="absolute bottom-4 left-0 right-0 z-50" style="container-type: inline-size;">
+                        <div class="dots-row flex justify-center items-center"
+                             :style="'--n:' + media.length">
+                            <template x-for="(item, idx) in media" :key="idx">
+                                <button @click="currentImg = idx; videoPlaying = false" 
+                                        class="dot-btn rounded-full transition-all cursor-pointer flex-shrink-0 shadow-[0_0_4px_rgba(0,0,0,1)]"
+                                        :style="currentImg === idx ? 'width: calc(var(--d) * 2.4);' : 'width: var(--d);'"
+                                        :class="currentImg === idx ? 'bg-blue-600' : 'bg-white/70 hover:bg-white'">
+                                </button>
+                            </template>
+                        </div>
                     </div>
                 </div>
 
