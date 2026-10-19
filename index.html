@@ -2106,145 +2106,103 @@ iframe {
 
 
 
-    <!-- CONTACT SECTION -->
-   <footer id="contact" class="py-20 px-8 border-t border-gray-100 ">
-    <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-center">
+<!-- CONTACT SECTION -->
+<footer id="contact" class="py-20 px-4 md:px-8 border-t border-gray-100">
+    <div class="max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between gap-8">
+        
+        <!-- Левая колонка: Заголовок и иконки -->
         <div class="text-left space-y-6">
             <h2 class="text-4xl font-bold text-gray-900">Contact Us</h2>
             <p class="text-gray-500 max-w-sm">Have questions? Feel free to contact me!</p>
-            <div class="space-y-4">
-                <div class="flex items-center gap-4">
-                    <div class="w-10 h-10 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center"><i class="fa-solid fa-envelope"></i></div>
-                    <span class="font-bold text-gray-700">johnnschmid@gmail.com</span>
-                </div>
-                <div class="flex items-center gap-4">
-                    <div class="w-10 h-10 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center"><i class="fa-solid fa-phone"></i></div>
-                    <span class="font-bold text-gray-700">+49 (155) 104 7827</span>
-                </div>
-                <div class="flex items-center gap-4">
-                    <div class="w-10 h-10 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center"><i class="fa-solid fa-location-dot"></i></div>
-                    <span class="font-bold text-gray-700">Öflinger Str., Wehr, GE</span>
-                </div>
+            
+            <!-- Ряд круглых иконок -->
+            <div class="flex flex-wrap gap-3 pt-2">
+                <!-- 1. Email -->
+                <a href="mailto:johnnschmid@gmail.com" title="Email" class="w-10 h-10 bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white transition-colors rounded-full flex items-center justify-center text-base">
+                    <i class="fa-solid fa-envelope"></i>
+                </a>
+                <!-- 2. Location (Google Maps) -->
+                <a href="https://www.google.com/maps/search/?api=1&query=Öflinger+Str.,+Wehr,+Germany" target="_blank" rel="noopener noreferrer" title="Location" class="w-10 h-10 bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white transition-colors rounded-full flex items-center justify-center text-base">
+                    <i class="fa-solid fa-location-dot"></i>
+                </a>
+                <!-- 3. Phone -->
+                <a href="tel:+491551047827" title="Phone" class="w-10 h-10 bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white transition-colors rounded-full flex items-center justify-center text-base">
+                    <i class="fa-solid fa-phone"></i>
+                </a>
+                <!-- 4. LinkedIn -->
+                <a href="https://linkedin.com/" target="_blank" rel="noopener noreferrer" title="LinkedIn" class="w-10 h-10 bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white transition-colors rounded-full flex items-center justify-center text-base">
+                    <i class="fa-brands fa-linkedin-in"></i>
+                </a>
+                <!-- 5. Facebook -->
+                <a href="https://facebook.com/" target="_blank" rel="noopener noreferrer" title="Facebook" class="w-10 h-10 bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white transition-colors rounded-full flex items-center justify-center text-base">
+                    <i class="fa-brands fa-facebook-f"></i>
+                </a>
+                <!-- 6. Instagram -->
+                <a href="https://instagram.com/" target="_blank" rel="noopener noreferrer" title="Instagram" class="w-10 h-10 bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white transition-colors rounded-full flex items-center justify-center text-base">
+                    <i class="fa-brands fa-instagram"></i>
+                </a>
+                <!-- 7. Twitter / X -->
+                <a href="https://twitter.com/" target="_blank" rel="noopener noreferrer" title="Twitter" class="w-10 h-10 bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white transition-colors rounded-full flex items-center justify-center text-base">
+                    <i class="fa-brands fa-x-twitter"></i>
+                </a>
+                <!-- 8. Messenger -->
+                <a href="https://m.me/" target="_blank" rel="noopener noreferrer" title="Messenger" class="w-10 h-10 bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white transition-colors rounded-full flex items-center justify-center text-base">
+                    <i class="fa-brands fa-facebook-messenger"></i>
+                </a>
+                <!-- 9. Telegram -->
+                <a href="https://t.me/" target="_blank" rel="noopener noreferrer" title="Telegram" class="w-10 h-10 bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white transition-colors rounded-full flex items-center justify-center text-base">
+                    <i class="fa-brands fa-telegram"></i>
+                </a>
+                <!-- 10. YouTube -->
+                <a href="https://www.youtube.com/@ReInstruments" target="_blank" rel="noopener noreferrer" title="YouTube" class="w-10 h-10 bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white transition-colors rounded-full flex items-center justify-center text-base">
+                    <i class="fa-brands fa-youtube"></i>
+                </a>
             </div>
         </div>
-        
-        
-        
-        <div class="flex justify-center md:justify-end mt-10 md:mt-0 w-full">
-            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 w-full max-w-2xl">
-<div style="display: none;"> 
+
+        <!-- Правая колонка: Динамические QR-коды -->
+        <div class="flex items-center gap-4 md:gap-6">
+            
+            <div style="display: none;"> 
                 <div class="flex flex-col items-center gap-2">
                     <div class="w-full aspect-square max-w-[144px] rounded-xl border border-gray-100 overflow-hidden shadow-sm bg-gray-50">
                         <img src="ceo.jpg" class="w-full h-full object-cover">
                     </div>
                     <p class="text-[10px] font-bold text-gray-400 uppercase tracking-tighter text-center">CEO J.Schmid</p>
                 </div>
-</div> 
-                <div class="flex flex-col items-center gap-2">
-                    <div class="bg-gray-50 p-3 rounded-xl border border-gray-100 w-full aspect-square max-w-[144px] flex items-center justify-center shadow-sm">
-                        <img id="dynamicQR" src="" class="w-full h-full object-contain">
-                    </div>
-                    <p class="text-[10px] font-bold text-gray-400 uppercase tracking-tighter text-center">Homepage</p>
+            </div>
+
+            <div class="flex flex-col items-center gap-2">
+                <div class="bg-gray-50 p-3 rounded-xl border border-gray-100 w-[144px] h-[144px] flex items-center justify-center shadow-sm">
+                    <img id="dynamicQR" src="" class="w-full h-full object-contain" loading="lazy">
                 </div>
-<div style="display: none;">
+                <p class="text-[10px] font-bold text-gray-400 uppercase tracking-tighter text-center">Homepage</p>
+            </div>
+            
+            <div style="display: none;">
                 <div class="flex flex-col items-center gap-2">
-                    <div class="bg-gray-50 p-3 rounded-xl border border-gray-100 w-full aspect-square max-w-[144px] flex items-center justify-center shadow-sm">
-                        <img id="dynamicQR2" src="" class="w-full h-full object-contain">
+                    <div class="bg-gray-50 p-3 rounded-xl border border-gray-100 w-[144px] h-[144px] flex items-center justify-center shadow-sm">
+                        <img id="dynamicQR2" src="" class="w-full h-full object-contain" loading="lazy">
                     </div>
                     <p class="text-[10px] font-bold text-gray-400 uppercase tracking-tighter text-center">eBay</p>
                 </div>
-</div>                
-                <div class="flex flex-col items-center gap-2">
-                    <div class="bg-gray-50 p-3 rounded-xl border border-gray-100 w-full aspect-square max-w-[144px] flex items-center justify-center shadow-sm">
-                        <img id="dynamicQR3" src="" class="w-full h-full object-contain">
-                    </div>
-                    <p class="text-[10px] font-bold text-gray-400 uppercase tracking-tighter text-center">YouTube</p>
-                </div>
-                
             </div>
+
+            <div class="flex flex-col items-center gap-2">
+                <div class="bg-gray-50 p-3 rounded-xl border border-gray-100 w-[144px] h-[144px] flex items-center justify-center shadow-sm">
+                    <img id="dynamicQR3" src="" class="w-full h-full object-contain">
+                </div>
+                <p class="text-[10px] font-bold text-gray-400 uppercase tracking-tighter text-center">YouTube</p>
+            </div>
+
         </div>
-       
-        
-        
+
     </div>
+
     <div class="mt-20 pt-8 border-t border-gray-50 text-center">
         <p class="text-gray-400 text-s tracking-wide">© Designed and coded by Johannes Schmid. All rights reserved.</p>
     </div>
-     
-<div style="display: none;">
-		
-	<div class="mt-10 p-6 bg-white rounded-xl shadow-md" 
-		 x-data="{ 
-			 allUsers: [],
-			 loadUsers() {
-				 const data = localStorage.getItem('reTools_users');
-				 this.allUsers = data ? JSON.parse(data) : [];
-				 if (!Array.isArray(this.allUsers)) this.allUsers = [];
-			 }
-		 }" 
-		 x-init="
-			 loadUsers();
-			 setInterval(() => loadUsers(), 1000);
-		 ">
-		
-		<h3 class="text-xl font-bold mb-4">Список зарегистрированных пользователей (<span x-text="allUsers.length"></span>)</h3>
-		
-		<template x-if="allUsers.length === 0">
-			<p class="text-gray-500">Пока нет зарегистрированных пользователей.</p>
-		</template>
 
-		<template x-if="allUsers.length > 0">
-			<div class="overflow-x-auto">
-				<table class="min-w-full divide-y divide-gray-200 text-sm">
-					<thead class="bg-gray-50">
-						<tr>
-							<th class="px-4 py-3 text-left font-medium text-gray-500 uppercase tracking-wider">Аватар</th>
-							<th class="px-4 py-3 text-left font-medium text-gray-500 uppercase tracking-wider">Имя</th>
-							<th class="px-4 py-3 text-left font-medium text-gray-500 uppercase tracking-wider">Email</th>
-							<th class="px-4 py-3 text-left font-medium text-gray-500 uppercase tracking-wider">Пароль</th>
-							<th class="px-4 py-3 text-left font-medium text-gray-500 uppercase tracking-wider">Адрес</th>
-							<th class="px-4 py-3 text-left font-medium text-gray-500 uppercase tracking-wider">Город</th>
-							<th class="px-4 py-3 text-left font-medium text-gray-500 uppercase tracking-wider">Индекс</th>
-							<th class="px-4 py-3 text-center font-medium text-gray-500 uppercase tracking-wider">Действие</th>
-						</tr>
-					</thead>
-					<tbody class="bg-white divide-y divide-gray-200">
-						<template x-for="(user, index) in allUsers" :key="index">
-							<tr>
-							   
-								<td class="px-4 py-3 whitespace-nowrap">
-									<img :src="user.avatar || 'https://via.placeholder.com/40'" alt="Avatar" class="w-10 h-10 rounded-full object-cover">
-								</td>
-								
-								<td class="px-4 py-3 whitespace-nowrap font-medium text-gray-900" x-text="user.name"></td>
-								
-								<td class="px-4 py-3 whitespace-nowrap text-gray-500" x-text="user.email"></td>
-								
-								<td class="px-4 py-3 whitespace-nowrap text-gray-500" x-text="user.password"></td>
-								
-								<td class="px-4 py-3 whitespace-nowrap text-gray-500" x-text="user.shippingInfo?.address || user.address || '—'"></td>
-								
-								<td class="px-4 py-3 whitespace-nowrap text-gray-500" x-text="user.shippingInfo?.city || user.city || '—'"></td>
-								
-								<td class="px-4 py-3 whitespace-nowrap text-gray-500" x-text="user.shippingInfo?.zip || user.zip || '—'"></td>
-								 
-								<td class="px-4 py-3 whitespace-nowrap text-center font-medium">
-									<button @click="
-										allUsers.splice(index, 1); 
-										localStorage.setItem('reTools_users', JSON.stringify(allUsers));
-									" class="text-red-600 hover:text-red-900 font-bold text-lg px-2 py-1" title="Удалить пользователя">
-										✕
-									</button>
-								</td>
-							</tr>
-						</template>
-					</tbody>
-				</table>
-			</div>
-		</template>
-	</div>
-     
-</div>
 
 
 
