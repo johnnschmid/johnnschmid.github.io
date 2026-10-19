@@ -3306,12 +3306,13 @@ document.addEventListener('contextmenu', (e) => {
 
 
 
- <script>
+<script>
 // --- 3D CAD VIEWER ENGINE ---
 let cadScene, cadCamera, cadRenderer, cadControls;
 let cadModelGroup = null;
 let cadMaterial = null;
-let occtEngine = null;
+let occtEngine = null; // Объявляем один раз в глобальной области видимости
+let isOcctLoading = false;
 const cadStlLoader = new THREE.STLLoader();
 
 let cadClipPlane;
@@ -3322,7 +3323,7 @@ let cadCenter = new THREE.Vector3();
 let cadSize = new THREE.Vector3();
 
 window.addEventListener('load', () => {
-    // Инициализируем 3D-просмотрщик только на десктопных экранах (шире 1024px)
+    // Инициализируем WebGL только на десктопах (шире 1024px), чтобы не грузить память iPhone
     if (window.innerWidth >= 1024) {
         initCadViewer();
         loadCadDemo('gear');
@@ -3378,19 +3379,7 @@ function initCadViewer() {
     animateCadViewer();
 }
 
-function initOcctEngine() {
-    if (typeof occtimportjs !== 'undefined') {
-        occtimportjs().then(instance => {
-            occtEngine = instance;
-        }).catch(err => {
-            console.warn("OCCT Engine Warning:", err);
-        });
-    }
-}
-
-
-let occtEngine = null;
-
+// Ленивая загрузка WebAssembly движка STEP исключительно по требованию (спасает Safari от падений)
 function loadOcctEngine() {
     return new Promise((resolve, reject) => {
         if (occtEngine) return resolve(occtEngine);
@@ -3403,20 +3392,36 @@ function loadOcctEngine() {
             return;
         }
         
+        if (isOcctLoading) {
+            const checkInterval = setInterval(() => {
+                if (occtEngine) {
+                    clearInterval(checkInterval);
+                    resolve(occtEngine);
+                }
+            }, 100);
+            return;
+        }
+
+        isOcctLoading = true;
         const script = document.createElement('script');
         script.src = "https://cdn.jsdelivr.net/npm/occt-import-js@0.0.22/dist/occt-import-js.js";
         script.onload = () => {
             occtimportjs().then(instance => {
                 occtEngine = instance;
+                isOcctLoading = false;
                 resolve(occtEngine);
-            }).catch(reject);
+            }).catch(err => {
+                isOcctLoading = false;
+                reject(err);
+            });
         };
-        script.onerror = () => reject(new Error("Не удалось загрузить модуль OCCT"));
+        script.onerror = () => {
+            isOcctLoading = false;
+            reject(new Error("Не удалось загрузить модуль OCCT"));
+        };
         document.head.appendChild(script);
     });
 }
-
-
 
 function animateCadViewer() {
     requestAnimationFrame(animateCadViewer);
@@ -3484,7 +3489,6 @@ async function parseCadSTEP(buffer, filename) {
     updateCadUIStatus(filename, "Инициализация ядра...", 0);
     
     try {
-        // Асинхронно загружаем движок OCCT только в момент открытия файла (спасает Safari от падений)
         const engine = await loadOcctEngine();
 
         const fileBytes = new Uint8Array(buffer);
@@ -3572,8 +3576,6 @@ function fitCadCameraToModel(group) {
 
     const maxDim = Math.max(cadSize.x, cadSize.y, cadSize.z);
     const fov = cadCamera.fov * (Math.PI / 180);
-    
-    // Исправлено: заменено на тангенс и подобран идеальный масштаб для заполнения фрейма
     let cameraDistance = (maxDim / (2 * Math.tan(fov / 2))) * 1.0;
 
     cadCamera.position.set(cameraDistance * 0.7, cameraDistance * 0.5, cameraDistance * 0.7);
@@ -3612,7 +3614,6 @@ function setCadCutAxis(axis) {
 function updateCadClippingPlane() {
     if (!isCadClippingEnabled) return;
 
-    // Инвертируем логику состояния чекбокса (ставим ! перед получением .checked)
     const isInverted = !document.getElementById('cad-invert-cut-toggle').checked;
     const sliderVal = parseFloat(document.getElementById('cad-cut-slider').value) / 100;
 
@@ -3663,16 +3664,13 @@ function resetCadCameraView() {
     }
 }
 
-// Универсальная функция установки стандартных видов с идеальным вписыванием модели
 function setCadStandardView(viewType) {
     if (!cadCamera || !cadControls) return;
 
-    // Берем актуальный максимальный размер модели (если cadSize уже вычислен)
     const maxDim = Math.max(cadSize.x || 50, cadSize.y || 50, cadSize.z || 50);
     const fov = cadCamera.fov * (Math.PI / 180);
-    let cameraDistance = (maxDim / (2 * Math.tan(fov / 2))) * 1.0; // Тот самый крупный масштаб
+    let cameraDistance = (maxDim / (2 * Math.tan(fov / 2))) * 1.0;
 
-    // Устанавливаем позицию камеры в зависимости от выбранного вида
     switch (viewType) {
         case 'iso':
             cadCamera.position.set(cameraDistance * 0.7, cameraDistance * 0.5, cameraDistance * 0.7);
@@ -3690,9 +3688,7 @@ function setCadStandardView(viewType) {
             cadCamera.position.set(cameraDistance * 0.7, cameraDistance * 0.5, cameraDistance * 0.7);
     }
 
-    // Направление взгляда строго на центр модели (0, 0, 0)
     cadCamera.lookAt(0, 0, 0);
-
     cadCamera.near = Math.max(0.01, cameraDistance / 100);
     cadCamera.far = cameraDistance * 100;
     cadCamera.updateProjectionMatrix();
@@ -3792,7 +3788,7 @@ function updateCadUIStatus(filename, status, triangles) {
     document.getElementById('cad-info-status').innerText = status;
     document.getElementById('cad-info-triangles').innerText = Number(triangles).toLocaleString();
 }
- </script>
+</script>
 
 
     
@@ -3835,9 +3831,9 @@ function updateCadUIStatus(filename, status, triangles) {
             </button>
         </div>
 
-        <!-- История сообщений -->
-        <div class="flex-1 p-4 overflow-y-auto space-y-3 text-xs" x-init="if(!chatHistory) init()">
-            <template x-for="(msg, index) in chatHistory" :key="index">
+		<!-- История сообщений -->
+		<div class="flex-1 p-4 overflow-y-auto space-y-3 text-xs" x-init="init()">
+			<template x-for="(msg, index) in chatHistory" :key="index">
                 <div class="flex" :class="msg.sender === 'user' ? 'justify-end' : 'justify-start'">
                     <div class="max-w-[85%] p-3 rounded-xl leading-relaxed shadow-sm"
                          :class="msg.sender === 'user' ? 'bg-blue-600 text-white rounded-br-none' : 'bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 rounded-bl-none'"
