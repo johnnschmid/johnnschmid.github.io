@@ -37,8 +37,7 @@
     <script src="products.js"></script>
     
     
-    <!-- Пример вставки кода стороннего чат-бота -->
-	<script src="//code.tidio.co/ ваш_уникальный_ключ.js" async></script>
+
     
     
     
@@ -1824,7 +1823,7 @@ iframe {
 <div style="display: none;">
 
 <!-- 3D CAD VIEWER SECTION -->
-<section id="cad-viewer-section" class="custom-section bg-gray-100 py-12">
+<section id="cad-viewer-section" class="custom-section bg-gray-100 py-12 hidden lg:block">
     <div class="max-w-7xl mx-auto px-4">
         
 
@@ -3793,30 +3792,8 @@ function updateCadUIStatus(filename, status, triangles) {
 <div class="cursor-outline"></div> 
 
 
-<!-- КАСТОМНЫЙ ВИДЖЕТ ЧАТ-БОТА НА ALPINE.JS -->
-<div class="fixed bottom-6 right-6 z-50" x-data="{ 
-    isOpen: false, 
-    messages: [
-        { sender: 'bot', text: 'Здравствуйте! Чем я могу помочь вам сегодня?' }
-    ], 
-    newMessage: '',
-    sendMessage() {
-        if (!this.newMessage.trim()) return;
-        // Добавляем сообщение пользователя
-        this.messages.push({ sender: 'user', text: this.newMessage });
-        let userText = this.newMessage;
-        this.newMessage = '';
-        
-        // Имитация ответа бота через 1 секунду
-        setTimeout(() => {
-            let botReply = 'Спасибо за ваш вопрос! Я передам информацию разработчику.';
-            if (userText.toLowerCase().includes('цена') || userText.toLowerCase().includes('price')) {
-                botReply = 'Цены на наши устройства указаны в каталоге выше.';
-            }
-            this.messages.push({ sender: 'bot', text: botReply });
-        }, 1000);
-    }
-}">
+<!-- ВИДЖЕТ УМНОГО ЧАТ-БОТА -->
+<div class="fixed bottom-6 right-6 z-50" x-data="siteChat()">
     
     <!-- Кнопка вызова чата -->
     <button @click="isOpen = !isOpen" 
@@ -3837,8 +3814,8 @@ function updateCadUIStatus(filename, status, triangles) {
             <div class="flex items-center gap-3">
                 <div class="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center font-bold text-xs">JS</div>
                 <div>
-                    <p class="font-bold text-sm">Поддержка ReTools</p>
-                    <p class="text-[10px] text-blue-100">Обычно отвечает мгновенно</p>
+                    <p class="font-bold text-sm">Поиск по статьям</p>
+                    <p class="text-[10px] text-blue-100">Ищет в products.js</p>
                 </div>
             </div>
             <button @click="isOpen = false" class="text-white/80 hover:text-white">
@@ -3848,30 +3825,94 @@ function updateCadUIStatus(filename, status, triangles) {
 
         <!-- История сообщений -->
         <div class="flex-1 p-4 overflow-y-auto space-y-3 text-xs">
-            <template x-for="(msg, index) in messages" :key="index">
+            <template x-for="msg in messages">
                 <div class="flex" :class="msg.sender === 'user' ? 'justify-end' : 'justify-start'">
-                    <div class="max-w-[80%] p-3 rounded-xl leading-relaxed shadow-sm"
+                    <div class="max-w-[85%] p-3 rounded-xl leading-relaxed shadow-sm"
                          :class="msg.sender === 'user' ? 'bg-blue-600 text-white rounded-br-none' : 'bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 rounded-bl-none'"
-                         x-text="msg.text">
+                         x-html="msg.text">
                     </div>
                 </div>
             </template>
         </div>
 
-        <!-- Поле ввода сообщения -->
+        <!-- Поле ввода -->
         <div class="p-3 border-t border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-[#1E1E1E] flex gap-2">
             <input type="text" 
                    x-model="newMessage" 
-                   @keydown.enter="sendMessage()" 
-                   placeholder="Введите сообщение..." 
+                   @keydown.enter="send()" 
+                   placeholder="Спросите о товарах..." 
                    class="flex-1 px-4 py-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-xs outline-none focus:ring-2 focus:ring-blue-500 text-gray-800 dark:text-white">
             
-            <button @click="sendMessage()" class="w-10 h-10 bg-blue-600 hover:bg-blue-700 text-white rounded-xl flex items-center justify-center transition-colors">
+            <button @click="send()" class="w-10 h-10 bg-blue-600 hover:bg-blue-700 text-white rounded-xl flex items-center justify-center transition-colors cursor-pointer">
                 <i class="fa-solid fa-paper-plane text-xs"></i>
             </button>
         </div>
     </div>
 </div>
+
+<script>
+function siteChat() {
+    return {
+        isOpen: false,
+        newMessage: '',
+        messages: [
+            { sender: 'bot', text: 'Здравствуйте! Введите ключевое слово (например: About, RePet, Voysa, ILS, BPM), и я выдам вам ссылку на статью.' }
+        ],
+        send() {
+            if (!this.newMessage.trim()) return;
+            const query = this.newMessage.trim();
+            this.messages.push({ sender: 'user', text: query });
+            this.newMessage = '';
+
+            setTimeout(() => {
+                const found = this.findSection(query);
+                if (found) {
+                    const url = '#' + found.id;
+                    const title = found.title || found.menuTitle || 'Статья';
+                    const reply = 'Ответ на Ваш вопрос Вы можете посмотреть здесь: <a href="' + url + '" @click="isOpen = false" class="text-blue-600 dark:text-blue-400 font-bold underline hover:text-blue-800">' + title + '</a>';
+                    this.messages.push({ sender: 'bot', text: reply });
+                } else {
+                    this.messages.push({ sender: 'bot', text: 'К сожалению, статья по вашему запросу не найдена. Попробуйте ввести точное название: About, RePet, Voysa, Saned, Blindphone, ILS.' });
+                }
+            }, 300);
+        },
+        findSection(q) {
+            // Берем данные напрямую из SECTIONS_DATA или из глобального контекста
+            const sections = window.SECTIONS_DATA || (typeof SECTIONS_DATA !== 'undefined' ? SECTIONS_DATA : null);
+            if (!sections || !sections.length) return null;
+
+            const lowerQ = q.toLowerCase();
+
+            // Ищем точное или частичное совпадение по id, menuTitle или заголовку
+            let match = sections.find(sec => {
+                const id = (sec.id || '').toLowerCase();
+                const menuTitle = (sec.menuTitle || '').toLowerCase();
+                const title = (sec.title || '').toLowerCase();
+
+                return id.includes(lowerQ) || menuTitle.includes(lowerQ) || title.includes(lowerQ);
+            });
+
+            // Если по заголовкам не нашлось, ищем глубоко по тексту и подсказкам (hints)
+            if (!match) {
+                match = sections.find(sec => {
+                    let hintsText = '';
+                    if (sec.hints && Array.isArray(sec.hints)) {
+                        hintsText = sec.hints.map(h => (h.title || '') + ' ' + (h.text || '')).join(' ');
+                    }
+                    const fullText = ((sec.p1 || '') + ' ' + (sec.p2 || '') + ' ' + hintsText).toLowerCase();
+                    return fullText.includes(lowerQ);
+                });
+            }
+
+            return match;
+        }
+    }
+}
+</script>
+
+
+
+
 
 
 </body>
