@@ -4,18 +4,20 @@
     <meta charset="UTF-8">
     <title>Redirecting...</title>
     <script>
-        // Этот скрипт ловит любой запрос несуществующей страницы на GitHub Pages,
-        // сохраняет путь и мгновенно перенаправляет на главный index.html с параметром.
-        const pathSegmentsToKeep = 0; // 0 для домена первого уровня (johnnschmid.github.io)
-        const l = window.location;
+        // GitHub Pages отдаёт этот файл для любого несуществующего пути.
+        // Переносим путь в параметр ?p= и отправляем на главную страницу;
+        // index.html потом вернёт нормальный URL через history.replaceState.
+        // Запрос (?a=1&b=2) кодируется как a=1~and~b=2, хэш (#...) сохраняется.
+        var pathSegmentsToKeep = 0; // 0 для johnnschmid.github.io (домен первого уровня)
+        var l = window.location;
+        var base = l.pathname.split('/').slice(0, 1 + pathSegmentsToKeep).join('/');
+        var path = l.pathname.slice(1).split('/').slice(pathSegmentsToKeep).join('/');
+        var query = l.search.slice(1).replace(/&/g, '~and~');
         l.replace(
             l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
-            l.pathname.split('/').slice(0, 1 + pathSegmentsToKeep).join('/') + '/?p=/' +
-            l.pathname.slice(1).split('/').slice(pathSegmentsToKeep).join('/') +
-            l.search + l.hash
+            base + '/?p=/' + path + (query ? '&' + query : '') + l.hash
         );
     </script>
 </head>
-<body>
-</body>
+<body></body>
 </html>

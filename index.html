@@ -1,14 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<script>
+<script>
+		// Восстанавливаем путь после редиректа с 404.html (?p=/путь&запрос~and~запрос#хэш)
 		(function(){
-			const q = window.location.search;
-			if (q.indexOf('?p=/') === 0) {
-				const cleanPath = q.slice(3).split('&')[0];
-				window.history.replaceState(null, null, cleanPath);
+			var l = window.location;
+			if (l.search.indexOf('?p=/') === 0) {
+				var rest = l.search.slice(3);
+				var i = rest.indexOf('&');
+				var path = i < 0 ? rest : rest.slice(0, i);
+				var search = i < 0 ? '' : '?' + rest.slice(i + 1).replace(/~and~/g, '&');
+				window.history.replaceState(null, null, path + search + l.hash);
 			}
 		})();
+
+		// Уменьшает огромные картинки googleusercontent (iOS Safari падает от множества 7МП+ битмапов)
+		function thumbUrl(url, maxW) {
+			maxW = maxW || 1600;
+			if (typeof url !== 'string') return url;
+			return url.replace(/=w(\d+)-h(\d+)/, function (m, w, h) {
+				w = +w; h = +h;
+				if (w <= maxW) return m;
+				return '=w' + maxW + '-h' + Math.round(h * maxW / w);
+			});
+		}
 	</script>	
 	
 	
@@ -1699,6 +1714,34 @@ iframe {
              slideA: { url: '', title: '' },
              slideB: { url: '', title: '' },
 
+             loading: false,
+
+             nextSlide(tries = 0) {
+                 if (this.loading || this.allSlides.length < 2) return;
+                 this.loading = true;
+                 const nextIndex = (this.currentIndex + 1) % this.allSlides.length;
+                 const nextSlideData = this.allSlides[nextIndex];
+                 const imgLoader = new Image();
+                 imgLoader.onload = () => {
+                     this.loading = false;
+                     if (this.activeLayer === 0) {
+                         this.slideB = nextSlideData;
+                         this.activeLayer = 1;
+                     } else {
+                         this.slideA = nextSlideData;
+                         this.activeLayer = 0;
+                     }
+                     this.currentIndex = nextIndex;
+                 };
+                 imgLoader.onerror = () => {
+                     // битая картинка: пропускаем её и пробуем следующую (не более 5 раз подряд)
+                     this.loading = false;
+                     this.currentIndex = nextIndex;
+                     if (tries < 5) this.nextSlide(tries + 1);
+                 };
+                 imgLoader.src = thumbUrl(nextSlideData.url, 1600);
+             },
+
              initSlides() {
                  if (typeof SLIDESHOW_CONFIG !== 'undefined' && SLIDESHOW_CONFIG.showOnHome === false) {
                      this.showSlideshow = false;
@@ -1750,26 +1793,10 @@ iframe {
                      this.slideA = this.allSlides[0];
                      this.slideB = this.allSlides[1] || this.allSlides[0];
 
-                     // Читаем интервал из конфигурации (по умолчанию 5000мс или то, что задано в SLIDESHOW_CONFIG)
+                     // Читаем интервал из конфигурации (по умолчанию 5000мс)
                      let intervalTime = (typeof SLIDESHOW_CONFIG !== 'undefined' && SLIDESHOW_CONFIG.slideInterval) ? SLIDESHOW_CONFIG.slideInterval : 5000;
 
-                     this.timer = setInterval(() => {
-                         let nextIndex = (this.currentIndex + 1) % this.allSlides.length;
-                         let nextSlideData = this.allSlides[nextIndex];
-
-                         const imgLoader = new Image();
-                         imgLoader.src = nextSlideData.url;
-                         imgLoader.onload = () => {
-                             if (this.activeLayer === 0) {
-                                 this.slideB = nextSlideData;
-                                 this.activeLayer = 1;
-                             } else {
-                                 this.slideA = nextSlideData;
-                                 this.activeLayer = 0;
-                             }
-                             this.currentIndex = nextIndex;
-                         };
-                     }, intervalTime);
+                     this.timer = setInterval(() => this.nextSlide(), intervalTime);
                  }
              }
          }"
@@ -1811,7 +1838,7 @@ iframe {
     <div class="absolute inset-0 w-full h-full transition-opacity ease-in-out flex items-center justify-center overflow-hidden"
          style="transition-duration: 2200ms;"
          :class="activeLayer === 0 ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'">
-        <img :src="slideA.url" 
+        <img :src="thumbUrl(slideA.url, 1600)" 
              class="rounded-[50px] max-w-full max-h-full object-contain relative z-10 clean-fade-mask transition-transform ease-out"
              style="transition-duration: 5000ms;"
              :class="activeLayer === 0 ? 'scale-100' : 'scale-95'"
@@ -1828,7 +1855,7 @@ iframe {
     <div class="absolute inset-0 w-full h-full transition-opacity ease-in-out flex items-center justify-center overflow-hidden"
          style="transition-duration: 2200ms;"
          :class="activeLayer === 1 ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'">
-        <img :src="slideB.url" 
+        <img :src="thumbUrl(slideB.url, 1600)" 
              class="rounded-[50px] max-w-full max-h-full object-contain relative z-10 clean-fade-mask transition-transform ease-out"
              style="transition-duration: 5000ms;"
              :class="activeLayer === 1 ? 'scale-100' : 'scale-95'"
@@ -2636,33 +2663,39 @@ shopConfig: SHOP_CONFIG,
 					this.userCaptchaInput = '';
 				},
 
+                goToPath(scrollHome) {
+                    let path = window.location.pathname.replace(/^\/+|\/+$/g, '');
+                    try { path = decodeURIComponent(path); } catch (e) {}
+                    this.isScrollingByClick = true;
+                    setTimeout(() => {
+                        if (!path) {
+                            this.activeSection = 'home';
+                            if (scrollHome) window.scrollTo({ top: 0, behavior: 'smooth' });
+                        } else {
+                            let targetEl = document.getElementById(path);
+                            if (!targetEl && typeof SECTIONS_DATA !== 'undefined') {
+                                const foundSec = SECTIONS_DATA.find(s => s.id.toLowerCase() === path.toLowerCase());
+                                if (foundSec) targetEl = document.getElementById(foundSec.id);
+                            }
+                            if (targetEl) {
+                                this.activeSection = targetEl.id;
+                                targetEl.scrollIntoView({ behavior: 'smooth' });
+                            }
+                        }
+                        setTimeout(() => { this.isScrollingByClick = false; }, 800);
+                    }, 300);
+                },
+
                 init() {
-// --- Исправленный блок инициализации пути из URL ---
-const path = window.location.pathname.replace(/^\/+/, '');
-    
-    if (path && path !== '') {
-        // Если перешли по прямой ссылке на статью (например /bpm)
-        this.isScrollingByClick = true;
-        setTimeout(() => {
-            let targetEl = document.getElementById(path);
-            if (!targetEl && typeof SECTIONS_DATA !== 'undefined') {
-                const foundSec = SECTIONS_DATA.find(s => s.id.toLowerCase() === path.toLowerCase());
-                if (foundSec) targetEl = document.getElementById(foundSec.id);
-            }
-            if (targetEl) {
-                this.activeSection = path;
-                targetEl.scrollIntoView({ behavior: 'smooth' });
-            }
-            setTimeout(() => {
-                this.isScrollingByClick = false;
-            }, 800);
-        }, 300);
-    } else {
-        // Если это просто главная страница (/), явно ставим home и разрешаем скролл
-        this.activeSection = 'home';
-        this.isScrollingByClick = false;
-    }
-    // ---------------------------------------------------
+// --- Инициализация пути из URL ---
+window.addEventListener('popstate', () => this.goToPath(true));
+if (window.location.pathname.replace(/^\/+|\/+$/g, '')) {
+    this.goToPath(false);
+} else {
+    this.activeSection = 'home';
+    this.isScrollingByClick = false;
+}
+// ---------------------------------------------------
 					
 					// --- Проверка настройки cursorSkin из products.js ---
                     const settings = typeof SITE_SETTINGS !== 'undefined' ? SITE_SETTINGS : { cursorSkin: false };
