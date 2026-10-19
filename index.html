@@ -38,13 +38,13 @@
 
     
 
-     
+     <!--
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
- 
+	-->
     
-    <!--
+    
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
-    -->
+    
     
     
     
@@ -1785,7 +1785,7 @@ iframe {
 			<img :src="slide.url" 
 				 :key="slide.url + index"
 				 @error="$el.src = slide.url"
-				 class="rounded-[50px] max-w-full max-h-full object-contain relative z-10 transition-transform ease-out clean-fade-mask will-change-transform"
+				 class="rounded-[50px] max-w-full max-h-full object-contain relative z-10 transition-transform ease-out clean-fade-mask"
 				 style="transition-duration: 5000ms;"
 				 :class="currentIndex === index ? 'scale-100' : 'scale-95'"
 				 loading="lazy">
