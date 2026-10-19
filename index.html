@@ -14,6 +14,12 @@
 			}
 		})();
 
+		// Максимальная ширина картинок слайдшоу: на 4K (физически >= 3000 px) берём оригинал, иначе 1600 px
+		function slideMaxW() {
+			var w = Math.max(screen.width, screen.height) * (window.devicePixelRatio || 1);
+			return w >= 3000 ? Infinity : 1600;
+		}
+
 		// Уменьшает огромные картинки googleusercontent (iOS Safari падает от множества 7МП+ битмапов)
 		function thumbUrl(url, maxW) {
 			maxW = maxW || 1600;
@@ -1727,7 +1733,7 @@ iframe {
                  const data = this.allSlides[nextIndex];
 
                  // Пробуем по очереди: уменьшенная версия -> оригинальная ссылка -> пропускаем слайд
-                 const candidates = [thumbUrl(data.url, 1600)];
+                 const candidates = [thumbUrl(data.url, slideMaxW())];
                  console.log(candidates);
                  if (candidates[0] !== data.url) candidates.push(data.url);
 
@@ -1856,7 +1862,7 @@ iframe {
     <div class="absolute inset-0 w-full h-full transition-opacity ease-in-out flex items-center justify-center overflow-hidden"
          style="transition-duration: 2200ms;"
          :class="activeLayer === 0 ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'">
-        <img :src="slideA.src || thumbUrl(slideA.url, 1600)"
+        <img :src="slideA.src || thumbUrl(slideA.url, slideMaxW())"
              referrerpolicy="no-referrer"
              @error="if ($el.dataset.fb !== slideA.url) { $el.dataset.fb = slideA.url; $el.src = slideA.url }" 
              class="rounded-[50px] max-w-full max-h-full object-contain relative z-10 clean-fade-mask transition-transform ease-out"
@@ -1875,7 +1881,7 @@ iframe {
     <div class="absolute inset-0 w-full h-full transition-opacity ease-in-out flex items-center justify-center overflow-hidden"
          style="transition-duration: 2200ms;"
          :class="activeLayer === 1 ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'">
-        <img :src="slideB.src || thumbUrl(slideB.url, 1600)"
+        <img :src="slideB.src || thumbUrl(slideB.url, slideMaxW())"
              referrerpolicy="no-referrer"
              @error="if ($el.dataset.fb !== slideB.url) { $el.dataset.fb = slideB.url; $el.src = slideB.url }" 
              class="rounded-[50px] max-w-full max-h-full object-contain relative z-10 clean-fade-mask transition-transform ease-out"
