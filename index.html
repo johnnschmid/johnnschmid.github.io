@@ -643,6 +643,7 @@ iframe {
 }
 
 /* Адаптивная обводка для мобилок и десктопа */
+        .slideshow-paused .animate-floating-text { animation-play-state: paused; }
         .animate-floating-text {
             /* -webkit-text-stroke: 1px black; */
         }
@@ -1715,31 +1716,44 @@ iframe {
              slideB: { url: '', title: '' },
 
              loading: false,
+             paused: false,
 
              nextSlide(tries = 0) {
-                 if (this.loading || this.allSlides.length < 2) return;
+                 // не листаем, пока открыта модалка или вкладка скрыта
+                 if (this.paused || document.hidden || this.loading || this.allSlides.length < 2) return;
                  this.loading = true;
                  const nextIndex = (this.currentIndex + 1) % this.allSlides.length;
-                 const nextSlideData = this.allSlides[nextIndex];
-                 const imgLoader = new Image();
-                 imgLoader.onload = () => {
-                     this.loading = false;
-                     if (this.activeLayer === 0) {
-                         this.slideB = nextSlideData;
-                         this.activeLayer = 1;
-                     } else {
-                         this.slideA = nextSlideData;
-                         this.activeLayer = 0;
-                     }
-                     this.currentIndex = nextIndex;
+                 const data = this.allSlides[nextIndex];
+
+                 // Пробуем по очереди: уменьшенная версия -> оригинальная ссылка -> пропускаем слайд
+                 const candidates = [thumbUrl(data.url, 1600)];
+                 if (candidates[0] !== data.url) candidates.push(data.url);
+
+                 const tryLoad = (n) => {
+                     const img = new Image();
+                     img.referrerPolicy = 'no-referrer';
+                     img.onload = () => {
+                         this.loading = false;
+                         const slide = { ...data, src: candidates[n] };
+                         if (this.activeLayer === 0) {
+                             this.slideB = slide;
+                             this.activeLayer = 1;
+                         } else {
+                             this.slideA = slide;
+                             this.activeLayer = 0;
+                         }
+                         this.currentIndex = nextIndex;
+                     };
+                     img.onerror = () => {
+                         if (n + 1 < candidates.length) { tryLoad(n + 1); return; }
+                         // битая или временно недоступная картинка: пропускаем (не более 5 раз подряд)
+                         this.loading = false;
+                         this.currentIndex = nextIndex;
+                         if (tries < 5) this.nextSlide(tries + 1);
+                     };
+                     img.src = candidates[n];
                  };
-                 imgLoader.onerror = () => {
-                     // битая картинка: пропускаем её и пробуем следующую (не более 5 раз подряд)
-                     this.loading = false;
-                     this.currentIndex = nextIndex;
-                     if (tries < 5) this.nextSlide(tries + 1);
-                 };
-                 imgLoader.src = thumbUrl(nextSlideData.url, 1600);
+                 tryLoad(0);
              },
 
              initSlides() {
@@ -1801,6 +1815,8 @@ iframe {
              }
          }"
          x-init="initSlides()"
+         x-effect="paused = !!(showAuth || showProfileModal || showCart || selectedProduct || modalGalleryOpen)"
+         :class="paused ? 'slideshow-paused' : ''"
          x-show="showSlideshow">
 
 <style>
@@ -1838,7 +1854,9 @@ iframe {
     <div class="absolute inset-0 w-full h-full transition-opacity ease-in-out flex items-center justify-center overflow-hidden"
          style="transition-duration: 2200ms;"
          :class="activeLayer === 0 ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'">
-        <img :src="thumbUrl(slideA.url, 1600)" 
+        <img :src="slideA.src || thumbUrl(slideA.url, 1600)"
+             referrerpolicy="no-referrer"
+             @error="if ($el.dataset.fb !== slideA.url) { $el.dataset.fb = slideA.url; $el.src = slideA.url }" 
              class="rounded-[50px] max-w-full max-h-full object-contain relative z-10 clean-fade-mask transition-transform ease-out"
              style="transition-duration: 5000ms;"
              :class="activeLayer === 0 ? 'scale-100' : 'scale-95'"
@@ -1855,7 +1873,9 @@ iframe {
     <div class="absolute inset-0 w-full h-full transition-opacity ease-in-out flex items-center justify-center overflow-hidden"
          style="transition-duration: 2200ms;"
          :class="activeLayer === 1 ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'">
-        <img :src="thumbUrl(slideB.url, 1600)" 
+        <img :src="slideB.src || thumbUrl(slideB.url, 1600)"
+             referrerpolicy="no-referrer"
+             @error="if ($el.dataset.fb !== slideB.url) { $el.dataset.fb = slideB.url; $el.src = slideB.url }" 
              class="rounded-[50px] max-w-full max-h-full object-contain relative z-10 clean-fade-mask transition-transform ease-out"
              style="transition-duration: 5000ms;"
              :class="activeLayer === 1 ? 'scale-100' : 'scale-95'"
@@ -2680,6 +2700,11 @@ shopConfig: SHOP_CONFIG,
                             if (targetEl) {
                                 this.activeSection = targetEl.id;
                                 targetEl.scrollIntoView({ behavior: 'smooth' });
+                            } else {
+                                // Несуществующий путь: сбрасываем адрес до главной
+                                history.replaceState(null, '', '/');
+                                this.activeSection = 'home';
+                                window.scrollTo({ top: 0 });
                             }
                         }
                         setTimeout(() => { this.isScrollingByClick = false; }, 800);

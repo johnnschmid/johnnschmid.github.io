@@ -1,3 +1,4 @@
+git add favicon.png
 git add 404.html
 git add index.html
 git add products.js
