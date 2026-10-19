@@ -226,7 +226,13 @@
             display: block !important;
         }
         
-
+		/* ВСТАВЬТЕ СЮДА: Отключаем скрытие курсора для элементов меню выбора языка и валют */
+        .relative[x-data*="open"] button,
+        .relative[x-data*="open"] button *,
+        .relative[x-data*="open"] div,
+        .relative[x-data*="open"] a {
+            cursor: pointer !important;
+        }
 
 
 
@@ -843,13 +849,13 @@ iframe {
                      class="absolute -right-[10px] mt-[13px] w-24 border rounded-xl shadow-xl z-50 overflow-hidden"
                      :class="darkMode ? 'bg-[#1E1E1E] border-gray-800' : 'bg-white border-gray-200'">
                     
-                    <template x-for="lang in ['EN', 'GE', 'RU']">
-                        <button @click="language = lang; open = false"
-                                class="w-full text-left px-4 py-2 text-[10px] font-bold transition-colors"
-                                :class="darkMode ? 'text-gray-300 hover:bg-blue-900/20' : 'text-gray-700 hover:bg-gray-100'"
-                                x-text="lang">
-                        </button>
-                    </template>
+					<template x-for="lang in ['EN', 'GE', 'RU']">
+						<button @click="language = lang; Alpine.store('siteLang', lang); open = false"
+								class="w-full text-left px-4 py-2 text-[10px] font-bold transition-colors"
+								:class="darkMode ? 'text-gray-300 hover:bg-blue-900/20' : 'text-gray-700 hover:bg-gray-100'"
+								x-text="lang">
+						</button>
+					</template>
                 </div>
             </div>
 			
@@ -2797,6 +2803,9 @@ iframe {
         //document.getElementById('buildTimestamp').innerText = `Build Date: ${now.toLocaleDateString()} ${now.toLocaleTimeString()}`;
 
         document.addEventListener('alpine:init', () => {
+			
+			Alpine.store('siteLang', 'EN');
+			
             Alpine.data('ReTools', () => ({
                 darkMode: localStorage.getItem('theme') === 'dark',
                 showCart: false, 
@@ -3792,6 +3801,10 @@ function updateCadUIStatus(filename, status, triangles) {
 <div class="cursor-outline"></div> 
 
 
+
+
+
+
 <!-- ВИДЖЕТ УМНОГО ЧАТ-БОТА -->
 <div class="fixed bottom-6 right-6 z-50" x-data="siteChat()">
     
@@ -3814,8 +3827,8 @@ function updateCadUIStatus(filename, status, triangles) {
             <div class="flex items-center gap-3">
                 <div class="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center font-bold text-xs">JS</div>
                 <div>
-                    <p class="font-bold text-sm">Поиск по статьям</p>
-                    <p class="text-[10px] text-blue-100">Ищет в products.js</p>
+                    <p class="font-bold text-sm" x-text="t('headerTitle')"></p>
+                    <p class="text-[10px] text-blue-100" x-text="t('headerSubtitle')"></p>
                 </div>
             </div>
             <button @click="isOpen = false" class="text-white/80 hover:text-white">
@@ -3824,8 +3837,8 @@ function updateCadUIStatus(filename, status, triangles) {
         </div>
 
         <!-- История сообщений -->
-        <div class="flex-1 p-4 overflow-y-auto space-y-3 text-xs">
-            <template x-for="msg in messages">
+        <div class="flex-1 p-4 overflow-y-auto space-y-3 text-xs" x-init="if(!chatHistory) init()">
+            <template x-for="(msg, index) in chatHistory" :key="index">
                 <div class="flex" :class="msg.sender === 'user' ? 'justify-end' : 'justify-start'">
                     <div class="max-w-[85%] p-3 rounded-xl leading-relaxed shadow-sm"
                          :class="msg.sender === 'user' ? 'bg-blue-600 text-white rounded-br-none' : 'bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 rounded-bl-none'"
@@ -3840,7 +3853,7 @@ function updateCadUIStatus(filename, status, triangles) {
             <input type="text" 
                    x-model="newMessage" 
                    @keydown.enter="send()" 
-                   placeholder="Спросите о товарах..." 
+                   :placeholder="t('placeholder')" 
                    class="flex-1 px-4 py-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-xs outline-none focus:ring-2 focus:ring-blue-500 text-gray-800 dark:text-white">
             
             <button @click="send()" class="w-10 h-10 bg-blue-600 hover:bg-blue-700 text-white rounded-xl flex items-center justify-center transition-colors cursor-pointer">
@@ -3855,35 +3868,98 @@ function siteChat() {
     return {
         isOpen: false,
         newMessage: '',
-        messages: [
-            { sender: 'bot', text: 'Здравствуйте! Введите ключевое слово (например: About, RePet, Voysa, ILS, BPM), и я выдам вам ссылку на статью.' }
-        ],
+        chatHistory: null,
+
+        translations: {
+            EN: {
+                headerTitle: 'Johannes Schmid',
+                headerSubtitle: 'answers quickly',
+                welcome: 'Hello! Enter a keyword (e.g. About, RePet, Voysa, ILS, BPM), and I will provide you with a link to the article.',
+                placeholder: 'Ask about products...',
+                notFound: 'Sorry, no article was found for your request. Try entering an exact title: About, RePet, Voysa, Saned, Blindphone, ILS.',
+                prefix: 'You can view the answer to your question here: ',
+                defaultArticle: 'Article'
+            },
+            RU: {
+                headerTitle: 'Johannes Schmid',
+                headerSubtitle: 'отвечает быстро',
+                welcome: 'Здравствуйте! Введите ключевое слово (например: About, RePet, Voysa, ILS, BPM), и я выдам вам ссылку на статью.',
+                placeholder: 'Спросите о товарах...',
+                notFound: 'К сожалению, статья по вашему запросу не найдена. Попробуйте ввести точное название: About, RePet, Voysa, Saned, Blindphone, ILS.',
+                prefix: 'Ответ на Ваш вопрос Вы можете посмотреть здесь: ',
+                defaultArticle: 'Статья'
+            },
+            GE: {
+                headerTitle: 'Johannes Schmid',
+                headerSubtitle: 'antwortet sofort',
+                welcome: 'Hallo! Geben Sie ein Schlüsselwort ein (z. B. About, RePet, Voysa, ILS, BPM), und ich gebe Ihnen einen Link zum Artikel.',
+                placeholder: 'Fragen Sie nach Produkten...',
+                notFound: 'Leider wurde kein Artikel für Ihre Anfrage gefunden. Versuchen Sie einen genauen Titel einzugeben: About, RePet, Voysa, Saned, Blindphone, ILS.',
+                prefix: 'Die Antwort auf Ihre Frage finden Sie hier: ',
+                defaultArticle: 'Artikel'
+            }
+        },
+
+        get lang() {
+            // Читаем язык напрямую из глобального хранилища Alpine
+            const l = Alpine.store('siteLang') || 'EN';
+            return this.translations[l] ? l : 'EN';
+        },
+
+        t(key) {
+            const currentLang = this.lang;
+            return (this.translations[currentLang] && this.translations[currentLang][key]) 
+                || this.translations['EN'][key];
+        },
+
+        init() {
+            this.chatHistory = [
+                { sender: 'bot', text: this.t('welcome') }
+            ];
+
+            // Отслеживаем изменения глобального хранилища языка
+            this.$watch(() => Alpine.store('siteLang'), () => {
+                if (this.chatHistory && this.chatHistory.length > 0) {
+                    this.chatHistory[0].text = this.t('welcome');
+                }
+            });
+        },
+
         send() {
             if (!this.newMessage.trim()) return;
             const query = this.newMessage.trim();
-            this.messages.push({ sender: 'user', text: query });
+
+            if (!this.chatHistory) {
+                this.init();
+            }
+
+            this.chatHistory.push({ sender: 'user', text: query });
+            const currentQuery = query;
             this.newMessage = '';
 
             setTimeout(() => {
-                const found = this.findSection(query);
+                const found = this.findSection(currentQuery);
                 if (found) {
                     const url = '#' + found.id;
-                    const title = found.title || found.menuTitle || 'Статья';
-                    const reply = 'Ответ на Ваш вопрос Вы можете посмотреть здесь: <a href="' + url + '" @click="isOpen = false" class="text-blue-600 dark:text-blue-400 font-bold underline hover:text-blue-800">' + title + '</a>';
-                    this.messages.push({ sender: 'bot', text: reply });
+                    
+                    let title = found.title || found.menuTitle || this.t('defaultArticle');
+                    if (this.lang === 'EN' && found.title_en) title = found.title_en;
+                    if (this.lang === 'GE' && found.title_de) title = found.title_de;
+
+                    const reply = this.t('prefix') + '<a href="' + url + '" @click="isOpen = false" class="text-blue-600 dark:text-blue-400 font-bold underline hover:text-blue-800">' + title + '</a>';
+                    this.chatHistory.push({ sender: 'bot', text: reply });
                 } else {
-                    this.messages.push({ sender: 'bot', text: 'К сожалению, статья по вашему запросу не найдена. Попробуйте ввести точное название: About, RePet, Voysa, Saned, Blindphone, ILS.' });
+                    this.chatHistory.push({ sender: 'bot', text: this.t('notFound') });
                 }
             }, 300);
         },
+
         findSection(q) {
-            // Берем данные напрямую из SECTIONS_DATA или из глобального контекста
             const sections = window.SECTIONS_DATA || (typeof SECTIONS_DATA !== 'undefined' ? SECTIONS_DATA : null);
             if (!sections || !sections.length) return null;
 
             const lowerQ = q.toLowerCase();
 
-            // Ищем точное или частичное совпадение по id, menuTitle или заголовку
             let match = sections.find(sec => {
                 const id = (sec.id || '').toLowerCase();
                 const menuTitle = (sec.menuTitle || '').toLowerCase();
@@ -3892,7 +3968,6 @@ function siteChat() {
                 return id.includes(lowerQ) || menuTitle.includes(lowerQ) || title.includes(lowerQ);
             });
 
-            // Если по заголовкам не нашлось, ищем глубоко по тексту и подсказкам (hints)
             if (!match) {
                 match = sections.find(sec => {
                     let hintsText = '';
