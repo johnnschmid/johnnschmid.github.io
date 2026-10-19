@@ -27,41 +27,10 @@
             }
         }
     </script>
-    
-<script>
-    // Загружаем Three.js и 3D-контролы только для ПК/планшетов, чтобы не перегружать память iPhone
-    if (window.innerWidth >= 1920) {
-        const scripts = [
-            "https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js",
-            "https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/STLLoader.js",
-            "https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js",
-            "https://cdn.jsdelivr.net/npm/occt-import-js@0.0.22/dist/occt-import-js.js"
-        ];
-        scripts.forEach(src => {
-            const s = document.createElement('script');
-            s.src = src;
-            s.async = false;
-            document.head.appendChild(s);
-        });
-    }
-</script>
-	
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script src="products.js"></script>
     
-    
-
-    
-    
-    
-    <!-- occt-import-js для работы со STEP / STP -->
-    <!--
-	<script src="https://cdn.jsdelivr.net/npm/occt-import-js@0.0.22/dist/occt-import-js.js"></script>
-    -->
-<!--     
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
- -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@700&display=swap" rel="stylesheet">
     <style>
         [x-cloak] { display: none !important; }
@@ -191,67 +160,17 @@
             transition: left 0.15s ease-out, top 0.15s ease-out, transform 0.2s; 
         }
 
-
-
-
-
-
-		/* Стили кастомного курсора */
-        .cursor-dot,
-        .cursor-outline {
-            pointer-events: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            transform: translate(-50%, -50%);
-            border-radius: 50%;
-            z-index: 9999;
-            display: none; /* По умолчанию скрыты */
-        }
-
-        .cursor-dot {
-            width: 20px;
-            height: 20px;
-            background-color: #2D5BFF;
-            transition: width 0.2s, height 0.2s, opacity 0.2s;
-            border: 2px solid #FFFFFF;
-        }
-
-        .cursor-outline {
-            width: 22px;
-            height: 22px;
-            background-color: rgba(45, 91, 255, 0.5);
-            transition: left 0.15s ease-out, top 0.15s ease-out, transform 0.2s; 
-        }
-
-        /* Системный курсор скрывается и кастомный включается ТОЛЬКО когда включен cursorSkin: true */
-        body.cursor-dot-enabled,
-        body.cursor-dot-enabled html,
-        body.cursor-dot-enabled button,
-        body.cursor-dot-enabled a,
-        body.cursor-dot-enabled input,
-        body.cursor-dot-enabled select,
-        body.cursor-dot-enabled .cursor-pointer {
+        /* Hide default cursor everywhere */
+        html, body, button, a, input, select, .cursor-pointer {
             cursor: none !important;
         }
-
-        body.cursor-dot-enabled .cursor-dot,
-        body.cursor-dot-enabled .cursor-outline {
-            display: block !important;
+        
+        .color-dot, 
+        .cursor-pointer, 
+        [style*="cursor: pointer"] {
+            cursor: none !important;
         }
         
-/* Исправление исчезновения кастомного курсора на кнопках слайдера */
-body.cursor-dot-enabled .custom-slider-btn,
-body.cursor-dot-enabled .custom-slider-btn * {
-    cursor: none !important;
-}
-
-
-
-
-
-
-
         
         /* Specifically target the select dropdowns and their options */
 		select, 
@@ -365,10 +284,10 @@ body.cursor-dot-enabled .custom-slider-btn * {
         }
         
         /* Custom Dropdown Styling */
-		[x-cloak] { display: none !important; }
+[x-cloak] { display: none !important; }
 
-		/* Применяем скрытие курсора только если включен cursorSkin: true */
-		body.cursor-dot-enabled .relative button {
+		/* Ensure the custom buttons in the menu hide the system cursor */
+		.relative button {
 			cursor: none !important;
 		}
 
@@ -379,17 +298,15 @@ body.cursor-dot-enabled .custom-slider-btn * {
 				
 		/* Hide the custom cursor elements by default on mobile/touch */
 		@media (pointer: coarse) {
-			.cursor-dot,
-			.cursor-outline {
+			.cursor-dot, .cursor-outline {
 				display: none !important;
 			}
 		}        
         
 
-		.cursor-outline, 
-		.cursor-dot {
-			pointer-events: none !important;
-		}
+.cursor-outline, .cursor-dot {
+    pointer-events: none !important;
+}
 
 /* Ensure the iframe container stack takes priority click registration */
 iframe {
@@ -489,40 +406,6 @@ iframe {
         margin-top: 0.5rem;
     }
 }
-
-@media (min-width: 1536px) {
-    .step-nav-container {
-        margin-top: 3.5rem; /* Отступ для 2K мониторов */
-    }
-}
-
-@media (min-width: 2500px) {
-    .step-nav-container {
-        margin-top: 3rem; /* Комфортный большой отступ для 4K мониторов */
-    }
-}
-
-/* Увеличение высоты панели и текста на 2K и 4K мониторах */
-@media (min-width: 1536px) {
-    .step-nav-wrapper,
-    .step-nav-inner {
-        border-radius: 9999px 0 0 9999px;
-    }
-    .step-btn {
-        font-size: 1.15rem !important; /* Увеличенный размер текста */
-        padding-top: 0.8rem !important;  /* Увеличенная высота панели */
-        padding-bottom: 0.8rem !important;
-    }
-}
-
-@media (min-width: 2500px) {
-    .step-btn {
-        font-size: 1.5rem !important;    /* Еще крупнее текст для 4K */
-        padding-top: 1.2rem !important;  /* Пропорционально большая высота панели */
-        padding-bottom: 1.2rem !important;
-    }
-}
-
 
 /* Внешняя рамка-окантовка со стрелкой справа */
 .step-nav-wrapper {
@@ -632,7 +515,7 @@ iframe {
 
 /* Адаптивная обводка для мобилок и десктопа */
         .animate-floating-text {
-            /* -webkit-text-stroke: 1px black; */
+             //-webkit-text-stroke: 1px black;
         }
         @media (min-width: 1024px) {
             .animate-floating-text {
@@ -655,26 +538,19 @@ iframe {
             max-width: 2400px !important; /* Ограничение для ультрашироких 4K-мониторов, чтобы строки не были бесконечными */
         }
     }
-
-    @media (min-width: 300px) {
-        .max-w-7xl {
-            max-width: 2800px !important; /* Ограничение для ультрашироких 4K-мониторов, чтобы строки не были бесконечными */
-        }
-    }
-
     
 /* Автоматическое увеличение текста на 2K и 4K мониторах */
-@media (min-width: 3000px) {
-    /* Увеличиваем заголовки во всех динамических секциях */
-    .custom-section h2 {
-        font-size: clamp(2.5rem, 2.5vw, 4.125rem) !important;
-    }
-    /* Увеличиваем основной текст (параграфы) во всех секциях */
-    .custom-section p {
-        font-size: clamp(1.45rem, 1.2vw, 2.5rem) !important;
-        line-height: 1.7 !important;
-    }
-}  
+    @media (min-width: 3000px) {
+        /* Увеличиваем заголовки в динамических секциях */
+        section[id^="section-"] h2, #about h2 {
+            font-size: clamp(4.125rem, 2.5vw, 3.5rem) !important;
+        }
+        /* Увеличиваем основной текст (параграфы) в секциях */
+        section[id^="section-"] p, #about p {
+            font-size: clamp(2.5rem, 1.2vw, 1.45rem) !important;
+            line-height: 1.7 !important;
+        }
+    }    
     
 /* Увеличение расстояния между картинкой и текстом на 2K и 4K экранах */
     @media (min-width: 1536px) {
@@ -691,7 +567,7 @@ iframe {
     </style>
     
 </head>
-<body :class="(selectedProduct || modalGalleryOpen) ? 'overflow-hidden' : ''" x-data="ReTools" @scroll.window="handleScroll">
+<body :class="(selectedProduct || modalGalleryOpen) ? 'overflow-hidden' : ''" x-data="ReTools" >
 
     <!-- AUDIO ELEMENT -->
     <audio id="bgMusic" loop>
@@ -763,52 +639,44 @@ iframe {
         </div>
 -->
 
-
-
-
-<!-- NAVIGATION -->
-		<div class="hidden lg:flex items-center gap-8 text-sm font-medium">			
+		<!-- NAVIGATION -->
+		<div class="hidden lg:flex items-center gap-8 text-sm font-medium" x-data="{ activeSection: 'home' }">
+			
+		   
 			<a href="#" 
-			   @click.prevent="activeSection = 'home'; isScrollingByClick = true; window.scrollTo({top: 0, behavior: 'smooth'}); setTimeout(() => isScrollingByClick = false, 600);" 
+			   @click="activeSection = 'home'" 
 			   class="relative px-6 py-2 text-sm transition-colors rounded-l-full">
 				<div x-show="activeSection === 'home'" class="absolute inset-0 -skew-x-[20deg] transcolor"></div>
 				<span class="relative z-10 font-medium" :class="activeSection === 'home' ? 'text-white font-semibold' : 'text-gray-500 hover:text-gray-800'">Home</span>
 			</a>
-			
-	<template x-if="!shopConfig.hideShop">
-		<a href="#shop" 
-		   @click.prevent="activeSection = 'shop'; isScrollingByClick = true; document.getElementById('shop').scrollIntoView({behavior: 'smooth'}); setTimeout(() => isScrollingByClick = false, 600);" 
-		   class="relative px-6 py-2 text-sm transition-colors">
-			<div x-show="activeSection === 'shop'" class="absolute inset-0 -skew-x-[20deg] transcolor"></div>
-			<span class="relative z-10 font-medium" :class="activeSection === 'shop' ? 'text-white font-semibold' : 'text-gray-500 hover:text-gray-800'">Shop</span>
-		</a>
-	</template>
-	
-<!-- 2. ДИНАМИЧЕСКИЕ ПУНКТЫ МЕНЮ (включая About, Extruder, Voysa и т.д., у которых inMenu: true) -->
-    <template x-for="sec in sections.filter(s => s.inMenu)" :key="sec.id">
-        <a :href="'#' + sec.id" 
-           @click.prevent="activeSection = sec.id; isScrollingByClick = true; document.getElementById(sec.id).scrollIntoView({behavior: 'smooth'}); setTimeout(() => isScrollingByClick = false, 600);" 
-           class="relative px-6 py-2 text-sm transition-colors">
-            <div x-show="activeSection === sec.id" class="absolute inset-0 -skew-x-[20deg] transcolor"></div>
-            <span class="relative z-10 font-medium" :class="activeSection === sec.id ? 'text-white font-semibold' : 'text-gray-500 hover:text-gray-800'" x-text="sec.menuTitle || sec.title"></span>
-        </a>
-    </template>
+
+<div style="display: none;">			
+			<a href="#shop" 
+			   @click="activeSection = 'shop'" 
+			   class="relative px-6 py-2 text-sm transition-colors">
+				<div x-show="activeSection === 'shop'" class="absolute inset-0 -skew-x-[20deg] transcolor"></div>
+				<span class="relative z-10 font-medium" :class="activeSection === 'shop' ? 'text-white font-semibold' : 'text-gray-500 hover:text-gray-800'">Shop</span>
+			</a>
+</div>
+		  
+			<a href="#about" 
+			   @click="activeSection = 'about'" 
+			   class="relative px-6 py-2 text-sm transition-colors">
+				<div x-show="activeSection === 'about'" class="absolute inset-0 -skew-x-[20deg] transcolor"></div>
+				<span class="relative z-10 font-medium" :class="activeSection === 'about' ? 'text-white font-semibold' : 'text-gray-500 hover:text-gray-800'">About</span>
+			</a>
+
 			
 			<a href="#contact" 
-			   @click.prevent="activeSection = 'contact'; isScrollingByClick = true; document.getElementById('contact').scrollIntoView({behavior: 'smooth'}); setTimeout(() => isScrollingByClick = false, 600);" 
+			   @click="activeSection = 'contact'" 
 			   class="relative px-6 py-2 text-sm transition-colors rounded-r-full">
 				<div x-show="activeSection === 'contact'" class="absolute inset-0 -skew-x-[20deg] transcolor"></div>
 				<span class="relative z-10 font-medium" :class="activeSection === 'contact' ? 'text-white font-semibold' : 'text-gray-500 hover:text-gray-800'">Contact</span>
 			</a>
-<div style="display: none;">
-			<a href="#slideshow" 
-			   @click.prevent="activeSection = 'slideshow'; isScrollingByClick = true; document.getElementById('slideshow').scrollIntoView({behavior: 'smooth'}); setTimeout(() => isScrollingByClick = false, 600);" 
-			   class="relative px-6 py-2 text-sm transition-colors rounded-r-full">
-				<div x-show="activeSection === 'slideshow'" class="absolute inset-0 -skew-x-[20deg] transcolor"></div>
-				<span class="relative z-10 font-medium" :class="activeSection === 'slideshow' ? 'text-white font-semibold' : 'text-gray-500 hover:text-gray-800'">Slideshow</span>
-			</a>
-</div>
+
 		</div>
+
+
 
 
 
@@ -864,13 +732,13 @@ iframe {
                      class="absolute -right-[10px] mt-[13px] w-24 border rounded-xl shadow-xl z-50 overflow-hidden"
                      :class="darkMode ? 'bg-[#1E1E1E] border-gray-800' : 'bg-white border-gray-200'">
                     
-					<template x-for="lang in ['EN', 'GE', 'RU']">
-						<button @click="language = lang; Alpine.store('siteLang', lang); open = false"
-								class="w-full text-left px-4 py-2 text-[10px] font-bold transition-colors"
-								:class="darkMode ? 'text-gray-300 hover:bg-blue-900/20' : 'text-gray-700 hover:bg-gray-100'"
-								x-text="lang">
-						</button>
-					</template>
+                    <template x-for="lang in ['EN', 'GE', 'RU']">
+                        <button @click="language = lang; open = false"
+                                class="w-full text-left px-4 py-2 text-[10px] font-bold transition-colors"
+                                :class="darkMode ? 'text-gray-300 hover:bg-blue-900/20' : 'text-gray-700 hover:bg-gray-100'"
+                                x-text="lang">
+                        </button>
+                    </template>
                 </div>
             </div>
 			
@@ -896,13 +764,13 @@ iframe {
 			</template>
 
             <!-- Корзина -->
-			<div class="relative cursor-pointer" @click="showCart = true; view = 'bag'" x-show="!shopConfig.hideShop" x-cloak>
+            <div class="relative cursor-pointer" @click="showCart = true; view = 'bag'">
                 <i class="fa-solid fa-cart-shopping text-gray-400"></i>
                 <span class="absolute -top-2 -right-2 bg-blue-600 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center" x-text="cart.reduce((sum, item) => sum + item.qty, 0)"></span>
             </div>
 
             <!-- Кнопка Shop Now -->
-            <a href="#shop" class="btn-blue-pill px-6 py-2 text-sm hidden md:flex" x-show="!shopConfig.hideShop" x-cloak>Shop Now</a>          
+            <a href="#shop" class="btn-blue-pill px-6 py-2 text-sm hidden md:flex">Shop Now</a>          
         </div>
     </nav>
 
@@ -1285,8 +1153,7 @@ iframe {
                                  @contextmenu.prevent 
                                  @error="$el.src = modalMedia[modalCurrentIndex].url"
                                  class="max-h-[85vh] w-auto h-auto object-contain rounded-xl mx-auto transition-transform duration-75 ease-out"
-                                 :style="zoomed ? 'transform: scale(5); transform-origin: ' + posX + '% ' + posY + '%;' : 'transform: scale(1);'"
-                                 loading="lazy">
+                                 :style="zoomed ? 'transform: scale(5); transform-origin: ' + posX + '% ' + posY + '%;' : 'transform: scale(1);'">
                         </div>
                     </template>
                     
@@ -1403,47 +1270,44 @@ iframe {
                     </template>
 </div>
 
-
-
-
 <div style="display: _none;"> 
-					<!-- Если это картинка -->
-					<template x-if="modalMedia[modalCurrentIndex].type === 'image'">
-						<div class="w-full rounded-xl bg-black/60 shadow-[0_0_60px_rgba(255,255,255,0.45)] flex items-center justify-center overflow-hidden relative select-none"
-							 x-data="{ 
-								 zoomed: false, 
-								 posX: 50, 
-								 posY: 50,
-								 sensitivity: 1.1, // Коэффициент усиления (больше значение — быстрее движение)
-								 toggleZoom(e) {
-									 this.zoomed = !this.zoomed;
-									 if (this.zoomed) {
-										 this.updatePosition(e);
-									 }
-								 },
-								 updatePosition(e) {
-									 if (!this.zoomed) return;
-									 const rect = e.currentTarget.getBoundingClientRect();
-									 // Считаем положение мыши в процентах (0 - 100)
-									 const mouseX = ((e.clientX - rect.left) / rect.width) * 100;
-									 const mouseY = ((e.clientY - rect.top) / rect.height) * 100;
-									 
-									 // Смещаем относительно центра (50%) с учетом коэффициента чувствительности
-									 this.posX = 50 + (mouseX - 50) * this.sensitivity;
-									 this.posY = 50 + (mouseY - 50) * this.sensitivity;
-								 }
-							 }"
-							 @click="toggleZoom($event)"
-							 @mousemove="updatePosition($event)"
-							 @mouseleave="zoomed = false"
-							 :class="zoomed ? 'cursor-zoom-out' : 'cursor-zoom-in'">
-							 
-							<img :src="modalMedia[modalCurrentIndex].url" 
-								 @contextmenu.prevent 
-								 class="max-h-[85vh] object-contain rounded-xl transition-transform duration-75 ease-out"
-								 :style="zoomed ? 'transform: scale(5); transform-origin: ' + posX + '% ' + posY + '%;' : 'transform: scale(1);'" loading="lazy">
-						</div>
-					</template>
+<!-- Если это картинка -->
+<template x-if="modalMedia[modalCurrentIndex].type === 'image'">
+    <div class="w-full rounded-xl bg-black/60 shadow-[0_0_60px_rgba(255,255,255,0.45)] flex items-center justify-center overflow-hidden relative select-none"
+         x-data="{ 
+             zoomed: false, 
+             posX: 50, 
+             posY: 50,
+             sensitivity: 1.1, // Коэффициент усиления (больше значение — быстрее движение)
+             toggleZoom(e) {
+                 this.zoomed = !this.zoomed;
+                 if (this.zoomed) {
+                     this.updatePosition(e);
+                 }
+             },
+             updatePosition(e) {
+                 if (!this.zoomed) return;
+                 const rect = e.currentTarget.getBoundingClientRect();
+                 // Считаем положение мыши в процентах (0 - 100)
+                 const mouseX = ((e.clientX - rect.left) / rect.width) * 100;
+                 const mouseY = ((e.clientY - rect.top) / rect.height) * 100;
+                 
+                 // Смещаем относительно центра (50%) с учетом коэффициента чувствительности
+                 this.posX = 50 + (mouseX - 50) * this.sensitivity;
+                 this.posY = 50 + (mouseY - 50) * this.sensitivity;
+             }
+         }"
+         @click="toggleZoom($event)"
+         @mousemove="updatePosition($event)"
+         @mouseleave="zoomed = false"
+         :class="zoomed ? 'cursor-zoom-out' : 'cursor-zoom-in'">
+         
+        <img :src="modalMedia[modalCurrentIndex].url" 
+             @contextmenu.prevent 
+             class="max-h-[85vh] object-contain rounded-xl transition-transform duration-75 ease-out"
+             :style="zoomed ? 'transform: scale(5); transform-origin: ' + posX + '% ' + posY + '%;' : 'transform: scale(1);'">
+    </div>
+</template>
 </div>
 
 
@@ -1669,331 +1533,11 @@ iframe {
     </section>
 </div>    
     
-
-
-<!-- КРАСИВОЕ СЛАЙДШОУ В СТИЛЕ МАКОВСКОЙ ЗАСТАВКИ -->
-<section id="slideshow" class="relative w-full h-[calc(95dvh-4rem)] overflow-hidden flex items-center justify-center my-8 max-w-7xl mx-auto"
-         x-data="{
-             slides: [],
-             currentIndex: 0,
-             timer: null,
-             showSlideshow: true,
-             initSlides() {
-                 if (typeof SLIDESHOW_CONFIG !== 'undefined' && SLIDESHOW_CONFIG.showOnHome === false) {
-                     this.showSlideshow = false;
-                     return;
-                 }
-
-                 let extracted = [];
-                 if (typeof SECTIONS_DATA !== 'undefined' && SECTIONS_DATA.length > 0) {
-                     let sections = [...SECTIONS_DATA];
-                     
-                     let albumsOrder = (typeof SLIDESHOW_CONFIG !== 'undefined') ? SLIDESHOW_CONFIG.albumsOrder : 'sequential';
-                     if (albumsOrder === 'random') {
-                         sections.sort(() => Math.random() - 0.5);
-                     }
-
-                     sections.forEach(sec => {
-                         if (sec.items && sec.items.length > 0) {
-                             let images = sec.items.filter(item => item.type === 'image');
-                             
-                             if (images.length > 0) {
-                                 let imagesOrder = (typeof SLIDESHOW_CONFIG !== 'undefined') ? SLIDESHOW_CONFIG.imagesOrder : 'sequential';
-                                 if (imagesOrder === 'random') {
-                                     images.sort(() => Math.random() - 0.5);
-                                 }
-
-                                 images.forEach(item => {
-                                     extracted.push({
-                                         url: item.url,
-                                         title: sec.title
-                                     });
-                                 });
-                             }
-                         }
-                     });
-
-                     let imagesOrder = (typeof SLIDESHOW_CONFIG !== 'undefined') ? SLIDESHOW_CONFIG.imagesOrder : 'sequential';
-                     if (albumsOrder === 'random' && imagesOrder === 'random') {
-                         extracted.sort(() => Math.random() - 0.5);
-                     }
-                 }
-                 this.slides = extracted;
-
-                 let intervalTime = (typeof SLIDESHOW_CONFIG !== 'undefined' && SLIDESHOW_CONFIG.slideInterval) ? SLIDESHOW_CONFIG.slideInterval : 4000;
-
-                 if (this.slides.length > 0) {
-                     this.timer = setInterval(() => {
-                         this.currentIndex = (this.currentIndex + 1) % this.slides.length;
-                     }, intervalTime);
-                 }
-             }
-         }"
-         x-init="initSlides()"
-         x-show="showSlideshow">
-
-<style>
-        @keyframes floatText {
-            0% {
-                transform: translate(-50px, 0) scale(0.98);
-                opacity: 0; /* Плавное появление из ниоткуда */
-            }
-            30% {
-                opacity: 0.6; /* Полная видимость в начале анимации */
-            }
-            80% {
-                opacity: 0.0; /* Держать видимость почти до конца */
-            }
-            100% {
-                /* направления и расстояния движения */
-                transform: translate(50px, -26px) scale(1.02);
-                opacity: 0; /* Плавное растворение перед переключением слайда */
-            }
-        }
-        .animate-floating-text {
-            /* Оставляем только смещение и масштаб, убирая скачки opacity из ключевых кадров */
-            animation: floatText 5s ease-in-out infinite alternate;
-        }
-
-		.clean-fade-mask {
-            mask-image: linear-gradient(to right, transparent 0px, black 80px, black calc(100% - 80px), transparent 100%),
-                        linear-gradient(to bottom, transparent 0px, black 80px, black calc(100% - 80px), transparent 100%);
-            mask-composite: intersect;
-            -webkit-mask-image: linear-gradient(to right, transparent 0px, black 80px, black calc(100% - 80px), transparent 100%),
-                                linear-gradient(to bottom, transparent 0px, black 80px, black calc(100% - 80px), transparent 100%);
-            -webkit-mask-composite: source-in;
-        }
-        
-        .section-fade-edges {
-            mask-image: linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%), linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
-            -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%), linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
-            mask-composite: intersect;
-            -webkit-mask-composite: source-in;
-        }
-    </style>
-
-<!-- Рендер всех слайдов -->
-    <template x-for="(slide, index) in slides" :key="index">
-        <div class="absolute inset-0 w-full h-full transition-opacity duration-700 ease-in-out flex items-center justify-center overflow-hidden"
-             :class="currentIndex === index ? 'opacity-100 z-10' : 'opacity-0 z-0'">
-
-            <!-- Картинка со сжатым под пропорции контейнером и плавной маской -->
-            
-            <!--
-            <img :src="slide.url" 
-                 :key="slide.url + index"
-                 @error="$el.src = slide.url"
-                 class="max-w-full max-h-full object-contain transition-transform duration-[5000ms] ease-out clean-fade-mask relative z-10"
-                 :style="currentIndex === index ? 'transform: scale(1.20);' : 'transform: scale(1.15);'">
-			-->
-
-
-            <!-- Картинка во весь экран без рамок внутри -->
-            <!--
-            <img :src="slide.url" 
-                 loading="lazy"
-                 class="relative w-full h-full object-cover transition-transform duration-[5000ms] ease-out scale-100"
-                 :class="currentIndex === index ? 'scale-110' : 'scale-100'">
-			-->
-			
-			<img :src="slide.url" 
-				 :key="slide.url + index"
-				 @error="$el.src = slide.url"
-				 class="rounded-[50px] max-w-full max-h-full object-contain relative z-10 transition-transform ease-out clean-fade-mask will-change-transform"
-				 style="transition-duration: 5000ms;"
-				 :class="currentIndex === index ? 'scale-100' : 'scale-95'"
-				 loading="lazy">
-<!--
-			<div class="absolute inset-0 flex items-end justify-center p-8 pb-12 lg:pb-16 pointer-events-none overflow-hidden z-30">
-                <h2 class="animate-floating-text text-4xl lg:text-6xl font-black tracking-wider text-center select-none"
-                    style="color: rgba(255, 255, 255, 1.0); filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.9));"
-                    x-text="slide.title"
-                    x-show="currentIndex === index"
-                    x-transition:enter="transition-transform ease-out duration-700"
-                    x-transition:enter-start="scale-90"
-                    x-transition:enter-end="scale-100">
-                </h2>
-            </div>         
--->
-
-
-
-            <!-- Текст ближе к нижней части экрана -->
-			<div class="absolute inset-0 flex items-end justify-center p-8 pb-12 lg:pb-16 pointer-events-none overflow-hidden z-30">
-                <h2 class="animate-floating-text text-3xl lg:text-6xl font-black text-white tracking-wider text-center select-none "
-					style="filter: drop-shadow(0 0 3px rgba(0, 0, 0, 1)) "
-                    x-text="slide.title"
-                    x-show="currentIndex === index"
-                    x-transition:enter="transition ease-out duration-700"
-                    x-transition:enter-start="opacity-0 scale-90"
-                    x-transition:enter-end="opacity-100 scale-100">
-                </h2>
-            </div>
-
-
-            
-            
-        </div>
-    </template>
-</section>
     
-
-
-
-
+    
 <div style="display: none;">
-
-<!-- 3D CAD VIEWER SECTION -->
-<section id="cad-viewer-section" class="custom-section bg-gray-100 py-12 hidden lg:block">
-    <div class="max-w-7xl mx-auto px-4">
-        
-
-
-        <!-- Контейнер просмотрщика -->
-        <div class="relative w-full h-[600px] bg-slate-200 dark:bg-gray-800 rounded-3xl overflow-hidden shadow-2xl border border-gray-200 dark:border-gray-700 select-none">
-            
-            <!-- WebGL Canvas -->
-            <div id="cad-viewport" class="w-full h-full cursor-grab active:cursor-grabbing"></div>
-
-            <!-- Drag & Drop Overlay -->
-            <div id="cad-drop-overlay" class="absolute inset-0 bg-blue-600/20 backdrop-blur-sm border-4 border-dashed border-blue-600 z-50 flex flex-col items-center justify-center opacity-0 pointer-events-none transition-opacity duration-200">
-                <div class="bg-white dark:bg-gray-900 p-8 rounded-2xl shadow-2xl flex flex-col items-center gap-4 text-center">
-                    <i class="fa-solid fa-cloud-arrow-up text-5xl text-blue-600 animate-bounce"></i>
-                    <div>
-                        <p class="text-xl font-bold text-gray-800 dark:text-white">Перетащите 3D CAD файл сюда</p>
-                        <p class="text-sm text-gray-500 mt-1">Поддерживаются форматы .STL, .STEP, .STP</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Панель управления (Верхняя левая) -->
-            <div class="absolute top-4 left-4 z-10 w-72 lg:w-80 bg-white/90 dark:bg-gray-900/90 backdrop-blur-md p-4 rounded-2xl shadow-xl border border-gray-200/80 dark:border-gray-700/80 flex flex-col gap-3">
-
-
-                <!-- Кнопка загрузки и Демо -->
-                <div class="flex flex-col gap-2">
-                    <label class="w-full flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-semibold text-xs rounded-xl cursor-pointer shadow-sm transition-all">
-                        <i class="fa-solid fa-folder-open"></i>
-                        <span>Открыть CAD Файл</span>
-                        <input type="file" id="cad-file-input" accept=".stl,.step,.stp" class="hidden">
-                    </label>
-
-                    <div class="grid grid-cols-3 gap-1 mt-1">
-                        <button onclick="loadCadDemo('gear')" class="px-2 py-1.5 bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 text-[11px] font-semibold rounded-lg transition-colors">
-                            Gear
-                        </button>
-                        <button onclick="loadCadDemo('bracket')" class="px-2 py-1.5 bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 text-[11px] font-semibold rounded-lg transition-colors">
-                            Bracket
-                        </button>
-                        <button onclick="loadCadDemo('shaft')" class="px-2 py-1.5 bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 text-[11px] font-semibold rounded-lg transition-colors">
-                            Shaft
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Инфо-панель -->
-                <div class="bg-gray-50 dark:bg-gray-800/50 rounded-xl p-2.5 border border-gray-100 dark:border-gray-700 text-[11px] space-y-1">
-                    <div class="flex justify-between text-gray-600 dark:text-gray-400">
-                        <span class="font-medium">Файл:</span>
-                        <span id="cad-info-filename" class="text-gray-900 dark:text-gray-200 font-semibold truncate max-w-[130px]">Demo (Gear)</span>
-                    </div>
-                    <div class="flex justify-between text-gray-600 dark:text-gray-400">
-                        <span class="font-medium">Статус:</span>
-                        <span id="cad-info-status" class="text-emerald-600 font-medium">Готов</span>
-                    </div>
-                    <div class="flex justify-between text-gray-600 dark:text-gray-400">
-                        <span class="font-medium">Треугольники:</span>
-                        <span id="cad-info-triangles" class="text-gray-800 dark:text-gray-300 font-mono">0</span>
-                    </div>
-                </div>
-
-                <!-- Wireframe & Section Cut -->
-                <div class="flex items-center justify-between pt-1 border-t border-gray-100 dark:border-gray-800">
-                    <span class="text-xs font-medium text-gray-600 dark:text-gray-300">Сетка (Wireframe)</span>
-                    <label class="relative inline-flex items-center cursor-pointer">
-                        <input type="checkbox" id="cad-wireframe-toggle" class="sr-only peer">
-                        <div class="w-8 h-4 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-blue-600"></div>
-                    </label>
-                </div>
-
-                <div class="pt-2 border-t border-gray-100 dark:border-gray-800 space-y-2">
-                    <div class="flex items-center justify-between">
-                        <span class="text-xs font-semibold text-gray-700 dark:text-gray-300 flex items-center gap-1.5">
-                            <i class="fa-solid fa-scissors text-blue-600"></i> Разрез (Section Cut)
-                        </span>
-                        <label class="relative inline-flex items-center cursor-pointer">
-                            <input type="checkbox" id="cad-section-toggle" class="sr-only peer">
-                            <div class="w-8 h-4 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-blue-600"></div>
-                        </label>
-                    </div>
-
-                    <div id="cad-section-controls" class="hidden space-y-2 text-[11px] pt-1">
-                        <div class="flex items-center justify-between">
-                            <span class="text-gray-500 font-medium">Ось:</span>
-                            <div class="flex bg-gray-100 dark:bg-gray-800 p-0.5 rounded-lg text-xs">
-                                <button id="cad-axis-x-btn" onclick="setCadCutAxis('X')" class="px-2 py-0.5 rounded-md font-semibold text-gray-600 dark:text-gray-300">X</button>
-                                <button id="cad-axis-y-btn" onclick="setCadCutAxis('Y')" class="px-2 py-0.5 rounded-md font-semibold text-gray-600 dark:text-gray-300">Y</button>
-                                <button id="cad-axis-z-btn" onclick="setCadCutAxis('Z')" class="px-2 py-0.5 rounded-md font-semibold text-gray-600 dark:text-gray-300">Z</button>
-                            </div>
-                        </div>
-
-                        <div class="space-y-1">
-                            <div class="flex justify-between text-gray-500">
-                                <span>Позиция:</span>
-                                <span id="cad-cut-pos-val" class="font-semibold text-gray-700 dark:text-gray-300">0%</span>
-                            </div>
-                            <input type="range" id="cad-cut-slider" min="-100" max="100" value="0" class="w-full accent-blue-600 cursor-pointer">
-                        </div>
-
-                        <div class="flex items-center justify-between pt-1">
-                            <span class="text-gray-500 font-medium">Инвертировать</span>
-                            <input type="checkbox" id="cad-invert-cut-toggle" class="rounded text-blue-600 focus:ring-blue-500 h-3.5 w-3.5">
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Правая панель ракурсов -->
-            <div class="absolute bottom-4 right-4 z-10 flex flex-col gap-2">
-                <div class="bg-white/90 dark:bg-gray-900/90 backdrop-blur-md p-1.5 rounded-xl shadow-md border border-gray-200 dark:border-gray-700 flex flex-col gap-1">
-                    <span class="text-[9px] font-bold text-gray-400 text-center uppercase tracking-wider">Виды</span>
-                    <div class="grid grid-cols-2 gap-1">
-                        <button onclick="setCadStandardView('iso')" class="px-2 py-1 bg-gray-100 hover:bg-blue-50 dark:bg-gray-800 dark:hover:bg-blue-900/30 text-gray-700 dark:text-gray-200 font-semibold text-[11px] rounded-lg transition-colors flex items-center justify-center gap-1">
-                            <i class="fa-solid fa-cube text-[9px]"></i> ISO
-                        </button>
-                        <button onclick="setCadStandardView('front')" class="px-2 py-1 bg-gray-100 hover:bg-blue-50 dark:bg-gray-800 dark:hover:bg-blue-900/30 text-gray-700 dark:text-gray-200 font-semibold text-[11px] rounded-lg transition-colors">Front</button>
-                        <button onclick="setCadStandardView('top')" class="px-2 py-1 bg-gray-100 hover:bg-blue-50 dark:bg-gray-800 dark:hover:bg-blue-900/30 text-gray-700 dark:text-gray-200 font-semibold text-[11px] rounded-lg transition-colors">Top</button>
-                        <button onclick="setCadStandardView('right')" class="px-2 py-1 bg-gray-100 hover:bg-blue-50 dark:bg-gray-800 dark:hover:bg-blue-900/30 text-gray-700 dark:text-gray-200 font-semibold text-[11px] rounded-lg transition-colors">Right</button>
-                    </div>
-                </div>
-
-                <button onclick="resetCadCameraView()" class="w-full h-8 bg-white/90 dark:bg-gray-900/90 hover:bg-white text-gray-700 dark:text-gray-200 rounded-xl shadow-md border border-gray-200 dark:border-gray-700 flex items-center justify-center transition-all gap-1.5 font-medium text-xs">
-                    <i class="fa-solid fa-compress text-xs"></i> Вписать
-                </button>
-            </div>
-
-        </div>
-    </div>
-</section>
-</div>
-
-
-
-
-
-
-
-
-  
- 
-  
-  
-  
-  
-    
-
     <!-- SHOP SECTION -->
-    <section id="shop" class="max-w-7xl mx-auto px-8 py-20" x-show="!shopConfig.hideShop" x-cloak>
+    <section id="shop" class="max-w-7xl mx-auto px-8 py-20">
         <h2 class="text-3xl font-bold mb-10 text-left">Collections</h2>
         <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-8"> <template x-for="p in visibleProducts" :key="p.id">
                 <div class="bg-white p-4 lg:p-5 rounded-xl border border-gray-100 card-shadow group flex flex-col">
@@ -2027,9 +1571,7 @@ iframe {
 				</template>
 
 				<template x-if="(!p.youtubeId && !p.videoUrl) || p.currentImg < p.images.length">
-					<img :src="p.images[p.currentImg]"
-						:key="p.images[p.currentImg] + p.currentImg"
-						@error="$el.src = p.images[p.currentImg]"
+					<img :src="p.images[p.currentImg]" 
 						 class="w-full h-full object-cover cursor-none hover:scale-105 transition-transform duration-500"
 						 @click="selectedProduct = p">
 				</template>
@@ -2072,249 +1614,155 @@ iframe {
             </template>
         </div>
     </section>
+</div>
+
+ <style>
+
+</style>
 
 
 
+<!-- КРАСИВОЕ СЛАЙДШОУ В СТИЛЕ МАКОВСКОЙ ЗАСТАВКИ -->
+<section class="relative w-full h-[calc(95dvh-4rem)] bg-transparent overflow-hidden flex items-center justify-center my-8 rounded-[40px] max-w-7xl mx-auto section-fade-edges"
+         x-data="{
+             slides: [],
+             currentIndex: 0,
+             timer: null,
+             showSlideshow: true,
+             initSlides() {
+                 // Проверка настройки отображения на главной из product.js
+                 if (typeof SLIDESHOW_CONFIG !== 'undefined' && SLIDESHOW_CONFIG.showOnHome === false) {
+                     this.showSlideshow = false;
+                     return;
+                 }
 
+                 let extracted = [];
+                 if (typeof SECTIONS_DATA !== 'undefined' && SECTIONS_DATA.length > 0) {
+                     let sections = [...SECTIONS_DATA];
+                     
+                     // 1. Порядок альбомов (секций)
+                     let albumsOrder = (typeof SLIDESHOW_CONFIG !== 'undefined') ? SLIDESHOW_CONFIG.albumsOrder : 'sequential';
+                     if (albumsOrder === 'random') {
+                         sections.sort(() => Math.random() - 0.5);
+                     }
 
+                     sections.forEach(sec => {
+                         if (sec.items && sec.items.length > 0) {
+                             let images = sec.items.filter(item => item.type === 'image');
+                             
+                             if (images.length > 0) {
+                                 // 2. Порядок картинок внутри каждого альбома
+                                 let imagesOrder = (typeof SLIDESHOW_CONFIG !== 'undefined') ? SLIDESHOW_CONFIG.imagesOrder : 'sequential';
+                                 if (imagesOrder === 'random') {
+                                     images.sort(() => Math.random() - 0.5);
+                                 }
 
-<!-- ДИНАМИЧЕСКИЙ ВЫВОД СЕКЦИЙ ИЗ products.js -->
-<template x-for="(sec, index) in sections" :key="sec.id">
-    <section class="custom-section"
-             :id="sec.id" 
-             :class="sec.bgClass || (index % 2 === 0 ? 'bg-gray-100' : 'bg-white')" 
-             x-data="{ 
-                 currentImg: 0, 
-                 videoPlaying: false,
-                 currentStep: sec.steps ? sec.steps[0].id : null
-             }">
-        
-        <!-- На десктопе (lg) включаем items-stretch, чтобы колонки были одинаковой высоты -->
-        <div class="custom-grid flex flex-col lg:flex-row gap-8 items-start lg:items-stretch">
+                                 // Добавляем ВСЕ картинки из альбома в общий пул
+                                 images.forEach(item => {
+                                     extracted.push({
+                                         url: item.url,
+                                         title: sec.title
+                                     });
+                                 });
+                             }
+                         }
+                     });
+
+                     // Если нужен полностью рандомный порядок вообще всех собранных слайдов между альбомами
+                     let imagesOrder = (typeof SLIDESHOW_CONFIG !== 'undefined') ? SLIDESHOW_CONFIG.imagesOrder : 'sequential';
+                     if (albumsOrder === 'random' && imagesOrder === 'random') {
+                         extracted.sort(() => Math.random() - 0.5);
+                     }
+                 }
+                 this.slides = extracted;
+
+                 let intervalTime = (typeof SLIDESHOW_CONFIG !== 'undefined' && SLIDESHOW_CONFIG.slideInterval) ? SLIDESHOW_CONFIG.slideInterval : 4000;
+
+                 if (this.slides.length > 0) {
+                     this.timer = setInterval(() => {
+                         this.currentIndex = (this.currentIndex + 1) % this.slides.length;
+                     }, intervalTime);
+                 }
+             }
+         }"
+         x-init="initSlides()"
+         x-show="showSlideshow">
+
+    <!-- Стили для плавающего текста и мягкого растворения границ всей СЕКЦИИ в фон -->
+    <style>
+        @keyframes floatText {
+            0% {
+                transform: translate(-50px, 0) scale(0.98);
+                opacity: 0; /* Плавное появление из ниоткуда */
+            }
+            30% {
+                opacity: 1.0; /* Полная видимость в начале анимации */
+            }
+            80% {
+                opacity: 0.0; /* Держать видимость почти до конца */
+            }
+            100% {
+                /* Возвращены исходные направления и расстояния движения */
+                transform: translate(50px, -26px) scale(1.02);
+                opacity: 0; /* Плавное растворение перед переключением слайда */
+            }
+        }
+        .animate-floating-text {
+            /* Возвращена исходная скорость анимации текста (9s) */
+            animation: floatText 5s ease-in-out infinite alternate;
+        }
+
+        /* Мягкое растворение краев ВСЕЙ СЕКЦИИ в фон страницы */
+        .section-fade-edges {
+            mask-image: linear-gradient(to bottom, transparent 0%, black 22%, black 78%, transparent 100%), linear-gradient(to right, transparent 0%, black 22%, black 78%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 12%, black 78%, transparent 100%), linear-gradient(to right, transparent 0%, black 22%, black 78%, transparent 100%);
+            mask-composite: intersect;
+            -webkit-mask-composite: source-in;
+        }
+    </style>
+
+    <!-- Рендер всех слайдов -->
+    <template x-for="(slide, index) in slides" :key="index">
+        <div class="absolute inset-0 w-full h-full transition-opacity duration-700 ease-in-out flex items-center justify-center overflow-hidden"
+             :class="currentIndex === index ? 'opacity-100 z-10' : 'opacity-0 z-0'">
             
-            <!-- 1. Блок с картинкой, шагами и мобильной подсказкой -->
-            <div class="order-2 w-full flex flex-col gap-6 my-6 lg:my-0"
-                 :class="(sec.imageLeft !== undefined ? sec.imageLeft : index % 2 === 0) ? 'lg:order-1 lg:w-1/2' : 'lg:order-2 lg:w-1/2'">
+            <!-- Фоновое размытие для глубины -->
+            <img :src="slide.url" class="absolute inset-0 w-full h-full object-cover filter blur-2xl scale-110 opacity-30 pointer-events-none">
+
+            <!-- Картинка во весь экран без рамок внутри -->
+            <img :src="slide.url" 
+                 loading="lazy"
+                 class="relative w-full h-full object-cover transition-transform duration-[5000ms] ease-out scale-100"
+                 :class="currentIndex === index ? 'scale-110' : 'scale-100'">
+            
 
 
-
-				<!-- Слайдер / Медиа -->
-				<div class="relative group flex items-center justify-center overflow-hidden rounded-xl shadow-2xl bg-gray-100 rotate-1 transition-transform duration-300 hover:rotate-0 hover:scale-105 w-full"
-					 :class="sec.aspectClass || 'aspect-[4/3]'"
-					 x-data="{ 
-						 get media() { return sec.items.filter(i => i.type === 'image' || i.type === 'video'); },
-						 touchStartX: 0,
-						 touchEndX: 0,
-						 handleTouchStart(e) {
-							 this.touchStartX = e.changedTouches[0].screenX;
-						 },
-						 handleTouchEnd(e) {
-							 this.touchEndX = e.changedTouches[0].screenX;
-							 this.handleSwipe();
-						 },
-						 handleSwipe() {
-							 const diff = this.touchStartX - this.touchEndX;
-							 const threshold = 40; // Минимальная дистанция свайпа в пикселях
-							 if (Math.abs(diff) > threshold && this.media.length > 1) {
-								 if (diff < 0) {
-									 // Свайп вправо — следующий слайд
-									 currentImg = (currentImg + 1) % this.media.length;
-								 } else {
-									 // Свайп влево — предыдущий слайд
-									 currentImg = (currentImg - 1 + this.media.length) % this.media.length;
-								 }
-								 videoPlaying = false;
-							 }
-						 }
-					 }"
-					 @touchstart="handleTouchStart($event)"
-					 @touchend="handleTouchEnd($event)"
-					 @wheel.prevent="
-						 if (media.length > 1) {
-							 if ($event.deltaY > 0) {
-								 currentImg = (currentImg + 1) % media.length;
-							 } else {
-								 currentImg = (currentImg - 1 + media.length) % media.length;
-							 }
-							 videoPlaying = false;
-						 }
-					 ">
-
-
-      
-                    <!-- Картинка с защитой от сбоев загрузки -->
-                    <template x-if="media[currentImg] && media[currentImg].type === 'image'">
-                        <img :src="media[currentImg].url" 
-                             :key="media[currentImg].url + currentImg"
-                             @error="$el.src = media[currentImg].url"
-                             class="w-full h-full object-cover transition-all duration-300" 
-                             alt="Application Areas" 
-                             @click="openModalGallery(media, currentImg)"
-                             loading="lazy">
-                    </template>
-                    
-                    <!-- Видео -->
-                    <template x-if="media[currentImg] && media[currentImg].type === 'video'">
-                        <div class="w-full h-full relative group/vid">
-                            <template x-if="!videoPlaying">
-                                <div class="absolute inset-0 w-full h-full rounded-xl overflow-hidden cursor-pointer z-30"
-                                     @click="openModalGallery(media, currentImg)">
-                                    <iframe :src="media[currentImg].url" 
-                                            class="w-full h-full border-0 absolute inset-0 rounded-xl pointer-events-none z-10"
-                                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                                            allowfullscreen
-                                            loading="lazy">
-                                    </iframe>
-                                    <div class="absolute inset-0 flex items-center justify-center z-40">
-                                        <button type="button" 
-                                                @click.stop="videoPlaying = true" 
-                                                class="w-20 h-20 rounded-full bg-transparent text-white flex items-center justify-center transform transition-transform hover:scale-110 cursor-pointer">
-                                            <i class="fa-solid fa-play text-2xl ml-1 drop-shadow-md"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </template>
-                            <template x-if="videoPlaying">
-                                <div class="absolute inset-0 w-full h-full rounded-xl overflow-hidden z-30">
-                                    <iframe :src="media[currentImg].url + (media[currentImg].url.includes('?') ? '&' : '?') + 'autoplay=1'" 
-                                            class="w-full h-full border-0 absolute inset-0 rounded-xl z-10"
-                                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                                            allowfullscreen
-                                            loading="lazy">
-                                    </iframe>
-                                    <div class="absolute inset-0 cursor-pointer bg-transparent z-20"
-                                           @click="videoPlaying = false"
-                                           title="Нажмите, чтобы остановить видео">
-                                    </div>
-                                </div>
-                            </template>
-                        </div>
-                    </template>
-
-                    <!-- Кнопки переключения -->
-                    <div class="absolute inset-0 flex items-center justify-between px-4 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50">
-                        <button @click="currentImg = (currentImg - 1 + media.length) % media.length; videoPlaying = false" class="pointer-events-auto w-10 h-10 rounded-full custom-slider-btn shadow-lg flex items-center justify-center text-sm cursor-pointer transition-colors">
-                            <i class="fa-solid fa-chevron-left pointer-events-none"></i>
-                        </button>
-                        <button @click="currentImg = (currentImg + 1) % media.length; videoPlaying = false" class="pointer-events-auto w-10 h-10 rounded-full custom-slider-btn shadow-lg flex items-center justify-center text-sm cursor-pointer transition-colors">
-                            <i class="fa-solid fa-chevron-right pointer-events-none"></i>
-                        </button>
-                    </div>
-
-                    <!-- Индикаторы (точки) -->
-                    <div class="absolute bottom-4 left-0 right-0 flex justify-center gap-2 z-50">
-                        <template x-for="(item, idx) in media" :key="idx">
-                            <button @click="currentImg = idx; videoPlaying = false" 
-                                    class="w-2.5 h-2.5 rounded-full transition-all cursor-pointer shadow-[0_0_4px_rgba(0,0,0,1)]"
-                                    :class="currentImg === idx ? 'bg-blue-600 w-6' : 'bg-white/70 hover:bg-white'">
-                            </button>
-                        </template>
-                    </div>
-                </div>
-
-                <!-- Панель шагов с шевронами -->
-                <div class="step-nav-container w-full" x-show="sec.showSteps" x-cloak>
-                    <div class="step-nav-wrapper">
-                        <div class="step-nav-inner">
-                            <template x-for="(step, idx) in sec.steps" :key="step.id">
-                                <div @click="currentStep = step.id" 
-                                     class="step-btn"
-                                     :class="{
-                                         'active': currentStep === step.id,
-                                         'inactive': currentStep !== step.id,
-                                         'step-btn-first': idx === 0,
-                                         'step-btn-middle': idx > 0 && idx < sec.steps.length - 1,
-                                         'step-btn-last': idx === sec.steps.length - 1
-                                     }"
-                                     :style="idx === 0 ? 'z-index: 1;' : (idx === sec.steps.length - 1 ? 'z-index: ' + sec.steps.length + ';' : 'z-index: ' + (sec.steps.length - idx) + ';')">
-                                    <span class="sm:hidden" x-text="step.short || step.label"></span>
-                                    <span class="hidden sm:inline" x-text="step.label"></span>
-                                </div>
-                            </template>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Подсказки и кнопки: видны ТОЛЬКО на мобилке -->
-                <div class="block lg:hidden space-y-4 pt-2 text-left">
-                    <template x-for="(hint, idx) in sec.hints" :key="idx">
-                        <div class="flex items-center gap-3 justify-start text-left mb-3">
-                            <span class="text-2xl flex-shrink-0" x-text="hint.emoji"></span>
-                            <p class="font-bold text-gray-800 text-lg text-left">
-                                <span x-text="hint.title"></span> 
-                                <span class="font-normal text-gray-800 text-lg" x-text="hint.text"></span>
-                                <a x-show="hint.youtubeUrl && hint.youtubeUrl.length > 0" :href="hint.youtubeUrl" target="_blank" class="text-red-600 hover:underline font-bold" x-text="hint.youtubeText"></a>
-                            </p>
-                        </div>
-                    </template>
-                    
-                    <div class="flex flex-wrap gap-3">
-                        <template x-for="item in sec.items.filter(i => i.type === 'pdf' || i.type === 'zip' || i.type === 'file')">
-                            <a :href="item.url" target="_blank" class="btn-blue-pill px-6 py-3 text-sm inline-flex items-center gap-3 shadow-lg">
-                                <i class="fa-solid text-lg" :class="item.type === 'pdf' ? 'fa-file-pdf' : (item.type === 'zip' ? 'fa-file-zipper' : 'fa-download')"></i>
-                                <span x-text="item.title || 'Download File'"></span>
-                            </a>
-                        </template>
-                    </div>
-                </div>
-
+<!-- Текст с густой тенью-обводкой вместо text-stroke -->
+            <div class="absolute inset-0 flex items-end justify-center p-8 pb-12 lg:pb-16 pointer-events-none overflow-hidden">
+                <h2 class="animate-floating-text text-4xl lg:text-6xl font-black text-white tracking-wider text-center select-none"
+                    style="filter:  drop-shadow(0 0 1px rgba(0,0,0,1)) drop-shadow(0 0 1px rgba(0,0,0,1)) drop-shadow(0 0 1px rgba(0,0,0,1)) drop-shadow(0 0 1px rgba(0,0,0,1)) drop-shadow(0 0 2px rgba(0,0,0,1));"
+                    x-text="slide.title"
+                    x-show="currentIndex === index"
+                    x-transition:enter="transition ease-out duration-700"
+                    x-transition:enter-start="opacity-0 scale-90"
+                    x-transition:enter-end="opacity-100 scale-100">
+                </h2>
             </div>
-
-            <!-- 2. Текстовый блок -->
-            <!-- На мобилке (по умолчанию) это обычный поток без justify-between, на десктопе (lg:) — flex с justify-between -->
-            <div class="order-1 w-full flex flex-col lg:justify-between text-left"
-                 :class="(sec.imageLeft !== undefined ? sec.imageLeft : index % 2 === 0) ? 'lg:order-2 lg:w-1/2' : 'lg:order-1 lg:w-1/2'">
-                
-                <div class="space-y-6">
-                    <h2 class="text-4xl font-bold text-gray-900 mb-4" x-text="sec.title"></h2>
-                    <p class="text-gray-800 leading-relaxed text-lg" x-text="sec.p1"></p>
-                    <p class="text-gray-800 leading-relaxed text-lg" x-text="sec.p2"></p>
-                </div>
-                
-                <!-- Подсказки и кнопки: видны ТОЛЬКО на десктопе -->
-                <div class="hidden lg:block pt-8">
-                    <div class="space-y-4">
-                        <template x-for="(hint, idx) in sec.hints" :key="idx">
-                            <div class="flex items-center gap-3 justify-start text-left">
-                                <span class="text-2xl 4xl:text-5xl flex-shrink-0" x-text="hint.emoji"></span>
-                                <div class="text-gray-800 text-lg lg:text-lg 2xl:text-lg 4xl:text-4xl leading-relaxed">
-                                    <strong class="leading-relaxed font-bold text-gray-900" x-text="hint.title + ' '"></strong>
-                                    <span class="leading-relaxed font-normal" x-text="hint.text"></span>
-                                    <a x-show="hint.youtubeUrl && hint.youtubeUrl.length > 0" :href="hint.youtubeUrl" target="_blank" class="text-red-600 hover:underline font-bold ml-1" x-text="hint.youtubeText"></a>
-                                </div>
-                            </div>
-                        </template>
-                    </div>
-
-					<!-- Кнопки выровнены по правому краю, если текст справа, и по левому, если текст слева -->
-					<div class="flex flex-wrap gap-3 mt-8 2xl:mt-12 4xl:mt-24"
-						 :class="((sec.imageLeft !== undefined ? sec.imageLeft : index % 2 === 0)) ? 'lg:justify-end' : 'lg:justify-start'">
-						<template x-for="item in sec.items.filter(i => i.type === 'pdf' || i.type === 'zip' || i.type === 'file')">
-							<a :href="item.url" target="_blank" class="btn-blue-pill px-6 py-3 4xl:px-12 4xl:py-6 text-sm lg:text-lg 4xl:text-4xl inline-flex items-center gap-3 shadow-lg">
-								<i class="fa-solid text-xl 4xl:text-4xl" :class="item.type === 'pdf' ? 'fa-file-pdf' : (item.type === 'zip' ? 'fa-file-zipper' : 'fa-download')"></i>
-								<span x-text="item.title || 'Download File'"></span>
-							</a>
-						</template>
-					</div>
-                </div>
-            </div>
-
         </div>
-    </section>
-</template>
+    </template>
+</section>
 
 
 
 
 
 
-<div style="display: none;">
 
 <!-- ДИНАМИЧЕСКИЙ ВЫВОД СЕКЦИЙ ИЗ products.js -->
-<template x-for="(sec, index) in sections" :key="sec.id">
+<template x-for="sec in sections" :key="sec.id">
     <section class="custom-section"
-             :id="sec.id" 
-             :class="sec.bgClass || (index % 2 === 0 ? 'bg-gray-100' : 'bg-white')" 
+			 :id="sec.id === 1 ? 'about' : ('section-' + sec.id)"
+             :class="sec.bgClass" 
              x-data="{ 
                  currentImg: 0, 
                  videoPlaying: false,
@@ -2325,7 +1773,7 @@ iframe {
             
             <!-- 1. Блок с картинкой, шагами и мобильной подсказкой -->
             <div class="order-2 w-full flex flex-col gap-6 my-6 lg:my-0"
-                 :class="(sec.imageLeft !== undefined ? sec.imageLeft : index % 2 === 0) ? 'lg:order-1 lg:w-1/2' : 'lg:order-2 lg:w-1/2'">
+                 :class="sec.imageLeft ? 'lg:order-1 lg:w-1/2' : 'lg:order-2 lg:w-1/2'">
                 
                 <!-- Слайдер / Медиа -->
                 <!--
@@ -2354,16 +1802,10 @@ iframe {
 					 ">                     
                      
                     
-					<!-- Картинка с защитой от сбоев загрузки -->
-					<template x-if="media[currentImg] && media[currentImg].type === 'image'">
-						<img :src="media[currentImg].url" 
-							 :key="media[currentImg].url + currentImg"
-							 @error="$el.src = media[currentImg].url"
-							 class="w-full h-full object-cover transition-all duration-300" 
-							 alt="Application Areas" 
-							 @click="openModalGallery(media, currentImg)"
-							 loading="lazy">
-					</template>
+                    <!-- Картинка -->
+                    <template x-if="media[currentImg] && media[currentImg].type === 'image'">
+                        <img :src="media[currentImg].url" class="w-full h-full object-cover transition-all duration-300" alt="Application Areas" @click="openModalGallery(media, currentImg)">
+                    </template>
                     
 
 					<!-- Видео (YouTube, Google Drive, Прямая .mp4 ссылка через iframe) -->
@@ -2375,8 +1817,7 @@ iframe {
 									<iframe :src="media[currentImg].url" 
 											class="w-full h-full border-0 absolute inset-0 rounded-xl pointer-events-none z-10"
 											allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-											allowfullscreen
-											loading="lazy">
+											allowfullscreen>
 									</iframe>
 									<div class="absolute inset-0 flex items-center justify-center z-40">
 										<button type="button" 
@@ -2392,8 +1833,7 @@ iframe {
 									<iframe :src="media[currentImg].url + (media[currentImg].url.includes('?') ? '&' : '?') + 'autoplay=1'" 
 											class="w-full h-full border-0 absolute inset-0 rounded-xl z-10"
 											allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-											allowfullscreen
-											loading="lazy">
+											allowfullscreen>
 									</iframe>
 									<div class="absolute inset-0 cursor-pointer bg-transparent z-20"
 										   @click="videoPlaying = false"
@@ -2407,23 +1847,23 @@ iframe {
 
                     <!-- Кнопки переключения -->
                     <div class="absolute inset-0 flex items-center justify-between px-4 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50">
-                        <button @click="currentImg = (currentImg - 1 + media.length) % media.length; videoPlaying = false" class="pointer-events-auto w-10 h-10 rounded-full custom-slider-btn shadow-lg flex items-center justify-center text-sm cursor-pointer transition-colors">
+                        <button @click="currentImg = (currentImg - 1 + media.length) % media.length; videoPlaying = false" class="pointer-events-auto w-10 h-10 custom-slider-btn rounded-full flex items-center justify-center shadow text-sm cursor-pointer transition-colors">
                             <i class="fa-solid fa-chevron-left pointer-events-none"></i>
                         </button>
-                        <button @click="currentImg = (currentImg + 1) % media.length; videoPlaying = false" class="pointer-events-auto w-10 h-10 rounded-full custom-slider-btn shadow-lg flex items-center justify-center text-sm cursor-pointer transition-colors">
+                        <button @click="currentImg = (currentImg + 1) % media.length; videoPlaying = false" class="pointer-events-auto w-10 h-10 custom-slider-btn rounded-full flex items-center justify-center shadow text-sm cursor-pointer transition-colors">
                             <i class="fa-solid fa-chevron-right pointer-events-none"></i>
                         </button>
                     </div>
 
-					<!-- Индикаторы (точки) -->
-					<div class="absolute bottom-4 left-0 right-0 flex justify-center gap-2 z-50">
-						<template x-for="(item, idx) in media" :key="idx">
-							<button @click="currentImg = idx; videoPlaying = false" 
-									class="w-2.5 h-2.5 rounded-full transition-all cursor-pointer shadow-[0_0_4px_rgba(0,0,0,1)]"
-									:class="currentImg === idx ? 'bg-blue-600 w-6' : 'bg-white/70 hover:bg-white'">
-							</button>
-						</template>
-					</div>
+                    <!-- Индикаторы (точки) -->
+                    <div class="absolute bottom-4 left-0 right-0 flex justify-center gap-2 z-50">
+                        <template x-for="(item, idx) in media" :key="idx">
+                            <button @click="currentImg = idx; videoPlaying = false" 
+                                    class="w-2.5 h-2.5 rounded-full transition-all cursor-pointer shadow"
+                                    :class="currentImg === idx ? 'bg-blue-600 w-6' : 'bg-white/70 hover:bg-white'">
+                            </button>
+                        </template>
+                    </div>
                 </div>
 
                 <!-- Панель шагов с шевронами -->
@@ -2465,7 +1905,7 @@ iframe {
                     <div class="flex flex-wrap gap-3">
                         <template x-for="item in sec.items.filter(i => i.type === 'pdf' || i.type === 'zip' || i.type === 'file')">
                             <a :href="item.url" target="_blank" class="btn-blue-pill px-6 py-3 text-sm inline-flex items-center gap-3 shadow-lg">
-                                <i class="fa-solid text-lg" :class="item.type === 'pdf' ? 'fa-file-pdf' : (item.type === 'zip' ? 'fa-file-zipper' : 'fa-download')"></i>
+                                <i class="fa-solid" :class="item.type === 'pdf' ? 'fa-file-pdf' : (item.type === 'zip' ? 'fa-file-zipper' : 'fa-download')"></i>
                                 <span x-text="item.title || 'Download File'"></span>
                             </a>
                         </template>
@@ -2476,14 +1916,14 @@ iframe {
 
             <!-- 2. Текстовый блок -->
             <div class="order-1 w-full space-y-6 text-left"
-                 :class="(sec.imageLeft !== undefined ? sec.imageLeft : index % 2 === 0) ? 'lg:order-2 lg:w-1/2' : 'lg:order-1 lg:w-1/2'">
+                 :class="sec.imageLeft ? 'lg:order-2 lg:w-1/2' : 'lg:order-1 lg:w-1/2'">
                 <h2 class="text-4xl font-bold text-gray-900 mb-4" x-text="sec.title"></h2>
                 <p class="text-gray-800 leading-relaxed text-lg" x-text="sec.p1"></p>
                 <p class="text-gray-800 leading-relaxed text-lg" x-text="sec.p2"></p>
                 
-				<!-- Подсказки и кнопки: видны ТОЛЬКО на десктопе под текстом -->
-                <div class="hidden lg:block pt-8">
-                    <template x-for="(hint, idx) in sec.hints" :key="idx">
+                <!-- Подсказки и кнопки: видны ТОЛЬКО на десктопе под текстом -->
+                <div class="hidden lg:block space-y-4 pt-2">
+					<template x-for="(hint, idx) in sec.hints" :key="idx">
                         <div class="flex items-center gap-3 justify-start text-left mb-4">
                             <span class="text-2xl 4xl:text-5xl flex-shrink-0" x-text="hint.emoji"></span>
                             <div class="text-gray-800 text-lg lg:text-lg 2xl:text-lg 4xl:text-4xl leading-relaxed">
@@ -2494,11 +1934,10 @@ iframe {
                         </div>
                     </template>
 
-                    <!-- Добавлен класс mt-6 (или mt-8) только для блока кнопок, не затрагивая подсказки -->
-                    <div class="flex flex-wrap gap-3 mt-12">
+                    <div class="flex flex-wrap gap-3">
                         <template x-for="item in sec.items.filter(i => i.type === 'pdf' || i.type === 'zip' || i.type === 'file')">
-                            <a :href="item.url" target="_blank" class="btn-blue-pill px-6 py-3 4xl:px-12 4xl:py-6 text-sm lg:text-lg 4xl:text-4xl inline-flex items-center gap-3 shadow-lg">
-                                <i class="fa-solid text-xl 4xl:text-4xl" :class="item.type === 'pdf' ? 'fa-file-pdf' : (item.type === 'zip' ? 'fa-file-zipper' : 'fa-download')"></i>
+                            <a :href="item.url" target="_blank" class="btn-blue-pill px-6 py-3 text-sm inline-flex items-center gap-3 shadow-lg">
+                                <i class="fa-solid" :class="item.type === 'pdf' ? 'fa-file-pdf' : (item.type === 'zip' ? 'fa-file-zipper' : 'fa-download')"></i>
                                 <span x-text="item.title || 'Download File'"></span>
                             </a>
                         </template>
@@ -2512,7 +1951,7 @@ iframe {
 
 
 
-</div>
+
 
 
 
@@ -2661,112 +2100,182 @@ iframe {
 
 
 
-
-
-
-
-
-
-
-
-
-
-<!-- CONTACT SECTION -->
-<footer id="contact" class="py-20 px-4 md:px-8 border-t border-gray-100">
-    <div class="max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between gap-8">
-        
-        <!-- Левая колонка: Заголовок и иконки -->
+    <!-- CONTACT SECTION -->
+   <footer id="contact" class="py-20 px-8 border-t border-gray-100 ">
+    <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-center">
         <div class="text-left space-y-6">
             <h2 class="text-4xl font-bold text-gray-900">Contact Us</h2>
             <p class="text-gray-500 max-w-sm">Have questions? Feel free to contact me!</p>
-            
-            <!-- Ряд круглых иконок -->
-            <div class="flex flex-wrap gap-3 pt-2">
-                <!-- 1. Email -->
-                <a href="mailto:johnnschmid@gmail.com" title="Email" class="w-10 h-10 bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white transition-colors rounded-full flex items-center justify-center text-base">
-                    <i class="fa-solid fa-envelope"></i>
-                </a>
-                <!-- 2. Location (Google Maps) -->
-                <a href="https://www.google.com/maps/search/?api=1&query=Öflinger+Str.,+Wehr,+Germany" target="_blank" rel="noopener noreferrer" title="Location" class="w-10 h-10 bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white transition-colors rounded-full flex items-center justify-center text-base">
-                    <i class="fa-solid fa-location-dot"></i>
-                </a>
-                <!-- 3. Phone -->
-                <a href="tel:+491551047827" title="Phone" class="w-10 h-10 bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white transition-colors rounded-full flex items-center justify-center text-base">
-                    <i class="fa-solid fa-phone"></i>
-                </a>
-                <!-- 4. LinkedIn -->
-                <a href="https://linkedin.com/" target="_blank" rel="noopener noreferrer" title="LinkedIn" class="w-10 h-10 bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white transition-colors rounded-full flex items-center justify-center text-base">
-                    <i class="fa-brands fa-linkedin-in"></i>
-                </a>
-                <!-- 5. Facebook -->
-                <a href="https://facebook.com/" target="_blank" rel="noopener noreferrer" title="Facebook" class="w-10 h-10 bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white transition-colors rounded-full flex items-center justify-center text-base">
-                    <i class="fa-brands fa-facebook-f"></i>
-                </a>
-                <!-- 6. Instagram -->
-                <a href="https://instagram.com/" target="_blank" rel="noopener noreferrer" title="Instagram" class="w-10 h-10 bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white transition-colors rounded-full flex items-center justify-center text-base">
-                    <i class="fa-brands fa-instagram"></i>
-                </a>
-                <!-- 7. Twitter / X -->
-                <a href="https://twitter.com/" target="_blank" rel="noopener noreferrer" title="Twitter" class="w-10 h-10 bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white transition-colors rounded-full flex items-center justify-center text-base">
-                    <i class="fa-brands fa-x-twitter"></i>
-                </a>
-                <!-- 8. Messenger -->
-                <a href="https://m.me/" target="_blank" rel="noopener noreferrer" title="Messenger" class="w-10 h-10 bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white transition-colors rounded-full flex items-center justify-center text-base">
-                    <i class="fa-brands fa-facebook-messenger"></i>
-                </a>
-                <!-- 9. Telegram -->
-                <a href="https://t.me/" target="_blank" rel="noopener noreferrer" title="Telegram" class="w-10 h-10 bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white transition-colors rounded-full flex items-center justify-center text-base">
-                    <i class="fa-brands fa-telegram"></i>
-                </a>
-                <!-- 10. YouTube -->
-                <a href="https://www.youtube.com/@ReInstruments" target="_blank" rel="noopener noreferrer" title="YouTube" class="w-10 h-10 bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white transition-colors rounded-full flex items-center justify-center text-base">
-                    <i class="fa-brands fa-youtube"></i>
-                </a>
+            <div class="space-y-4">
+                <div class="flex items-center gap-4">
+                    <div class="w-10 h-10 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center"><i class="fa-solid fa-envelope"></i></div>
+                    <span class="font-bold text-gray-700">johnnschmid@gmail.com</span>
+                </div>
+                <div class="flex items-center gap-4">
+                    <div class="w-10 h-10 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center"><i class="fa-solid fa-phone"></i></div>
+                    <span class="font-bold text-gray-700">+49 (155) 104 7827</span>
+                </div>
+                <div class="flex items-center gap-4">
+                    <div class="w-10 h-10 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center"><i class="fa-solid fa-location-dot"></i></div>
+                    <span class="font-bold text-gray-700">Öflinger Str., Wehr, GE</span>
+                </div>
             </div>
         </div>
-
-        <!-- Правая колонка: Динамические QR-коды -->
-        <div class="flex items-center gap-4 md:gap-6">
-            
-            <div style="display: none;"> 
+        
+        
+        
+        <div class="flex justify-center md:justify-end mt-10 md:mt-0 w-full">
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 w-full max-w-2xl">
+<div style="display: none;"> 
                 <div class="flex flex-col items-center gap-2">
                     <div class="w-full aspect-square max-w-[144px] rounded-xl border border-gray-100 overflow-hidden shadow-sm bg-gray-50">
                         <img src="ceo.jpg" class="w-full h-full object-cover">
                     </div>
                     <p class="text-[10px] font-bold text-gray-400 uppercase tracking-tighter text-center">CEO J.Schmid</p>
                 </div>
-            </div>
-
-            <div class="flex flex-col items-center gap-2">
-                <div class="bg-gray-50 p-3 rounded-xl border border-gray-100 w-[144px] h-[144px] flex items-center justify-center shadow-sm">
-                    <img id="dynamicQR" src="" class="w-full h-full object-contain" loading="lazy">
-                </div>
-                <p class="text-[10px] font-bold text-gray-400 uppercase tracking-tighter text-center">Homepage</p>
-            </div>
-            
-            <div style="display: none;">
+</div> 
                 <div class="flex flex-col items-center gap-2">
-                    <div class="bg-gray-50 p-3 rounded-xl border border-gray-100 w-[144px] h-[144px] flex items-center justify-center shadow-sm">
-                        <img id="dynamicQR2" src="" class="w-full h-full object-contain" loading="lazy">
+                    <div class="bg-gray-50 p-3 rounded-xl border border-gray-100 w-full aspect-square max-w-[144px] flex items-center justify-center shadow-sm">
+                        <img id="dynamicQR" src="" class="w-full h-full object-contain">
+                    </div>
+                    <p class="text-[10px] font-bold text-gray-400 uppercase tracking-tighter text-center">Homepage</p>
+                </div>
+<div style="display: none;">
+                <div class="flex flex-col items-center gap-2">
+                    <div class="bg-gray-50 p-3 rounded-xl border border-gray-100 w-full aspect-square max-w-[144px] flex items-center justify-center shadow-sm">
+                        <img id="dynamicQR2" src="" class="w-full h-full object-contain">
                     </div>
                     <p class="text-[10px] font-bold text-gray-400 uppercase tracking-tighter text-center">eBay</p>
                 </div>
-            </div>
-
-            <div class="flex flex-col items-center gap-2">
-                <div class="bg-gray-50 p-3 rounded-xl border border-gray-100 w-[144px] h-[144px] flex items-center justify-center shadow-sm">
-                    <img id="dynamicQR3" src="" class="w-full h-full object-contain">
+</div>                
+                <div class="flex flex-col items-center gap-2">
+                    <div class="bg-gray-50 p-3 rounded-xl border border-gray-100 w-full aspect-square max-w-[144px] flex items-center justify-center shadow-sm">
+                        <img id="dynamicQR3" src="" class="w-full h-full object-contain">
+                    </div>
+                    <p class="text-[10px] font-bold text-gray-400 uppercase tracking-tighter text-center">YouTube</p>
                 </div>
-                <p class="text-[10px] font-bold text-gray-400 uppercase tracking-tighter text-center">YouTube</p>
+                
             </div>
-
         </div>
-
+       
+        
+        
     </div>
-
     <div class="mt-20 pt-8 border-t border-gray-50 text-center">
         <p class="text-gray-400 text-s tracking-wide">© Designed and coded by Johannes Schmid. All rights reserved.</p>
     </div>
+     
+<div style="display: none;">
+		
+	<div class="mt-10 p-6 bg-white rounded-xl shadow-md" 
+		 x-data="{ 
+			 allUsers: [],
+			 loadUsers() {
+				 const data = localStorage.getItem('reTools_users');
+				 this.allUsers = data ? JSON.parse(data) : [];
+				 if (!Array.isArray(this.allUsers)) this.allUsers = [];
+			 }
+		 }" 
+		 x-init="
+			 loadUsers();
+			 setInterval(() => loadUsers(), 1000);
+		 ">
+		
+		<h3 class="text-xl font-bold mb-4">Список зарегистрированных пользователей (<span x-text="allUsers.length"></span>)</h3>
+		
+		<template x-if="allUsers.length === 0">
+			<p class="text-gray-500">Пока нет зарегистрированных пользователей.</p>
+		</template>
+
+		<template x-if="allUsers.length > 0">
+			<div class="overflow-x-auto">
+				<table class="min-w-full divide-y divide-gray-200 text-sm">
+					<thead class="bg-gray-50">
+						<tr>
+							<th class="px-4 py-3 text-left font-medium text-gray-500 uppercase tracking-wider">Аватар</th>
+							<th class="px-4 py-3 text-left font-medium text-gray-500 uppercase tracking-wider">Имя</th>
+							<th class="px-4 py-3 text-left font-medium text-gray-500 uppercase tracking-wider">Email</th>
+							<th class="px-4 py-3 text-left font-medium text-gray-500 uppercase tracking-wider">Пароль</th>
+							<th class="px-4 py-3 text-left font-medium text-gray-500 uppercase tracking-wider">Адрес</th>
+							<th class="px-4 py-3 text-left font-medium text-gray-500 uppercase tracking-wider">Город</th>
+							<th class="px-4 py-3 text-left font-medium text-gray-500 uppercase tracking-wider">Индекс</th>
+							<th class="px-4 py-3 text-center font-medium text-gray-500 uppercase tracking-wider">Действие</th>
+						</tr>
+					</thead>
+					<tbody class="bg-white divide-y divide-gray-200">
+						<template x-for="(user, index) in allUsers" :key="index">
+							<tr>
+							   
+								<td class="px-4 py-3 whitespace-nowrap">
+									<img :src="user.avatar || 'https://via.placeholder.com/40'" alt="Avatar" class="w-10 h-10 rounded-full object-cover">
+								</td>
+								
+								<td class="px-4 py-3 whitespace-nowrap font-medium text-gray-900" x-text="user.name"></td>
+								
+								<td class="px-4 py-3 whitespace-nowrap text-gray-500" x-text="user.email"></td>
+								
+								<td class="px-4 py-3 whitespace-nowrap text-gray-500" x-text="user.password"></td>
+								
+								<td class="px-4 py-3 whitespace-nowrap text-gray-500" x-text="user.shippingInfo?.address || user.address || '—'"></td>
+								
+								<td class="px-4 py-3 whitespace-nowrap text-gray-500" x-text="user.shippingInfo?.city || user.city || '—'"></td>
+								
+								<td class="px-4 py-3 whitespace-nowrap text-gray-500" x-text="user.shippingInfo?.zip || user.zip || '—'"></td>
+								 
+								<td class="px-4 py-3 whitespace-nowrap text-center font-medium">
+									<button @click="
+										allUsers.splice(index, 1); 
+										localStorage.setItem('reTools_users', JSON.stringify(allUsers));
+									" class="text-red-600 hover:text-red-900 font-bold text-lg px-2 py-1" title="Удалить пользователя">
+										✕
+									</button>
+								</td>
+							</tr>
+						</template>
+					</tbody>
+				</table>
+			</div>
+		</template>
+	</div>
+     
+</div>
+
+
+
+
+
+<div style="display: none;">
+	<!-- Статичный шаговый индикатор в конце страницы -->
+	<div class="max-w-md mx-auto my-8 px-4">
+		<div class="flex rounded-full overflow-hidden border border-gray-200 bg-white shadow-sm text-xs font-medium">
+			
+
+			<div class="flex-1 py-3 px-2 text-center text-gray-400 bg-white flex items-center justify-center">
+				Basket
+			</div>
+
+
+			<div class="flex-1 py-3 px-4 text-center text-white bg-[#00b4a6] flex items-center justify-center font-bold relative shadow-inner" 
+				 style="clip-path: polygon(15% 0%, 100% 0%, 85% 100%, 0% 100%); margin-left: -8px; margin-right: -8px; z-index: 10;">
+				Delivery
+			</div>
+
+			
+			<div class="flex-1 py-3 px-2 text-center text-gray-400 bg-white flex items-center justify-center">
+				Confirm
+			</div>
+
+		   
+			<div class="flex-1 py-3 px-2 text-center text-gray-400 bg-white flex items-center justify-center">
+				Done!
+			</div>
+
+		</div>
+	</div>
+</div>
+
+
+    
 </footer>
 
 
@@ -2777,9 +2286,6 @@ iframe {
         //document.getElementById('buildTimestamp').innerText = `Build Date: ${now.toLocaleDateString()} ${now.toLocaleTimeString()}`;
 
         document.addEventListener('alpine:init', () => {
-			
-			Alpine.store('siteLang', 'EN');
-			
             Alpine.data('ReTools', () => ({
                 darkMode: localStorage.getItem('theme') === 'dark',
                 showCart: false, 
@@ -2796,9 +2302,7 @@ iframe {
                 selectedProduct: null,
                 newReviewText: '',
                 newReviewRating: 0, 
-activeSection: 'home',
-isScrollingByClick: false,
-shopConfig: SHOP_CONFIG,
+
                 // Auth states
                 authEmail: '',
                 authPassword: '',
@@ -2851,19 +2355,6 @@ shopConfig: SHOP_CONFIG,
 				},
 
                 init() {
-					
-					
-					// --- Проверка настройки cursorSkin из products.js ---
-                    const settings = typeof SITE_SETTINGS !== 'undefined' ? SITE_SETTINGS : { cursorSkin: false };
-                    if (settings.cursorSkin === true) {
-                        document.body.classList.add('cursor-dot-enabled');
-                    } else {
-                        document.body.classList.remove('cursor-dot-enabled');
-                    }
-                    // ----------------------------------------------------
-					
-					
-					
                     const qrImg = document.getElementById('dynamicQR');
                     const currentURL = encodeURIComponent(window.location.href);
                     qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${currentURL}&color=2D5BFF`;
@@ -3188,59 +2679,9 @@ shopConfig: SHOP_CONFIG,
 						
 						alert('Ваш профиль был полностью удален.');
 					}
-				},
-handleScroll() {
-    if (this.isScrollingByClick) return;
-
-    const scrollPosition = window.scrollY + window.innerHeight / 3;
-    const documentHeight = document.documentElement.scrollHeight;
-
-    // Если доскроллили до самого низа (контакты)
-    if ((window.innerHeight + window.scrollY) >= documentHeight - 100) {
-        this.activeSection = 'contact';
-        return;
-    }
-
-    // Собираем список всех активных ID для меню: 'home' + все секции с inMenu + 'shop' + 'contact'
-    let validIds = ['home'];
-
-    if (this.sections && Array.isArray(this.sections)) {
-        this.sections.forEach(sec => {
-            if (sec.inMenu && sec.id) {
-                validIds.push(sec.id);
-            }
-        });
-    }
-
-    if (!this.shopConfig || !this.shopConfig.hideShop) {
-        validIds.push('shop');
-    }
-    
-    validIds.push('contact');
-
-    let currentActive = 'home';
-
-    // Проверяем видимость секций
-    validIds.forEach(targetId => {
-        const targetElement = document.getElementById(targetId);
-        if (targetElement) {
-            const elementTop = targetElement.offsetTop;
-            const elementBottom = elementTop + targetElement.offsetHeight;
-
-            if (scrollPosition >= elementTop && scrollPosition < elementBottom) {
-                currentActive = targetId;
-            }
-        }
-    });
-
-    this.activeSection = currentActive;
-},
-
-
-
-
+				}
             }))
-        });
+        })
         
 window.addEventListener("mousemove", (e) => {
     const posX = e.clientX;
@@ -3249,22 +2690,24 @@ window.addEventListener("mousemove", (e) => {
     const cursorDot = document.querySelector(".cursor-dot");
     const cursorOutline = document.querySelector(".cursor-outline");
 
-    // Add this null safety check
-    if (!cursorDot || !cursorOutline) return;
-
+    // The dot moves instantly because it has no 'left/top' transition in CSS
     cursorDot.style.left = posX + "px";
     cursorDot.style.top = posY + "px";
 
+    // The outline "trails" because the CSS transition (0.15s) slows its movement
     cursorOutline.style.left = posX + "px";
     cursorOutline.style.top = posY + "px";
 });
 
+// Optional: Hover effect to match UDD style
 document.addEventListener('mouseover', (e) => {
+    // Check if the hovered element (or its parent) is a button, link, or has the cursor-pointer class
     if (e.target.closest('button, a, .cursor-pointer')) {
         const outline = document.querySelector(".cursor-outline");
-        if (outline) {
-            outline.style.transform = 'translate(-50%, -50%) scale(1.8)';
-        }
+        const dot = document.querySelector(".cursor-dot");
+        
+        outline.style.transform = 'translate(-50%, -50%) scale(1.8)';
+        //dot.style.opacity = '0.5';
     }
 });
 
@@ -3273,15 +2716,15 @@ document.addEventListener('mouseout', (e) => {
         const outline = document.querySelector(".cursor-outline");
         const dot = document.querySelector(".cursor-dot");
         
-        if (outline) outline.style.transform = 'translate(-50%, -50%) scale(1)';
-        if (dot) dot.style.opacity = '1';
+        outline.style.transform = 'translate(-50%, -50%) scale(1)';
+        dot.style.opacity = '1';
     }
 });
 
+// Add these listeners below your animate() function
 window.addEventListener("mousedown", () => {
     const outline = document.querySelector(".cursor-outline");
-    if (!outline) return;
-    
+    // Increase size and add a glowing shadow on press
     outline.style.transform = 'translate(-50%, -50%) scale(3.2)';
     outline.style.boxShadow = '0 0 20px rgba(45, 91, 255, 0.4)';
     outline.style.backgroundColor = 'rgba(45, 91, 255, 0.5)';
@@ -3289,8 +2732,7 @@ window.addEventListener("mousedown", () => {
 
 window.addEventListener("mouseup", () => {
     const outline = document.querySelector(".cursor-outline");
-    if (!outline) return;
-    
+    // Return to original size and remove shadow on release
     outline.style.transform = 'translate(-50%, -50%) scale(1)';
     outline.style.boxShadow = '0 0 0 rgba(45, 91, 255, 0)';
     outline.style.backgroundColor = 'rgba(45, 91, 255, 0.5)';
@@ -3315,706 +2757,9 @@ document.addEventListener('contextmenu', (e) => {
 });
 
     </script>
-
-
-
-
-<script>
-// --- 3D CAD VIEWER ENGINE ---
-let cadScene, cadCamera, cadRenderer, cadControls;
-let cadModelGroup = null;
-let cadMaterial = null;
-let occtEngine = null; // Объявляем один раз в глобальной области видимости
-let isOcctLoading = false;
-const cadStlLoader = new THREE.STLLoader();
-
-let cadClipPlane;
-let isCadClippingEnabled = false;
-let currentCadCutAxis = 'Y';
-let cadBoundingBox = new THREE.Box3();
-let cadCenter = new THREE.Vector3();
-let cadSize = new THREE.Vector3();
-
-window.addEventListener('load', () => {
-	
-	// Проверяем, что это НЕ мобильное устройство и ширина больше 1024px
-const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-
-if (!isMobile && window.innerWidth >= 1024) {
-    // Безопасно загружаем 3D и тяжелые скрипты только для настоящих ПК
-            initCadViewer();
-        loadCadDemo('gear');
-        setupCadEventListeners();
-}
-
-});
-
-function initCadViewer() {
-    const container = document.getElementById('cad-viewport');
-    if (!container) return;
-
-    cadClipPlane = new THREE.Plane(new THREE.Vector3(0, -1, 0), 0);
-
-    cadScene = new THREE.Scene();
-    cadScene.background = new THREE.Color(0xf1f5f9);
-
-    cadCamera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 10000);
-
-    cadRenderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-    cadRenderer.setSize(container.clientWidth, container.clientHeight);
-    cadRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    cadRenderer.shadowMap.enabled = true;
-    cadRenderer.localClippingEnabled = true;
-    container.appendChild(cadRenderer.domElement);
-
-    cadControls = new THREE.OrbitControls(cadCamera, cadRenderer.domElement);
-    cadControls.enableDamping = true;
-    cadControls.dampingFactor = 0.05;
-
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
-    cadScene.add(ambientLight);
-
-    const mainLight = new THREE.DirectionalLight(0xffffff, 0.8);
-    mainLight.position.set(100, 200, 150);
-    cadScene.add(mainLight);
-
-    const fillLight = new THREE.DirectionalLight(0x90b0ff, 0.4);
-    fillLight.position.set(-100, -100, -100);
-    cadScene.add(fillLight);
-
-    const gridHelper = new THREE.GridHelper(300, 60, 0x94a3b8, 0xc2410c);
-    gridHelper.position.y = -0.01;
-    gridHelper.name = "cadGridHelper";
-    cadScene.add(gridHelper);
-
-    cadMaterial = new THREE.MeshStandardMaterial({
-        color: 0x2563eb,
-        metalness: 0.25,
-        roughness: 0.35,
-        side: THREE.DoubleSide
-    });
-
-    animateCadViewer();
-}
-
-// Ленивая загрузка WebAssembly движка STEP исключительно по требованию (спасает Safari от падений)
-function loadOcctEngine() {
-    return new Promise((resolve, reject) => {
-        if (occtEngine) return resolve(occtEngine);
-        
-        if (typeof occtimportjs !== 'undefined') {
-            occtimportjs().then(instance => {
-                occtEngine = instance;
-                resolve(occtEngine);
-            }).catch(reject);
-            return;
-        }
-        
-        if (isOcctLoading) {
-            const checkInterval = setInterval(() => {
-                if (occtEngine) {
-                    clearInterval(checkInterval);
-                    resolve(occtEngine);
-                }
-            }, 100);
-            return;
-        }
-
-        isOcctLoading = true;
-        const script = document.createElement('script');
-        script.src = "https://cdn.jsdelivr.net/npm/occt-import-js@0.0.22/dist/occt-import-js.js";
-        script.onload = () => {
-            occtimportjs().then(instance => {
-                occtEngine = instance;
-                isOcctLoading = false;
-                resolve(occtEngine);
-            }).catch(err => {
-                isOcctLoading = false;
-                reject(err);
-            });
-        };
-        script.onerror = () => {
-            isOcctLoading = false;
-            reject(new Error("Не удалось загрузить модуль OCCT"));
-        };
-        document.head.appendChild(script);
-    });
-}
-
-function animateCadViewer() {
-    requestAnimationFrame(animateCadViewer);
-    if (cadControls) cadControls.update();
-    if (cadRenderer && cadScene && cadCamera) cadRenderer.render(cadScene, cadCamera);
-}
-
-function handleCadFile(file) {
-    if (!file) return;
-
-    const filename = file.name;
-    const ext = filename.split('.').pop().toLowerCase();
-    updateCadUIStatus(filename, "Загрузка...", 0);
-
-    const reader = new FileReader();
-    reader.onload = (e) => {
-        const buffer = e.target.result;
-        setTimeout(() => {
-            try {
-                if (ext === 'stl') {
-                    parseCadSTL(buffer, filename);
-                } else if (ext === 'step' || ext === 'stp') {
-                    parseCadSTEP(buffer, filename);
-                } else {
-                    alert("Формат не поддерживается. Выберите файл STL или STEP.");
-                    updateCadUIStatus(filename, "Ошибка", 0);
-                }
-            } catch (err) {
-                console.error("Parse error:", err);
-                alert("Ошибка при чтении файла: " + err.message);
-                updateCadUIStatus(filename, "Ошибка", 0);
-            }
-        }, 50);
-    };
-    reader.readAsArrayBuffer(file);
-}
-
-function createCadMaterial(colorHex) {
-    const isWireframe = document.getElementById('cad-wireframe-toggle').checked;
-    return new THREE.MeshStandardMaterial({
-        color: colorHex,
-        metalness: 0.3,
-        roughness: 0.35,
-        side: THREE.DoubleSide,
-        wireframe: isWireframe,
-        clippingPlanes: isCadClippingEnabled ? [cadClipPlane] : [],
-        clipShadows: true
-    });
-}
-
-function parseCadSTL(buffer, filename) {
-    const geometry = cadStlLoader.parse(buffer);
-    geometry.computeVertexNormals();
-
-    const mat = createCadMaterial(0x2563eb);
-    const mesh = new THREE.Mesh(geometry, mat);
-
-    const group = new THREE.Group();
-    group.add(mesh);
-
-    displayCadModelGroup(group, filename, geometry.attributes.position.count / 3);
-}
-
-async function parseCadSTEP(buffer, filename) {
-    updateCadUIStatus(filename, "Инициализация ядра...", 0);
-    
-    try {
-        const engine = await loadOcctEngine();
-
-        const fileBytes = new Uint8Array(buffer);
-        const result = engine.ReadStepFile(fileBytes, null);
-
-        if (!result || !result.meshes || result.meshes.length === 0) {
-            throw new Error("Не удалось извлечь 3D-сетку из STEP файла.");
-        }
-
-        const group = new THREE.Group();
-        let totalTriangles = 0;
-
-        result.meshes.forEach(meshData => {
-            const geometry = new THREE.BufferGeometry();
-            const posArray = meshData.attributes.position.array instanceof Float32Array 
-                ? meshData.attributes.position.array 
-                : new Float32Array(meshData.attributes.position.array);
-            
-            geometry.setAttribute('position', new THREE.Float32BufferAttribute(posArray, 3));
-
-            if (meshData.attributes.normal && meshData.attributes.normal.array) {
-                const normArray = meshData.attributes.normal.array instanceof Float32Array 
-                    ? meshData.attributes.normal.array 
-                    : new Float32Array(meshData.attributes.normal.array);
-                geometry.setAttribute('normal', new THREE.Float32BufferAttribute(normArray, 3));
-            } else {
-                geometry.computeVertexNormals();
-            }
-
-            if (meshData.index && meshData.index.array) {
-                const indexArray = meshData.index.array instanceof Uint32Array || meshData.index.array instanceof Uint16Array
-                    ? meshData.index.array
-                    : new Uint32Array(meshData.index.array);
-                geometry.setIndex(new THREE.BufferAttribute(indexArray, 1));
-                totalTriangles += indexArray.length / 3;
-            } else {
-                totalTriangles += posArray.length / 9;
-            }
-
-            let colorHex = 0x2563eb;
-            if (meshData.color && Array.isArray(meshData.color) && meshData.color.length >= 3) {
-                colorHex = new THREE.Color(meshData.color[0], meshData.color[1], meshData.color[2]);
-            }
-
-            const meshMaterial = createCadMaterial(colorHex);
-            const mesh = new THREE.Mesh(geometry, meshMaterial);
-            group.add(mesh);
-        });
-
-        displayCadModelGroup(group, filename, Math.round(totalTriangles));
-
-    } catch (err) {
-        console.error("STEP Parse error:", err);
-        alert("Ошибка при чтении STEP файла: " + err.message);
-        updateCadUIStatus(filename, "Ошибка", 0);
-    }
-}
-
-function displayCadModelGroup(group, filename, triangleCount) {
-    if (cadModelGroup) {
-        cadScene.remove(cadModelGroup);
-        cadModelGroup.traverse(child => {
-            if (child.geometry) child.geometry.dispose();
-        });
-    }
-
-    cadModelGroup = group;
-    cadScene.add(cadModelGroup);
-
-    fitCadCameraToModel(cadModelGroup);
-    updateCadClippingPlane();
-
-    updateCadUIStatus(filename, "Готов", triangleCount);
-}
-
-function fitCadCameraToModel(group) {
-    const box = new THREE.Box3().setFromObject(group);
-    if (box.isEmpty()) return;
-
-    cadBoundingBox.copy(box);
-    cadBoundingBox.getCenter(cadCenter);
-    cadBoundingBox.getSize(cadSize);
-
-    group.position.sub(cadCenter);
-
-    const maxDim = Math.max(cadSize.x, cadSize.y, cadSize.z);
-    const fov = cadCamera.fov * (Math.PI / 180);
-    let cameraDistance = (maxDim / (2 * Math.tan(fov / 2))) * 1.0;
-
-    cadCamera.position.set(cameraDistance * 0.7, cameraDistance * 0.5, cameraDistance * 0.7);
-    cadCamera.lookAt(0, 0, 0);
-
-    cadCamera.near = Math.max(0.01, cameraDistance / 100);
-    cadCamera.far = cameraDistance * 100;
-    cadCamera.updateProjectionMatrix();
-
-    if (typeof cadControls !== 'undefined' && cadControls) {
-        cadControls.target.set(0, 0, 0);
-        cadControls.update();
-    }
-
-    const grid = cadScene.getObjectByName("cadGridHelper");
-    if (grid) {
-        grid.position.y = -(cadSize.y / 2);
-    }
-}
-
-function setCadCutAxis(axis) {
-    currentCadCutAxis = axis;
-    ['X', 'Y', 'Z'].forEach(a => {
-        const btn = document.getElementById(`cad-axis-${a.toLowerCase()}-btn`);
-        if (btn) {
-            if (a === axis) {
-                btn.className = "px-2 py-0.5 rounded-md font-semibold bg-blue-600 text-white shadow-sm transition-colors";
-            } else {
-                btn.className = "px-2 py-0.5 rounded-md font-semibold text-gray-600 dark:text-gray-300 hover:text-gray-900 transition-colors";
-            }
-        }
-    });
-    updateCadClippingPlane();
-}
-
-function updateCadClippingPlane() {
-    if (!isCadClippingEnabled) return;
-
-    const isInverted = !document.getElementById('cad-invert-cut-toggle').checked;
-    const sliderVal = parseFloat(document.getElementById('cad-cut-slider').value) / 100;
-
-    let normal = new THREE.Vector3();
-    let planePos = new THREE.Vector3();
-
-    if (currentCadCutAxis === 'X') {
-        normal.set(isInverted ? -1 : 1, 0, 0);
-        planePos.set((cadSize.x / 2) * sliderVal, 0, 0);
-    } else if (currentCadCutAxis === 'Y') {
-        normal.set(0, isInverted ? -1 : 1, 0);
-        planePos.set(0, (cadSize.y / 2) * sliderVal, 0);
-    } else {
-        normal.set(0, 0, isInverted ? -1 : 1);
-        planePos.set(0, 0, (cadSize.z / 2) * sliderVal);
-    }
-
-    cadClipPlane.normal.copy(normal);
-    cadClipPlane.constant = -planePos.dot(normal);
-
-    document.getElementById('cad-cut-pos-val').innerText = `${Math.round(sliderVal * 100)}%`;
-}
-
-function toggleCadClipping(enabled) {
-    isCadClippingEnabled = enabled;
-    const controlsEl = document.getElementById('cad-section-controls');
-
-    if (enabled) {
-        controlsEl.classList.remove('hidden');
-        setCadCutAxis(currentCadCutAxis);
-    } else {
-        controlsEl.classList.add('hidden');
-    }
-
-    if (cadModelGroup) {
-        cadModelGroup.traverse(child => {
-            if (child.isMesh && child.material) {
-                child.material.clippingPlanes = enabled ? [cadClipPlane] : [];
-                child.material.needsUpdate = true;
-            }
-        });
-    }
-}
-
-function resetCadCameraView() {
-    if (cadModelGroup) {
-        fitCadCameraToModel(cadModelGroup);
-    }
-}
-
-function setCadStandardView(viewType) {
-    if (!cadCamera || !cadControls) return;
-
-    const maxDim = Math.max(cadSize.x || 50, cadSize.y || 50, cadSize.z || 50);
-    const fov = cadCamera.fov * (Math.PI / 180);
-    let cameraDistance = (maxDim / (2 * Math.tan(fov / 2))) * 1.0;
-
-    switch (viewType) {
-        case 'iso':
-            cadCamera.position.set(cameraDistance * 0.7, cameraDistance * 0.5, cameraDistance * 0.7);
-            break;
-        case 'front':
-            cadCamera.position.set(0, 0, cameraDistance);
-            break;
-        case 'top':
-            cadCamera.position.set(0, cameraDistance, 0);
-            break;
-        case 'right':
-            cadCamera.position.set(cameraDistance, 0, 0);
-            break;
-        default:
-            cadCamera.position.set(cameraDistance * 0.7, cameraDistance * 0.5, cameraDistance * 0.7);
-    }
-
-    cadCamera.lookAt(0, 0, 0);
-    cadCamera.near = Math.max(0.01, cameraDistance / 100);
-    cadCamera.far = cameraDistance * 100;
-    cadCamera.updateProjectionMatrix();
-
-    cadControls.target.set(0, 0, 0);
-    cadControls.update();
-}
-
-function loadCadDemo(shapeType) {
-    let geometry;
-    let name = "";
-    let colorHex = 0x2563eb;
-
-    if (shapeType === 'gear') {
-        name = "Demo (Gear)";
-        geometry = new THREE.CylinderGeometry(25, 25, 8, 32);
-        colorHex = 0xe11d48;
-    } else if (shapeType === 'bracket') {
-        name = "Demo (Bracket)";
-        geometry = new THREE.BoxGeometry(40, 20, 30);
-        colorHex = 0x059669;
-    } else {
-        name = "Demo (Shaft)";
-        geometry = new THREE.CylinderGeometry(10, 20, 60, 24);
-        colorHex = 0xd97706;
-    }
-
-    geometry.computeVertexNormals();
-    const demoMaterial = createCadMaterial(colorHex);
-    const mesh = new THREE.Mesh(geometry, demoMaterial);
-    const group = new THREE.Group();
-    group.add(mesh);
-
-    displayCadModelGroup(group, name, geometry.attributes.position.count / 3);
-}
-
-function setupCadEventListeners() {
-    const fileInput = document.getElementById('cad-file-input');
-    if (fileInput) {
-        fileInput.addEventListener('change', (e) => {
-            if (e.target.files.length > 0) handleCadFile(e.target.files[0]);
-        });
-    }
-
-    const viewport = document.getElementById('cad-viewport');
-    const dropOverlay = document.getElementById('cad-drop-overlay');
-
-    if (viewport && dropOverlay) {
-        window.addEventListener('dragover', (e) => {
-            e.preventDefault();
-            dropOverlay.classList.add('opacity-100', 'pointer-events-auto');
-        });
-
-        window.addEventListener('dragleave', (e) => {
-            if (e.clientX <= 0 || e.clientY <= 0 || e.clientX >= window.innerWidth || e.clientY >= window.innerHeight) {
-                dropOverlay.classList.remove('opacity-100', 'pointer-events-auto');
-            }
-        });
-
-        window.addEventListener('drop', (e) => {
-            e.preventDefault();
-            dropOverlay.classList.remove('opacity-100', 'pointer-events-auto');
-            if (e.dataTransfer.files.length > 0) {
-                handleCadFile(e.dataTransfer.files[0]);
-            }
-        });
-    }
-
-    document.getElementById('cad-wireframe-toggle').addEventListener('change', (e) => {
-        const isWireframe = e.target.checked;
-        if (cadModelGroup) {
-            cadModelGroup.traverse(child => {
-                if (child.isMesh && child.material) child.material.wireframe = isWireframe;
-            });
-        }
-    });
-
-    document.getElementById('cad-section-toggle').addEventListener('change', (e) => {
-        toggleCadClipping(e.target.checked);
-    });
-
-    document.getElementById('cad-cut-slider').addEventListener('input', updateCadClippingPlane);
-    document.getElementById('cad-invert-cut-toggle').addEventListener('change', updateCadClippingPlane);
-
-    window.addEventListener('resize', () => {
-        const container = document.getElementById('cad-viewport');
-        if (container && cadCamera && cadRenderer) {
-            cadCamera.aspect = container.clientWidth / container.clientHeight;
-            cadCamera.updateProjectionMatrix();
-            cadRenderer.setSize(container.clientWidth, container.clientHeight);
-        }
-    });
-}
-
-function updateCadUIStatus(filename, status, triangles) {
-    document.getElementById('cad-info-filename').innerText = filename;
-    document.getElementById('cad-info-status').innerText = status;
-    document.getElementById('cad-info-triangles').innerText = Number(triangles).toLocaleString();
-}
-</script>
-
-
     
 <div class="cursor-dot"></div>
 <div class="cursor-outline"></div> 
-
-
-
-
-
-
-<!-- ВИДЖЕТ УМНОГО ЧАТ-БОТА -->
-<div class="fixed bottom-6 right-6 z-50" x-data="siteChat()">
-    
-    <!-- Кнопка вызова чата -->
-    <button @click="isOpen = !isOpen" 
-            class="w-14 h-14 bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-2xl flex items-center justify-center text-xl transition-transform hover:scale-105 cursor-pointer">
-        <i class="fa-solid" :class="isOpen ? 'fa-xmark' : 'fa-comment-dots'"></i>
-    </button>
-
-    <!-- Окно чата -->
-    <div x-show="isOpen" 
-         x-cloak
-         x-transition:enter="transition ease-out duration-300"
-         x-transition:enter-start="opacity-0 translate-y-4 scale-95"
-         x-transition:enter-end="opacity-100 translate-y-0 scale-100"
-         class="absolute bottom-20 right-0 w-80 sm:w-96 bg-white dark:bg-[#1E1E1E] border border-gray-200 dark:border-gray-700 rounded-2xl shadow-2xl overflow-hidden flex flex-col h-[450px]">
-        
-        <!-- Шапка чата -->
-        <div class="bg-blue-600 text-white p-4 flex items-center justify-between">
-            <div class="flex items-center gap-3">
-                <div class="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center font-bold text-xs">JS</div>
-                <div>
-                    <p class="font-bold text-sm" x-text="t('headerTitle')"></p>
-                    <p class="text-[10px] text-blue-100" x-text="t('headerSubtitle')"></p>
-                </div>
-            </div>
-            <button @click="isOpen = false" class="text-white/80 hover:text-white">
-                <i class="fa-solid fa-xmark text-lg"></i>
-            </button>
-        </div>
-
-		<!-- История сообщений -->
-		<div class="flex-1 p-4 overflow-y-auto space-y-3 text-xs" x-init="init()">
-			<template x-for="(msg, index) in chatHistory" :key="index">
-                <div class="flex" :class="msg.sender === 'user' ? 'justify-end' : 'justify-start'">
-                    <div class="max-w-[85%] p-3 rounded-xl leading-relaxed shadow-sm"
-                         :class="msg.sender === 'user' ? 'bg-blue-600 text-white rounded-br-none' : 'bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 rounded-bl-none'"
-                         x-html="msg.text">
-                    </div>
-                </div>
-            </template>
-        </div>
-
-        <!-- Поле ввода -->
-        <div class="p-3 border-t border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-[#1E1E1E] flex gap-2">
-            <input type="text" 
-                   x-model="newMessage" 
-                   @keydown.enter="send()" 
-                   :placeholder="t('placeholder')" 
-                   class="flex-1 px-4 py-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-xs outline-none focus:ring-2 focus:ring-blue-500 text-gray-800 dark:text-white">
-            
-            <button @click="send()" class="w-10 h-10 bg-blue-600 hover:bg-blue-700 text-white rounded-xl flex items-center justify-center transition-colors cursor-pointer">
-                <i class="fa-solid fa-paper-plane text-xs"></i>
-            </button>
-        </div>
-    </div>
-</div>
-
-<script>
-function siteChat() {
-    return {
-        isOpen: false,
-        newMessage: '',
-        chatHistory: [], // 1. Инициализируем сразу пустым массивом
-
-        translations: {
-            EN: {
-                headerTitle: 'Johannes Schmid',
-                headerSubtitle: 'answers quickly',
-                welcome: 'Hello! Enter a keyword (e.g. About, RePet, Voysa, ILS, BPM), and I will provide you with a link to the article.',
-                placeholder: 'Ask about products...',
-                notFound: 'Sorry, no article was found for your request. Try entering an exact title: About, RePet, Voysa, Saned, Blindphone, ILS.',
-                prefix: 'You can view the answer to your question here: ',
-                defaultArticle: 'Article'
-            },
-            RU: {
-                headerTitle: 'Johannes Schmid',
-                headerSubtitle: 'отвечает быстро',
-                welcome: 'Здравствуйте! Введите ключевое слово (например: About, RePet, Voysa, ILS, BPM), и я выдам вам ссылку на статью.',
-                placeholder: 'Спросите о товарах...',
-                notFound: 'К сожалению, статья по вашему запросу не найдена. Попробуйте ввести точное название: About, RePet, Voysa, Saned, Blindphone, ILS.',
-                prefix: 'Ответ на Ваш вопрос Вы можете посмотреть здесь: ',
-                defaultArticle: 'Статья'
-            },
-            GE: {
-                headerTitle: 'Johannes Schmid',
-                headerSubtitle: 'antwortet sofort',
-                welcome: 'Hallo! Geben Sie ein Schlüsselwort ein (z. B. About, RePet, Voysa, ILS, BPM), und ich gebe Ihnen einen Link zum Artikel.',
-                placeholder: 'Fragen Sie nach Produkten...',
-                notFound: 'Leider wurde kein Artikel für Ihre Anfrage gefunden. Versuchen Sie einen genauen Titel einzugeben: About, RePet, Voysa, Saned, Blindphone, ILS.',
-                prefix: 'Die Antwort auf Ihre Frage finden Sie hier: ',
-                defaultArticle: 'Artikel'
-            }
-        },
-
-        get lang() {
-            const l = Alpine.store('siteLang') || 'EN';
-            return this.translations[l] ? l : 'EN';
-        },
-
-        t(key) {
-            const currentLang = this.lang;
-            return (this.translations[currentLang] && this.translations[currentLang][key]) 
-                || this.translations['EN'][key];
-        },
-
-        init() {
-            // 2. Заполняем массив приветствием при инициализации
-            this.chatHistory = [
-                { sender: 'bot', text: this.t('welcome') }
-            ];
-
-            // Отслеживаем изменения глобального хранилища языка
-            this.$watch(() => Alpine.store('siteLang'), () => {
-                if (this.chatHistory.length > 0) {
-                    this.chatHistory[0].text = this.t('welcome');
-                }
-            });
-        },
-
-        send() {
-            if (!this.newMessage.trim()) return;
-            const query = this.newMessage.trim();
-
-            // Страховка: если по какой-то причине история пуста
-            if (this.chatHistory.length === 0) {
-                this.init();
-            }
-
-            this.chatHistory.push({ sender: 'user', text: query });
-            const currentQuery = query;
-            this.newMessage = '';
-
-            setTimeout(() => {
-                const foundList = this.findSections(currentQuery);
-                
-                if (foundList && foundList.length > 0) {
-                    foundList.forEach(found => {
-                        const url = '#' + found.id;
-                        
-                        let title = found.title || found.menuTitle || this.t('defaultArticle');
-                        if (this.lang === 'EN' && found.title_en) title = found.title_en;
-                        if (this.lang === 'GE' && found.title_de) title = found.title_de;
-
-                        const reply = this.t('prefix') + '<a href="' + url + '" @click="isOpen = false" class="text-blue-600 dark:text-blue-400 font-bold underline hover:text-blue-800">' + title + '</a>';
-                        this.chatHistory.push({ sender: 'bot', text: reply });
-                    });
-                } else {
-                    this.chatHistory.push({ sender: 'bot', text: this.t('notFound') });
-                }
-            }, 300);
-        },
-
-        findSections(q) {
-            const sections = window.SECTIONS_DATA || (typeof SECTIONS_DATA !== 'undefined' ? SECTIONS_DATA : null);
-            const lowerQ = q.toLowerCase();
-            const results = [];
-
-            if (['contact', 'contacts', 'контакты', 'контакт', 'связь', 'kontakte'].some(word => lowerQ.includes(word))) {
-                results.push({
-                    id: 'contact',
-                    title: 'Contacts',
-                    title_en: 'Contacts',
-                    title_de: 'Kontakte'
-                });
-            }
-
-            if (!sections || !sections.length) return results;
-
-            let matches = sections.filter(sec => {
-                const id = (sec.id || '').toLowerCase();
-                const menuTitle = (sec.menuTitle || '').toLowerCase();
-                const title = (sec.title || '').toLowerCase();
-                return id.includes(lowerQ) || menuTitle.includes(lowerQ) || title.includes(lowerQ);
-            });
-
-            if (matches.length === 0) {
-                matches = sections.filter(sec => {
-                    let hintsText = '';
-                    if (sec.hints && Array.isArray(sec.hints)) {
-                        hintsText = sec.hints.map(h => (h.title || '') + ' ' + (h.text || '')).join(' ');
-                    }
-                    const fullText = ((sec.p1 || '') + ' ' + (sec.p2 || '') + ' ' + hintsText).toLowerCase();
-                    return fullText.includes(lowerQ);
-                });
-            }
-
-            return [...results, ...matches];
-        }
-    }
-}
-</script>
-
-
-
-
-
 
 </body>
 </html>
