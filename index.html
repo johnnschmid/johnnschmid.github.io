@@ -3336,12 +3336,12 @@ let cadCenter = new THREE.Vector3();
 let cadSize = new THREE.Vector3();
 
 window.addEventListener('load', () => {
-    // Инициализируем WebGL только на десктопах (шире 1024px), чтобы не грузить память iPhone
+    // Инициализируем WebGL ТОЛЬКО на десктопах (шире 1024px)
     if (window.innerWidth >= 1024) {
         initCadViewer();
         loadCadDemo('gear');
+        setupCadEventListeners();
     }
-    setupCadEventListeners();
 });
 
 function initCadViewer() {
