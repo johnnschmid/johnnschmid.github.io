@@ -11,8 +11,8 @@ defaultFontSize: 'Medium'
 // Настройки слайдшоу
 const SLIDESHOW_CONFIG = {
     showOnHome: true,          // Показывать ли слайдшоу на главной (true/false)
-    albumsOrder: 'random', // 'sequential' (последовательно) или 'random' (рандомно)
-    imagesOrder: 'random', // 'sequential' (последовательно) или 'random' (рандомно)
+    albumsRandom: true,
+    imagesRandom: true,
     slideInterval: 5000        // Скорость смены картинок в миллисекундах (например, 4000 = 4 секунды)
 };
 

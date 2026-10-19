@@ -1679,11 +1679,12 @@ iframe {
                  if (typeof SECTIONS_DATA !== 'undefined' && SECTIONS_DATA.length > 0) {
                      let sections = [...SECTIONS_DATA];
                      
-                     let albumsOrder = (typeof SLIDESHOW_CONFIG !== 'undefined') ? SLIDESHOW_CONFIG.albumsOrder : 'sequential';
-                     let imagesOrder = (typeof SLIDESHOW_CONFIG !== 'undefined') ? SLIDESHOW_CONFIG.imagesOrder : 'sequential';
+                     // Парсим новые свойства конфигурации: albumsRandom и imagesRandom
+                     let albumsRandom = (typeof SLIDESHOW_CONFIG !== 'undefined' && SLIDESHOW_CONFIG.albumsRandom === true);
+                     let imagesRandom = (typeof SLIDESHOW_CONFIG !== 'undefined' && SLIDESHOW_CONFIG.imagesRandom === true);
 
                      // Если включен рандом альбомов, перемешиваем порядок секций
-                     if (albumsOrder === 'random') {
+                     if (albumsRandom) {
                          sections.sort(() => Math.random() - 0.5);
                      }
 
@@ -1693,7 +1694,7 @@ iframe {
                              
                              if (images.length > 0) {
                                  // Если включен рандом картинок внутри альбома
-                                 if (imagesOrder === 'random') {
+                                 if (imagesRandom) {
                                      images.sort(() => Math.random() - 0.5);
                                  }
 
@@ -1704,10 +1705,9 @@ iframe {
                          }
                      });
 
-                     // ГЛАВНОЕ ИСПРАВЛЕНИЕ: 
-                     // Если оба параметра 'random', перемешиваем весь итоговый массив глобально, 
+                     // Если оба параметра случайные, перемешиваем весь итоговый массив глобально, 
                      // чтобы картинки из разных альбомов равномерно чередовались друг с другом.
-                     if (albumsOrder === 'random' && imagesOrder === 'random') {
+                     if (albumsRandom && imagesRandom) {
                          for (let i = extracted.length - 1; i > 0; i--) {
                              const j = Math.floor(Math.random() * (i + 1));
                              [extracted[i], extracted[j]] = [extracted[j], extracted[i]];
@@ -1720,7 +1720,8 @@ iframe {
                      this.slideA = this.allSlides[0];
                      this.slideB = this.allSlides[1] || this.allSlides[0];
 
-                     let intervalTime = (typeof SLIDESHOW_CONFIG !== 'undefined' && SLIDESHOW_CONFIG.slideInterval) ? SLIDESHOW_CONFIG.slideInterval : 4000;
+                     // Читаем интервал из конфигурации (по умолчанию 5000мс или то, что задано в SLIDESHOW_CONFIG)
+                     let intervalTime = (typeof SLIDESHOW_CONFIG !== 'undefined' && SLIDESHOW_CONFIG.slideInterval) ? SLIDESHOW_CONFIG.slideInterval : 5000;
 
                      this.timer = setInterval(() => {
                          let nextIndex = (this.currentIndex + 1) % this.allSlides.length;
