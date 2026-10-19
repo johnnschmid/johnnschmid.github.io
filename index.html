@@ -1658,7 +1658,7 @@ iframe {
 
 
 <!-- КРАСИВОЕ СЛАЙДШОУ В СТИЛЕ МАКОВСКОЙ ЗАСТАВКИ -->
-<section id="slideshow" class="relative w-full h-[calc(95dvh-4rem)] overflow-hidden flex items-center justify-center my-8 max-w-7xl mx-auto section-fade-edges"
+<section id="slideshow" class="relative w-full h-[calc(95dvh-4rem)] overflow-hidden flex items-center justify-center my-8 max-w-7xl mx-auto"
          x-data="{
              allSlides: [],
              currentIndex: 0,
@@ -1768,9 +1768,11 @@ iframe {
         
         /* Мягкое растворение краев ВСЕЙ СЕКЦИИ в фон страницы */
         .section-fade-edges {
-            mask-image: linear-gradient(to bottom, transparent 0%, black 22%, black 78%, transparent 100%), linear-gradient(to right, transparent 0%, black 22%, black 78%, transparent 100%);
-            -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 22%, black 78%, transparent 100%), linear-gradient(to right, transparent 0%, black 22%, black 78%, transparent 100%);
+            mask-image: linear-gradient(to right, transparent 0px, black 180px, black calc(100% - 180px), transparent 100%),
+                        linear-gradient(to bottom, transparent 0px, black 180px, black calc(100% - 180px), transparent 100%);
             mask-composite: intersect;
+            -webkit-mask-image: linear-gradient(to right, transparent 0px, black 180px, black calc(100% - 180px), transparent 100%),
+                                linear-gradient(to bottom, transparent 0px, black 180px, black calc(100% - 180px), transparent 100%);
             -webkit-mask-composite: source-in;
         }
     </style>
@@ -1782,7 +1784,7 @@ iframe {
         <img :src="slideA.url" 
              class="rounded-[50px] max-w-full max-h-full object-contain relative z-10 clean-fade-mask transition-transform ease-out"
              style="transition-duration: 5000ms;"
-             :class="activeLayer === 0 ? 'scale-110' : 'scale-95'"
+             :class="activeLayer === 0 ? 'scale-100' : 'scale-95'"
              loading="eager">
         <div class="absolute inset-0 flex items-end justify-center p-8 pb-12 lg:pb-16 pointer-events-none overflow-hidden z-30" x-show="activeLayer === 0">
             <h2 class="animate-floating-text text-3xl lg:text-6xl font-black text-white tracking-wider text-center select-none"
@@ -1799,7 +1801,7 @@ iframe {
         <img :src="slideB.url" 
              class="rounded-[50px] max-w-full max-h-full object-contain relative z-10 clean-fade-mask transition-transform ease-out"
              style="transition-duration: 5000ms;"
-             :class="activeLayer === 1 ? 'scale-110' : 'scale-95'"
+             :class="activeLayer === 1 ? 'scale-100' : 'scale-95'"
              loading="eager">
         <div class="absolute inset-0 flex items-end justify-center p-8 pb-12 lg:pb-16 pointer-events-none overflow-hidden z-30" x-show="activeLayer === 1">
             <h2 class="animate-floating-text text-3xl lg:text-6xl font-black text-white tracking-wider text-center select-none"
@@ -2407,7 +2409,7 @@ iframe {
  
  
 
-<div style="display: _none;">
+<div style="display: none;">
 		
 	<div class="mt-10 p-6 bg-white rounded-xl shadow-md" 
 		 x-data="{ 
