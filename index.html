@@ -1367,13 +1367,16 @@ iframe {
             </div>
 
             <!-- Индикаторы (точки) -->
-            <div class="absolute bottom-4 left-0 right-0 flex justify-center gap-2 z-50" x-show="modalMedia.length > 1">
-                <template x-for="(item, idx) in modalMedia" :key="idx">
-                    <button @click="modalCurrentIndex = idx" 
-                            class="w-2.5 h-2.5 rounded-full transition-all cursor-pointer shadow-[0_0_6px_rgba(0,0,0,0.9)] border border-white/20"
-                            :class="modalCurrentIndex === idx ? 'bg-blue-500 w-6 shadow-[0_0_8px_rgba(59,130,246,0.8)]' : 'bg-white/70 hover:bg-white'">
-                    </button>
-                </template>
+            <div class="absolute bottom-4 left-0 right-0 z-50" style="container-type: inline-size;" x-show="modalMedia.length > 1">
+                <div class="dots-row flex justify-center items-center" :style="'--n:' + modalMedia.length">
+                    <template x-for="(item, idx) in modalMedia" :key="idx">
+                        <button @click="modalCurrentIndex = idx" 
+                                class="dot-btn rounded-full transition-all cursor-pointer flex-shrink-0 shadow-[0_0_6px_rgba(0,0,0,0.9)]"
+                                :style="modalCurrentIndex === idx ? 'width: calc(var(--d) * 2.4);' : 'width: var(--d);'"
+                                :class="modalCurrentIndex === idx ? 'bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.8)]' : 'bg-white/70 hover:bg-white'">
+                        </button>
+                    </template>
+                </div>
             </div>
 
         </div>
@@ -1519,13 +1522,16 @@ iframe {
             </div>
 
             <!-- Индикаторы (точки) ПОВЕРХ медиа снизу -->
-            <div class="absolute bottom-4 left-0 right-0 flex justify-center gap-2 z-50" x-show="modalMedia.length > 1">
-                <template x-for="(item, idx) in modalMedia" :key="idx">
-                    <button @click="modalCurrentIndex = idx" 
-                            class="w-2.5 h-2.5 rounded-full transition-all cursor-pointer shadow-[0_0_6px_rgba(0,0,0,0.9)] border border-white/20"
-                            :class="modalCurrentIndex === idx ? 'bg-blue-500 w-6 shadow-[0_0_8px_rgba(59,130,246,0.8)]' : 'bg-white/70 hover:bg-white'">
-                    </button>
-                </template>
+            <div class="absolute bottom-4 left-0 right-0 z-50" style="container-type: inline-size;" x-show="modalMedia.length > 1">
+                <div class="dots-row flex justify-center items-center" :style="'--n:' + modalMedia.length">
+                    <template x-for="(item, idx) in modalMedia" :key="idx">
+                        <button @click="modalCurrentIndex = idx" 
+                                class="dot-btn rounded-full transition-all cursor-pointer flex-shrink-0 shadow-[0_0_6px_rgba(0,0,0,0.9)]"
+                                :style="modalCurrentIndex === idx ? 'width: calc(var(--d) * 2.4);' : 'width: var(--d);'"
+                                :class="modalCurrentIndex === idx ? 'bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.8)]' : 'bg-white/70 hover:bg-white'">
+                        </button>
+                    </template>
+                </div>
             </div>
 
         </div>
