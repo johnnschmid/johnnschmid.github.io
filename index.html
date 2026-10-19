@@ -3867,7 +3867,7 @@ function siteChat() {
     return {
         isOpen: false,
         newMessage: '',
-        chatHistory: null,
+        chatHistory: [], // 1. Инициализируем сразу пустым массивом
 
         translations: {
             EN: {
@@ -3900,7 +3900,6 @@ function siteChat() {
         },
 
         get lang() {
-            // Читаем язык напрямую из глобального хранилища Alpine
             const l = Alpine.store('siteLang') || 'EN';
             return this.translations[l] ? l : 'EN';
         },
@@ -3912,23 +3911,25 @@ function siteChat() {
         },
 
         init() {
+            // 2. Заполняем массив приветствием при инициализации
             this.chatHistory = [
                 { sender: 'bot', text: this.t('welcome') }
             ];
 
             // Отслеживаем изменения глобального хранилища языка
             this.$watch(() => Alpine.store('siteLang'), () => {
-                if (this.chatHistory && this.chatHistory.length > 0) {
+                if (this.chatHistory.length > 0) {
                     this.chatHistory[0].text = this.t('welcome');
                 }
             });
         },
 
-send() {
+        send() {
             if (!this.newMessage.trim()) return;
             const query = this.newMessage.trim();
 
-            if (!this.chatHistory) {
+            // Страховка: если по какой-то причине история пуста
+            if (this.chatHistory.length === 0) {
                 this.init();
             }
 
@@ -3940,7 +3941,6 @@ send() {
                 const foundList = this.findSections(currentQuery);
                 
                 if (foundList && foundList.length > 0) {
-                    // Перебираем все найденные совпадения и добавляем каждое в историю чата
                     foundList.forEach(found => {
                         const url = '#' + found.id;
                         
@@ -3957,12 +3957,11 @@ send() {
             }, 300);
         },
 
-findSections(q) {
+        findSections(q) {
             const sections = window.SECTIONS_DATA || (typeof SECTIONS_DATA !== 'undefined' ? SECTIONS_DATA : null);
             const lowerQ = q.toLowerCase();
             const results = [];
 
-            // Проверка на контакты
             if (['contact', 'contacts', 'контакты', 'контакт', 'связь', 'kontakte'].some(word => lowerQ.includes(word))) {
                 results.push({
                     id: 'contact',
@@ -3974,7 +3973,6 @@ findSections(q) {
 
             if (!sections || !sections.length) return results;
 
-            // 1. Поиск всех совпадений по ID, заголовкам или пунктам меню через filter()
             let matches = sections.filter(sec => {
                 const id = (sec.id || '').toLowerCase();
                 const menuTitle = (sec.menuTitle || '').toLowerCase();
@@ -3982,7 +3980,6 @@ findSections(q) {
                 return id.includes(lowerQ) || menuTitle.includes(lowerQ) || title.includes(lowerQ);
             });
 
-            // 2. Если по заголовкам ничего не нашлось, ищем по текстам и подсказкам
             if (matches.length === 0) {
                 matches = sections.filter(sec => {
                     let hintsText = '';
@@ -3995,7 +3992,7 @@ findSections(q) {
             }
 
             return [...results, ...matches];
-        },
+        }
     }
 }
 </script>
