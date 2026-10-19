@@ -1,6 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+	<script>
+		(function(){
+			const q = window.location.search;
+			if (q.indexOf('?p=/') === 0) {
+				const cleanPath = q.slice(3).split('&')[0];
+				window.history.replaceState(null, null, cleanPath);
+			}
+		})();
+	</script>	
+	
+	
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Johannes Schmid</title>
@@ -2626,28 +2637,32 @@ shopConfig: SHOP_CONFIG,
 				},
 
                 init() {
-				// --- Универсальный переход по любому ключу статьи из URL при загрузке ---
-					const path = window.location.pathname.replace(/^\/+/, ''); // например "about" или "extruder"
-					if (path && path !== '') {
-						setTimeout(() => {
-							// Проверяем, есть ли элемент с таким ID на странице
-							let targetEl = document.getElementById(path);
-							
-							// Если через getElementById не нашли, пробуем поискать по SECTIONS_DATA (если ID не совпадает напрямую)
-							if (!targetEl && typeof SECTIONS_DATA !== 'undefined') {
-								const foundSec = SECTIONS_DATA.find(s => s.id.toLowerCase() === path.toLowerCase());
-								if (foundSec) {
-									targetEl = document.getElementById(foundSec.id);
-								}
-							}
-
-							if (targetEl) {
-								this.activeSection = path;
-								targetEl.scrollIntoView({ behavior: 'smooth' });
-							}
-						}, 300);
-					}
-					// ---------------------------------------------------------------------
+// --- Исправленный блок инициализации пути из URL ---
+const path = window.location.pathname.replace(/^\/+/, '');
+    
+    if (path && path !== '') {
+        // Если перешли по прямой ссылке на статью (например /bpm)
+        this.isScrollingByClick = true;
+        setTimeout(() => {
+            let targetEl = document.getElementById(path);
+            if (!targetEl && typeof SECTIONS_DATA !== 'undefined') {
+                const foundSec = SECTIONS_DATA.find(s => s.id.toLowerCase() === path.toLowerCase());
+                if (foundSec) targetEl = document.getElementById(foundSec.id);
+            }
+            if (targetEl) {
+                this.activeSection = path;
+                targetEl.scrollIntoView({ behavior: 'smooth' });
+            }
+            setTimeout(() => {
+                this.isScrollingByClick = false;
+            }, 800);
+        }, 300);
+    } else {
+        // Если это просто главная страница (/), явно ставим home и разрешаем скролл
+        this.activeSection = 'home';
+        this.isScrollingByClick = false;
+    }
+    // ---------------------------------------------------
 					
 					// --- Проверка настройки cursorSkin из products.js ---
                     const settings = typeof SITE_SETTINGS !== 'undefined' ? SITE_SETTINGS : { cursorSkin: false };
@@ -2991,43 +3006,55 @@ handleScroll() {
     const scrollPosition = window.scrollY + window.innerHeight / 3;
     const documentHeight = document.documentElement.scrollHeight;
 
-    let currentActive = 'home';
-
+    // Если доскроллили до самого низа
     if ((window.innerHeight + window.scrollY) >= documentHeight - 100) {
-        currentActive = 'contact';
-    } else {
-        let validIds = ['home'];
-
-        if (this.sections && Array.isArray(this.sections)) {
-            this.sections.forEach(sec => {
-                if (sec.inMenu && sec.id) {
-                    validIds.push(sec.id);
-                }
-            });
+        this.activeSection = 'contact';
+        const newPath = '/contact';
+        if (window.location.pathname !== newPath) {
+            history.replaceState(null, '', newPath);
         }
+        return;
+    }
 
-        if (!this.shopConfig || !this.shopConfig.hideShop) {
-            validIds.push('shop');
-        }
-        validIds.push('contact');
+    // Собираем список ВСЕХ возможных ID на сайте (включая скрытые статьи, у которых нет inMenu: true)
+    let validIds = ['home'];
 
-        validIds.forEach(targetId => {
-            const targetElement = document.getElementById(targetId);
-            if (targetElement) {
-                const elementTop = targetElement.offsetTop;
-                const elementBottom = elementTop + targetElement.offsetHeight;
-
-                if (scrollPosition >= elementTop && scrollPosition < elementBottom) {
-                    currentActive = targetId;
-                }
+    // Берем абсолютно все секции из SECTIONS_DATA, независимо от флага inMenu
+    if (this.sections && Array.isArray(this.sections)) {
+        this.sections.forEach(sec => {
+            if (sec.id) {
+                validIds.push(sec.id);
             }
         });
     }
 
+    if (!this.shopConfig || !this.shopConfig.hideShop) {
+        validIds.push('shop');
+    }
+    
+    validIds.push('contact');
+
+    let currentActive = 'home';
+
+    // Проверяем видимость каждой секции на экране
+    validIds.forEach(targetId => {
+        const targetElement = document.getElementById(targetId);
+        if (targetElement) {
+            const elementTop = targetElement.offsetTop;
+            const elementBottom = elementTop + targetElement.offsetHeight;
+
+            if (scrollPosition >= elementTop && scrollPosition < elementBottom) {
+                currentActive = targetId;
+            }
+        }
+    });
+
     if (this.activeSection !== currentActive) {
         this.activeSection = currentActive;
         const newPath = currentActive === 'home' ? '/' : '/' + currentActive;
-        history.replaceState(null, '', newPath);
+        if (window.location.pathname !== newPath) {
+            history.replaceState(null, '', newPath);
+        }
     }
 },
 
