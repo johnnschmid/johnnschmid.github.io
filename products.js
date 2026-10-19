@@ -1,5 +1,13 @@
 // products.js
 
+const SITE_SETTINGS = {
+
+cursorSkin: false, // или false для системного курсора
+defaultFontSize: 'Medium'
+
+};
+
+
 // Настройки слайдшоу
 const SLIDESHOW_CONFIG = {
     showOnHome: true,          // Показывать ли слайдшоу на главной (true/false)
@@ -435,8 +443,8 @@ const SECTIONS_DATA = [
             { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNIv81Q1y_onHusiXBLynFkdq8tLIrAcNLXGXW5NG6oiou4VWzb1MQ0hwDQV7R5D019g6JCTH7gp4WQ78XF_8uqT-XYsS8S3YVUN6GmzJ1CmfgNeNiVcZh3RshZPh-ZhhnYCVqbvlOMhs1HucYzNzUR=w1587-h1319-s-no?authuser=0' },
             { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMGh65X55TTR_QmctKxAOMB9Y2_ZA6DlVCwJcee7yhAm_3WGIrUyv-YpYxw-8osn-_V6su0VxDdQ2zeRTWcFtHql88idIV8kmMnEw0Y0GpdhTMOwWDPzsJ_UjRpv958ko-rsbua7zRRfUKa9s-hjD3Q=w1365-h1061-s-no?authuser=0' },
             { type: 'video', url: 'https://www.youtube.com/embed/ymG4sdoDH3c' },
-            { type: 'pdf', url: 'https://drive.usercontent.google.com/download?export=download&confirm=t&id=1YMHcb2ZrTu7014qup8AXLSSAJnhL44xX', title: 'Product booklet (PDF)' },
-            { type: 'pdf', url: 'https://drive.usercontent.google.com/download?export=download&confirm=t&id=1YMHcb2ZrTu7014qup8AXLSSAJnhL44xX', title: 'Quick start guide (PDF)' },
+            { type: 'pdf', url: 'https://drive.usercontent.google.com/download?export=download&confirm=t&id=1YMHcb2ZrTu7014qup8AXLSSAJnhL44xX', title: 'Product info (PDF)' },
+            { type: 'pdf', url: 'https://drive.usercontent.google.com/download?export=download&confirm=t&id=1YMHcb2ZrTu7014qup8AXLSSAJnhL44xX', title: 'Quick start (PDF)' },
             //{ type: 'zip', url: 'https://example.com/models.zip', title: 'Download 3D Models (ZIP)' }
         ]
     },
@@ -1038,7 +1046,7 @@ const SECTIONS_DATA = [
         inMenu: false,        
         //bgClass: 'bg-white',
         //imageLeft: false,
-        aspectClass: 'aspect-[4/4]',
+        aspectClass: 'aspect-[3/4]',
         showSteps: false,
         currentStep: 'tape',
         
@@ -1086,9 +1094,10 @@ const SECTIONS_DATA = [
         ],
         
         items: [
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMUg7Pe1D40FQ2DRkPZW_Rw4UNVojhWiyi-I3RJT-aJR8pkKha3_r09u8jw6VIftMPpTWiC_99QmaS55R9hNioJOYWS6Mj_-1mgj9SXbdSgNPNhuVwWdtEZ8DfA-bItuRzbD4sBl19CnGKJH_p7N36g=w718-h1080-s-no?authuser=0' },
             { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMkvGo7acNGUs0o-HqFaIK-zExow0VurwlGi5u1q6QyxrTl10CmhGFWz2Y6TIxM01YikCP_-GC5vtMdkzfDX07c0ppEmjspSRwtkikVWoiZ-tv4E5Ik64Wzbp6IP03fm8SJf9gIonaX64G9TRwN7Bmc=w1623-h1080-s-no?authuser=0' },
             { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPpaUeHxHjD43okob39uvVPflo61eBlv7nlH1kQ1d5xIhuGlCZxiWGC2mJaQkC9YljO_bpa9v_9iuygEdTl0WquRUqkK20QBdUvDDAd2mhjaMtX2OTV4D1nm0Vj4Wa0qqsvPNNcvhXp0H9gr8bW-iwW=w1623-h1080-s-no?authuser=0' },
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMUg7Pe1D40FQ2DRkPZW_Rw4UNVojhWiyi-I3RJT-aJR8pkKha3_r09u8jw6VIftMPpTWiC_99QmaS55R9hNioJOYWS6Mj_-1mgj9SXbdSgNPNhuVwWdtEZ8DfA-bItuRzbD4sBl19CnGKJH_p7N36g=w718-h1080-s-no?authuser=0' },
+            
             { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczM-LKFj76M28BGr7tnFEFnw-ivxY8SJ9cld-dH_6jNFoyEQr9pDZyF_9DBtp8JBoPNh7xwoYyVl9NzoP5dSBDdzU1VlMrVZblIc5fibxcCFLlXQR92W0CX1W9jIqiG26EAqL4QC74hPL7MWCO2eSG4j=w1623-h1080-s-no?authuser=0' },
             { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczOibR477eyePyWzwGoxPDal_HHPKjctHEUSPYhxJfsbBqoJuPoFcMjGBbrqB_mgNueeEcXGPYbKJLcoPy8XGvjTsQWBq_dCA04-pnVzNUCflvNNs6StZAgfoKQWhCLC_r6SCYEPxcfczxAMQn3yLoeB=w1623-h1080-s-no?authuser=0' },
             { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMwv5js5FLTAhl5j5AAD5IW5JJ5wB6O_LecZYzac_qIrmN4NYuxCYvYRdNaSoDi_Tep6smjHBJ1rInYjJb-H49O_Wj1pljraghNxVcBhhGGkiAtg8MgMhpFn-OvCqV8dnPl24nhaSiZ6ns8ppESA0lg=w1623-h1080-s-no?authuser=0' },
@@ -1187,7 +1196,7 @@ const SECTIONS_DATA = [
         inMenu: false,        
         //bgClass: 'bg-gray-100',
         //imageLeft: true,
-        aspectClass: 'aspect-[4/4]',
+        aspectClass: 'aspect-[3/4]',
         showSteps: false,
         currentStep: 'tape',
         

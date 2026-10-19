@@ -36,11 +36,19 @@
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script src="products.js"></script>
     
+    
+    <!-- Пример вставки кода стороннего чат-бота -->
+	<script src="//code.tidio.co/ ваш_уникальный_ключ.js" async></script>
+    
+    
+    
     <!-- occt-import-js для работы со STEP / STP -->
 	<script src="https://cdn.jsdelivr.net/npm/occt-import-js@0.0.22/dist/occt-import-js.js"></script>
     
-    
+<!--     
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+ -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@700&display=swap" rel="stylesheet">
     <style>
         [x-cloak] { display: none !important; }
@@ -170,17 +178,60 @@
             transition: left 0.15s ease-out, top 0.15s ease-out, transform 0.2s; 
         }
 
-        /* Hide default cursor everywhere */
-        html, body, button, a, input, select, .cursor-pointer {
+
+
+
+
+
+		/* Стили кастомного курсора */
+        .cursor-dot,
+        .cursor-outline {
+            pointer-events: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            z-index: 9999;
+            display: none; /* По умолчанию скрыты */
+        }
+
+        .cursor-dot {
+            width: 20px;
+            height: 20px;
+            background-color: #2D5BFF;
+            transition: width 0.2s, height 0.2s, opacity 0.2s;
+            border: 2px solid #FFFFFF;
+        }
+
+        .cursor-outline {
+            width: 22px;
+            height: 22px;
+            background-color: rgba(45, 91, 255, 0.5);
+            transition: left 0.15s ease-out, top 0.15s ease-out, transform 0.2s; 
+        }
+
+        /* Системный курсор скрывается и кастомный включается ТОЛЬКО когда включен cursorSkin: true */
+        body.cursor-dot-enabled,
+        body.cursor-dot-enabled html,
+        body.cursor-dot-enabled button,
+        body.cursor-dot-enabled a,
+        body.cursor-dot-enabled input,
+        body.cursor-dot-enabled select,
+        body.cursor-dot-enabled .cursor-pointer {
             cursor: none !important;
         }
-        
-        .color-dot, 
-        .cursor-pointer, 
-        [style*="cursor: pointer"] {
-            cursor: none !important;
+
+        body.cursor-dot-enabled .cursor-dot,
+        body.cursor-dot-enabled .cursor-outline {
+            display: block !important;
         }
         
+
+
+
+
+
         
         /* Specifically target the select dropdowns and their options */
 		select, 
@@ -294,7 +345,7 @@
         }
         
         /* Custom Dropdown Styling */
-[x-cloak] { display: none !important; }
+		[x-cloak] { display: none !important; }
 
 		/* Ensure the custom buttons in the menu hide the system cursor */
 		.relative button {
@@ -308,15 +359,17 @@
 				
 		/* Hide the custom cursor elements by default on mobile/touch */
 		@media (pointer: coarse) {
-			.cursor-dot, .cursor-outline {
+			.cursor-dot,
+			.cursor-outline {
 				display: none !important;
 			}
 		}        
         
 
-.cursor-outline, .cursor-dot {
-    pointer-events: none !important;
-}
+		.cursor-outline, 
+		.cursor-dot {
+			pointer-events: none !important;
+		}
 
 /* Ensure the iframe container stack takes priority click registration */
 iframe {
@@ -559,7 +612,7 @@ iframe {
 
 /* Адаптивная обводка для мобилок и десктопа */
         .animate-floating-text {
-             //-webkit-text-stroke: 1px black;
+            /* -webkit-text-stroke: 1px black; */
         }
         @media (min-width: 1024px) {
             .animate-floating-text {
@@ -2005,14 +2058,208 @@ iframe {
 
 
 
+<!-- ДИНАМИЧЕСКИЙ ВЫВОД СЕКЦИЙ ИЗ products.js -->
+<template x-for="(sec, index) in sections" :key="sec.id">
+    <section class="custom-section"
+             :id="sec.id" 
+             :class="sec.bgClass || (index % 2 === 0 ? 'bg-gray-100' : 'bg-white')" 
+             x-data="{ 
+                 currentImg: 0, 
+                 videoPlaying: false,
+                 currentStep: sec.steps ? sec.steps[0].id : null
+             }">
+        
+        <!-- На десктопе (lg) включаем items-stretch, чтобы колонки были одинаковой высоты -->
+        <div class="custom-grid flex flex-col lg:flex-row gap-8 items-start lg:items-stretch">
+            
+            <!-- 1. Блок с картинкой, шагами и мобильной подсказкой -->
+            <div class="order-2 w-full flex flex-col gap-6 my-6 lg:my-0"
+                 :class="(sec.imageLeft !== undefined ? sec.imageLeft : index % 2 === 0) ? 'lg:order-1 lg:w-1/2' : 'lg:order-2 lg:w-1/2'">
+                
+                <!-- Слайдер / Медиа -->
+                <div class="relative group flex items-center justify-center overflow-hidden rounded-xl shadow-2xl bg-gray-100 rotate-1 transition-transform duration-300 hover:rotate-0 hover:scale-105 w-full"
+                     :class="sec.aspectClass || 'aspect-[4/3]'"
+                     x-data="{ 
+                         get media() { return sec.items.filter(i => i.type === 'image' || i.type === 'video'); } 
+                     }"
+                     @wheel.prevent="
+                         if (media.length > 1) {
+                             if ($event.deltaY > 0) {
+                                 currentImg = (currentImg + 1) % media.length;
+                             } else {
+                                 currentImg = (currentImg - 1 + media.length) % media.length;
+                             }
+                             videoPlaying = false;
+                         }
+                     ">                     
+                     
+                    <!-- Картинка с защитой от сбоев загрузки -->
+                    <template x-if="media[currentImg] && media[currentImg].type === 'image'">
+                        <img :src="media[currentImg].url" 
+                             :key="media[currentImg].url + currentImg"
+                             @error="$el.src = media[currentImg].url"
+                             class="w-full h-full object-cover transition-all duration-300" 
+                             alt="Application Areas" 
+                             @click="openModalGallery(media, currentImg)"
+                             loading="lazy">
+                    </template>
+                    
+                    <!-- Видео -->
+                    <template x-if="media[currentImg] && media[currentImg].type === 'video'">
+                        <div class="w-full h-full relative group/vid">
+                            <template x-if="!videoPlaying">
+                                <div class="absolute inset-0 w-full h-full rounded-xl overflow-hidden cursor-pointer z-30"
+                                     @click="openModalGallery(media, currentImg)">
+                                    <iframe :src="media[currentImg].url" 
+                                            class="w-full h-full border-0 absolute inset-0 rounded-xl pointer-events-none z-10"
+                                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                            allowfullscreen
+                                            loading="lazy">
+                                    </iframe>
+                                    <div class="absolute inset-0 flex items-center justify-center z-40">
+                                        <button type="button" 
+                                                @click.stop="videoPlaying = true" 
+                                                class="w-20 h-20 rounded-full bg-transparent text-white flex items-center justify-center transform transition-transform hover:scale-110 cursor-pointer">
+                                            <i class="fa-solid fa-play text-2xl ml-1 drop-shadow-md"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </template>
+                            <template x-if="videoPlaying">
+                                <div class="absolute inset-0 w-full h-full rounded-xl overflow-hidden z-30">
+                                    <iframe :src="media[currentImg].url + (media[currentImg].url.includes('?') ? '&' : '?') + 'autoplay=1'" 
+                                            class="w-full h-full border-0 absolute inset-0 rounded-xl z-10"
+                                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                            allowfullscreen
+                                            loading="lazy">
+                                    </iframe>
+                                    <div class="absolute inset-0 cursor-pointer bg-transparent z-20"
+                                           @click="videoPlaying = false"
+                                           title="Нажмите, чтобы остановить видео">
+                                    </div>
+                                </div>
+                            </template>
+                        </div>
+                    </template>
+
+                    <!-- Кнопки переключения -->
+                    <div class="absolute inset-0 flex items-center justify-between px-4 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50">
+                        <button @click="currentImg = (currentImg - 1 + media.length) % media.length; videoPlaying = false" class="pointer-events-auto w-10 h-10 rounded-full custom-slider-btn shadow-lg flex items-center justify-center text-sm cursor-pointer transition-colors">
+                            <i class="fa-solid fa-chevron-left pointer-events-none"></i>
+                        </button>
+                        <button @click="currentImg = (currentImg + 1) % media.length; videoPlaying = false" class="pointer-events-auto w-10 h-10 rounded-full custom-slider-btn shadow-lg flex items-center justify-center text-sm cursor-pointer transition-colors">
+                            <i class="fa-solid fa-chevron-right pointer-events-none"></i>
+                        </button>
+                    </div>
+
+                    <!-- Индикаторы (точки) -->
+                    <div class="absolute bottom-4 left-0 right-0 flex justify-center gap-2 z-50">
+                        <template x-for="(item, idx) in media" :key="idx">
+                            <button @click="currentImg = idx; videoPlaying = false" 
+                                    class="w-2.5 h-2.5 rounded-full transition-all cursor-pointer shadow-[0_0_4px_rgba(0,0,0,1)]"
+                                    :class="currentImg === idx ? 'bg-blue-600 w-6' : 'bg-white/70 hover:bg-white'">
+                            </button>
+                        </template>
+                    </div>
+                </div>
+
+                <!-- Панель шагов с шевронами -->
+                <div class="step-nav-container w-full" x-show="sec.showSteps" x-cloak>
+                    <div class="step-nav-wrapper">
+                        <div class="step-nav-inner">
+                            <template x-for="(step, idx) in sec.steps" :key="step.id">
+                                <div @click="currentStep = step.id" 
+                                     class="step-btn"
+                                     :class="{
+                                         'active': currentStep === step.id,
+                                         'inactive': currentStep !== step.id,
+                                         'step-btn-first': idx === 0,
+                                         'step-btn-middle': idx > 0 && idx < sec.steps.length - 1,
+                                         'step-btn-last': idx === sec.steps.length - 1
+                                     }"
+                                     :style="idx === 0 ? 'z-index: 1;' : (idx === sec.steps.length - 1 ? 'z-index: ' + sec.steps.length + ';' : 'z-index: ' + (sec.steps.length - idx) + ';')">
+                                    <span class="sm:hidden" x-text="step.short || step.label"></span>
+                                    <span class="hidden sm:inline" x-text="step.label"></span>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Подсказки и кнопки: видны ТОЛЬКО на мобилке -->
+                <div class="block lg:hidden space-y-4 pt-2 text-left">
+                    <template x-for="(hint, idx) in sec.hints" :key="idx">
+                        <div class="flex items-center gap-3 justify-start text-left mb-3">
+                            <span class="text-2xl flex-shrink-0" x-text="hint.emoji"></span>
+                            <p class="font-bold text-gray-800 text-lg text-left">
+                                <span x-text="hint.title"></span> 
+                                <span class="font-normal text-gray-800 text-lg" x-text="hint.text"></span>
+                                <a x-show="hint.youtubeUrl && hint.youtubeUrl.length > 0" :href="hint.youtubeUrl" target="_blank" class="text-red-600 hover:underline font-bold" x-text="hint.youtubeText"></a>
+                            </p>
+                        </div>
+                    </template>
+                    
+                    <div class="flex flex-wrap gap-3">
+                        <template x-for="item in sec.items.filter(i => i.type === 'pdf' || i.type === 'zip' || i.type === 'file')">
+                            <a :href="item.url" target="_blank" class="btn-blue-pill px-6 py-3 text-sm inline-flex items-center gap-3 shadow-lg">
+                                <i class="fa-solid text-lg" :class="item.type === 'pdf' ? 'fa-file-pdf' : (item.type === 'zip' ? 'fa-file-zipper' : 'fa-download')"></i>
+                                <span x-text="item.title || 'Download File'"></span>
+                            </a>
+                        </template>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- 2. Текстовый блок -->
+            <!-- На мобилке (по умолчанию) это обычный поток без justify-between, на десктопе (lg:) — flex с justify-between -->
+            <div class="order-1 w-full flex flex-col lg:justify-between text-left"
+                 :class="(sec.imageLeft !== undefined ? sec.imageLeft : index % 2 === 0) ? 'lg:order-2 lg:w-1/2' : 'lg:order-1 lg:w-1/2'">
+                
+                <div class="space-y-6">
+                    <h2 class="text-4xl font-bold text-gray-900 mb-4" x-text="sec.title"></h2>
+                    <p class="text-gray-800 leading-relaxed text-lg" x-text="sec.p1"></p>
+                    <p class="text-gray-800 leading-relaxed text-lg" x-text="sec.p2"></p>
+                </div>
+                
+                <!-- Подсказки и кнопки: видны ТОЛЬКО на десктопе -->
+                <div class="hidden lg:block pt-8">
+                    <div class="space-y-4">
+                        <template x-for="(hint, idx) in sec.hints" :key="idx">
+                            <div class="flex items-center gap-3 justify-start text-left">
+                                <span class="text-2xl 4xl:text-5xl flex-shrink-0" x-text="hint.emoji"></span>
+                                <div class="text-gray-800 text-lg lg:text-lg 2xl:text-lg 4xl:text-4xl leading-relaxed">
+                                    <strong class="leading-relaxed font-bold text-gray-900" x-text="hint.title + ' '"></strong>
+                                    <span class="leading-relaxed font-normal" x-text="hint.text"></span>
+                                    <a x-show="hint.youtubeUrl && hint.youtubeUrl.length > 0" :href="hint.youtubeUrl" target="_blank" class="text-red-600 hover:underline font-bold ml-1" x-text="hint.youtubeText"></a>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+
+					<!-- Кнопки выровнены по правому краю, если текст справа, и по левому, если текст слева -->
+					<div class="flex flex-wrap gap-3 mt-8 2xl:mt-12 4xl:mt-24"
+						 :class="((sec.imageLeft !== undefined ? sec.imageLeft : index % 2 === 0)) ? 'lg:justify-end' : 'lg:justify-start'">
+						<template x-for="item in sec.items.filter(i => i.type === 'pdf' || i.type === 'zip' || i.type === 'file')">
+							<a :href="item.url" target="_blank" class="btn-blue-pill px-6 py-3 4xl:px-12 4xl:py-6 text-sm lg:text-lg 4xl:text-4xl inline-flex items-center gap-3 shadow-lg">
+								<i class="fa-solid text-xl 4xl:text-4xl" :class="item.type === 'pdf' ? 'fa-file-pdf' : (item.type === 'zip' ? 'fa-file-zipper' : 'fa-download')"></i>
+								<span x-text="item.title || 'Download File'"></span>
+							</a>
+						</template>
+					</div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+</template>
 
 
 
 
 
 
-
-
+<div style="display: none;">
 
 <!-- ДИНАМИЧЕСКИЙ ВЫВОД СЕКЦИЙ ИЗ products.js -->
 <template x-for="(sec, index) in sections" :key="sec.id">
@@ -2216,7 +2463,7 @@ iframe {
 
 
 
-
+</div>
 
 
 
@@ -2622,6 +2869,19 @@ shopConfig: SHOP_CONFIG,
 				},
 
                 init() {
+					
+					
+					// --- Проверка настройки cursorSkin из products.js ---
+                    const settings = typeof SITE_SETTINGS !== 'undefined' ? SITE_SETTINGS : { cursorSkin: false };
+                    if (settings.cursorSkin === true) {
+                        document.body.classList.add('cursor-dot-enabled');
+                    } else {
+                        document.body.classList.remove('cursor-dot-enabled');
+                    }
+                    // ----------------------------------------------------
+					
+					
+					
                     const qrImg = document.getElementById('dynamicQR');
                     const currentURL = encodeURIComponent(window.location.href);
                     qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${currentURL}&color=2D5BFF`;
@@ -3531,6 +3791,88 @@ function updateCadUIStatus(filename, status, triangles) {
     
 <div class="cursor-dot"></div>
 <div class="cursor-outline"></div> 
+
+
+<!-- КАСТОМНЫЙ ВИДЖЕТ ЧАТ-БОТА НА ALPINE.JS -->
+<div class="fixed bottom-6 right-6 z-50" x-data="{ 
+    isOpen: false, 
+    messages: [
+        { sender: 'bot', text: 'Здравствуйте! Чем я могу помочь вам сегодня?' }
+    ], 
+    newMessage: '',
+    sendMessage() {
+        if (!this.newMessage.trim()) return;
+        // Добавляем сообщение пользователя
+        this.messages.push({ sender: 'user', text: this.newMessage });
+        let userText = this.newMessage;
+        this.newMessage = '';
+        
+        // Имитация ответа бота через 1 секунду
+        setTimeout(() => {
+            let botReply = 'Спасибо за ваш вопрос! Я передам информацию разработчику.';
+            if (userText.toLowerCase().includes('цена') || userText.toLowerCase().includes('price')) {
+                botReply = 'Цены на наши устройства указаны в каталоге выше.';
+            }
+            this.messages.push({ sender: 'bot', text: botReply });
+        }, 1000);
+    }
+}">
+    
+    <!-- Кнопка вызова чата -->
+    <button @click="isOpen = !isOpen" 
+            class="w-14 h-14 bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-2xl flex items-center justify-center text-xl transition-transform hover:scale-105 cursor-pointer">
+        <i class="fa-solid" :class="isOpen ? 'fa-xmark' : 'fa-comment-dots'"></i>
+    </button>
+
+    <!-- Окно чата -->
+    <div x-show="isOpen" 
+         x-cloak
+         x-transition:enter="transition ease-out duration-300"
+         x-transition:enter-start="opacity-0 translate-y-4 scale-95"
+         x-transition:enter-end="opacity-100 translate-y-0 scale-100"
+         class="absolute bottom-20 right-0 w-80 sm:w-96 bg-white dark:bg-[#1E1E1E] border border-gray-200 dark:border-gray-700 rounded-2xl shadow-2xl overflow-hidden flex flex-col h-[450px]">
+        
+        <!-- Шапка чата -->
+        <div class="bg-blue-600 text-white p-4 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center font-bold text-xs">JS</div>
+                <div>
+                    <p class="font-bold text-sm">Поддержка ReTools</p>
+                    <p class="text-[10px] text-blue-100">Обычно отвечает мгновенно</p>
+                </div>
+            </div>
+            <button @click="isOpen = false" class="text-white/80 hover:text-white">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+        </div>
+
+        <!-- История сообщений -->
+        <div class="flex-1 p-4 overflow-y-auto space-y-3 text-xs">
+            <template x-for="(msg, index) in messages" :key="index">
+                <div class="flex" :class="msg.sender === 'user' ? 'justify-end' : 'justify-start'">
+                    <div class="max-w-[80%] p-3 rounded-xl leading-relaxed shadow-sm"
+                         :class="msg.sender === 'user' ? 'bg-blue-600 text-white rounded-br-none' : 'bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 rounded-bl-none'"
+                         x-text="msg.text">
+                    </div>
+                </div>
+            </template>
+        </div>
+
+        <!-- Поле ввода сообщения -->
+        <div class="p-3 border-t border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-[#1E1E1E] flex gap-2">
+            <input type="text" 
+                   x-model="newMessage" 
+                   @keydown.enter="sendMessage()" 
+                   placeholder="Введите сообщение..." 
+                   class="flex-1 px-4 py-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-xs outline-none focus:ring-2 focus:ring-blue-500 text-gray-800 dark:text-white">
+            
+            <button @click="sendMessage()" class="w-10 h-10 bg-blue-600 hover:bg-blue-700 text-white rounded-xl flex items-center justify-center transition-colors">
+                <i class="fa-solid fa-paper-plane text-xs"></i>
+            </button>
+        </div>
+    </div>
+</div>
+
 
 </body>
 </html>
