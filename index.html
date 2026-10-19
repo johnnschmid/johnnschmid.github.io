@@ -1660,10 +1660,15 @@ iframe {
 <!-- КРАСИВОЕ СЛАЙДШОУ В СТИЛЕ МАКОВСКОЙ ЗАСТАВКИ -->
 <section id="slideshow" class="relative w-full h-[calc(95dvh-4rem)] overflow-hidden flex items-center justify-center my-8 max-w-7xl mx-auto"
          x-data="{
-             slides: [],
+             allSlides: [],
              currentIndex: 0,
              timer: null,
              showSlideshow: true,
+             
+             activeLayer: 0,
+             slideA: { url: '', title: '' },
+             slideB: { url: '', title: '' },
+
              initSlides() {
                  if (typeof SLIDESHOW_CONFIG !== 'undefined' && SLIDESHOW_CONFIG.showOnHome === false) {
                      this.showSlideshow = false;
@@ -1675,42 +1680,47 @@ iframe {
                      let sections = [...SECTIONS_DATA];
                      
                      let albumsOrder = (typeof SLIDESHOW_CONFIG !== 'undefined') ? SLIDESHOW_CONFIG.albumsOrder : 'sequential';
-                     if (albumsOrder === 'random') {
-                         sections.sort(() => Math.random() - 0.5);
-                     }
+                     if (albumsOrder === 'random') sections.sort(() => Math.random() - 0.5);
 
                      sections.forEach(sec => {
                          if (sec.items && sec.items.length > 0) {
                              let images = sec.items.filter(item => item.type === 'image');
-                             
                              if (images.length > 0) {
                                  let imagesOrder = (typeof SLIDESHOW_CONFIG !== 'undefined') ? SLIDESHOW_CONFIG.imagesOrder : 'sequential';
-                                 if (imagesOrder === 'random') {
-                                     images.sort(() => Math.random() - 0.5);
-                                 }
+                                 if (imagesOrder === 'random') images.sort(() => Math.random() - 0.5);
 
                                  images.forEach(item => {
-                                     extracted.push({
-                                         url: item.url,
-                                         title: sec.title
-                                     });
+                                     extracted.push({ url: item.url, title: sec.title });
                                  });
                              }
                          }
                      });
-
-                     let imagesOrder = (typeof SLIDESHOW_CONFIG !== 'undefined') ? SLIDESHOW_CONFIG.imagesOrder : 'sequential';
-                     if (albumsOrder === 'random' && imagesOrder === 'random') {
-                         extracted.sort(() => Math.random() - 0.5);
-                     }
                  }
-                 this.slides = extracted;
+                 this.allSlides = extracted;
 
-                 let intervalTime = (typeof SLIDESHOW_CONFIG !== 'undefined' && SLIDESHOW_CONFIG.slideInterval) ? SLIDESHOW_CONFIG.slideInterval : 4000;
+                 if (this.allSlides.length > 0) {
+                     this.slideA = this.allSlides[0];
+                     this.slideB = this.allSlides[1] || this.allSlides[0];
 
-                 if (this.slides.length > 0) {
+                     let intervalTime = (typeof SLIDESHOW_CONFIG !== 'undefined' && SLIDESHOW_CONFIG.slideInterval) ? SLIDESHOW_CONFIG.slideInterval : 4000;
+
                      this.timer = setInterval(() => {
-                         this.currentIndex = (this.currentIndex + 1) % this.slides.length;
+                         let nextIndex = (this.currentIndex + 1) % this.allSlides.length;
+                         let nextSlideData = this.allSlides[nextIndex];
+
+                         // Предзагружаем картинку в фоновом режиме без морганий
+                         const imgLoader = new Image();
+                         imgLoader.src = nextSlideData.url;
+                         imgLoader.onload = () => {
+                             if (this.activeLayer === 0) {
+                                 this.slideB = nextSlideData;
+                                 this.activeLayer = 1;
+                             } else {
+                                 this.slideA = nextSlideData;
+                                 this.activeLayer = 0;
+                             }
+                             this.currentIndex = nextIndex;
+                         };
                      }, intervalTime);
                  }
              }
@@ -1720,28 +1730,16 @@ iframe {
 
 <style>
         @keyframes floatText {
-            0% {
-                transform: translate(-50px, 0) scale(0.98);
-                opacity: 0; /* Плавное появление из ниоткуда */
-            }
-            30% {
-                opacity: 0.6; /* Полная видимость в начале анимации */
-            }
-            80% {
-                opacity: 0.0; /* Держать видимость почти до конца */
-            }
-            100% {
-                /* направления и расстояния движения */
-                transform: translate(50px, -26px) scale(1.02);
-                opacity: 0; /* Плавное растворение перед переключением слайда */
-            }
+            0% { transform: translate(-50px, 0) scale(0.98); opacity: 0; }
+            30% { opacity: 0.6; }
+            80% { opacity: 0.0; }
+            100% { transform: translate(50px, -26px) scale(1.02); opacity: 0; }
         }
         .animate-floating-text {
-            /* Оставляем только смещение и масштаб, убирая скачки opacity из ключевых кадров */
             animation: floatText 5s ease-in-out infinite alternate;
         }
 
-		.clean-fade-mask {
+        .clean-fade-mask {
             mask-image: linear-gradient(to right, transparent 0px, black 80px, black calc(100% - 80px), transparent 100%),
                         linear-gradient(to bottom, transparent 0px, black 80px, black calc(100% - 80px), transparent 100%);
             mask-composite: intersect;
@@ -1749,78 +1747,41 @@ iframe {
                                 linear-gradient(to bottom, transparent 0px, black 80px, black calc(100% - 80px), transparent 100%);
             -webkit-mask-composite: source-in;
         }
-        
-        .section-fade-edges {
-            mask-image: linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%), linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
-            -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%), linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
-            mask-composite: intersect;
-            -webkit-mask-composite: source-in;
-        }
     </style>
 
-<!-- Рендер всех слайдов -->
-    <template x-for="(slide, index) in slides" :key="index">
-        <div class="absolute inset-0 w-full h-full transition-opacity duration-700 ease-in-out flex items-center justify-center overflow-hidden"
-             :class="currentIndex === index ? 'opacity-100 z-10' : 'opacity-0 z-0'">
-
-            <!-- Картинка со сжатым под пропорции контейнером и плавной маской -->
-            
-            <!--
-            <img :src="slide.url" 
-                 :key="slide.url + index"
-                 @error="$el.src = slide.url"
-                 class="max-w-full max-h-full object-contain transition-transform duration-[5000ms] ease-out clean-fade-mask relative z-10"
-                 :style="currentIndex === index ? 'transform: scale(1.20);' : 'transform: scale(1.15);'">
-			-->
-
-
-            <!-- Картинка во весь экран без рамок внутри -->
-            <!--
-            <img :src="slide.url" 
-                 loading="lazy"
-                 class="relative w-full h-full object-cover transition-transform duration-[5000ms] ease-out scale-100"
-                 :class="currentIndex === index ? 'scale-110' : 'scale-100'">
-			-->
-			
-			<img :src="slide.url" 
-				 :key="slide.url + index"
-				 @error="$el.src = slide.url"
-				 class="rounded-[50px] max-w-full max-h-full object-contain relative z-10 transition-transform ease-out clean-fade-mask"
-				 style="transition-duration: 5000ms;"
-				 :class="currentIndex === index ? 'scale-100' : 'scale-95'"
-				 loading="lazy">
-<!--
-			<div class="absolute inset-0 flex items-end justify-center p-8 pb-12 lg:pb-16 pointer-events-none overflow-hidden z-30">
-                <h2 class="animate-floating-text text-4xl lg:text-6xl font-black tracking-wider text-center select-none"
-                    style="color: rgba(255, 255, 255, 1.0); filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.9));"
-                    x-text="slide.title"
-                    x-show="currentIndex === index"
-                    x-transition:enter="transition-transform ease-out duration-700"
-                    x-transition:enter-start="scale-90"
-                    x-transition:enter-end="scale-100">
-                </h2>
-            </div>         
--->
-
-
-
-            <!-- Текст ближе к нижней части экрана -->
-			<div class="absolute inset-0 flex items-end justify-center p-8 pb-12 lg:pb-16 pointer-events-none overflow-hidden z-30">
-                <h2 class="animate-floating-text text-3xl lg:text-6xl font-black text-white tracking-wider text-center select-none "
-					style="filter: drop-shadow(0 0 3px rgba(0, 0, 0, 1)) "
-                    x-text="slide.title"
-                    x-show="currentIndex === index"
-                    x-transition:enter="transition ease-out duration-700"
-                    x-transition:enter-start="opacity-0 scale-90"
-                    x-transition:enter-end="opacity-100 scale-100">
-                </h2>
-            </div>
-
-
-            
-            
+    <!-- Слой А -->
+    <div class="absolute inset-0 w-full h-full transition-opacity ease-in-out flex items-center justify-center overflow-hidden"
+         style="transition-duration: 2800ms;"
+         :class="activeLayer === 0 ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'">
+        <img :src="slideA.url" 
+             class="rounded-[50px] max-w-full max-h-full object-contain relative z-10 clean-fade-mask transition-transform ease-out"
+             style="transition-duration: 5000ms;"
+             :class="activeLayer === 0 ? 'scale-110' : 'scale-95'"
+             loading="eager">
+        <div class="absolute inset-0 flex items-end justify-center p-8 pb-12 lg:pb-16 pointer-events-none overflow-hidden z-30" x-show="activeLayer === 0">
+            <h2 class="animate-floating-text text-3xl lg:text-6xl font-black text-white tracking-wider text-center select-none"
+                style="filter: drop-shadow(0 0 3px rgba(0, 0, 0, 1))"
+                x-text="slideA.title">
+            </h2>
         </div>
-    </template>
+    </div>
+
+    <!-- Слой Б -->
+    <div class="absolute inset-0 w-full h-full transition-opacity ease-in-out flex items-center justify-center overflow-hidden"
+         style="transition-duration: 2800ms;"
+         :class="activeLayer === 1 ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'">
+        <img :src="slideB.url" 
+             class="rounded-[50px] max-w-full max-h-full object-contain relative z-10 clean-fade-mask transition-transform ease-out"
+             style="transition-duration: 5000ms;"
+             :class="activeLayer === 1 ? 'scale-110' : 'scale-95'"
+             loading="eager">
+        <div class="absolute inset-0 flex items-end justify-center p-8 pb-12 lg:pb-16 pointer-events-none overflow-hidden z-30" x-show="activeLayer === 1">
+            <h2 class="animate-floating-text text-3xl lg:text-6xl font-black text-white tracking-wider text-center select-none"
+                style="filter: drop-shadow(0 0 3px rgba(0, 0, 0, 1))"
+                x-text="slideB.title">
+            </h2>
+        </div>
+    </div>
 </section>
     
 
@@ -2415,6 +2376,125 @@ iframe {
     <div class="mt-20 pt-8 border-t border-gray-50 text-center">
         <p class="text-gray-400 text-s tracking-wide">© Designed and coded by Johannes Schmid. All rights reserved.</p>
     </div>
+    
+ 
+ 
+ 
+
+<div style="display: _none;">
+		
+	<div class="mt-10 p-6 bg-white rounded-xl shadow-md" 
+		 x-data="{ 
+			 allUsers: [],
+			 loadUsers() {
+				 const data = localStorage.getItem('reTools_users');
+				 this.allUsers = data ? JSON.parse(data) : [];
+				 if (!Array.isArray(this.allUsers)) this.allUsers = [];
+			 }
+		 }" 
+		 x-init="
+			 loadUsers();
+			 setInterval(() => loadUsers(), 1000);
+		 ">
+		
+		<h3 class="text-xl font-bold mb-4">Список зарегистрированных пользователей (<span x-text="allUsers.length"></span>)</h3>
+		
+		<template x-if="allUsers.length === 0">
+			<p class="text-gray-500">Пока нет зарегистрированных пользователей.</p>
+		</template>
+
+		<template x-if="allUsers.length > 0">
+			<div class="overflow-x-auto">
+				<table class="min-w-full divide-y divide-gray-200 text-sm">
+					<thead class="bg-gray-50">
+						<tr>
+							<th class="px-4 py-3 text-left font-medium text-gray-500 uppercase tracking-wider">Аватар</th>
+							<th class="px-4 py-3 text-left font-medium text-gray-500 uppercase tracking-wider">Имя</th>
+							<th class="px-4 py-3 text-left font-medium text-gray-500 uppercase tracking-wider">Email</th>
+							<th class="px-4 py-3 text-left font-medium text-gray-500 uppercase tracking-wider">Пароль</th>
+							<th class="px-4 py-3 text-left font-medium text-gray-500 uppercase tracking-wider">Адрес</th>
+							<th class="px-4 py-3 text-left font-medium text-gray-500 uppercase tracking-wider">Город</th>
+							<th class="px-4 py-3 text-left font-medium text-gray-500 uppercase tracking-wider">Индекс</th>
+							<th class="px-4 py-3 text-center font-medium text-gray-500 uppercase tracking-wider">Действие</th>
+						</tr>
+					</thead>
+					<tbody class="bg-white divide-y divide-gray-200">
+						<template x-for="(user, index) in allUsers" :key="index">
+							<tr>
+							   
+								<td class="px-4 py-3 whitespace-nowrap">
+									<img :src="user.avatar || 'https://via.placeholder.com/40'" alt="Avatar" class="w-10 h-10 rounded-full object-cover">
+								</td>
+								
+								<td class="px-4 py-3 whitespace-nowrap font-medium text-gray-900" x-text="user.name"></td>
+								
+								<td class="px-4 py-3 whitespace-nowrap text-gray-500" x-text="user.email"></td>
+								
+								<td class="px-4 py-3 whitespace-nowrap text-gray-500" x-text="user.password"></td>
+								
+								<td class="px-4 py-3 whitespace-nowrap text-gray-500" x-text="user.shippingInfo?.address || user.address || '—'"></td>
+								
+								<td class="px-4 py-3 whitespace-nowrap text-gray-500" x-text="user.shippingInfo?.city || user.city || '—'"></td>
+								
+								<td class="px-4 py-3 whitespace-nowrap text-gray-500" x-text="user.shippingInfo?.zip || user.zip || '—'"></td>
+								 
+								<td class="px-4 py-3 whitespace-nowrap text-center font-medium">
+									<button @click="
+										allUsers.splice(index, 1); 
+										localStorage.setItem('reTools_users', JSON.stringify(allUsers));
+									" class="text-red-600 hover:text-red-900 font-bold text-lg px-2 py-1" title="Удалить пользователя">
+										✕
+									</button>
+								</td>
+							</tr>
+						</template>
+					</tbody>
+				</table>
+			</div>
+		</template>
+	</div>
+     
+</div>
+
+
+ 
+ 
+ 
+ 
+
+    
+<div style="display: none;">
+	<!-- Статичный шаговый индикатор в конце страницы -->
+	<div class="max-w-md mx-auto my-8 px-4">
+		<div class="flex rounded-full overflow-hidden border border-gray-200 bg-white shadow-sm text-xs font-medium">
+			
+
+			<div class="flex-1 py-3 px-2 text-center text-gray-400 bg-white flex items-center justify-center">
+				Basket
+			</div>
+
+
+			<div class="flex-1 py-3 px-4 text-center text-white bg-[#00b4a6] flex items-center justify-center font-bold relative shadow-inner" 
+				 style="clip-path: polygon(15% 0%, 100% 0%, 85% 100%, 0% 100%); margin-left: -8px; margin-right: -8px; z-index: 10;">
+				Delivery
+			</div>
+
+			
+			<div class="flex-1 py-3 px-2 text-center text-gray-400 bg-white flex items-center justify-center">
+				Confirm
+			</div>
+
+		   
+			<div class="flex-1 py-3 px-2 text-center text-gray-400 bg-white flex items-center justify-center">
+				Done!
+			</div>
+
+		</div>
+	</div>
+</div>  
+    
+    
+    
 </footer>
 
 
