@@ -1734,7 +1734,6 @@ iframe {
 
                  // Пробуем по очереди: уменьшенная версия -> оригинальная ссылка -> пропускаем слайд
                  const candidates = [thumbUrl(data.url, slideMaxW())];
-                 console.log(candidates);
                  if (candidates[0] !== data.url) candidates.push(data.url);
 
                  const tryLoad = (n) => {
@@ -2042,11 +2041,11 @@ iframe {
 							 const diff = this.touchStartX - this.touchEndX;
 							 const threshold = 40; // Минимальная дистанция свайпа в пикселях
 							 if (Math.abs(diff) > threshold && this.media.length > 1) {
-								 if (diff < 0) {
-									 // Свайп вправо — следующий слайд
+								 if (diff > 0) {
+									 // Свайп влево — следующий слайд
 									 currentImg = (currentImg + 1) % this.media.length;
 								 } else {
-									 // Свайп влево — предыдущий слайд
+									 // Свайп вправо — предыдущий слайд
 									 currentImg = (currentImg - 1 + this.media.length) % this.media.length;
 								 }
 								 videoPlaying = false;
