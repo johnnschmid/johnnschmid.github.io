@@ -753,48 +753,67 @@ iframe {
 
 
 <!-- NAVIGATION -->
-		<div class="hidden lg:flex items-center gap-8 text-sm font-medium">			
-			<a href="#" 
-			   @click.prevent="activeSection = 'home'; isScrollingByClick = true; window.scrollTo({top: 0, behavior: 'smooth'}); setTimeout(() => isScrollingByClick = false, 600);" 
-			   class="relative px-6 py-2 text-sm transition-colors rounded-l-full">
-				<div x-show="activeSection === 'home'" class="absolute inset-0 -skew-x-[20deg] transcolor"></div>
-				<span class="relative z-10 font-medium" :class="activeSection === 'home' ? 'text-white font-semibold' : 'text-gray-500 hover:text-gray-800'">Home</span>
-			</a>
-			
-	<template x-if="!shopConfig.hideShop">
-		<a href="#shop" 
-		   @click.prevent="activeSection = 'shop'; isScrollingByClick = true; document.getElementById('shop').scrollIntoView({behavior: 'smooth'}); setTimeout(() => isScrollingByClick = false, 600);" 
-		   class="relative px-6 py-2 text-sm transition-colors">
-			<div x-show="activeSection === 'shop'" class="absolute inset-0 -skew-x-[20deg] transcolor"></div>
-			<span class="relative z-10 font-medium" :class="activeSection === 'shop' ? 'text-white font-semibold' : 'text-gray-500 hover:text-gray-800'">Shop</span>
-		</a>
-	</template>
-	
-<!-- 2. ДИНАМИЧЕСКИЕ ПУНКТЫ МЕНЮ (включая About, Extruder, Voysa и т.д., у которых inMenu: true) -->
+<div class="hidden lg:flex items-center gap-8 text-sm font-medium">			
+    <!-- Home -->
+    <a href="/" 
+       @click.prevent="
+           activeSection = 'home'; 
+           isScrollingByClick = true; 
+           history.pushState(null, '', '/');
+           window.scrollTo({top: 0, behavior: 'smooth'}); 
+           setTimeout(() => isScrollingByClick = false, 600);
+       " 
+       class="relative px-6 py-2 text-sm transition-colors rounded-l-full">
+        <div x-show="activeSection === 'home'" class="absolute inset-0 -skew-x-[20deg] transcolor"></div>
+        <span class="relative z-10 font-medium" :class="activeSection === 'home' ? 'text-white font-semibold' : 'text-gray-500 hover:text-gray-800'">Home</span>
+    </a>
+    
+    <!-- Shop -->
+    <template x-if="!shopConfig.hideShop">
+        <a href="/shop" 
+           @click.prevent="
+               activeSection = 'shop'; 
+               isScrollingByClick = true; 
+               history.pushState(null, '', '/shop');
+               document.getElementById('shop').scrollIntoView({behavior: 'smooth'}); 
+               setTimeout(() => isScrollingByClick = false, 600);
+           " 
+           class="relative px-6 py-2 text-sm transition-colors">
+            <div x-show="activeSection === 'shop'" class="absolute inset-0 -skew-x-[20deg] transcolor"></div>
+            <span class="relative z-10 font-medium" :class="activeSection === 'shop' ? 'text-white font-semibold' : 'text-gray-500 hover:text-gray-800'">Shop</span>
+        </a>
+    </template>
+    
+    <!-- Динамические пункты меню (About, Extruder, Voysa и т.д.) -->
     <template x-for="sec in sections.filter(s => s.inMenu)" :key="sec.id">
-        <a :href="'#' + sec.id" 
-           @click.prevent="activeSection = sec.id; isScrollingByClick = true; document.getElementById(sec.id).scrollIntoView({behavior: 'smooth'}); setTimeout(() => isScrollingByClick = false, 600);" 
+        <a :href="'/' + sec.id" 
+           @click.prevent="
+               activeSection = sec.id; 
+               isScrollingByClick = true; 
+               history.pushState(null, '', '/' + sec.id);
+               document.getElementById(sec.id).scrollIntoView({behavior: 'smooth'}); 
+               setTimeout(() => isScrollingByClick = false, 600);
+           " 
            class="relative px-6 py-2 text-sm transition-colors">
             <div x-show="activeSection === sec.id" class="absolute inset-0 -skew-x-[20deg] transcolor"></div>
             <span class="relative z-10 font-medium" :class="activeSection === sec.id ? 'text-white font-semibold' : 'text-gray-500 hover:text-gray-800'" x-text="sec.menuTitle || sec.title"></span>
         </a>
     </template>
-			
-			<a href="#contact" 
-			   @click.prevent="activeSection = 'contact'; isScrollingByClick = true; document.getElementById('contact').scrollIntoView({behavior: 'smooth'}); setTimeout(() => isScrollingByClick = false, 600);" 
-			   class="relative px-6 py-2 text-sm transition-colors rounded-r-full">
-				<div x-show="activeSection === 'contact'" class="absolute inset-0 -skew-x-[20deg] transcolor"></div>
-				<span class="relative z-10 font-medium" :class="activeSection === 'contact' ? 'text-white font-semibold' : 'text-gray-500 hover:text-gray-800'">Contact</span>
-			</a>
-<div style="display: none;">
-			<a href="#slideshow" 
-			   @click.prevent="activeSection = 'slideshow'; isScrollingByClick = true; document.getElementById('slideshow').scrollIntoView({behavior: 'smooth'}); setTimeout(() => isScrollingByClick = false, 600);" 
-			   class="relative px-6 py-2 text-sm transition-colors rounded-r-full">
-				<div x-show="activeSection === 'slideshow'" class="absolute inset-0 -skew-x-[20deg] transcolor"></div>
-				<span class="relative z-10 font-medium" :class="activeSection === 'slideshow' ? 'text-white font-semibold' : 'text-gray-500 hover:text-gray-800'">Slideshow</span>
-			</a>
+    
+    <!-- Contact -->
+    <a href="/contact" 
+       @click.prevent="
+           activeSection = 'contact'; 
+           isScrollingByClick = true; 
+           history.pushState(null, '', '/contact');
+           document.getElementById('contact').scrollIntoView({behavior: 'smooth'}); 
+           setTimeout(() => isScrollingByClick = false, 600);
+       " 
+       class="relative px-6 py-2 text-sm transition-colors rounded-r-full">
+        <div x-show="activeSection === 'contact'" class="absolute inset-0 -skew-x-[20deg] transcolor"></div>
+        <span class="relative z-10 font-medium" :class="activeSection === 'contact' ? 'text-white font-semibold' : 'text-gray-500 hover:text-gray-800'">Contact</span>
+    </a>
 </div>
-		</div>
 
 
 
@@ -2607,7 +2626,28 @@ shopConfig: SHOP_CONFIG,
 				},
 
                 init() {
-					
+				// --- Универсальный переход по любому ключу статьи из URL при загрузке ---
+					const path = window.location.pathname.replace(/^\/+/, ''); // например "about" или "extruder"
+					if (path && path !== '') {
+						setTimeout(() => {
+							// Проверяем, есть ли элемент с таким ID на странице
+							let targetEl = document.getElementById(path);
+							
+							// Если через getElementById не нашли, пробуем поискать по SECTIONS_DATA (если ID не совпадает напрямую)
+							if (!targetEl && typeof SECTIONS_DATA !== 'undefined') {
+								const foundSec = SECTIONS_DATA.find(s => s.id.toLowerCase() === path.toLowerCase());
+								if (foundSec) {
+									targetEl = document.getElementById(foundSec.id);
+								}
+							}
+
+							if (targetEl) {
+								this.activeSection = path;
+								targetEl.scrollIntoView({ behavior: 'smooth' });
+							}
+						}, 300);
+					}
+					// ---------------------------------------------------------------------
 					
 					// --- Проверка настройки cursorSkin из products.js ---
                     const settings = typeof SITE_SETTINGS !== 'undefined' ? SITE_SETTINGS : { cursorSkin: false };
@@ -2951,45 +2991,44 @@ handleScroll() {
     const scrollPosition = window.scrollY + window.innerHeight / 3;
     const documentHeight = document.documentElement.scrollHeight;
 
-    // Если доскроллили до самого низа (контакты)
+    let currentActive = 'home';
+
     if ((window.innerHeight + window.scrollY) >= documentHeight - 100) {
-        this.activeSection = 'contact';
-        return;
-    }
+        currentActive = 'contact';
+    } else {
+        let validIds = ['home'];
 
-    // Собираем список всех активных ID для меню: 'home' + все секции с inMenu + 'shop' + 'contact'
-    let validIds = ['home'];
+        if (this.sections && Array.isArray(this.sections)) {
+            this.sections.forEach(sec => {
+                if (sec.inMenu && sec.id) {
+                    validIds.push(sec.id);
+                }
+            });
+        }
 
-    if (this.sections && Array.isArray(this.sections)) {
-        this.sections.forEach(sec => {
-            if (sec.inMenu && sec.id) {
-                validIds.push(sec.id);
+        if (!this.shopConfig || !this.shopConfig.hideShop) {
+            validIds.push('shop');
+        }
+        validIds.push('contact');
+
+        validIds.forEach(targetId => {
+            const targetElement = document.getElementById(targetId);
+            if (targetElement) {
+                const elementTop = targetElement.offsetTop;
+                const elementBottom = elementTop + targetElement.offsetHeight;
+
+                if (scrollPosition >= elementTop && scrollPosition < elementBottom) {
+                    currentActive = targetId;
+                }
             }
         });
     }
 
-    if (!this.shopConfig || !this.shopConfig.hideShop) {
-        validIds.push('shop');
+    if (this.activeSection !== currentActive) {
+        this.activeSection = currentActive;
+        const newPath = currentActive === 'home' ? '/' : '/' + currentActive;
+        history.replaceState(null, '', newPath);
     }
-    
-    validIds.push('contact');
-
-    let currentActive = 'home';
-
-    // Проверяем видимость секций
-    validIds.forEach(targetId => {
-        const targetElement = document.getElementById(targetId);
-        if (targetElement) {
-            const elementTop = targetElement.offsetTop;
-            const elementBottom = elementTop + targetElement.offsetHeight;
-
-            if (scrollPosition >= elementTop && scrollPosition < elementBottom) {
-                currentActive = targetId;
-            }
-        }
-    });
-
-    this.activeSection = currentActive;
 },
 
 
@@ -3220,24 +3259,37 @@ function siteChat() {
             const currentQuery = query;
             this.newMessage = '';
 
-            setTimeout(() => {
-                const foundList = this.findSections(currentQuery);
-                
-                if (foundList && foundList.length > 0) {
-                    foundList.forEach(found => {
-                        const url = '#' + found.id;
-                        
-                        let title = found.title || found.menuTitle || this.t('defaultArticle');
-                        if (this.lang === 'EN' && found.title_en) title = found.title_en;
-                        if (this.lang === 'GE' && found.title_de) title = found.title_de;
+setTimeout(() => {
+    const foundList = this.findSections(currentQuery);
+    
+    if (foundList && foundList.length > 0) {
+        foundList.forEach(found => {
+            // Формируем путь со слешем вместо решетки (#)
+            const pathName = found.id === 'home' ? '/' : '/' + found.id;
+            
+            let title = found.title || found.menuTitle || this.t('defaultArticle');
+            if (this.lang === 'EN' && found.title_en) title = found.title_en;
+            if (this.lang === 'GE' && found.title_de) title = found.title_de;
 
-                        const reply = this.t('prefix') + '<a href="' + url + '" @click="isOpen = false" class="text-blue-600 dark:text-blue-400 font-bold underline hover:text-blue-800">' + title + '</a>';
-                        this.chatHistory.push({ sender: 'bot', text: reply });
-                    });
-                } else {
-                    this.chatHistory.push({ sender: 'bot', text: this.t('notFound') });
-                }
-            }, 300);
+            // Добавляем обработчик клика, который плавно прокручивает страницу, меняет URL через history.pushState 
+            // и активирует нужный раздел без перезагрузки страницы
+            const reply = this.t('prefix') + `<a href="${pathName}" @click.prevent="
+                activeSection = '${found.id}'; 
+                isScrollingByClick = true; 
+                history.pushState(null, '', '${pathName}');
+                const el = document.getElementById('${found.id}');
+                if (el) el.scrollIntoView({behavior: 'smooth'});
+                else window.scrollTo({top: 0, behavior: 'smooth'});
+                setTimeout(() => isScrollingByClick = false, 600);
+                isOpen = false;
+            " class="text-blue-600 dark:text-blue-400 font-bold underline hover:text-blue-800">${title}</a>`;
+            
+            this.chatHistory.push({ sender: 'bot', text: reply });
+        });
+    } else {
+        this.chatHistory.push({ sender: 'bot', text: this.t('notFound') });
+    }
+}, 300);
         },
 
         findSections(q) {
