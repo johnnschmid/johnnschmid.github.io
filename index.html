@@ -1658,7 +1658,7 @@ iframe {
 
 
 <!-- КРАСИВОЕ СЛАЙДШОУ В СТИЛЕ МАКОВСКОЙ ЗАСТАВКИ -->
-<section id="slideshow" class="relative w-full h-[calc(95dvh-4rem)] overflow-hidden flex items-center justify-center my-8 max-w-7xl mx-auto"
+<section id="slideshow" class="relative w-full h-[calc(95dvh-4rem)] overflow-hidden flex items-center justify-center my-8 max-w-7xl mx-auto section-fade-edges"
          x-data="{
              allSlides: [],
              currentIndex: 0,
@@ -1680,14 +1680,22 @@ iframe {
                      let sections = [...SECTIONS_DATA];
                      
                      let albumsOrder = (typeof SLIDESHOW_CONFIG !== 'undefined') ? SLIDESHOW_CONFIG.albumsOrder : 'sequential';
-                     if (albumsOrder === 'random') sections.sort(() => Math.random() - 0.5);
+                     let imagesOrder = (typeof SLIDESHOW_CONFIG !== 'undefined') ? SLIDESHOW_CONFIG.imagesOrder : 'sequential';
+
+                     // Если включен рандом альбомов, перемешиваем порядок секций
+                     if (albumsOrder === 'random') {
+                         sections.sort(() => Math.random() - 0.5);
+                     }
 
                      sections.forEach(sec => {
                          if (sec.items && sec.items.length > 0) {
                              let images = sec.items.filter(item => item.type === 'image');
+                             
                              if (images.length > 0) {
-                                 let imagesOrder = (typeof SLIDESHOW_CONFIG !== 'undefined') ? SLIDESHOW_CONFIG.imagesOrder : 'sequential';
-                                 if (imagesOrder === 'random') images.sort(() => Math.random() - 0.5);
+                                 // Если включен рандом картинок внутри альбома
+                                 if (imagesOrder === 'random') {
+                                     images.sort(() => Math.random() - 0.5);
+                                 }
 
                                  images.forEach(item => {
                                      extracted.push({ url: item.url, title: sec.title });
@@ -1695,6 +1703,16 @@ iframe {
                              }
                          }
                      });
+
+                     // ГЛАВНОЕ ИСПРАВЛЕНИЕ: 
+                     // Если оба параметра 'random', перемешиваем весь итоговый массив глобально, 
+                     // чтобы картинки из разных альбомов равномерно чередовались друг с другом.
+                     if (albumsOrder === 'random' && imagesOrder === 'random') {
+                         for (let i = extracted.length - 1; i > 0; i--) {
+                             const j = Math.floor(Math.random() * (i + 1));
+                             [extracted[i], extracted[j]] = [extracted[j], extracted[i]];
+                         }
+                     }
                  }
                  this.allSlides = extracted;
 
@@ -1708,7 +1726,6 @@ iframe {
                          let nextIndex = (this.currentIndex + 1) % this.allSlides.length;
                          let nextSlideData = this.allSlides[nextIndex];
 
-                         // Предзагружаем картинку в фоновом режиме без морганий
                          const imgLoader = new Image();
                          imgLoader.src = nextSlideData.url;
                          imgLoader.onload = () => {
@@ -1747,11 +1764,19 @@ iframe {
                                 linear-gradient(to bottom, transparent 0px, black 80px, black calc(100% - 80px), transparent 100%);
             -webkit-mask-composite: source-in;
         }
+        
+        /* Мягкое растворение краев ВСЕЙ СЕКЦИИ в фон страницы */
+        .section-fade-edges {
+            mask-image: linear-gradient(to bottom, transparent 0%, black 22%, black 78%, transparent 100%), linear-gradient(to right, transparent 0%, black 22%, black 78%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 12%, black 78%, transparent 100%), linear-gradient(to right, transparent 0%, black 22%, black 78%, transparent 100%);
+            mask-composite: intersect;
+            -webkit-mask-composite: source-in;
+        }
     </style>
 
     <!-- Слой А -->
     <div class="absolute inset-0 w-full h-full transition-opacity ease-in-out flex items-center justify-center overflow-hidden"
-         style="transition-duration: 2800ms;"
+         style="transition-duration: 2200ms;"
          :class="activeLayer === 0 ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'">
         <img :src="slideA.url" 
              class="rounded-[50px] max-w-full max-h-full object-contain relative z-10 clean-fade-mask transition-transform ease-out"
@@ -1768,7 +1793,7 @@ iframe {
 
     <!-- Слой Б -->
     <div class="absolute inset-0 w-full h-full transition-opacity ease-in-out flex items-center justify-center overflow-hidden"
-         style="transition-duration: 2800ms;"
+         style="transition-duration: 2200ms;"
          :class="activeLayer === 1 ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'">
         <img :src="slideB.url" 
              class="rounded-[50px] max-w-full max-h-full object-contain relative z-10 clean-fade-mask transition-transform ease-out"
