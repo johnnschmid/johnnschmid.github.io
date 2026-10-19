@@ -42,8 +42,9 @@
     
     
     <!-- occt-import-js для работы со STEP / STP -->
+    <!--
 	<script src="https://cdn.jsdelivr.net/npm/occt-import-js@0.0.22/dist/occt-import-js.js"></script>
-    
+    -->
 <!--     
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
  -->
@@ -226,13 +227,14 @@
             display: block !important;
         }
         
-		/* ВСТАВЬТЕ СЮДА: Отключаем скрытие курсора для элементов меню выбора языка и валют */
-        .relative[x-data*="open"] button,
-        .relative[x-data*="open"] button *,
-        .relative[x-data*="open"] div,
-        .relative[x-data*="open"] a {
-            cursor: pointer !important;
-        }
+/* Исправление исчезновения кастомного курсора на кнопках слайдера */
+body.cursor-dot-enabled .custom-slider-btn,
+body.cursor-dot-enabled .custom-slider-btn * {
+    cursor: none !important;
+}
+
+
+
 
 
 
@@ -352,8 +354,8 @@
         /* Custom Dropdown Styling */
 		[x-cloak] { display: none !important; }
 
-		/* Ensure the custom buttons in the menu hide the system cursor */
-		.relative button {
+		/* Применяем скрытие курсора только если включен cursorSkin: true */
+		body.cursor-dot-enabled .relative button {
 			cursor: none !important;
 		}
 
@@ -2080,24 +2082,53 @@ iframe {
             <!-- 1. Блок с картинкой, шагами и мобильной подсказкой -->
             <div class="order-2 w-full flex flex-col gap-6 my-6 lg:my-0"
                  :class="(sec.imageLeft !== undefined ? sec.imageLeft : index % 2 === 0) ? 'lg:order-1 lg:w-1/2' : 'lg:order-2 lg:w-1/2'">
-                
-                <!-- Слайдер / Медиа -->
-                <div class="relative group flex items-center justify-center overflow-hidden rounded-xl shadow-2xl bg-gray-100 rotate-1 transition-transform duration-300 hover:rotate-0 hover:scale-105 w-full"
-                     :class="sec.aspectClass || 'aspect-[4/3]'"
-                     x-data="{ 
-                         get media() { return sec.items.filter(i => i.type === 'image' || i.type === 'video'); } 
-                     }"
-                     @wheel.prevent="
-                         if (media.length > 1) {
-                             if ($event.deltaY > 0) {
-                                 currentImg = (currentImg + 1) % media.length;
-                             } else {
-                                 currentImg = (currentImg - 1 + media.length) % media.length;
-                             }
-                             videoPlaying = false;
-                         }
-                     ">                     
-                     
+
+
+
+				<!-- Слайдер / Медиа -->
+				<div class="relative group flex items-center justify-center overflow-hidden rounded-xl shadow-2xl bg-gray-100 rotate-1 transition-transform duration-300 hover:rotate-0 hover:scale-105 w-full"
+					 :class="sec.aspectClass || 'aspect-[4/3]'"
+					 x-data="{ 
+						 get media() { return sec.items.filter(i => i.type === 'image' || i.type === 'video'); },
+						 touchStartX: 0,
+						 touchEndX: 0,
+						 handleTouchStart(e) {
+							 this.touchStartX = e.changedTouches[0].screenX;
+						 },
+						 handleTouchEnd(e) {
+							 this.touchEndX = e.changedTouches[0].screenX;
+							 this.handleSwipe();
+						 },
+						 handleSwipe() {
+							 const diff = this.touchStartX - this.touchEndX;
+							 const threshold = 40; // Минимальная дистанция свайпа в пикселях
+							 if (Math.abs(diff) > threshold && this.media.length > 1) {
+								 if (diff < 0) {
+									 // Свайп вправо — следующий слайд
+									 currentImg = (currentImg + 1) % this.media.length;
+								 } else {
+									 // Свайп влево — предыдущий слайд
+									 currentImg = (currentImg - 1 + this.media.length) % this.media.length;
+								 }
+								 videoPlaying = false;
+							 }
+						 }
+					 }"
+					 @touchstart="handleTouchStart($event)"
+					 @touchend="handleTouchEnd($event)"
+					 @wheel.prevent="
+						 if (media.length > 1) {
+							 if ($event.deltaY > 0) {
+								 currentImg = (currentImg + 1) % media.length;
+							 } else {
+								 currentImg = (currentImg - 1 + media.length) % media.length;
+							 }
+							 videoPlaying = false;
+						 }
+					 ">
+
+
+      
                     <!-- Картинка с защитой от сбоев загрузки -->
                     <template x-if="media[currentImg] && media[currentImg].type === 'image'">
                         <img :src="media[currentImg].url" 
@@ -2617,182 +2648,112 @@ iframe {
 
 
 
-    <!-- CONTACT SECTION -->
-   <footer id="contact" class="py-20 px-8 border-t border-gray-100 ">
-    <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-center">
+
+
+
+
+
+
+
+
+
+
+<!-- CONTACT SECTION -->
+<footer id="contact" class="py-20 px-4 md:px-8 border-t border-gray-100">
+    <div class="max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between gap-8">
+        
+        <!-- Левая колонка: Заголовок и иконки -->
         <div class="text-left space-y-6">
             <h2 class="text-4xl font-bold text-gray-900">Contact Us</h2>
             <p class="text-gray-500 max-w-sm">Have questions? Feel free to contact me!</p>
-            <div class="space-y-4">
-                <div class="flex items-center gap-4">
-                    <div class="w-10 h-10 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center"><i class="fa-solid fa-envelope"></i></div>
-                    <span class="font-bold text-gray-700">johnnschmid@gmail.com</span>
-                </div>
-                <div class="flex items-center gap-4">
-                    <div class="w-10 h-10 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center"><i class="fa-solid fa-phone"></i></div>
-                    <span class="font-bold text-gray-700">+49 (155) 104 7827</span>
-                </div>
-                <div class="flex items-center gap-4">
-                    <div class="w-10 h-10 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center"><i class="fa-solid fa-location-dot"></i></div>
-                    <span class="font-bold text-gray-700">Öflinger Str., Wehr, GE</span>
-                </div>
+            
+            <!-- Ряд круглых иконок -->
+            <div class="flex flex-wrap gap-3 pt-2">
+                <!-- 1. Email -->
+                <a href="mailto:johnnschmid@gmail.com" title="Email" class="w-10 h-10 bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white transition-colors rounded-full flex items-center justify-center text-base">
+                    <i class="fa-solid fa-envelope"></i>
+                </a>
+                <!-- 2. Location (Google Maps) -->
+                <a href="https://www.google.com/maps/search/?api=1&query=Öflinger+Str.,+Wehr,+Germany" target="_blank" rel="noopener noreferrer" title="Location" class="w-10 h-10 bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white transition-colors rounded-full flex items-center justify-center text-base">
+                    <i class="fa-solid fa-location-dot"></i>
+                </a>
+                <!-- 3. Phone -->
+                <a href="tel:+491551047827" title="Phone" class="w-10 h-10 bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white transition-colors rounded-full flex items-center justify-center text-base">
+                    <i class="fa-solid fa-phone"></i>
+                </a>
+                <!-- 4. LinkedIn -->
+                <a href="https://linkedin.com/" target="_blank" rel="noopener noreferrer" title="LinkedIn" class="w-10 h-10 bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white transition-colors rounded-full flex items-center justify-center text-base">
+                    <i class="fa-brands fa-linkedin-in"></i>
+                </a>
+                <!-- 5. Facebook -->
+                <a href="https://facebook.com/" target="_blank" rel="noopener noreferrer" title="Facebook" class="w-10 h-10 bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white transition-colors rounded-full flex items-center justify-center text-base">
+                    <i class="fa-brands fa-facebook-f"></i>
+                </a>
+                <!-- 6. Instagram -->
+                <a href="https://instagram.com/" target="_blank" rel="noopener noreferrer" title="Instagram" class="w-10 h-10 bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white transition-colors rounded-full flex items-center justify-center text-base">
+                    <i class="fa-brands fa-instagram"></i>
+                </a>
+                <!-- 7. Twitter / X -->
+                <a href="https://twitter.com/" target="_blank" rel="noopener noreferrer" title="Twitter" class="w-10 h-10 bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white transition-colors rounded-full flex items-center justify-center text-base">
+                    <i class="fa-brands fa-x-twitter"></i>
+                </a>
+                <!-- 8. Messenger -->
+                <a href="https://m.me/" target="_blank" rel="noopener noreferrer" title="Messenger" class="w-10 h-10 bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white transition-colors rounded-full flex items-center justify-center text-base">
+                    <i class="fa-brands fa-facebook-messenger"></i>
+                </a>
+                <!-- 9. Telegram -->
+                <a href="https://t.me/" target="_blank" rel="noopener noreferrer" title="Telegram" class="w-10 h-10 bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white transition-colors rounded-full flex items-center justify-center text-base">
+                    <i class="fa-brands fa-telegram"></i>
+                </a>
+                <!-- 10. YouTube -->
+                <a href="https://www.youtube.com/@ReInstruments" target="_blank" rel="noopener noreferrer" title="YouTube" class="w-10 h-10 bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white transition-colors rounded-full flex items-center justify-center text-base">
+                    <i class="fa-brands fa-youtube"></i>
+                </a>
             </div>
         </div>
-        
-        
-        
-        <div class="flex justify-center md:justify-end mt-10 md:mt-0 w-full">
-            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 w-full max-w-2xl">
-<div style="display: none;"> 
+
+        <!-- Правая колонка: Динамические QR-коды -->
+        <div class="flex items-center gap-4 md:gap-6">
+            
+            <div style="display: none;"> 
                 <div class="flex flex-col items-center gap-2">
                     <div class="w-full aspect-square max-w-[144px] rounded-xl border border-gray-100 overflow-hidden shadow-sm bg-gray-50">
                         <img src="ceo.jpg" class="w-full h-full object-cover">
                     </div>
                     <p class="text-[10px] font-bold text-gray-400 uppercase tracking-tighter text-center">CEO J.Schmid</p>
                 </div>
-</div> 
-                <div class="flex flex-col items-center gap-2">
-                    <div class="bg-gray-50 p-3 rounded-xl border border-gray-100 w-full aspect-square max-w-[144px] flex items-center justify-center shadow-sm">
-                        <img id="dynamicQR" src="" class="w-full h-full object-contain" loading="lazy">
-                    </div>
-                    <p class="text-[10px] font-bold text-gray-400 uppercase tracking-tighter text-center">Homepage</p>
+            </div>
+
+            <div class="flex flex-col items-center gap-2">
+                <div class="bg-gray-50 p-3 rounded-xl border border-gray-100 w-[144px] h-[144px] flex items-center justify-center shadow-sm">
+                    <img id="dynamicQR" src="" class="w-full h-full object-contain" loading="lazy">
                 </div>
-<div style="display: none;">
+                <p class="text-[10px] font-bold text-gray-400 uppercase tracking-tighter text-center">Homepage</p>
+            </div>
+            
+            <div style="display: none;">
                 <div class="flex flex-col items-center gap-2">
-                    <div class="bg-gray-50 p-3 rounded-xl border border-gray-100 w-full aspect-square max-w-[144px] flex items-center justify-center shadow-sm">
+                    <div class="bg-gray-50 p-3 rounded-xl border border-gray-100 w-[144px] h-[144px] flex items-center justify-center shadow-sm">
                         <img id="dynamicQR2" src="" class="w-full h-full object-contain" loading="lazy">
                     </div>
                     <p class="text-[10px] font-bold text-gray-400 uppercase tracking-tighter text-center">eBay</p>
                 </div>
-</div>                
-                <div class="flex flex-col items-center gap-2">
-                    <div class="bg-gray-50 p-3 rounded-xl border border-gray-100 w-full aspect-square max-w-[144px] flex items-center justify-center shadow-sm">
-                        <img id="dynamicQR3" src="" class="w-full h-full object-contain">
-                    </div>
-                    <p class="text-[10px] font-bold text-gray-400 uppercase tracking-tighter text-center">YouTube</p>
-                </div>
-                
             </div>
+
+            <div class="flex flex-col items-center gap-2">
+                <div class="bg-gray-50 p-3 rounded-xl border border-gray-100 w-[144px] h-[144px] flex items-center justify-center shadow-sm">
+                    <img id="dynamicQR3" src="" class="w-full h-full object-contain">
+                </div>
+                <p class="text-[10px] font-bold text-gray-400 uppercase tracking-tighter text-center">YouTube</p>
+            </div>
+
         </div>
-       
-        
-        
+
     </div>
+
     <div class="mt-20 pt-8 border-t border-gray-50 text-center">
         <p class="text-gray-400 text-s tracking-wide">© Designed and coded by Johannes Schmid. All rights reserved.</p>
     </div>
-     
-<div style="display: none;">
-		
-	<div class="mt-10 p-6 bg-white rounded-xl shadow-md" 
-		 x-data="{ 
-			 allUsers: [],
-			 loadUsers() {
-				 const data = localStorage.getItem('reTools_users');
-				 this.allUsers = data ? JSON.parse(data) : [];
-				 if (!Array.isArray(this.allUsers)) this.allUsers = [];
-			 }
-		 }" 
-		 x-init="
-			 loadUsers();
-			 setInterval(() => loadUsers(), 1000);
-		 ">
-		
-		<h3 class="text-xl font-bold mb-4">Список зарегистрированных пользователей (<span x-text="allUsers.length"></span>)</h3>
-		
-		<template x-if="allUsers.length === 0">
-			<p class="text-gray-500">Пока нет зарегистрированных пользователей.</p>
-		</template>
-
-		<template x-if="allUsers.length > 0">
-			<div class="overflow-x-auto">
-				<table class="min-w-full divide-y divide-gray-200 text-sm">
-					<thead class="bg-gray-50">
-						<tr>
-							<th class="px-4 py-3 text-left font-medium text-gray-500 uppercase tracking-wider">Аватар</th>
-							<th class="px-4 py-3 text-left font-medium text-gray-500 uppercase tracking-wider">Имя</th>
-							<th class="px-4 py-3 text-left font-medium text-gray-500 uppercase tracking-wider">Email</th>
-							<th class="px-4 py-3 text-left font-medium text-gray-500 uppercase tracking-wider">Пароль</th>
-							<th class="px-4 py-3 text-left font-medium text-gray-500 uppercase tracking-wider">Адрес</th>
-							<th class="px-4 py-3 text-left font-medium text-gray-500 uppercase tracking-wider">Город</th>
-							<th class="px-4 py-3 text-left font-medium text-gray-500 uppercase tracking-wider">Индекс</th>
-							<th class="px-4 py-3 text-center font-medium text-gray-500 uppercase tracking-wider">Действие</th>
-						</tr>
-					</thead>
-					<tbody class="bg-white divide-y divide-gray-200">
-						<template x-for="(user, index) in allUsers" :key="index">
-							<tr>
-							   
-								<td class="px-4 py-3 whitespace-nowrap">
-									<img :src="user.avatar || 'https://via.placeholder.com/40'" alt="Avatar" class="w-10 h-10 rounded-full object-cover">
-								</td>
-								
-								<td class="px-4 py-3 whitespace-nowrap font-medium text-gray-900" x-text="user.name"></td>
-								
-								<td class="px-4 py-3 whitespace-nowrap text-gray-500" x-text="user.email"></td>
-								
-								<td class="px-4 py-3 whitespace-nowrap text-gray-500" x-text="user.password"></td>
-								
-								<td class="px-4 py-3 whitespace-nowrap text-gray-500" x-text="user.shippingInfo?.address || user.address || '—'"></td>
-								
-								<td class="px-4 py-3 whitespace-nowrap text-gray-500" x-text="user.shippingInfo?.city || user.city || '—'"></td>
-								
-								<td class="px-4 py-3 whitespace-nowrap text-gray-500" x-text="user.shippingInfo?.zip || user.zip || '—'"></td>
-								 
-								<td class="px-4 py-3 whitespace-nowrap text-center font-medium">
-									<button @click="
-										allUsers.splice(index, 1); 
-										localStorage.setItem('reTools_users', JSON.stringify(allUsers));
-									" class="text-red-600 hover:text-red-900 font-bold text-lg px-2 py-1" title="Удалить пользователя">
-										✕
-									</button>
-								</td>
-							</tr>
-						</template>
-					</tbody>
-				</table>
-			</div>
-		</template>
-	</div>
-     
-</div>
-
-
-
-
-
-<div style="display: none;">
-	<!-- Статичный шаговый индикатор в конце страницы -->
-	<div class="max-w-md mx-auto my-8 px-4">
-		<div class="flex rounded-full overflow-hidden border border-gray-200 bg-white shadow-sm text-xs font-medium">
-			
-
-			<div class="flex-1 py-3 px-2 text-center text-gray-400 bg-white flex items-center justify-center">
-				Basket
-			</div>
-
-
-			<div class="flex-1 py-3 px-4 text-center text-white bg-[#00b4a6] flex items-center justify-center font-bold relative shadow-inner" 
-				 style="clip-path: polygon(15% 0%, 100% 0%, 85% 100%, 0% 100%); margin-left: -8px; margin-right: -8px; z-index: 10;">
-				Delivery
-			</div>
-
-			
-			<div class="flex-1 py-3 px-2 text-center text-gray-400 bg-white flex items-center justify-center">
-				Confirm
-			</div>
-
-		   
-			<div class="flex-1 py-3 px-2 text-center text-gray-400 bg-white flex items-center justify-center">
-				Done!
-			</div>
-
-		</div>
-	</div>
-</div>
-
-
-    
 </footer>
 
 
@@ -3361,10 +3322,12 @@ let cadCenter = new THREE.Vector3();
 let cadSize = new THREE.Vector3();
 
 window.addEventListener('load', () => {
-    initCadViewer();
-    initOcctEngine();
+    // Инициализируем 3D-просмотрщик только на десктопных экранах (шире 1024px)
+    if (window.innerWidth >= 1024) {
+        initCadViewer();
+        loadCadDemo('gear');
+    }
     setupCadEventListeners();
-    loadCadDemo('gear');
 });
 
 function initCadViewer() {
@@ -3424,6 +3387,36 @@ function initOcctEngine() {
         });
     }
 }
+
+
+let occtEngine = null;
+
+function loadOcctEngine() {
+    return new Promise((resolve, reject) => {
+        if (occtEngine) return resolve(occtEngine);
+        
+        if (typeof occtimportjs !== 'undefined') {
+            occtimportjs().then(instance => {
+                occtEngine = instance;
+                resolve(occtEngine);
+            }).catch(reject);
+            return;
+        }
+        
+        const script = document.createElement('script');
+        script.src = "https://cdn.jsdelivr.net/npm/occt-import-js@0.0.22/dist/occt-import-js.js";
+        script.onload = () => {
+            occtimportjs().then(instance => {
+                occtEngine = instance;
+                resolve(occtEngine);
+            }).catch(reject);
+        };
+        script.onerror = () => reject(new Error("Не удалось загрузить модуль OCCT"));
+        document.head.appendChild(script);
+    });
+}
+
+
 
 function animateCadViewer() {
     requestAnimationFrame(animateCadViewer);
@@ -3487,61 +3480,67 @@ function parseCadSTL(buffer, filename) {
     displayCadModelGroup(group, filename, geometry.attributes.position.count / 3);
 }
 
-function parseCadSTEP(buffer, filename) {
-    if (!occtEngine) {
-        alert("Движок STEP инициализируется. Обратите внимание: для STEP требуется запуск через HTTP/HTTPS сервер (например, Live Server).");
-        updateCadUIStatus(filename, "Ошибка WASM", 0);
-        return;
+async function parseCadSTEP(buffer, filename) {
+    updateCadUIStatus(filename, "Инициализация ядра...", 0);
+    
+    try {
+        // Асинхронно загружаем движок OCCT только в момент открытия файла (спасает Safari от падений)
+        const engine = await loadOcctEngine();
+
+        const fileBytes = new Uint8Array(buffer);
+        const result = engine.ReadStepFile(fileBytes, null);
+
+        if (!result || !result.meshes || result.meshes.length === 0) {
+            throw new Error("Не удалось извлечь 3D-сетку из STEP файла.");
+        }
+
+        const group = new THREE.Group();
+        let totalTriangles = 0;
+
+        result.meshes.forEach(meshData => {
+            const geometry = new THREE.BufferGeometry();
+            const posArray = meshData.attributes.position.array instanceof Float32Array 
+                ? meshData.attributes.position.array 
+                : new Float32Array(meshData.attributes.position.array);
+            
+            geometry.setAttribute('position', new THREE.Float32BufferAttribute(posArray, 3));
+
+            if (meshData.attributes.normal && meshData.attributes.normal.array) {
+                const normArray = meshData.attributes.normal.array instanceof Float32Array 
+                    ? meshData.attributes.normal.array 
+                    : new Float32Array(meshData.attributes.normal.array);
+                geometry.setAttribute('normal', new THREE.Float32BufferAttribute(normArray, 3));
+            } else {
+                geometry.computeVertexNormals();
+            }
+
+            if (meshData.index && meshData.index.array) {
+                const indexArray = meshData.index.array instanceof Uint32Array || meshData.index.array instanceof Uint16Array
+                    ? meshData.index.array
+                    : new Uint32Array(meshData.index.array);
+                geometry.setIndex(new THREE.BufferAttribute(indexArray, 1));
+                totalTriangles += indexArray.length / 3;
+            } else {
+                totalTriangles += posArray.length / 9;
+            }
+
+            let colorHex = 0x2563eb;
+            if (meshData.color && Array.isArray(meshData.color) && meshData.color.length >= 3) {
+                colorHex = new THREE.Color(meshData.color[0], meshData.color[1], meshData.color[2]);
+            }
+
+            const meshMaterial = createCadMaterial(colorHex);
+            const mesh = new THREE.Mesh(geometry, meshMaterial);
+            group.add(mesh);
+        });
+
+        displayCadModelGroup(group, filename, Math.round(totalTriangles));
+
+    } catch (err) {
+        console.error("STEP Parse error:", err);
+        alert("Ошибка при чтении STEP файла: " + err.message);
+        updateCadUIStatus(filename, "Ошибка", 0);
     }
-
-    const fileBytes = new Uint8Array(buffer);
-    const result = occtEngine.ReadStepFile(fileBytes, null);
-
-    if (!result || !result.meshes || result.meshes.length === 0) {
-        throw new Error("Не удалось извлечь 3D-сетку из STEP файла.");
-    }
-
-    const group = new THREE.Group();
-    let totalTriangles = 0;
-
-    result.meshes.forEach(meshData => {
-        const geometry = new THREE.BufferGeometry();
-        const posArray = meshData.attributes.position.array instanceof Float32Array 
-            ? meshData.attributes.position.array 
-            : new Float32Array(meshData.attributes.position.array);
-        
-        geometry.setAttribute('position', new THREE.Float32BufferAttribute(posArray, 3));
-
-        if (meshData.attributes.normal && meshData.attributes.normal.array) {
-            const normArray = meshData.attributes.normal.array instanceof Float32Array 
-                ? meshData.attributes.normal.array 
-                : new Float32Array(meshData.attributes.normal.array);
-            geometry.setAttribute('normal', new THREE.Float32BufferAttribute(normArray, 3));
-        } else {
-            geometry.computeVertexNormals();
-        }
-
-        if (meshData.index && meshData.index.array) {
-            const indexArray = meshData.index.array instanceof Uint32Array || meshData.index.array instanceof Uint16Array
-                ? meshData.index.array
-                : new Uint32Array(meshData.index.array);
-            geometry.setIndex(new THREE.BufferAttribute(indexArray, 1));
-            totalTriangles += indexArray.length / 3;
-        } else {
-            totalTriangles += posArray.length / 9;
-        }
-
-        let colorHex = 0x2563eb;
-        if (meshData.color && Array.isArray(meshData.color) && meshData.color.length >= 3) {
-            colorHex = new THREE.Color(meshData.color[0], meshData.color[1], meshData.color[2]);
-        }
-
-        const meshMaterial = createCadMaterial(colorHex);
-        const mesh = new THREE.Mesh(geometry, meshMaterial);
-        group.add(mesh);
-    });
-
-    displayCadModelGroup(group, filename, Math.round(totalTriangles));
 }
 
 function displayCadModelGroup(group, filename, triangleCount) {
@@ -3925,7 +3924,7 @@ function siteChat() {
             });
         },
 
-        send() {
+send() {
             if (!this.newMessage.trim()) return;
             const query = this.newMessage.trim();
 
@@ -3938,38 +3937,54 @@ function siteChat() {
             this.newMessage = '';
 
             setTimeout(() => {
-                const found = this.findSection(currentQuery);
-                if (found) {
-                    const url = '#' + found.id;
-                    
-                    let title = found.title || found.menuTitle || this.t('defaultArticle');
-                    if (this.lang === 'EN' && found.title_en) title = found.title_en;
-                    if (this.lang === 'GE' && found.title_de) title = found.title_de;
+                const foundList = this.findSections(currentQuery);
+                
+                if (foundList && foundList.length > 0) {
+                    // Перебираем все найденные совпадения и добавляем каждое в историю чата
+                    foundList.forEach(found => {
+                        const url = '#' + found.id;
+                        
+                        let title = found.title || found.menuTitle || this.t('defaultArticle');
+                        if (this.lang === 'EN' && found.title_en) title = found.title_en;
+                        if (this.lang === 'GE' && found.title_de) title = found.title_de;
 
-                    const reply = this.t('prefix') + '<a href="' + url + '" @click="isOpen = false" class="text-blue-600 dark:text-blue-400 font-bold underline hover:text-blue-800">' + title + '</a>';
-                    this.chatHistory.push({ sender: 'bot', text: reply });
+                        const reply = this.t('prefix') + '<a href="' + url + '" @click="isOpen = false" class="text-blue-600 dark:text-blue-400 font-bold underline hover:text-blue-800">' + title + '</a>';
+                        this.chatHistory.push({ sender: 'bot', text: reply });
+                    });
                 } else {
                     this.chatHistory.push({ sender: 'bot', text: this.t('notFound') });
                 }
             }, 300);
         },
 
-        findSection(q) {
+findSections(q) {
             const sections = window.SECTIONS_DATA || (typeof SECTIONS_DATA !== 'undefined' ? SECTIONS_DATA : null);
-            if (!sections || !sections.length) return null;
-
             const lowerQ = q.toLowerCase();
+            const results = [];
 
-            let match = sections.find(sec => {
+            // Проверка на контакты
+            if (['contact', 'contacts', 'контакты', 'контакт', 'связь', 'kontakte'].some(word => lowerQ.includes(word))) {
+                results.push({
+                    id: 'contact',
+                    title: 'Contacts',
+                    title_en: 'Contacts',
+                    title_de: 'Kontakte'
+                });
+            }
+
+            if (!sections || !sections.length) return results;
+
+            // 1. Поиск всех совпадений по ID, заголовкам или пунктам меню через filter()
+            let matches = sections.filter(sec => {
                 const id = (sec.id || '').toLowerCase();
                 const menuTitle = (sec.menuTitle || '').toLowerCase();
                 const title = (sec.title || '').toLowerCase();
-
                 return id.includes(lowerQ) || menuTitle.includes(lowerQ) || title.includes(lowerQ);
             });
 
-            if (!match) {
-                match = sections.find(sec => {
+            // 2. Если по заголовкам ничего не нашлось, ищем по текстам и подсказкам
+            if (matches.length === 0) {
+                matches = sections.filter(sec => {
                     let hintsText = '';
                     if (sec.hints && Array.isArray(sec.hints)) {
                         hintsText = sec.hints.map(h => (h.title || '') + ' ' + (h.text || '')).join(' ');
@@ -3979,8 +3994,8 @@ function siteChat() {
                 });
             }
 
-            return match;
-        }
+            return [...results, ...matches];
+        },
     }
 }
 </script>
