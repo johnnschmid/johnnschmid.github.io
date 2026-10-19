@@ -1717,16 +1717,18 @@ iframe {
 
              loading: false,
              paused: false,
+             offscreen: false,
 
              nextSlide(tries = 0) {
                  // не листаем, пока открыта модалка или вкладка скрыта
-                 if (this.paused || document.hidden || this.loading || this.allSlides.length < 2) return;
+                 if (this.paused || this.offscreen || document.hidden || this.loading || this.allSlides.length < 2) return;
                  this.loading = true;
                  const nextIndex = (this.currentIndex + 1) % this.allSlides.length;
                  const data = this.allSlides[nextIndex];
 
                  // Пробуем по очереди: уменьшенная версия -> оригинальная ссылка -> пропускаем слайд
                  const candidates = [thumbUrl(data.url, 1600)];
+                 console.log(candidates);
                  if (candidates[0] !== data.url) candidates.push(data.url);
 
                  const tryLoad = (n) => {
@@ -1814,9 +1816,9 @@ iframe {
                  }
              }
          }"
-         x-init="initSlides()"
+         x-init="initSlides(); new IntersectionObserver((entries) => { offscreen = !entries[0].isIntersecting }).observe($el)"
          x-effect="paused = !!(showAuth || showProfileModal || showCart || selectedProduct || modalGalleryOpen)"
-         :class="paused ? 'slideshow-paused' : ''"
+         :class="(paused || offscreen) ? 'slideshow-paused' : ''"
          x-show="showSlideshow">
 
 <style>
