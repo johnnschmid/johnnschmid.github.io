@@ -982,7 +982,7 @@ body.cursor-dot-enabled :is(button, a, input, select, textarea, option, label,
 			</button>
             
             
-            <h2 class="text-3xl font-bold text-gray-900 mb-2" x-text="authMode === 'login' ? 'Welcome Back' : 'Join ReTools'"></h2>
+            <h2 class="text-3xl font-bold text-gray-900 mb-2" x-text="authMode === 'login' ? 'Welcome Back' : 'Join us'"></h2>
             <p class="text-gray-500 text-sm mb-8" x-text="authMode === 'login' ? 'Enter your details to access your account.' : 'Create an account to start your organized journey.'"></p>
 
             <!-- <form @submit.prevent="handleAuth" class="space-y-4"> -->
@@ -1084,7 +1084,7 @@ body.cursor-dot-enabled :is(button, a, input, select, textarea, option, label,
             </form>
 
             <div class="mt-8 text-center text-sm">
-                <span class="text-gray-500" x-text="authMode === 'login' ? 'New to ReTools?' : 'Already have an account?'"></span>
+                <span class="text-gray-500" x-text="authMode === 'login' ? 'New here?' : 'Already have an account?'"></span>
                 <button @click="authMode = (authMode === 'login' ? 'signup' : 'login'); authError = '';" class="text-brand-600 font-bold ml-1 hover:underline" x-text="authMode === 'login' ? 'Sign Up' : 'Log In'"></button>
             </div>
         </div>
