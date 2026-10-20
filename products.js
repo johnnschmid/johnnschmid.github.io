@@ -356,7 +356,7 @@ const SECTIONS_DATA = [
 			{ type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNIS1ttqPvFb0x_RYyEq9C8VeLK4ccWlJFOq-Mnr2JlJtgGdDkaTCFg3m9bitvl-kpjhsQIYsALyczbfI_FMsBNXLypSBXmfDQZXKEyPd2yfrsV-JjNp6UVuHvKNb9DgF2YEL0n-5YXm3U4CX1rm-Ky=w1087-h1447-s-no' },
             { type: 'pdf', url: 'https://drive.usercontent.google.com/download?export=download&confirm=t&id=1ekCvtUsUVLTkgrTOHB7Qy2cqHE2R5Dab', title: 'Resume (PDF)' },
             { type: 'pdf', url: 'https://drive.usercontent.google.com/download?export=download&confirm=t&id=1QGFVjjxCcYgPwY4ZYbELje0WaiO815ox', title: 'Diplom (PDF)' },
-            { type: 'pdf', url: 'https://drive.usercontent.google.com/download?export=download&confirm=t&id=19hlV3huYqnUShDzTAaF40CnnsKkgj6Ti', title: 'Certificate (PDF)' },
+            //{ type: 'pdf', url: 'https://drive.usercontent.google.com/download?export=download&confirm=t&id=19hlV3huYqnUShDzTAaF40CnnsKkgj6Ti', title: 'Certificate (PDF)' },
             //{ type: 'zip', url: 'https://example.com/models.zip', title: 'Download 3D Models (ZIP)' }
         ]
     },
