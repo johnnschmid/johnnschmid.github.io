@@ -35,11 +35,80 @@
 	
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Настройки сайта (название, фирменный цвет) -->
+    <script src="products.js"></script>
+    <script>
+        /* Вся палитра считается от одного цвета: SITE_SETTINGS.brandColor (products.js) */
+        (function () {
+            var s = (typeof SITE_SETTINGS !== 'undefined' && SITE_SETTINGS) || {};
+
+            function parse(c) {
+                c = String(c || '').trim().replace('#', '');
+                if (c.length === 3) c = c.split('').map(function (x) { return x + x; }).join('');
+                if (!/^[0-9a-f]{6}$/i.test(c)) c = '2D5BFF';
+                return [0, 2, 4].map(function (i) { return parseInt(c.substr(i, 2), 16); });
+            }
+            function mix(a, b, w) { return a.map(function (v, i) { return Math.round(v + (b[i] - v) * w); }); }
+            function hex(c) { return '#' + c.map(function (v) { return ('0' + v.toString(16)).slice(-2); }).join('').toUpperCase(); }
+
+            var W = [255, 255, 255], K = [0, 0, 0], b = parse(s.brandColor);
+
+            var P = {
+                base:  hex(b),
+                rgb:   b.join(' '),
+                light: hex(mix(b, W, 0.38)),   // «светло-фирменный» — конец градиента
+                dark:  hex(mix(b, K, 0.22)),   // тёмный — hover
+                deep:  hex(mix(b, K, 0.65)),   // очень тёмный — плашки в тёмной теме
+                50:  hex(mix(b, W, 0.93)),
+                100: hex(mix(b, W, 0.86)),
+                150: hex(mix(b, W, 0.80)),
+                200: hex(mix(b, W, 0.72)),
+                500: hex(mix(b, W, 0.15)),
+                600: hex(b),
+                700: hex(mix(b, K, 0.18)),
+                800: hex(mix(b, K, 0.38)),
+                900: hex(mix(b, K, 0.60))
+            };
+            window.BRAND = P;
+
+            var st = document.documentElement.style;
+            st.setProperty('--brand', P.base);
+            st.setProperty('--brand-rgb', P.rgb);
+            st.setProperty('--brand-light', P.light);
+            st.setProperty('--brand-dark', P.dark);
+            st.setProperty('--brand-deep', P.deep);
+            [50, 100, 150, 200, 700].forEach(function (k) { st.setProperty('--brand-' + k, P[k]); });
+
+            /* Название сайта и логотип */
+            var name = s.siteName || document.title || 'Site';
+            window.SITE_NAME = name;
+            document.title = name;
+            var initials = name.split(/\s+/).map(function (w) { return w.charAt(0); }).join('').slice(0, 2).toUpperCase();
+            var texts = {
+                siteName:  name,
+                logoMark:  s.logoMark != null ? s.logoMark : initials,
+                logoLabel: s.logoLabel != null ? s.logoLabel : ''
+            };
+            document.addEventListener('DOMContentLoaded', function () {
+                document.querySelectorAll('[data-site]').forEach(function (el) {
+                    var v = texts[el.getAttribute('data-site')];
+                    if (v != null) el.textContent = v;
+                });
+            });
+
+            /* Цвет адресной строки на мобильных */
+            var meta = document.createElement('meta');
+            meta.name = 'theme-color';
+            meta.content = P.base;
+            document.head.appendChild(meta);
+        })();
+    </script>
     <title>Johannes Schmid</title>
     <link rel="icon" type="image/png" href="favicon.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
+            darkMode: 'class', // тема переключается классом .dark на <html>
             theme: {
                 screens: {
                     'sm': '640px',
@@ -52,6 +121,11 @@
                     '6xl': '3840px', /* Полноценные 4K мониторы */
                 },
                 extend: {
+                    colors: {
+                        // Фирменный цвет: оттенки считаются от SITE_SETTINGS.brandColor
+                        brand: { 50: BRAND[50], 100: BRAND[100], 200: BRAND[200], 500: BRAND[500],
+                                 600: BRAND[600], 700: BRAND[700], 800: BRAND[800], 900: BRAND[900] }
+                    },
                     maxWidth: {
                         '7xl': '92vw',
                     }
@@ -63,7 +137,6 @@
 
 	
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    <script src="products.js"></script>
     
     
 
@@ -82,465 +155,426 @@
     
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@700&display=swap" rel="stylesheet">
     <style>
-        [x-cloak] { display: none !important; }
-        html { scroll-behavior: smooth; }
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; color: #1E1E1E; transition: font-size 0.2s ease; }
-        
-        /* Отключает выделение текста на уровне всего документа */
-		body {
-			-webkit-user-select: none; /* Safari */
-			-moz-user-select: none;    /* Firefox */
-			-ms-user-select: none;     /* Internet Explorer/Edge */
-			user-select: none;         /* Стандартное свойство */
-		}
-        
-        
-        h1, h2, h3 { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
-        .btn-blue-pill { background: linear-gradient(135deg, #2D5BFF 0%, #7090FF 100%); color: white; border-radius: 9999px; font-weight: 600; transition: 0.2s; display: flex; align-items: center; justify-content: center; border: none; }
-        .btn-blue-pill:hover { background: linear-gradient(135deg, #1a44db 0%, #2D5BFF 100%); transform: translateY(-1px); }
-        .btn-outline-pill { background: transparent; color: #2D5BFF; border: 2px solid #D1D5DB; border-radius: 9999px; font-weight: 600; transition: 0.2s; display: flex; align-items: center; justify-content: center; }
-        
-        
-        /* Эффект при наведении */
-		.btn-outline-pill:hover {
-			border-color: #2D5BFF; /* Рамка становится синей в тон текста */
-			background-color: rgba(45, 91, 255, 0.05); /* Появляется еле заметная синяя заливка */
-			color: #1a42db; /* Текст становится чуть темнее */
-		}
-        
-        
-        .card-shadow { box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05); }
-        .hero-bg-gradient { 
-            background: linear-gradient(135deg, #f0f4ff 0%, #e0e7ff 50%, #dbeafe 100%); 
-        }
-        .floating-controls { position: fixed; bottom: 20px; left: 20px; z-index: 100; display: flex; gap: 10px; }
-        .control-btn { background: white; border: 1px solid #e5e7eb; padding: 10px; rounded-full: 9999px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border-radius: 50px; display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 600; }
-        .color-dot { width: 16px; height: 16px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; transition: 0.2s; }
-        .color-dot.active { border-color: #2D5BFF; transform: scale(1.2); }
-        
-        :root {
-          --brand-blue: #007AFF; /* Adjust to match your specific branding */
-        }
+/* ================================================================
+   1. ДИЗАЙН-ТОКЕНЫ
+   Фирменный цвет задаётся в products.js (SITE_SETTINGS.brandColor).
+   Скрипт в <head> пересчитывает все переменные ниже от этого цвета:
+   светлый / тёмный оттенки, тинты, градиенты, кольцо фокуса.
+   Значения здесь — только запасные (синий), если скрипт не отработал.
+   ================================================================ */
+:root {
+    --brand:       #2D5BFF;
+    --brand-rgb:   45 91 255;
+    --brand-light: #7D9AFF;   /* конец градиента: «светлее» фирменного */
+    --brand-dark:  #2449CC;   /* начало градиента при наведении */
+    --brand-deep:  #112361;   /* тёмные плашки в тёмной теме */
+    --brand-50:    #F0F4FF;
+    --brand-100:   #E0E7FF;
+    --brand-150:   #D5E0FF;
+    --brand-200:   #C4D5FF;
+    --brand-700:   #2549D1;
 
-        .logo-container {
-          display: flex;
-          align-items: center;
-          gap: 2px;
-          font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-        }
+    --brand-grad:       linear-gradient(135deg, var(--brand) 0%, var(--brand-light) 100%);
+    --brand-grad-hover: linear-gradient(135deg, var(--brand-dark) 0%, var(--brand) 100%);
+    --brand-glow:       0 6px 16px -4px rgb(var(--brand-rgb) / 0.45);
+    --ring:             0 0 0 3px rgb(var(--brand-rgb) / 0.30);
+
+    --surface:        #FFFFFF;
+    --control-bg:     #F9FAFB;
+    --control-border: #E5E7EB;
+    --control-track:  #E5E7EB;
+    --placeholder:    #9CA3AF;
+}
+.dark {
+    --surface:        #3D3D3D;
+    --control-bg:     #5D5D5D;
+    --control-border: #6B6B6B;
+    --control-track:  #6B6B6B;
+    --placeholder:    #C4C4C4;
+}
 
 
-        /* The Superellipse Shape */
-        .transcolor {
-          background: linear-gradient(135deg, rgb(0, 120, 255) 0%, rgb(141, 164, 255) 100%); 
-        }
+/* ================================================================
+   2. БАЗА
+   ================================================================ */
+[x-cloak] { display: none !important; }
+html { scroll-behavior: smooth; }
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: #1E1E1E;
+    transition: font-size 0.2s ease;
+    /* Запрет выделения текста на уровне документа */
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+/* В полях ввода выделение и набор должны работать (иначе в Safari нельзя печатать) */
+input, textarea { -webkit-user-select: text; user-select: text; }
+h1, h2, h3 { font-family: inherit; }
+.card-shadow { box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05); }
+
+/* Единый видимый фокус с клавиатуры для всех интерактивных элементов */
+:where(button, a, [role="button"], summary):focus-visible {
+    outline: 2px solid var(--brand);
+    outline-offset: 2px;
+}
+
+iframe { position: relative; z-index: 50; pointer-events: auto !important; }
+.video-container { isolation: isolate; transform: translateZ(0); }
+
+@media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .animate-floating-text { animation: none; }
+}
 
 
-        /* The Superellipse Shape */
-        .superellipse {
-          width: 36px;
-          height: 36px;
-          background: linear-gradient(135deg, rgb(20, 70, 255) 0%, rgb(141, 164, 255) 100%);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          
-          /* Using a SVG path to define the specific superellipse curvature */
-          clip-path: path('M 0,18 C 0,5 5,0 18,0 C 31,0 36,5 36,18 C 36,31 31,36 18,36 C 5,36 0,31 0,18 Z');
-          
-          /* Fallback for older browsers */
-          border-radius: 40%; 
-        }
+/* ================================================================
+   3. КНОПКИ — один стиль на весь сайт
+   .btn-primary     основная: градиент от фирменного к светлому
+   .btn-secondary   вторичная: контур в тоне фирменного цвета
+   .btn-icon        круглая иконка-кнопка (соцсети, «+/−», тема, глаз)
+   .custom-slider-btn  стеклянная круглая кнопка поверх фото (стрелки, ×)
+   ================================================================ */
+.btn-primary,
+.btn-secondary {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border-radius: 9999px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s, background-color 0.2s,
+                border-color 0.2s, color 0.2s, opacity 0.2s;
+}
 
-        .superellipse:hover {
-          transform: scale(1.05);
-          transition: transform 0.1s ease;
-          background-color: #1a44db; /* Branded blue hover state */
-          filter: drop-shadow(0 8px 12px rgba(0, 0, 0, 0.15));
-        }
+/* Градиент «наведения» лежит под содержимым и плавно проявляется поверх основного */
+.btn-primary,
+.btn-icon,
+.custom-slider-btn {
+    position: relative;
+    isolation: isolate;
+}
+.btn-primary::before,
+.btn-icon::before,
+.custom-slider-btn::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    opacity: 0;
+    transition: opacity 0.2s;
+    pointer-events: none;
+}
 
-        .superellipse:active {
-          /* Snappier transition for the click to feel responsive */
-          transition: transform 0.1s ease;
-          transform: scale(0.95);
-        }
+.btn-primary {
+    border: 0;
+    color: #fff;
+    background-image: var(--brand-grad);
+    box-shadow: var(--brand-glow);
+}
+.btn-primary::before { background-image: var(--brand-grad-hover); }
+.btn-primary:hover:not(:disabled)  { transform: translateY(-1px); }
+.btn-primary:hover:not(:disabled)::before { opacity: 1; }
+.btn-primary:active:not(:disabled) { transform: translateY(0); }
+.btn-primary:disabled { opacity: 0.5; cursor: not-allowed; box-shadow: none; }
 
-        .logo-text-white {
-          color: white;
-          font-weight: bold;
-          font-size: 20px;
-          line-height: 1;
-        }
+.btn-secondary {
+    background: var(--surface);
+    color: var(--brand);
+    border: 2px solid var(--brand-200);
+}
+.btn-secondary:hover:not(:disabled) {
+    border-color: var(--brand);
+    background-color: var(--brand-50);
+    color: var(--brand-dark);
+}
+.btn-secondary:disabled { opacity: 0.5; cursor: not-allowed; }
 
-        .logo-label {
-          font-size: 20px;
-          font-weight: 700;
-          letter-spacing: -0.02em;
-          color: #1d1d1f;
-        }
-        
-        /* Cursor section */
-        .cursor-dot,
-        .cursor-outline {
-            pointer-events: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            transform: translate(-50%, -50%);
-            border-radius: 50%;
-            z-index: 9999;
-        }
+.btn-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border: 0;
+    border-radius: 9999px;
+    background-color: var(--brand-50);
+    color: var(--brand);
+    cursor: pointer;
+    transition: color 0.2s;
+}
+.btn-icon::before { background-image: var(--brand-grad); }
+.btn-icon:hover { color: #fff; }
+.btn-icon:hover::before { opacity: 1; }
 
-        .cursor-dot {
-            width: 20px;
-            height: 20px;
-            background-color: #2D5BFF;
-            /* The dot stays exactly under the mouse */
-            transition: width 0.2s, height 0.2s, opacity 0.2s;
-            border: 2px solid #FFFFFF; /* White border */
-        }
+.custom-slider-btn {
+    background-color: rgba(255, 255, 255, 0.8);
+    color: #1f2937;
+    transition: color 0.2s;
+}
+.custom-slider-btn::before { background-image: var(--brand-grad); }
+.custom-slider-btn:hover,
+.custom-slider-btn:hover i { color: #fff !important; }
+.custom-slider-btn:hover::before { opacity: 1; }
 
-        .cursor-outline {
-            width: 22px;
-            height: 22px;
-            background-color: rgba(45, 91, 255, 0.5);
-            /* CRITICAL: This duration creates the "trailing" effect */
-            /* Increasing 0.15s makes the trail longer/slower */
-            transition: left 0.15s ease-out, top 0.15s ease-out, transform 0.2s; 
-        }
+/* Нижняя панель управления (музыка, размер шрифта) */
+.floating-controls { position: fixed; bottom: 20px; left: 20px; z-index: 100; display: flex; gap: 10px; }
+.control-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 14px;
+    background: var(--surface);
+    border: 1px solid var(--control-border);
+    border-radius: 50px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    font-size: 12px;
+    font-weight: 600;
+    transition: border-color 0.2s;
+}
+.control-btn:hover { border-color: var(--brand-200); }
 
 
+/* ================================================================
+   4. ЭЛЕМЕНТЫ ФОРМ — поля, select, checkbox, radio, range, file
+   ================================================================ */
+.field {
+    width: 100%;
+    padding: 1rem;
+    color: inherit;
+    background-color: var(--control-bg);
+    border: 1px solid var(--control-border);
+    border-radius: 0.75rem;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s, background-color 0.2s;
+}
+.field::placeholder { color: var(--placeholder); }
+.field:hover { border-color: var(--brand-200); }
+.field:focus { border-color: var(--brand); box-shadow: var(--ring); }
+.field-sm { padding: 0.5rem 1rem; font-size: 0.75rem; }
+.field-pr { padding-right: 3rem; }              /* место под иконку «показать пароль» */
+textarea.field { resize: vertical; }
+
+select { -webkit-appearance: none; -moz-appearance: none; appearance: none; }
+select.field {
+    padding-right: 2.5rem;
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%239CA3AF'%3E%3Cpath d='M5.3 7.3a1 1 0 0 1 1.4 0L10 10.6l3.3-3.3a1 1 0 1 1 1.4 1.4l-4 4a1 1 0 0 1-1.4 0l-4-4a1 1 0 0 1 0-1.4z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 1.25rem;
+}
+
+/* Запас по высоте и по бокам: поле файла обрезает всё, что выходит за его рамку (тень и сдвиг кнопки) */
+input[type="file"] {
+    font-size: 0.75rem;
+    line-height: 1.25rem;
+    color: #6b7280;
+    padding: 0.5rem 0.5rem 0.75rem 0.25rem;
+    overflow: visible;
+}
+input[type="file"]::file-selector-button {
+    margin-right: 1rem;
+    padding: 0.5rem 1.25rem;
+    border: 0;
+    border-radius: 9999px;
+    font-family: inherit;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #fff;
+    background-image: var(--brand-grad);
+    box-shadow: 0 2px 8px -2px rgb(var(--brand-rgb) / 0.45);
+    cursor: pointer;
+}
+input[type="file"]:hover::file-selector-button { background-image: var(--brand-grad-hover); }
+
+input[type="checkbox"],
+input[type="radio"] {
+    -webkit-appearance: none;
+    appearance: none;
+    display: inline-grid;
+    place-content: center;
+    flex-shrink: 0;
+    width: 1.25rem;
+    height: 1.25rem;
+    margin: 0;
+    background-color: var(--control-bg);
+    border: 2px solid var(--brand-200);
+    cursor: pointer;
+    transition: border-color 0.2s, box-shadow 0.2s, background-color 0.2s;
+}
+input[type="checkbox"] { border-radius: 0.375rem; }
+input[type="radio"]    { border-radius: 9999px; }
+input[type="checkbox"]::before {
+    content: "";
+    width: 0.7rem;
+    height: 0.7rem;
+    background: #fff;
+    clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+    transform: scale(0);
+    transition: transform 0.12s ease-in-out;
+}
+input[type="radio"]::before {
+    content: "";
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 9999px;
+    background: #fff;
+    transform: scale(0);
+    transition: transform 0.12s ease-in-out;
+}
+input[type="checkbox"]:hover,
+input[type="radio"]:hover { border-color: var(--brand); }
+input[type="checkbox"]:checked,
+input[type="radio"]:checked {
+    background-image: var(--brand-grad);
+    border-color: var(--brand);
+}
+input[type="checkbox"]:checked::before,
+input[type="radio"]:checked::before { transform: scale(1); }
+input[type="checkbox"]:focus-visible,
+input[type="radio"]:focus-visible,
+input[type="range"]:focus-visible { outline: none; box-shadow: var(--ring); }
+input[type="checkbox"]:disabled,
+input[type="radio"]:disabled { opacity: 0.5; cursor: not-allowed; }
+
+input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    height: 0.25rem;
+    border-radius: 9999px;
+    background: var(--control-track);
+    cursor: pointer;
+}
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 14px;
+    height: 14px;
+    border: 2px solid #fff;
+    border-radius: 50%;
+    background-image: var(--brand-grad);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+}
+input[type="range"]::-moz-range-thumb {
+    width: 10px;
+    height: 10px;
+    border: 2px solid #fff;
+    border-radius: 50%;
+    background-image: var(--brand-grad);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+}
 
 
+/* ================================================================
+   5. ФИРМЕННЫЕ ПОВЕРХНОСТИ
+   ================================================================ */
+.brand-gradient { background-image: var(--brand-grad); }
+.hero-bg-gradient {
+    background: linear-gradient(135deg, var(--brand-50) 0%, var(--brand-100) 50%, var(--brand-150) 100%);
+}
 
+/* Логотип */
+.logo-container {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+.superellipse {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-image: var(--brand-grad);
+    /* Форма «суперэллипс» через SVG-путь */
+    clip-path: path('M 0,18 C 0,5 5,0 18,0 C 31,0 36,5 36,18 C 36,31 31,36 18,36 C 5,36 0,31 0,18 Z');
+    border-radius: 40%; /* запасной вариант для старых браузеров */
+}
+.superellipse:hover {
+    transform: scale(1.05);
+    transition: transform 0.1s ease;
+    background-image: var(--brand-grad-hover);
+    filter: drop-shadow(0 8px 12px rgba(0, 0, 0, 0.15));
+}
+.superellipse:active { transition: transform 0.1s ease; transform: scale(0.95); }
+.logo-text-white { color: #fff; font-weight: bold; font-size: 20px; line-height: 1; }
+.logo-label { font-size: 20px; font-weight: 700; letter-spacing: -0.02em; color: #1d1d1f; }
 
-		/* Стили кастомного курсора */
-        .cursor-dot,
-        .cursor-outline {
-            pointer-events: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            transform: translate(-50%, -50%);
-            border-radius: 50%;
-            z-index: 9999;
-            display: none; /* По умолчанию скрыты */
-        }
+/* Выбор цвета товара */
+.color-dot { width: 16px; height: 16px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; transition: 0.2s; }
+.color-dot.active { border-color: var(--brand); transform: scale(1.2); }
 
-        .cursor-dot {
-            width: 20px;
-            height: 20px;
-            background-color: #2D5BFF;
-            transition: width 0.2s, height 0.2s, opacity 0.2s;
-            border: 2px solid #FFFFFF;
-        }
+/* Точки слайдера: d = min(10px, доступная ширина / сумма ширин точек и промежутков) */
+.dots-row {
+    --d: min(10px, calc((100cqw - 32px) / (1.6 * var(--n) + 0.8)));
+    gap: calc(var(--d) * 0.6);
+}
+.dots-row .dot-btn { height: var(--d); padding: 0; border: 0; }
+.dots-row .dot-btn.dot-active {
+    background-color: var(--brand);
+    background-image: var(--brand-grad);
+    box-shadow: 0 0 8px rgb(var(--brand-rgb) / 0.8);
+}
+@supports not (width: 1cqw) {
+    .dots-row { --d: 10px !important; gap: 8px; }
+}
 
-        .cursor-outline {
-            width: 22px;
-            height: 22px;
-            background-color: rgba(45, 91, 255, 0.5);
-            transition: left 0.15s ease-out, top 0.15s ease-out, transform 0.2s; 
-        }
-
-        /* Системный курсор скрывается и кастомный включается ТОЛЬКО когда включен cursorSkin: true */
-        body.cursor-dot-enabled,
-        body.cursor-dot-enabled html,
-        body.cursor-dot-enabled button,
-        body.cursor-dot-enabled a,
-        body.cursor-dot-enabled input,
-        body.cursor-dot-enabled select,
-        body.cursor-dot-enabled .cursor-pointer {
-            cursor: none !important;
-        }
-
-        body.cursor-dot-enabled .cursor-dot,
-        body.cursor-dot-enabled .cursor-outline {
-            display: block !important;
-        }
-        
-/* Исправление исчезновения кастомного курсора на кнопках слайдера */
-body.cursor-dot-enabled .custom-slider-btn,
-body.cursor-dot-enabled .custom-slider-btn * {
+/* Кастомный курсор (включается SITE_SETTINGS.cursorSkin = true) */
+.cursor-dot,
+.cursor-outline {
+    pointer-events: none !important;
+    position: fixed;
+    top: 0;
+    left: 0;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    z-index: 9999;
+    display: none;
+}
+.cursor-dot {
+    width: 20px;
+    height: 20px;
+    background-color: var(--brand);
+    border: 2px solid #FFFFFF;
+    transition: width 0.2s, height 0.2s, opacity 0.2s;
+}
+.cursor-outline {
+    width: 22px;
+    height: 22px;
+    background-color: rgb(var(--brand-rgb) / 0.5);
+    /* Длительность left/top задаёт «шлейф» за курсором */
+    transition: left 0.15s ease-out, top 0.15s ease-out, transform 0.2s;
+}
+body.cursor-dot-enabled .cursor-dot,
+body.cursor-dot-enabled .cursor-outline { display: block !important; }
+body.cursor-dot-enabled,
+body.cursor-dot-enabled :is(button, a, input, select, textarea, option, label,
+                            .cursor-pointer, .control-btn, .relative button,
+                            .custom-slider-btn, .custom-slider-btn *) {
     cursor: none !important;
 }
-
-
-
-
-
-
-
-        
-        /* Specifically target the select dropdowns and their options */
-		select, 
-		option,
-		.control-btn select,
-		nav select {
-			cursor: none !important;
-			-webkit-appearance: none; /* Helps remove some default OS styling */
-			-moz-appearance: none;
-			appearance: none;
-		}
-
-		/* Ensure the container also hides the cursor */
-		.control-btn, 
-		.flex.items-center.gap-4 select {
-			cursor: none !important;
-		}
-        
-        
-        /* Dark Mode Overrides */
-        .dark body {
-            background-color: #121212;
-            color: #F5F5F5;
-        }
-
-
-		/* prev-next image buttons */
-		.custom-slider-btn {
-			background-color: rgba(255, 255, 255, 0.8);
-			color: #1f2937; /* темная иконка */
-		}
-		.custom-slider-btn:hover {
-			background-color: rgba(0, 122, 255, 0.7);
-		}
-
-		/* Темная тема (если класс .dark переключается на корневом элементе html или body) */
-		.dark .custom-slider-btn {
-			background-color: rgba(255, 255, 255, 0.8);
-			color: #1f2937; /* темная иконка */
-		}
-		.dark .custom-slider-btn:hover {
-			background-color: rgba(0, 122, 255, 0.7);
-		}
-
-
-        .dark nav, .dark .card-shadow { background-color: #1E1E1E !important; }
-
-        .dark .logo-label,
-        .dark h1, 
-        .dark h2, 
-        .dark h3,
-        .dark .text-gray-900 {
-            color: #FFFFFF !important;
-        }
-
-        .dark .text-gray-500, 
-        .dark .text-gray-600 {
-            color: #A0A0A0 !important;
-        }
-
-        .dark .hero-bg-gradient {
-            background: linear-gradient(135deg, #1a1a1a 0%, #121212 100%);
-        }
-
-        .dark .bg-blue-50 {
-            background-color: #013369 !important;
-            color: #FFF;
-        }
-
-        .dark .bg-blue-100
-		{
-            background-color: #013369 !important;
-            color: #FFF;
-        }
-
-
-        .dark .control-btn,
-        .dark .bg-gray-100,
-        .dark .bg-gray-50 {
-            background-color: #5d5d5d !important;
-            color: #FFF;
-        }
-
-        .dark .bg-white {
-            background-color: #3D3D3D !important;
-            color: #FFF;
-        }
-		
-
-        /* Ensure custom cursor is visible in dark mode */
-        .dark .cursor-outline {
-            border-color: #2D5BFF; /* Blue border in dark mode for contrast */
-        }
-        
-        /* Specific overrides for lighter text in Dark Mode */
-        .dark .text-gray-800,
-        .dark .font-bold {
-            color: #E5E7EB !important; /* Lighter gray for 'Our Goal' and 'Our Promise' */
-        }
-
-        .dark #about .text-gray-600 {
-            color: #D1D5DB !important; /* Lighter gray for the descriptive text */
-        }
-
-        .dark #contact .font-bold.text-gray-700 {
-            color: #F3F4F6 !important; /* Very light color for Email, Phone, and Address */
-        }
-
-        .dark #contact .text-gray-500 {
-            color: #A0A0A0 !important; /* Light gray for the contact intro paragraph */
-        }
-        
-        /* Custom Dropdown Styling */
-		[x-cloak] { display: none !important; }
-
-		/* Применяем скрытие курсора только если включен cursorSkin: true */
-		body.cursor-dot-enabled .relative button {
-			cursor: none !important;
-		}
-
-		/* Optional: Subtle hover effect for the currency items */
-		.dark .hover\:bg-blue-900\/20:hover {
-			background-color: rgba(30, 58, 138, 0.2) !important;
-		}
-				
-		/* Hide the custom cursor elements by default on mobile/touch */
-		@media (pointer: coarse) {
-			.cursor-dot,
-			.cursor-outline {
-				display: none !important;
-			}
-		}        
-        
-
-		.cursor-outline, 
-		.cursor-dot {
-			pointer-events: none !important;
-		}
-
-/* Ensure the iframe container stack takes priority click registration */
-iframe {
-    position: relative;
-    z-index: 50;
-    pointer-events: auto !important;
+@media (pointer: coarse) {
+    .cursor-dot, .cursor-outline { display: none !important; }
 }
 
 
-.video-container {
-    isolation: isolate;
-    transform: translateZ(0); /* Включает аппаратное ускорение, заставляя браузер рендерить элемент как обычный слой */
-}
-
-
-
-
-
-/* Универсальный стиль для секций с двумя колонками */
-.custom-section {
-    padding-top: 4rem;      /* py-16 для мобилок */
-    padding-bottom: 4rem;
-    padding-left: 1rem;     /* px-4 для мобилок */
-    padding-right: 1rem;
-}
-
-@media (min-width: 768px) {
-    .custom-section {
-        padding-top: 6rem;  /* py-24 для ПК */
-        padding-bottom: 6rem;
-        padding-left: 2rem; /* px-8 для ПК */
-        padding-right: 2rem;
-    }
-}
-
-/* Универсальная сетка для контента внутри секции */
-.custom-grid {
-    max-width: 80rem;       /* Базовое ограничение для обычных экранов */
-    margin-left: auto;
-    margin-right: auto;
-    display: grid;
-    gap: 1.5rem;            /* gap-6 для мобилок */
-}
-
-@media (min-width: 1024px) {
-    .custom-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 2.5rem;
-        align-items: center;
-    }
-}
-
-/* Автоматическое расширение секций на 2K / 4K мониторах */
-@media (min-width: 1536px) {
-    .custom-grid {
-        max-width: 82vw !important; /* Занимает 92% ширины большого экрана */
-    }
-}
-
-@media (min-width: 2000px) {
-    .custom-grid {
-        max-width: 1750px !important; /* Комфортный максимум для 4K, чтобы контент не растягивался слишком сильно */
-    }
-}
-
-
-@media (min-width: 3000px) {
-    .custom-grid {
-        max-width: 2750px !important; /* Комфортный максимум для 4K, чтобы контент не растягивался слишком сильно */
-    }
-}
-
-
-
-/* Основной контейнер панели шагов */
+/* ================================================================
+   6. НАВИГАЦИЯ ПО ШАГАМ (step-nav)
+   ================================================================ */
 .step-nav-container {
     width: 100%;
-    max-width: 100%; /* Убираем жесткое ограничение в 42rem для экранов меньше 1024px */
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 2.5rem;
+    max-width: 100%;
+    margin: 2.5rem auto 0;
     padding-left: 0;
     padding-right: 0;
 }
-
-@media (min-width: 640px) {
-    .step-nav-container {
-        padding-left: 0.5rem;
-        padding-right: 0.5rem;
-    }
-}
-
-/* На экранах от 1024px и шире возвращаем комфортную максимальную ширину, если это необходимо */
-@media (min-width: 1024px) {
-    .step-nav-container {
-        max-width: 56rem; 
-        margin-top: 0.5rem;
-    }
-}
-
-@media (min-width: 1536px) {
-    .step-nav-container {
-        margin-top: 3.5rem; /* Отступ для 2K мониторов */
-    }
-}
-
-@media (min-width: 2500px) {
-    .step-nav-container {
-        margin-top: 3rem; /* Комфортный большой отступ для 4K мониторов */
-    }
-}
-
-/* Увеличение высоты панели и текста на 2K и 4K мониторах */
-@media (min-width: 1536px) {
-    .step-nav-wrapper,
-    .step-nav-inner {
-        border-radius: 9999px 0 0 9999px;
-    }
-    .step-btn {
-        font-size: 1.15rem !important; /* Увеличенный размер текста */
-        padding-top: 0.8rem !important;  /* Увеличенная высота панели */
-        padding-bottom: 0.8rem !important;
-    }
-}
-
-@media (min-width: 2500px) {
-    .step-btn {
-        font-size: 1.5rem !important;    /* Еще крупнее текст для 4K */
-        padding-top: 1.2rem !important;  /* Пропорционально большая высота панели */
-        padding-bottom: 1.2rem !important;
-    }
-}
-
+@media (min-width: 640px)  { .step-nav-container { padding-left: 0.5rem; padding-right: 0.5rem; } }
+@media (min-width: 1024px) { .step-nav-container { max-width: 56rem; margin-top: 0.5rem; } }
+@media (min-width: 1536px) { .step-nav-container { margin-top: 3.5rem; } }
+@media (min-width: 2500px) { .step-nav-container { margin-top: 3rem; } }
 
 /* Внешняя рамка-окантовка со стрелкой справа */
 .step-nav-wrapper {
@@ -551,171 +585,142 @@ iframe {
     box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
     clip-path: polygon(0% 0%, 96% 0%, 100% 50%, 96% 100%, 0% 100%);
 }
-
 /* Внутренняя лента кнопок */
 .step-nav-inner {
     display: flex;
+    width: 100%;
     background-color: #ffffff;
     font-size: 10px;
     font-weight: 500;
     border-radius: 9999px 0 0 9999px;
     overflow: hidden;
-    width: 100%;
     clip-path: polygon(0% 0%, 96% 0%, 99.9% 50%, 96% 100%, 0% 100%);
 }
+@media (min-width: 640px) { .step-nav-inner { font-size: 0.75rem; } }
 
-@media (min-width: 640px) {
-    .step-nav-inner {
-        font-size: 0.75rem;
-    }
-}
-
-/* Базовый стиль для каждой кнопки шага */
 .step-btn {
     flex: 1;
-    padding-top: 0.2rem;
-    padding-bottom: 0.2rem;
-    text-align: center;
     display: flex;
     align-items: center;
     justify-content: center;
+    position: relative;
+    padding: 0.2rem 0.125rem;
+    text-align: center;
+    font-size: 11px;
     cursor: pointer;
     transition: background-color 0.2s, color 0.2s;
-    position: relative;
-    padding-left: 0.125rem;
-    padding-right: 0.125rem;
-    font-size: 11px;
 }
+@media (min-width: 640px)  { .step-btn { font-size: 0.875rem; } }
+@media (min-width: 1024px) { .step-btn { padding-top: 0.5rem; padding-bottom: 0.5rem; font-size: 0.95rem; } }
+@media (min-width: 1536px) { .step-btn { font-size: 1.15rem !important; padding-top: 0.8rem !important; padding-bottom: 0.8rem !important; } }
+@media (min-width: 2500px) { .step-btn { font-size: 1.5rem !important;  padding-top: 1.2rem !important; padding-bottom: 1.2rem !important; } }
 
-@media (min-width: 640px) {
-    .step-btn {
-        font-size: 0.875rem;
-    }
+.step-btn-first  { border-top-left-radius: 9999px; border-bottom-left-radius: 9999px;
+                   clip-path: polygon(0% 0%, 100% 0%, 85% 100%, 0% 100%); margin-right: -10px; z-index: 1; }
+.step-btn-middle { clip-path: polygon(15% 0%, 100% 0%, 85% 100%, 0% 100%); margin-left: -6px; margin-right: -10px; }
+.step-btn-last   { clip-path: polygon(15% 0%, 100% 0%, 100% 100%, 0% 100%); margin-left: -6px; padding-right: 0.25rem; z-index: 1; }
+@media (min-width: 1024px) { .step-btn-last { padding-right: 0.75rem; } }
+
+.step-btn.active   { background-image: var(--brand-grad); color: #fff; font-weight: 700; z-index: 20; }
+.step-btn.inactive { background-color: #fff; color: #4b5563; }
+.step-btn.inactive:hover { color: #000; }
+
+
+/* ================================================================
+   7. РАСКЛАДКА СЕКЦИЙ И АДАПТИВ ДЛЯ 2K / 4K
+   ================================================================ */
+.custom-section { padding: 4rem 1rem; }
+@media (min-width: 768px) { .custom-section { padding: 6rem 2rem; } }
+
+.custom-grid {
+    display: grid;
+    gap: 1.5rem;
+    max-width: 80rem;
+    margin-left: auto;
+    margin-right: auto;
 }
+@media (min-width: 1024px) { .custom-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2.5rem; align-items: center; } }
+@media (min-width: 1536px) { .custom-grid { max-width: 82vw !important;   gap: 4rem !important; } }
+@media (min-width: 2000px) { .custom-grid { max-width: 1750px !important; } }
+@media (min-width: 2500px) { .custom-grid { gap: 6rem !important; } }
+@media (min-width: 3000px) { .custom-grid { max-width: 2750px !important; } }
 
-@media (min-width: 1024px) {
-    .step-btn {
-        padding-top: 0.5rem;
-        padding-bottom: 0.5rem;
-        font-size: 0.95rem;
-    }
-}
+/* Ширина основных контейнеров (раньше было 5 перекрывающихся правил — действовало одно) */
+.max-w-7xl { max-width: 2800px !important; }
+@media (min-width: 1536px) { .max-w-7xl { padding-left: 2rem; padding-right: 2rem; } }
 
-/* Первая кнопка (Bottle) со скруглением слева */
-.step-btn-first {
-    border-top-left-radius: 9999px;
-    border-bottom-left-radius: 9999px;
-    clip-path: polygon(0% 0%, 100% 0%, 85% 100%, 0% 100%);
-    margin-right: -10px;
-    z-index: 1;
-}
-
-/* Промежуточные кнопки (Tape, Filament, Joining, Spool) со стрелками */
-.step-btn-middle {
-    clip-path: polygon(15% 0%, 100% 0%, 85% 100%, 0% 100%);
-    margin-left: -6px;
-    margin-right: -10px;
-}
-
-/* Последняя кнопка (Print) */
-.step-btn-last {
-    clip-path: polygon(15% 0%, 100% 0%, 100% 100%, 0% 100%);
-    margin-left: -6px;
-    padding-right: 0.25rem;
-    z-index: 1;
-}
-
-@media (min-width: 1024px) {
-    .step-btn-last {
-        padding-right: 0.75rem;
-    }
-}
-
-/* Активное состояние кнопки */
-.step-btn.active {
-    background-color: #00b4a6;
-    color: #ffffff;
-    font-weight: 700;
-    z-index: 20;
-}
-
-/* Неактивное состояние */
-.step-btn.inactive {
-    color: #4b5563;
-    background-color: #ffffff;
-}
-.step-btn.inactive:hover {
-    color: #000000;
-}
-
-/* Адаптивная обводка для мобилок и десктопа */
-        /* Точки слайдера: d = min(10px, доступная ширина / сумма ширин точек и промежутков) */
-        .dots-row {
-            --d: min(10px, calc((100cqw - 32px) / (1.6 * var(--n) + 0.8)));
-            gap: calc(var(--d) * 0.6);
-        }
-        .dots-row .dot-btn { height: var(--d); padding: 0; border: 0; }
-        @supports not (width: 1cqw) {
-            .dots-row { --d: 10px !important; gap: 8px; }
-        }
-        .slideshow-paused .animate-floating-text { animation-play-state: paused; }
-        .animate-floating-text {
-            /* -webkit-text-stroke: 1px black; */
-        }
-        @media (min-width: 1024px) {
-            .animate-floating-text {
-                //-webkit-text-stroke: 2.5px black;
-            }
-        }
-/* Принудительное расширение всех контейнеров с max-w-7xl на больших экранах */
-    .max-w-7xl {
-        max-width: 88rem !important; /* ~1400px для обычных экранов */
-    }
-    @media (min-width: 1536px) {
-        .max-w-7xl {
-            max-width: 92vw !important; /* На 2K/4K мониторах сайт займет 92% ширины экрана */
-            padding-left: 2rem;
-            padding-right: 2rem;
-        }
-    }
-    @media (min-width: 2500px) {
-        .max-w-7xl {
-            max-width: 2400px !important; /* Ограничение для ультрашироких 4K-мониторов, чтобы строки не были бесконечными */
-        }
-    }
-
-    @media (min-width: 300px) {
-        .max-w-7xl {
-            max-width: 2800px !important; /* Ограничение для ультрашироких 4K-мониторов, чтобы строки не были бесконечными */
-        }
-    }
-
-    
-/* Автоматическое увеличение текста на 2K и 4K мониторах */
+/* Увеличение текста на 4K */
 @media (min-width: 3000px) {
-    /* Увеличиваем заголовки во всех динамических секциях */
-    .custom-section h2 {
-        font-size: clamp(2.5rem, 2.5vw, 4.125rem) !important;
-    }
-    /* Увеличиваем основной текст (параграфы) во всех секциях */
-    .custom-section p {
-        font-size: clamp(1.45rem, 1.2vw, 2.5rem) !important;
-        line-height: 1.7 !important;
-    }
-}  
-    
-/* Увеличение расстояния между картинкой и текстом на 2K и 4K экранах */
-    @media (min-width: 1536px) {
-        .custom-grid {
-            gap: 4rem !important; /* Увеличиваем отступ между колонками */
-        }
-    }
+    .custom-section h2 { font-size: clamp(2.5rem, 2.5vw, 4.125rem) !important; }
+    .custom-section p  { font-size: clamp(1.45rem, 1.2vw, 2.5rem) !important; line-height: 1.7 !important; }
+}
 
-    @media (min-width: 2500px) {
-        .custom-grid {
-            gap: 6rem !important; /* Еще большее комфортное расстояние для 4K-мониторов */
-        }
-    }    
+
+/* ================================================================
+   8. СЛАЙДШОУ: плавающий текст и мягкие края
+   ================================================================ */
+@keyframes floatText {
+    0%   { transform: translate(-50px, 0) scale(0.98); opacity: 0; }
+    30%  { opacity: 0.6; }
+    80%  { opacity: 0; }
+    100% { transform: translate(50px, -26px) scale(1.02); opacity: 0; }
+}
+.animate-floating-text { animation: floatText 5s ease-in-out infinite alternate; }
+.slideshow-paused .animate-floating-text { animation-play-state: paused; }
+
+.clean-fade-mask {
+    -webkit-mask-image: linear-gradient(to right, transparent 0px, black 80px, black calc(100% - 80px), transparent 100%),
+                        linear-gradient(to bottom, transparent 0px, black 80px, black calc(100% - 80px), transparent 100%);
+    -webkit-mask-composite: source-in;
+    mask-image: linear-gradient(to right, transparent 0px, black 80px, black calc(100% - 80px), transparent 100%),
+                linear-gradient(to bottom, transparent 0px, black 80px, black calc(100% - 80px), transparent 100%);
+    mask-composite: intersect;
+}
+/* Мягкое растворение краёв всей секции в фон страницы */
+.section-fade-edges {
+    -webkit-mask-image: linear-gradient(to right, transparent 0px, black 180px, black calc(100% - 180px), transparent 100%),
+                        linear-gradient(to bottom, transparent 0px, black 180px, black calc(100% - 180px), transparent 100%);
+    -webkit-mask-composite: source-in;
+    mask-image: linear-gradient(to right, transparent 0px, black 180px, black calc(100% - 180px), transparent 100%),
+                linear-gradient(to bottom, transparent 0px, black 180px, black calc(100% - 180px), transparent 100%);
+    mask-composite: intersect;
+}
+
+
+/* ================================================================
+   9. ТЁМНАЯ ТЕМА (класс .dark на <html>)
+   ================================================================ */
+.dark body { background-color: #121212; color: #F5F5F5; }
+.dark nav,
+.dark .card-shadow { background-color: #1E1E1E !important; }
+
+.dark .logo-label,
+.dark h1, .dark h2, .dark h3,
+.dark .text-gray-900 { color: #FFFFFF !important; }
+.dark .text-gray-500,
+.dark .text-gray-600 { color: #A0A0A0 !important; }
+.dark .text-gray-800,
+.dark .font-bold { color: #E5E7EB !important; }
+.dark #about .text-gray-600 { color: #D1D5DB !important; }
+.dark #contact .font-bold.text-gray-700 { color: #F3F4F6 !important; }
+.dark #contact .text-gray-500 { color: #A0A0A0 !important; }
+
+.dark .hero-bg-gradient { background: linear-gradient(135deg, #1a1a1a 0%, #121212 100%); }
+.dark .bg-brand-50,
+.dark .bg-brand-100 { background-color: var(--brand-deep) !important; color: #FFF; }
+.dark .control-btn,
+.dark .bg-gray-100,
+.dark .bg-gray-50 { background-color: #5d5d5d !important; color: #FFF; }
+.dark .bg-white { background-color: #3D3D3D !important; color: #FFF; }
+
+/* Фирменный цвет в тексте на тёмном фоне — светлее, чтобы читался */
+.dark .text-brand-600 { color: var(--brand-light); }
+.dark .btn-icon { background-color: var(--brand-deep); color: var(--brand-light); }
+.dark .btn-icon:hover { color: #fff; }
+.dark .btn-secondary { color: var(--brand-light); border-color: var(--brand-dark); }
+.dark .btn-secondary:hover:not(:disabled) { background-color: var(--brand-deep); color: #fff; }
+.dark input[type="file"] { color: #A0A0A0; }
+.dark .hover\:bg-brand-900\/20:hover { background-color: rgb(var(--brand-rgb) / 0.2) !important; }
     </style>
     
 </head>
@@ -728,12 +733,12 @@ iframe {
 
     <!-- NG ACCESSIBILITY CONTROLS -->
     <div class="floating-controls hidden md:flex">
-        <div class="control-btn hover:bg-gray-50">
+        <div class="control-btn">
             <button @click="toggleMusic" class="flex items-center gap-2">
-                <i class="fa-solid" :class="isMuted ? 'fa-volume-xmark text-red-500' : 'fa-volume-high text-blue-600'"></i>
+                <i class="fa-solid" :class="isMuted ? 'fa-volume-xmark text-red-500' : 'fa-volume-high text-brand-600'"></i>
                 <span x-text="isMuted ? 'Muted' : 'Music On'"></span>
             </button>
-            <input type="range" min="0" max="1" step="0.1" x-model="volume" @input="updateVolume" class="w-16 h-1 bg-gray-200 rounded-xl appearance-none cursor-pointer accent-blue-600">
+            <input type="range" min="0" max="1" step="0.1" x-model="volume" @input="updateVolume" class="w-16">
         </div>
 
         <div class="control-btn">
@@ -751,18 +756,18 @@ iframe {
     <nav class="bg-white px-4 py-4 flex items-center justify-between sticky top-0 z-40 border-b border-gray-50 shadow-xl">
         <div class="logo-container">
           <div class="superellipse">
-            <span class="logo-text-white">JS</span>
+            <span class="logo-text-white" data-site="logoMark">JS</span>
           </div>
-          <span class="logo-label">Dev</span>
+          <span class="logo-label" data-site="logoLabel">Dev</span>
         </div>
         
 	<!-- NAVIGATION -->        
 <!--
         <div class="hidden lg:flex items-center gap-8 text-sm font-medium text-gray-600">
-            <a href="#" class="hover:text-blue-600">Home</a>
-            <a href="#shop" class="hover:text-blue-600">Shop</a>
-            <a href="#about" class="hover:text-blue-600">About</a>
-            <a href="#contact" class="hover:text-blue-600">Contact</a>
+            <a href="#" class="hover:text-brand-600">Home</a>
+            <a href="#shop" class="hover:text-brand-600">Shop</a>
+            <a href="#about" class="hover:text-brand-600">About</a>
+            <a href="#contact" class="hover:text-brand-600">Contact</a>
         </div>
 -->
 
@@ -771,22 +776,22 @@ iframe {
 		<div class="hidden lg:flex items-center gap-8 text-sm font-medium" x-data="{ activeSection: 'home' }">
             <a href="#" 
                @click="activeSection = 'home'" 
-               :class="activeSection === 'home' ? 'text-blue-600 font-bold' : 'text-gray-600 hover:text-blue-600'" 
+               :class="activeSection === 'home' ? 'text-brand-600 font-bold' : 'text-gray-600 hover:text-brand-600'" 
                class="transition-colors">Home</a>
                
             <a href="#shop" 
                @click="activeSection = 'shop'" 
-               :class="activeSection === 'shop' ? 'text-blue-600 font-bold' : 'text-gray-600 hover:text-blue-600'" 
+               :class="activeSection === 'shop' ? 'text-brand-600 font-bold' : 'text-gray-600 hover:text-brand-600'" 
                class="transition-colors">Shop</a>
                
             <a href="#about" 
                @click="activeSection = 'about'" 
-               :class="activeSection === 'about' ? 'text-blue-600 font-bold' : 'text-gray-600 hover:text-blue-600'" 
+               :class="activeSection === 'about' ? 'text-brand-600 font-bold' : 'text-gray-600 hover:text-brand-600'" 
                class="transition-colors">About</a>
                
             <a href="#contact" 
                @click="activeSection = 'contact'" 
-               :class="activeSection === 'contact' ? 'text-blue-600 font-bold' : 'text-gray-600 hover:text-blue-600'" 
+               :class="activeSection === 'contact' ? 'text-brand-600 font-bold' : 'text-gray-600 hover:text-brand-600'" 
                class="transition-colors">Contact</a>
         </div>
 -->
@@ -806,7 +811,7 @@ iframe {
            setTimeout(() => isScrollingByClick = false, 600);
        " 
        class="relative px-6 py-2 text-sm transition-colors rounded-l-full">
-        <div x-show="activeSection === 'home'" class="absolute inset-0 -skew-x-[20deg] transcolor"></div>
+        <div x-show="activeSection === 'home'" class="absolute inset-0 -skew-x-[20deg] brand-gradient"></div>
         <span class="relative z-10 font-medium" :class="activeSection === 'home' ? 'text-white font-semibold' : 'text-gray-500 hover:text-gray-800'">Home</span>
     </a>
     
@@ -821,7 +826,7 @@ iframe {
                setTimeout(() => isScrollingByClick = false, 600);
            " 
            class="relative px-6 py-2 text-sm transition-colors">
-            <div x-show="activeSection === 'shop'" class="absolute inset-0 -skew-x-[20deg] transcolor"></div>
+            <div x-show="activeSection === 'shop'" class="absolute inset-0 -skew-x-[20deg] brand-gradient"></div>
             <span class="relative z-10 font-medium" :class="activeSection === 'shop' ? 'text-white font-semibold' : 'text-gray-500 hover:text-gray-800'">Shop</span>
         </a>
     </template>
@@ -837,7 +842,7 @@ iframe {
                setTimeout(() => isScrollingByClick = false, 600);
            " 
            class="relative px-6 py-2 text-sm transition-colors">
-            <div x-show="activeSection === sec.id" class="absolute inset-0 -skew-x-[20deg] transcolor"></div>
+            <div x-show="activeSection === sec.id" class="absolute inset-0 -skew-x-[20deg] brand-gradient"></div>
             <span class="relative z-10 font-medium" :class="activeSection === sec.id ? 'text-white font-semibold' : 'text-gray-500 hover:text-gray-800'" x-text="sec.menuTitle || sec.title"></span>
         </a>
     </template>
@@ -852,7 +857,7 @@ iframe {
            setTimeout(() => isScrollingByClick = false, 600);
        " 
        class="relative px-6 py-2 text-sm transition-colors rounded-r-full">
-        <div x-show="activeSection === 'contact'" class="absolute inset-0 -skew-x-[20deg] transcolor"></div>
+        <div x-show="activeSection === 'contact'" class="absolute inset-0 -skew-x-[20deg] brand-gradient"></div>
         <span class="relative z-10 font-medium" :class="activeSection === 'contact' ? 'text-white font-semibold' : 'text-gray-500 hover:text-gray-800'">Contact</span>
     </a>
 </div>
@@ -862,7 +867,7 @@ iframe {
         <div class="flex items-center gap-4">
             <!-- Кнопка темы -->
             <button @click="toggleTheme" 
-                    class="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-yellow-400 transition-all duration-300">
+                    class="btn-icon w-8 h-8">
                   <i class="fa-solid" :class="darkMode ? 'fa-sun' : 'fa-moon'"></i>
             </button>
         
@@ -870,7 +875,7 @@ iframe {
             <div class="relative" x-data="{ open: false }">
                 <button @click="open = !open" 
                         @click.away="open = false"
-                        class="flex items-center gap-1 text-xs font-bold text-gray-500 hover:text-blue-600 transition-colors uppercase tracking-wider">
+                        class="flex items-center gap-1 text-xs font-bold text-gray-500 hover:text-brand-600 transition-colors uppercase tracking-wider">
                     <span x-text="currency"></span>
                     <i class="fa-solid fa-chevron-down text-[8px] transition-transform" :class="open ? 'rotate-180' : ''"></i>
                 </button>
@@ -886,7 +891,7 @@ iframe {
                     <template x-for="curr in ['USD', 'PHP', 'EUR']">
                         <button @click="currency = curr; open = false"
                                 class="w-full text-left px-4 py-2 text-[10px] font-bold transition-colors"
-                                :class="darkMode ? 'text-gray-300 hover:bg-blue-900/20' : 'text-gray-700 hover:bg-gray-100'"
+                                :class="darkMode ? 'text-gray-300 hover:bg-brand-900/20' : 'text-gray-700 hover:bg-gray-100'"
                                 x-text="curr">
                         </button>
                     </template>
@@ -898,7 +903,7 @@ iframe {
             <div class="relative" x-data="{ open: false }">
                 <button @click="open = !open" 
                         @click.away="open = false"
-                        class="flex items-center gap-1 text-xs font-bold text-gray-500 hover:text-blue-600 transition-colors uppercase tracking-wider">
+                        class="flex items-center gap-1 text-xs font-bold text-gray-500 hover:text-brand-600 transition-colors uppercase tracking-wider">
                     <span x-text="language"></span>
                     <i class="fa-solid fa-chevron-down text-[8px] transition-transform" :class="open ? 'rotate-180' : ''"></i>
                 </button>
@@ -914,7 +919,7 @@ iframe {
 					<template x-for="lang in ['EN', 'GE', 'RU']">
 						<button @click="language = lang; Alpine.store('siteLang', lang); open = false"
 								class="w-full text-left px-4 py-2 text-[10px] font-bold transition-colors"
-								:class="darkMode ? 'text-gray-300 hover:bg-blue-900/20' : 'text-gray-700 hover:bg-gray-100'"
+								:class="darkMode ? 'text-gray-300 hover:bg-brand-900/20' : 'text-gray-700 hover:bg-gray-100'"
 								x-text="lang">
 						</button>
 					</template>
@@ -926,13 +931,13 @@ iframe {
 
 			<!-- Авторизация -->
 			<template x-if="!isLoggedIn">
-				<button @click="showAuth = true; authMode = 'login'" class="text-sm font-bold text-gray-600 hover:text-blue-600 px-2">Sign In</button>
+				<button @click="showAuth = true; authMode = 'login'" class="text-sm font-bold text-gray-600 hover:text-brand-600 px-2">Sign In</button>
 			</template>
 
 			<template x-if="isLoggedIn">
 				<div class="flex items-center gap-3 pl-2 border-l border-gray-100">
 					<!-- Кликабельная аватарка или инициалы -->
-					<div @click="openProfile()" class="w-8 h-8 rounded-full overflow-hidden bg-blue-100 text-blue-600 flex items-center justify-center text-[10px] font-bold cursor-pointer hover:opacity-80 transition-opacity relative" title="Редактировать профиль">
+					<div @click="openProfile()" class="w-8 h-8 rounded-full overflow-hidden bg-brand-100 text-brand-600 flex items-center justify-center text-[10px] font-bold cursor-pointer hover:opacity-80 transition-opacity relative" title="Редактировать профиль">
 						<!-- Картинка аватара -->
 						<img x-show="avatarBase64" :src="avatarBase64" class="w-full h-full object-cover absolute inset-0">
 						<!-- Инициалы (показываются, если avatarBase64 нет) -->
@@ -945,11 +950,11 @@ iframe {
             <!-- Корзина -->
 			<div class="relative cursor-pointer" @click="showCart = true; view = 'bag'" x-show="!shopConfig.hideShop" x-cloak>
                 <i class="fa-solid fa-cart-shopping text-gray-400"></i>
-                <span class="absolute -top-2 -right-2 bg-blue-600 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center" x-text="cart.reduce((sum, item) => sum + item.qty, 0)"></span>
+                <span class="absolute -top-2 -right-2 brand-gradient text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center" x-text="cart.reduce((sum, item) => sum + item.qty, 0)"></span>
             </div>
 
             <!-- Кнопка Shop Now -->
-            <a href="#shop" class="btn-blue-pill px-6 py-2 text-sm hidden md:flex" x-show="!shopConfig.hideShop" x-cloak>Shop Now</a>          
+            <a href="#shop" class="btn-primary px-6 py-2 text-sm hidden md:flex" x-show="!shopConfig.hideShop" x-cloak>Shop Now</a>          
         </div>
     </nav>
 
@@ -1002,26 +1007,26 @@ iframe {
 							</div>
 							<div class="flex-1">
 								<label class="text-xs font-bold text-gray-600 ml-1 block mb-1">Avatar Image</label>
-								<input type="file" accept="image/*" @change="handleAvatarBase64" class="w-full text-xs text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
+								<input type="file" accept="image/*" @change="handleAvatarBase64" class="w-full">
 							</div>
 						</div>
 						
                         <div class="space-y-1">
                             <label class="text-xs font-bold text-gray-600 ml-1">Full Name</label>
-                            <input type="text" x-model="userName" placeholder="John Smith" required class="w-full p-4 border border-gray-100 bg-gray-50 rounded-xl outline-none focus:ring-2 focus:ring-blue-500">
+                            <input type="text" x-model="userName" placeholder="John Smith" required class="field">
                         </div>
                         <div class="space-y-1">
                             <label class="text-xs font-bold text-gray-600 ml-1">Street Address</label>
-                            <input type="text" x-model="shippingInfo.address" placeholder="123 Study Lane" required class="w-full p-4 border border-gray-100 bg-gray-50 rounded-xl outline-none focus:ring-2 focus:ring-blue-500">
+                            <input type="text" x-model="shippingInfo.address" placeholder="123 Study Lane" required class="field">
                         </div>
                         <div class="grid grid-cols-2 gap-3">
                             <div class="space-y-1">
                                 <label class="text-xs font-bold text-gray-600 ml-1">City</label>
-                                <input type="text" x-model="shippingInfo.city" placeholder="Basel" required class="w-full p-4 border border-gray-100 bg-gray-50 rounded-xl outline-none focus:ring-2 focus:ring-blue-500">
+                                <input type="text" x-model="shippingInfo.city" placeholder="Basel" required class="field">
                             </div>
                             <div class="space-y-1">
                                 <label class="text-xs font-bold text-gray-600 ml-1">Zip Code</label>
-                                <input type="text" x-model="shippingInfo.zip" placeholder="1001" required class="w-full p-4 border border-gray-100 bg-gray-50 rounded-xl outline-none focus:ring-2 focus:ring-blue-500">
+                                <input type="text" x-model="shippingInfo.zip" placeholder="1001" required class="field">
                             </div>
                         </div>
                     </div>
@@ -1029,7 +1034,7 @@ iframe {
                 
                 <div class="space-y-1">
                     <label class="text-xs font-bold text-gray-600 ml-1">Email Address</label>
-                    <input type="email" x-model="authEmail" placeholder="name@email.com" required class="w-full p-4 border border-gray-100 bg-gray-50 rounded-xl outline-none focus:ring-2 focus:ring-blue-500">
+                    <input type="email" x-model="authEmail" placeholder="name@email.com" required class="field">
                 </div>
 
                 <!-- Поле ввода пароля с кнопкой показа/скрытия -->
@@ -1040,7 +1045,7 @@ iframe {
                                x-model="authPassword" 
                                placeholder="••••••••" 
                                required 
-                               class="w-full p-4 pr-12 border border-gray-100 bg-gray-50 rounded-xl outline-none focus:ring-2 focus:ring-blue-500">
+                               class="field field-pr">
                         
                         <button type="button" @click="showPassword = !showPassword" class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 focus:outline-none">
                             <!-- Иконка: глаз закрыт -->
@@ -1059,13 +1064,13 @@ iframe {
 			<!-- БЛОК КАПЧИ (Математический пример) -->
 				<div class="space-y-1">
 					<label class="text-xs font-bold text-gray-600 ml-1">
-						Confirm you're not a robot: <span class="text-blue-600" x-text="captchaNum1 + ' + ' + captchaNum2 + ' = ?'"></span>
+						Confirm you're not a robot: <span class="text-brand-600" x-text="captchaNum1 + ' + ' + captchaNum2 + ' = ?'"></span>
 					</label>
 					<input type="number" 
 						   x-model="userCaptchaInput" 
 						   placeholder="Введите ответ" 
 						   required 
-						   class="w-full p-4 border border-gray-100 bg-gray-50 rounded-xl outline-none focus:ring-2 focus:ring-blue-500">
+						   class="field">
 				</div>                                               
                 
                 <!-- Блок вывода ошибки в нижней части модального окна -->
@@ -1073,14 +1078,14 @@ iframe {
                     <div class="p-3 bg-red-50 text-red-600 text-xs font-bold rounded-xl text-center" x-text="authError"></div>
                 </template>
 
-                <button type="submit" class="btn-blue-pill w-full py-4 text-lg mt-4 shadow-lg shadow-blue-100">
+                <button type="submit" class="btn-primary w-full py-4 text-lg mt-4">
                     <span x-text="authMode === 'login' ? 'Sign In' : 'Create Account'"></span>
                 </button>
             </form>
 
             <div class="mt-8 text-center text-sm">
                 <span class="text-gray-500" x-text="authMode === 'login' ? 'New to ReTools?' : 'Already have an account?'"></span>
-                <button @click="authMode = (authMode === 'login' ? 'signup' : 'login'); authError = '';" class="text-blue-600 font-bold ml-1 hover:underline" x-text="authMode === 'login' ? 'Sign Up' : 'Log In'"></button>
+                <button @click="authMode = (authMode === 'login' ? 'signup' : 'login'); authError = '';" class="text-brand-600 font-bold ml-1 hover:underline" x-text="authMode === 'login' ? 'Sign Up' : 'Log In'"></button>
             </div>
         </div>
     </div>
@@ -1168,7 +1173,7 @@ iframe {
                             </div>
                             <span class="text-gray-400 text-xs" x-text="'(' + selectedProduct.rating + '.0)'"></span>
                         </div>
-                        <p class="text-2xl font-black text-blue-600 mb-6" x-text="formatPrice(selectedProduct.price)"></p>
+                        <p class="text-2xl font-black text-brand-600 mb-6" x-text="formatPrice(selectedProduct.price)"></p>
                         
                         <p class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">Description</p>
                         <p class="text-gray-500 text-sm mb-8 leading-relaxed" x-text="selectedProduct.description"></p>
@@ -1185,11 +1190,11 @@ iframe {
                             </div>
                         </div>
 
-                        <button @click="addToCart(selectedProduct); selectedProduct = null" class="btn-blue-pill w-full py-4 text-lg mb-10 shadow-lg shadow-blue-100">Add to Cart</button>
+                        <button @click="addToCart(selectedProduct); selectedProduct = null" class="btn-primary w-full py-4 text-lg mb-10">Add to Cart</button>
 
 						<!-- Кнопка скачивания материалов в модалке -->
 						<template x-if="selectedProduct.downloadUrl">
-							<a :href="selectedProduct.downloadUrl" download class="btn-outline-pill w-full py-3 text-sm mb-6 flex items-center justify-center gap-2  transition-colors">
+							<a :href="selectedProduct.downloadUrl" download class="btn-secondary w-full py-3 text-sm mb-6 flex items-center justify-center gap-2  transition-colors">
 								<i class="fa-solid fa-file-arrow-down"></i> Download Materials (ZIP / PDF)
 							</a>
 						</template>
@@ -1220,7 +1225,7 @@ iframe {
 
 
                             <!-- New Review Form with Stars -->
-                            <div class="mt-6 p-6 bg-blue-50/50 rounded-xl border border-blue-100/50">
+                            <div class="mt-6 p-6 bg-brand-50/50 rounded-xl border border-brand-100/50">
                                 <p class="text-sm font-bold text-gray-800 mb-3">Leave a Review</p>
                                 
                                 <!-- Star Rating Input -->
@@ -1235,8 +1240,8 @@ iframe {
                                     <span class="text-xs text-gray-400 ml-2" x-text="newReviewRating ? newReviewRating + '/5' : 'Rate it'"></span>
                                 </div>
 
-                                <textarea x-model="newReviewText" placeholder="How's your experience with this item?" class="w-full p-4 bg-white border border-gray-100 rounded-xl text-sm outline-none focus:ring-2 focus:ring-blue-500 mb-3 h-24"></textarea>
-                                <button @click="submitReview(selectedProduct)" class="btn-outline-pill w-full py-2 text-xs bg-white border-blue-200">Submit Review</button>
+                                <textarea x-model="newReviewText" placeholder="How's your experience with this item?" class="field text-sm mb-3 h-24"></textarea>
+                                <button @click="submitReview(selectedProduct)" class="btn-secondary w-full py-2 text-xs">Submit Review</button>
                             </div>
                         </div>
                     </div>
@@ -1373,7 +1378,7 @@ iframe {
                         <button @click="modalCurrentIndex = idx" 
                                 class="dot-btn rounded-full transition-all cursor-pointer flex-shrink-0 shadow-[0_0_6px_rgba(0,0,0,0.9)]"
                                 :style="modalCurrentIndex === idx ? 'width: calc(var(--d) * 2.4);' : 'width: var(--d);'"
-                                :class="modalCurrentIndex === idx ? 'bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.8)]' : 'bg-white/70 hover:bg-white'">
+                                :class="modalCurrentIndex === idx ? 'dot-active' : 'bg-white/70 hover:bg-white'">
                         </button>
                     </template>
                 </div>
@@ -1528,7 +1533,7 @@ iframe {
                         <button @click="modalCurrentIndex = idx" 
                                 class="dot-btn rounded-full transition-all cursor-pointer flex-shrink-0 shadow-[0_0_6px_rgba(0,0,0,0.9)]"
                                 :style="modalCurrentIndex === idx ? 'width: calc(var(--d) * 2.4);' : 'width: var(--d);'"
-                                :class="modalCurrentIndex === idx ? 'bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.8)]' : 'bg-white/70 hover:bg-white'">
+                                :class="modalCurrentIndex === idx ? 'dot-active' : 'bg-white/70 hover:bg-white'">
                         </button>
                     </template>
                 </div>
@@ -1579,35 +1584,35 @@ iframe {
 				</div>
 				<div class="flex-1">
 					<label class="text-xs font-bold text-gray-600 ml-1 block mb-1">Avatar Image</label>
-					<!--<input type="file" accept="image/*" @change="handleAvatarBase64" class="w-full text-xs text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">-->
-					<input type="file" x-ref="avatarInput" accept="image/*" @change="handleAvatarBase64" class="w-full text-xs text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
+					<!--<input type="file" accept="image/*" @change="handleAvatarBase64" class="w-full">-->
+					<input type="file" x-ref="avatarInput" accept="image/*" @change="handleAvatarBase64" class="w-full">
 				</div>
 			</div>
 
             <div class="space-y-1">
                 <label class="text-xs font-bold text-gray-600 ml-1">Full Name</label>
-                <input type="text" x-model="userName" required class="w-full p-4 border border-gray-100 bg-gray-50 rounded-xl outline-none focus:ring-2 focus:ring-blue-500">
+                <input type="text" x-model="userName" required class="field">
             </div>
             
             <div class="space-y-1">
                 <label class="text-xs font-bold text-gray-600 ml-1">Street Address</label>
-                <input type="text" x-model="shippingInfo.address" required class="w-full p-4 border border-gray-100 bg-gray-50 rounded-xl outline-none focus:ring-2 focus:ring-blue-500">
+                <input type="text" x-model="shippingInfo.address" required class="field">
             </div>
 
             <div class="grid grid-cols-2 gap-3">
                 <div class="space-y-1">
                     <label class="text-xs font-bold text-gray-600 ml-1">City</label>
-                    <input type="text" x-model="shippingInfo.city" required class="w-full p-4 border border-gray-100 bg-gray-50 rounded-xl outline-none focus:ring-2 focus:ring-blue-500">
+                    <input type="text" x-model="shippingInfo.city" required class="field">
                 </div>
                 <div class="space-y-1">
                     <label class="text-xs font-bold text-gray-600 ml-1">Zip Code</label>
-                    <input type="text" x-model="shippingInfo.zip" required class="w-full p-4 border border-gray-100 bg-gray-50 rounded-xl outline-none focus:ring-2 focus:ring-blue-500">
+                    <input type="text" x-model="shippingInfo.zip" required class="field">
                 </div>
             </div>
 
             <div class="space-y-1">
                 <label class="text-xs font-bold text-gray-600 ml-1">Email Address</label>
-                <input type="email" x-model="authEmail" required class="w-full p-4 border border-gray-100 bg-gray-50 rounded-xl outline-none focus:ring-2 focus:ring-blue-500">
+                <input type="email" x-model="authEmail" required class="field">
             </div>
 
             <div class="space-y-1">
@@ -1616,7 +1621,7 @@ iframe {
                     <input :type="showPassword ? 'text' : 'password'" 
                            x-model="authPassword" 
                            required 
-                           class="w-full p-4 pr-12 border border-gray-100 bg-gray-50 rounded-xl outline-none focus:ring-2 focus:ring-blue-500">
+                           class="field field-pr">
                     
                     <button type="button" @click="showPassword = !showPassword" class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 focus:outline-none">
                         <svg x-show="!showPassword" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -1636,7 +1641,7 @@ iframe {
             </template>
             
             <div class="pt-2">
-                <button type="submit" class="btn-blue-pill w-full py-4 text-base shadow-lg shadow-blue-100">Save Changes</button>
+                <button type="submit" class="btn-primary w-full py-4 text-base">Save Changes</button>
             </div>
         </form>
 
@@ -1653,20 +1658,20 @@ iframe {
     <header class="px-4 lg:px-8 py-8 lg:py-12">
         <div class="hero-bg-gradient max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-12 px-8 lg:px-20 py-16 lg:py-24 rounded-xl shadow-xl overflow-hidden">
             <div class="lg:w-1/2 space-y-8 text-left">
-                <h1 class="text-5xl lg:text-7xl font-extrabold leading-tight text-gray-900">Smarter Recycling <br> <span class="text-blue-600">Tools</span></h1>
+                <h1 class="text-5xl lg:text-7xl font-extrabold leading-tight text-gray-900">Smarter Recycling <br> <span class="text-brand-600">Tools</span></h1>
                 <p class="text-gray-500 text-lg">Everything you need to succeed, all in one hub.</p>
                 
                 <div class="bg-white/50 backdrop-blur-md p-6 rounded-xl border border-white/50 max-w-sm space-y-4">
                     <div class="flex flex-col gap-1">
-                        <p class="text-[10px] font-bold text-blue-500 uppercase tracking-widest">Flash Deal</p>
+                        <p class="text-[10px] font-bold text-brand-500 uppercase tracking-widest">Flash Deal</p>
                         <p class="text-2xl font-bold text-gray-900" x-text="products[heroActiveIndex].name"></p>
-                        <p class="text-xl font-black text-blue-600" x-text="formatPrice(products[heroActiveIndex].price)"></p>
+                        <p class="text-xl font-black text-brand-600" x-text="formatPrice(products[heroActiveIndex].price)"></p>
                     </div>
 					<div class="flex gap-3">
-						<button @click="addToCart(products[heroActiveIndex])" class="btn-blue-pill flex-1 py-3 text-sm shadow-lg shadow-blue-200 flex items-center justify-center">
+						<button @click="addToCart(products[heroActiveIndex])" class="btn-primary flex-1 py-3 text-sm flex items-center justify-center">
 							<i class="fa-solid fa-bolt ml-0.5 mr-0.5"></i>Quick Order
 						</button>
-						<a href="#shop" class="btn-outline-pill flex-1 py-2 text-sm bg-white border-none text-center flex items-center justify-center">View All</a>
+						<a href="#shop" class="btn-secondary flex-1 py-2 text-sm">View All</a>
 					</div>
                 </div>
             </div>
@@ -1714,8 +1719,8 @@ iframe {
                     <p class="text-gray-500 text-sm">Let's discuss development and production time!</p>
                 </div>
             </div>
-            <div class="bg-blue-50 p-6 rounded-xl flex items-center gap-6 max-w-7xl mx-auto border border-blue-100">
-                <div class="w-14 h-14 bg-blue-600 text-white rounded-full flex items-center justify-center flex-shrink-0 text-xl"><i class="fa-solid fa-lightbulb"></i></div>
+            <div class="bg-brand-50 p-6 rounded-xl flex items-center gap-6 max-w-7xl mx-auto border border-brand-100">
+                <div class="w-14 h-14 brand-gradient text-white rounded-full flex items-center justify-center flex-shrink-0 text-xl"><i class="fa-solid fa-lightbulb"></i></div>
                 <p class="text-gray-800 text-left font-medium"><strong>Have idea?</strong> I can develop design, hardware, firmware or software, based on your technical requirements!</p>
             </div>
         </div>
@@ -1842,36 +1847,6 @@ iframe {
          :class="(paused || offscreen) ? 'slideshow-paused' : ''"
          x-show="showSlideshow">
 
-<style>
-        @keyframes floatText {
-            0% { transform: translate(-50px, 0) scale(0.98); opacity: 0; }
-            30% { opacity: 0.6; }
-            80% { opacity: 0.0; }
-            100% { transform: translate(50px, -26px) scale(1.02); opacity: 0; }
-        }
-        .animate-floating-text {
-            animation: floatText 5s ease-in-out infinite alternate;
-        }
-
-        .clean-fade-mask {
-            mask-image: linear-gradient(to right, transparent 0px, black 80px, black calc(100% - 80px), transparent 100%),
-                        linear-gradient(to bottom, transparent 0px, black 80px, black calc(100% - 80px), transparent 100%);
-            mask-composite: intersect;
-            -webkit-mask-image: linear-gradient(to right, transparent 0px, black 80px, black calc(100% - 80px), transparent 100%),
-                                linear-gradient(to bottom, transparent 0px, black 80px, black calc(100% - 80px), transparent 100%);
-            -webkit-mask-composite: source-in;
-        }
-        
-        /* Мягкое растворение краев ВСЕЙ СЕКЦИИ в фон страницы */
-        .section-fade-edges {
-            mask-image: linear-gradient(to right, transparent 0px, black 180px, black calc(100% - 180px), transparent 100%),
-                        linear-gradient(to bottom, transparent 0px, black 180px, black calc(100% - 180px), transparent 100%);
-            mask-composite: intersect;
-            -webkit-mask-image: linear-gradient(to right, transparent 0px, black 180px, black calc(100% - 180px), transparent 100%),
-                                linear-gradient(to bottom, transparent 0px, black 180px, black calc(100% - 180px), transparent 100%);
-            -webkit-mask-composite: source-in;
-        }
-    </style>
 
     <!-- Слой А -->
     <div class="absolute inset-0 w-full h-full transition-opacity ease-in-out flex items-center justify-center overflow-hidden"
@@ -1971,7 +1946,7 @@ iframe {
 					<img :src="p.images[p.currentImg]"
 						:key="p.images[p.currentImg] + p.currentImg"
 						@error="$el.src = p.images[p.currentImg]"
-						 class="w-full h-full object-cover cursor-none hover:scale-105 transition-transform duration-500"
+						 class="w-full h-full object-cover cursor-pointer hover:scale-105 transition-transform duration-500"
 						 @click="selectedProduct = p">
 				</template>
 				
@@ -1986,7 +1961,7 @@ iframe {
 				</div>
 			</div>
 
-                    <h3 class="font-bold text-sm lg:text-base text-gray-800 cursor-none hover:text-blue-600 truncate" x-text="p.name" @click="selectedProduct = p"></h3>
+                    <h3 class="font-bold text-sm lg:text-base text-gray-800 cursor-pointer hover:text-brand-600 truncate" x-text="p.name" @click="selectedProduct = p"></h3>
                     
                     <div class="flex items-center gap-1 my-1">
                         <template x-for="star in [1, 2, 3, 4, 5]">
@@ -2004,10 +1979,10 @@ iframe {
                         </template>
                     </div>
 
-                    <p class="text-blue-600 font-black text-base lg:text-lg mt-auto" x-text="formatPrice(p.price)"></p>
+                    <p class="text-brand-600 font-black text-base lg:text-lg mt-auto" x-text="formatPrice(p.price)"></p>
                     <div class="flex gap-2 mt-4">
-                        <button @click="addToCart(p)" class="btn-blue-pill flex-1 py-3 text-[9px] lg:text-[10px] uppercase tracking-wider ml-0.5 mr-0.5">Add to Cart</button>
-                        <button @click="selectedProduct = p" class="hidden lg:flex w-10 h-10 btn-outline-pill border-none bg-gray-50 text-gray-400 hover:text-blue-600"><i class="fa-solid fa-eye text-xs"></i></button>
+                        <button @click="addToCart(p)" class="btn-primary flex-1 py-3 text-[9px] lg:text-[10px] uppercase tracking-wider ml-0.5 mr-0.5">Add to Cart</button>
+                        <button @click="selectedProduct = p" class="hidden lg:flex btn-icon w-10 h-10"><i class="fa-solid fa-eye text-xs"></i></button>
                     </div>
                 </div>
             </template>
@@ -2151,7 +2126,7 @@ iframe {
                                 <button @click="currentImg = idx; videoPlaying = false" 
                                         class="dot-btn rounded-full transition-all cursor-pointer flex-shrink-0 shadow-[0_0_4px_rgba(0,0,0,1)]"
                                         :style="currentImg === idx ? 'width: calc(var(--d) * 2.4);' : 'width: var(--d);'"
-                                        :class="currentImg === idx ? 'bg-blue-600' : 'bg-white/70 hover:bg-white'">
+                                        :class="currentImg === idx ? 'dot-active' : 'bg-white/70 hover:bg-white'">
                                 </button>
                             </template>
                         </div>
@@ -2196,7 +2171,7 @@ iframe {
                     
                     <div class="flex flex-wrap gap-3">
                         <template x-for="item in sec.items.filter(i => i.type === 'pdf' || i.type === 'zip' || i.type === 'file')">
-                            <a :href="item.url" target="_blank" class="btn-blue-pill px-6 py-3 text-sm inline-flex items-center gap-3 shadow-lg">
+                            <a :href="item.url" target="_blank" class="btn-primary px-6 py-3 text-sm inline-flex items-center gap-3">
                                 <i class="fa-solid text-lg" :class="item.type === 'pdf' ? 'fa-file-pdf' : (item.type === 'zip' ? 'fa-file-zipper' : 'fa-download')"></i>
                                 <span x-text="item.title || 'Download File'"></span>
                             </a>
@@ -2236,7 +2211,7 @@ iframe {
 					<div class="flex flex-wrap gap-3 mt-8 2xl:mt-12 4xl:mt-24"
 						 :class="((sec.imageLeft !== undefined ? sec.imageLeft : index % 2 === 0)) ? 'lg:justify-end' : 'lg:justify-start'">
 						<template x-for="item in sec.items.filter(i => i.type === 'pdf' || i.type === 'zip' || i.type === 'file')">
-							<a :href="item.url" target="_blank" class="btn-blue-pill px-6 py-3 4xl:px-12 4xl:py-6 text-sm lg:text-lg 4xl:text-4xl inline-flex items-center gap-3 shadow-lg">
+							<a :href="item.url" target="_blank" class="btn-primary px-6 py-3 4xl:px-12 4xl:py-6 text-sm lg:text-lg 4xl:text-4xl inline-flex items-center gap-3">
 								<i class="fa-solid text-xl 4xl:text-4xl" :class="item.type === 'pdf' ? 'fa-file-pdf' : (item.type === 'zip' ? 'fa-file-zipper' : 'fa-download')"></i>
 								<span x-text="item.title || 'Download File'"></span>
 							</a>
@@ -2288,13 +2263,13 @@ iframe {
                                 <span class="text-[10px] text-gray-500 uppercase font-bold" x-text="item.selectedColor.name"></span>
                             </div>
                             <div class="flex items-center gap-3 mt-1">
-                                <button @click="updateQty(item, -1)" class="w-6 h-6 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 text-gray-600"><i class="fa-solid fa-minus text-[10px]"></i></button>
+                                <button @click="updateQty(item, -1)" class="btn-icon w-6 h-6"><i class="fa-solid fa-minus text-[10px]"></i></button>
                                 <span class="text-xs font-bold w-4 text-center" x-text="item.qty"></span>
-                                <button @click="updateQty(item, 1)" class="w-6 h-6 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 text-gray-600"><i class="fa-solid fa-plus text-[10px]"></i></button>
+                                <button @click="updateQty(item, 1)" class="btn-icon w-6 h-6"><i class="fa-solid fa-plus text-[10px]"></i></button>
                             </div>
                         </div>
                         <div class="text-right">
-                            <div class="text-blue-600 font-bold text-sm" x-text="formatPrice(item.price * item.qty)"></div>
+                            <div class="text-brand-600 font-bold text-sm" x-text="formatPrice(item.price * item.qty)"></div>
                             <div class="text-[10px] text-gray-400" x-text="formatPrice(item.price) + ' each'"></div>
                         </div>
                         <button @click="cart.splice(idx, 1)" class="text-red-400 ml-2"><i class="fa-solid fa-trash"></i></button>
@@ -2309,52 +2284,52 @@ iframe {
                     </div>
                 </div>
 
-                <button @click="view = 'checkout'" class="btn-blue-pill w-full py-4 mt-4" :disabled="cart.length === 0">Next</button>
+                <button @click="view = 'checkout'" class="btn-primary w-full py-4 mt-4" :disabled="cart.length === 0">Next</button>
             </div>
 
             <div x-show="view === 'checkout'" class="flex-1 overflow-y-auto p-8 space-y-6 text-left">
-                <button @click="view = 'bag'" class="text-blue-600 font-bold text-sm"><i class="fa-solid fa-arrow-left mr-2"></i>Back</button>
+                <button @click="view = 'bag'" class="text-brand-600 font-bold text-sm"><i class="fa-solid fa-arrow-left mr-2"></i>Back</button>
                 
                 <div class="space-y-4">
                     <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Shipping Information</p>
                     <div class="space-y-1">
                         <label class="text-xs font-bold text-gray-600 ml-1">Full Name</label>
-                        <input type="text" x-model="shippingInfo.name" placeholder="John Smith" class="w-full p-4 border border-gray-100 bg-gray-50 rounded-xl outline-none">
+                        <input type="text" x-model="shippingInfo.name" placeholder="John Smith" class="field">
                     </div>
                     <div class="space-y-1">
                         <label class="text-xs font-bold text-gray-600 ml-1">Street Address</label>
-                        <input type="text" x-model="shippingInfo.address" placeholder="123 Study Lane" class="w-full p-4 border border-gray-100 bg-gray-50 rounded-xl outline-none">
+                        <input type="text" x-model="shippingInfo.address" placeholder="123 Study Lane" class="field">
                     </div>
                     <div class="grid grid-cols-2 gap-3">
                         <div class="space-y-1">
                             <label class="text-xs font-bold text-gray-600 ml-1">City</label>
-                            <input type="text" x-model="shippingInfo.city" placeholder="Basel" class="w-full p-4 border border-gray-100 bg-gray-50 rounded-xl outline-none">
+                            <input type="text" x-model="shippingInfo.city" placeholder="Basel" class="field">
                         </div>
                         <div class="space-y-1">
                             <label class="text-xs font-bold text-gray-600 ml-1">Zip Code</label>
-                            <input type="text" x-model="shippingInfo.zip" placeholder="1001" class="w-full p-4 border border-gray-100 bg-gray-50 rounded-xl outline-none">
+                            <input type="text" x-model="shippingInfo.zip" placeholder="1001" class="field">
                         </div>
                     </div>
                 </div>
 
                 <div class="space-y-4">
-                    <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Payment Method: <span class="text-blue-600" x-text="payMethod.toUpperCase()"></span></p>
+                    <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Payment Method: <span class="text-brand-600" x-text="payMethod.toUpperCase()"></span></p>
                     <div class="grid grid-cols-2 gap-2">
-                        <button @click="payMethod = 'gcash'" :class="payMethod === 'gcash' ? 'btn-blue-pill' : 'btn-outline-pill'" class="py-3 text-xs">GCash</button>
-                        <button @click="payMethod = 'maya'" :class="payMethod === 'maya' ? 'btn-blue-pill' : 'btn-outline-pill'" class="py-3 text-xs">Maya</button>
-                        <button @click="payMethod = 'card'" :class="payMethod === 'card' ? 'btn-blue-pill' : 'btn-outline-pill'" class="py-3 text-xs">Card</button>
-                        <button @click="payMethod = 'cash'" :class="payMethod === 'cash' ? 'btn-blue-pill' : 'btn-outline-pill'" class="py-3 text-xs">Cash</button>
+                        <button @click="payMethod = 'gcash'" :class="payMethod === 'gcash' ? 'btn-primary' : 'btn-secondary'" class="py-3 text-xs">GCash</button>
+                        <button @click="payMethod = 'maya'" :class="payMethod === 'maya' ? 'btn-primary' : 'btn-secondary'" class="py-3 text-xs">Maya</button>
+                        <button @click="payMethod = 'card'" :class="payMethod === 'card' ? 'btn-primary' : 'btn-secondary'" class="py-3 text-xs">Card</button>
+                        <button @click="payMethod = 'cash'" :class="payMethod === 'cash' ? 'btn-primary' : 'btn-secondary'" class="py-3 text-xs">Cash</button>
                     </div>
 
                     <template x-if="payMethod !== 'cash'">
                         <div class="space-y-1 mt-4" x-transition>
                             <label class="text-xs font-bold text-gray-600 ml-1" x-text="payMethod === 'card' ? 'Card Number' : payMethod.charAt(0).toUpperCase() + payMethod.slice(1) + ' Number'"></label>
-                            <input type="text" x-model="paymentNumber" :placeholder="payMethod === 'card' ? '0000 0000 0000 0000' : '09XX XXX XXXX'" class="w-full p-4 border border-gray-100 bg-gray-50 rounded-xl outline-none focus:ring-2 focus:ring-blue-500">
+                            <input type="text" x-model="paymentNumber" :placeholder="payMethod === 'card' ? '0000 0000 0000 0000' : '09XX XXX XXXX'" class="field">
                         </div>
                     </template>
                 </div>
 
-                <button @click="confirmPurchase()" class="btn-blue-pill w-full py-5 text-lg mt-6">Confirm Purchase</button>
+                <button @click="confirmPurchase()" class="btn-primary w-full py-5 text-lg mt-6">Confirm Purchase</button>
             </div>
 
             <div x-show="view === 'summary'" class="flex-1 overflow-y-auto p-8 text-left space-y-6" x-transition>
@@ -2377,7 +2352,7 @@ iframe {
                             <span class="font-bold" x-text="formatPrice(item.price * item.qty)"></span>
                         </div>
                     </template>
-                    <div class="border-t pt-3 flex justify-between font-bold text-blue-600">
+                    <div class="border-t pt-3 flex justify-between font-bold text-brand-600">
                         <span>Total Paid</span>
                         <span x-text="formatPrice(lastOrder.total)"></span>
                     </div>
@@ -2390,7 +2365,7 @@ iframe {
                 </div>
 
                 <div class="pt-4">
-                    <button @click="showCart = false; view = 'bag'" class="btn-blue-pill w-full py-4">Back to Shopping</button>
+                    <button @click="showCart = false; view = 'bag'" class="btn-primary w-full py-4">Back to Shopping</button>
                 </div>
             </div>
         </div>
@@ -2425,43 +2400,43 @@ iframe {
             <!-- Ряд круглых иконок -->
             <div class="flex flex-wrap gap-3 pt-2">
                 <!-- 1. Email -->
-                <a href="mailto:johnnschmid@gmail.com" title="Email" class="w-10 h-10 bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white transition-colors rounded-full flex items-center justify-center text-base">
+                <a href="mailto:johnnschmid@gmail.com" title="Email" class="btn-icon w-10 h-10 text-base">
                     <i class="fa-solid fa-envelope"></i>
                 </a>
                 <!-- 2. Location (Google Maps) -->
-                <a href="https://www.google.com/maps/search/?api=1&query=Öflinger+Str.,+Wehr,+Germany" target="_blank" rel="noopener noreferrer" title="Location" class="w-10 h-10 bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white transition-colors rounded-full flex items-center justify-center text-base">
+                <a href="https://www.google.com/maps/search/?api=1&query=Öflinger+Str.,+Wehr,+Germany" target="_blank" rel="noopener noreferrer" title="Location" class="btn-icon w-10 h-10 text-base">
                     <i class="fa-solid fa-location-dot"></i>
                 </a>
                 <!-- 3. Phone -->
-                <a href="tel:+491551047827" title="Phone" class="w-10 h-10 bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white transition-colors rounded-full flex items-center justify-center text-base">
+                <a href="tel:+491551047827" title="Phone" class="btn-icon w-10 h-10 text-base">
                     <i class="fa-solid fa-phone"></i>
                 </a>
                 <!-- 4. LinkedIn -->
-                <a href="https://www.linkedin.com/in/johnnschmid/" target="_blank" rel="noopener noreferrer" title="LinkedIn" class="w-10 h-10 bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white transition-colors rounded-full flex items-center justify-center text-base">
+                <a href="https://www.linkedin.com/in/johnnschmid/" target="_blank" rel="noopener noreferrer" title="LinkedIn" class="btn-icon w-10 h-10 text-base">
                     <i class="fa-brands fa-linkedin-in"></i>
                 </a>
                 <!-- 5. Facebook -->
-                <a href="https://facebook.com/" target="_blank" rel="noopener noreferrer" title="Facebook" class="w-10 h-10 bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white transition-colors rounded-full flex items-center justify-center text-base">
+                <a href="https://facebook.com/" target="_blank" rel="noopener noreferrer" title="Facebook" class="btn-icon w-10 h-10 text-base">
                     <i class="fa-brands fa-facebook-f"></i>
                 </a>
                 <!-- 6. Instagram -->
-                <a href="https://www.instagram.com/johnn_schmid/" target="_blank" rel="noopener noreferrer" title="Instagram" class="w-10 h-10 bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white transition-colors rounded-full flex items-center justify-center text-base">
+                <a href="https://www.instagram.com/johnn_schmid/" target="_blank" rel="noopener noreferrer" title="Instagram" class="btn-icon w-10 h-10 text-base">
                     <i class="fa-brands fa-instagram"></i>
                 </a>
                 <!-- 7. Twitter / X -->
-                <a href="https://twitter.com/" target="_blank" rel="noopener noreferrer" title="Twitter" class="w-10 h-10 bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white transition-colors rounded-full flex items-center justify-center text-base">
+                <a href="https://twitter.com/" target="_blank" rel="noopener noreferrer" title="Twitter" class="btn-icon w-10 h-10 text-base">
                     <i class="fa-brands fa-x-twitter"></i>
                 </a>
                 <!-- 8. Messenger -->
-                <a href="https://m.me/" target="_blank" rel="noopener noreferrer" title="Messenger" class="w-10 h-10 bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white transition-colors rounded-full flex items-center justify-center text-base">
+                <a href="https://m.me/" target="_blank" rel="noopener noreferrer" title="Messenger" class="btn-icon w-10 h-10 text-base">
                     <i class="fa-brands fa-facebook-messenger"></i>
                 </a>
                 <!-- 9. Telegram -->
-                <a href="https://t.me/@grun_land" target="_blank" rel="noopener noreferrer" title="Telegram" class="w-10 h-10 bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white transition-colors rounded-full flex items-center justify-center text-base">
+                <a href="https://t.me/@grun_land" target="_blank" rel="noopener noreferrer" title="Telegram" class="btn-icon w-10 h-10 text-base">
                     <i class="fa-brands fa-telegram"></i>
                 </a>
                 <!-- 10. YouTube -->
-                <a href="https://www.youtube.com/@ReInstruments" target="_blank" rel="noopener noreferrer" title="YouTube" class="w-10 h-10 bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white transition-colors rounded-full flex items-center justify-center text-base">
+                <a href="https://www.youtube.com/@ReInstruments" target="_blank" rel="noopener noreferrer" title="YouTube" class="btn-icon w-10 h-10 text-base">
                     <i class="fa-brands fa-youtube"></i>
                 </a>
             </div>
@@ -2607,7 +2582,7 @@ iframe {
 			</div>
 
 
-			<div class="flex-1 py-3 px-4 text-center text-white bg-[#00b4a6] flex items-center justify-center font-bold relative shadow-inner" 
+			<div class="flex-1 py-3 px-4 text-center text-white brand-gradient flex items-center justify-center font-bold relative shadow-inner" 
 				 style="clip-path: polygon(15% 0%, 100% 0%, 85% 100%, 0% 100%); margin-left: -8px; margin-right: -8px; z-index: 10;">
 				Delivery
 			</div>
@@ -2763,15 +2738,15 @@ if (window.location.pathname.replace(/^\/+|\/+$/g, '')) {
 					
                     const qrImg = document.getElementById('dynamicQR');
                     const currentURL = encodeURIComponent(window.location.href);
-                    qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${currentURL}&color=2D5BFF`;
+                    qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${currentURL}&color=${BRAND.base.slice(1)}`;
                     
                     const qrImg2 = document.getElementById('dynamicQR2');
                     const currentURL2 = encodeURIComponent('https://ebay.us/m/q7V6kq');
-                    qrImg2.src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${currentURL2}&color=2D5BFF`;
+                    qrImg2.src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${currentURL2}&color=${BRAND.base.slice(1)}`;
 
                     const qrImg3 = document.getElementById('dynamicQR3');
                     const currentURL3 = encodeURIComponent('https://www.youtube.com/@ReInstruments');
-                    qrImg3.src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${currentURL3}&color=2D5BFF`;
+                    qrImg3.src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${currentURL3}&color=${BRAND.base.slice(1)}`;
                     
                     
                     // CHECK LOCAL STORAGE FOR LOGGED IN SESSION
@@ -3191,8 +3166,8 @@ window.addEventListener("mousedown", () => {
     if (!outline) return;
     
     outline.style.transform = 'translate(-50%, -50%) scale(3.2)';
-    outline.style.boxShadow = '0 0 20px rgba(45, 91, 255, 0.4)';
-    outline.style.backgroundColor = 'rgba(45, 91, 255, 0.5)';
+    outline.style.boxShadow = '0 0 20px rgb(var(--brand-rgb) / 0.4)';
+    outline.style.backgroundColor = 'rgb(var(--brand-rgb) / 0.5)';
 });
 
 window.addEventListener("mouseup", () => {
@@ -3200,8 +3175,8 @@ window.addEventListener("mouseup", () => {
     if (!outline) return;
     
     outline.style.transform = 'translate(-50%, -50%) scale(1)';
-    outline.style.boxShadow = '0 0 0 rgba(45, 91, 255, 0)';
-    outline.style.backgroundColor = 'rgba(45, 91, 255, 0.5)';
+    outline.style.boxShadow = '0 0 0 rgb(var(--brand-rgb) / 0)';
+    outline.style.backgroundColor = 'rgb(var(--brand-rgb) / 0.5)';
 });
 
 // Запрет правого клика по всему документу
@@ -3243,7 +3218,7 @@ document.addEventListener('contextmenu', (e) => {
     
     <!-- Кнопка вызова чата -->
     <button @click="isOpen = !isOpen" 
-            class="w-14 h-14 bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-2xl flex items-center justify-center text-xl transition-transform hover:scale-105 cursor-pointer">
+            class="btn-primary w-14 h-14 text-xl hover:scale-105">
         <i class="fa-solid" :class="isOpen ? 'fa-xmark' : 'fa-comment-dots'"></i>
     </button>
 
@@ -3256,12 +3231,12 @@ document.addEventListener('contextmenu', (e) => {
          class="absolute bottom-20 right-0 w-80 sm:w-96 bg-white dark:bg-[#1E1E1E] border border-gray-200 dark:border-gray-700 rounded-2xl shadow-2xl overflow-hidden flex flex-col h-[450px]">
         
         <!-- Шапка чата -->
-        <div class="bg-blue-600 text-white p-4 flex items-center justify-between">
+        <div class="brand-gradient text-white p-4 flex items-center justify-between">
             <div class="flex items-center gap-3">
-                <div class="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center font-bold text-xs">JS</div>
+                <div class="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center font-bold text-xs" data-site="logoMark">JS</div>
                 <div>
                     <p class="font-bold text-sm" x-text="t('headerTitle')"></p>
-                    <p class="text-[10px] text-blue-100" x-text="t('headerSubtitle')"></p>
+                    <p class="text-[10px] text-brand-100" x-text="t('headerSubtitle')"></p>
                 </div>
             </div>
             <button @click="isOpen = false" class="text-white/80 hover:text-white">
@@ -3274,7 +3249,7 @@ document.addEventListener('contextmenu', (e) => {
 			<template x-for="(msg, index) in chatHistory" :key="index">
                 <div class="flex" :class="msg.sender === 'user' ? 'justify-end' : 'justify-start'">
                     <div class="max-w-[85%] p-3 rounded-xl leading-relaxed shadow-sm"
-                         :class="msg.sender === 'user' ? 'bg-blue-600 text-white rounded-br-none' : 'bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 rounded-bl-none'"
+                         :class="msg.sender === 'user' ? 'brand-gradient text-white rounded-br-none' : 'bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 rounded-bl-none'"
                          x-html="msg.text">
                     </div>
                 </div>
@@ -3287,9 +3262,9 @@ document.addEventListener('contextmenu', (e) => {
                    x-model="newMessage" 
                    @keydown.enter="send()" 
                    :placeholder="t('placeholder')" 
-                   class="flex-1 px-4 py-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-xs outline-none focus:ring-2 focus:ring-blue-500 text-gray-800 dark:text-white">
+                   class="field field-sm flex-1">
             
-            <button @click="send()" class="w-10 h-10 bg-blue-600 hover:bg-blue-700 text-white rounded-xl flex items-center justify-center transition-colors cursor-pointer">
+            <button @click="send()" class="btn-primary w-10 h-10 rounded-xl">
                 <i class="fa-solid fa-paper-plane text-xs"></i>
             </button>
         </div>
@@ -3306,7 +3281,7 @@ function siteChat() {
 
         translations: {
             EN: {
-                headerTitle: 'Johannes Schmid',
+                headerTitle: window.SITE_NAME,
                 headerSubtitle: 'answers quickly',
                 welcome: 'Hello! Enter a keyword (e.g. About, RePet, Voysa, ILS, BPM), and I will provide you with a link to the article.',
                 placeholder: 'Ask about products...',
@@ -3315,7 +3290,7 @@ function siteChat() {
                 defaultArticle: 'Article'
             },
             RU: {
-                headerTitle: 'Johannes Schmid',
+                headerTitle: window.SITE_NAME,
                 headerSubtitle: 'отвечает быстро',
                 welcome: 'Здравствуйте! Введите ключевое слово (например: About, RePet, Voysa, ILS, BPM), и я выдам вам ссылку на статью.',
                 placeholder: 'Спросите о товарах...',
@@ -3324,7 +3299,7 @@ function siteChat() {
                 defaultArticle: 'Статья'
             },
             GE: {
-                headerTitle: 'Johannes Schmid',
+                headerTitle: window.SITE_NAME,
                 headerSubtitle: 'antwortet sofort',
                 welcome: 'Hallo! Geben Sie ein Schlüsselwort ein (z. B. About, RePet, Voysa, ILS, BPM), und ich gebe Ihnen einen Link zum Artikel.',
                 placeholder: 'Fragen Sie nach Produkten...',
@@ -3395,7 +3370,7 @@ setTimeout(() => {
                 else window.scrollTo({top: 0, behavior: 'smooth'});
                 setTimeout(() => isScrollingByClick = false, 600);
                 isOpen = false;
-            " class="text-blue-600 dark:text-blue-400 font-bold underline hover:text-blue-800">${title}</a>`;
+            " class="text-brand-600 font-bold underline hover:text-brand-800">${title}</a>`;
             
             this.chatHistory.push({ sender: 'bot', text: reply });
         });

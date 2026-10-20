@@ -2,8 +2,19 @@
 
 const SITE_SETTINGS = {
 
+// ---- Название сайта ----
+siteName: 'Johannes Schmid',   // вкладка браузера, логотип, шапка чата
+logoMark: 'JS',                // буквы внутри значка логотипа (если убрать — возьмутся инициалы siteName)
+logoLabel: 'Dev',              // текст справа от значка логотипа
+
+// ---- Фирменный цвет (HEX) ----
+// Все кнопки, градиенты, ссылки, поля, чекбоксы и т.д. считаются от этого цвета:
+// градиент идёт от него к его светлому оттенку, при наведении — к тёмному.
+// Примеры: '#2D5BFF' синий, '#E11D48' красный, '#059669' зелёный, '#7C3AED' фиолетовый
+brandColor: '#2D5BFF',
+
 cursorSkin: false, // или false для системного курсора
-defaultFontSize: 'Medium'
+defaultFontSize: 'Medium',
 
 };
 
@@ -13,12 +24,12 @@ const SLIDESHOW_CONFIG = {
     showOnHome: true,          // Показывать ли слайдшоу на главной (true/false)
     albumsRandom: true,
     imagesRandom: true,
-    slideInterval: 5000        // Скорость смены картинок в миллисекундах (например, 4000 = 4 секунды)
+    slideInterval: 5000,        // Скорость смены картинок в миллисекундах (например, 4000 = 4 секунды)
 };
 
 // Настройки магазина: true — скрыть магазин отовсюду, false — показывать
 const SHOP_CONFIG = {
-    hideShop: true 
+    hideShop: true, 
 };
 
 
@@ -41,7 +52,7 @@ const CAD_MODELS_DATA = [
         name: 'Heater Spring',
         fileUrl: 'models/spring.step',   // Ссылка на ваш STEP файл
         type: 'step'
-    }
+    },
 ];
 
 
