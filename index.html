@@ -337,6 +337,9 @@ iframe { position: relative; z-index: 50; pointer-events: auto !important; }
 .control-btn:hover { border-color: var(--brand-200); }
 
 
+
+
+
 /* ================================================================
    4. ЭЛЕМЕНТЫ ФОРМ — поля, select, checkbox, radio, range, file
    ================================================================ */
@@ -465,6 +468,21 @@ input[type="range"]::-moz-range-thumb {
     background-image: var(--brand-grad);
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
 }
+.field {
+    width: 100%;
+    padding: 0.75rem 1rem; /* Сделали базовые поля чуть компактнее */
+    color: inherit;
+    background-color: var(--control-bg);
+    border: 1px solid var(--control-border);
+    border-radius: 0.65rem;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s, background-color 0.2s;
+}
+@media (min-width: 1920px) {
+    .field { padding: 1rem; } /* На огромных мониторах оставляем стандартные */
+}
+
+
 
 
 /* ================================================================
@@ -561,20 +579,27 @@ body.cursor-dot-enabled :is(button, a, input, select, textarea, option, label,
 }
 
 
+
+
+
+
+
 /* ================================================================
-   6. НАВИГАЦИЯ ПО ШАГАМ (step-nav)
+   6. НАВИГАЦИЯ ПО ШАГАМ (step-nav) - Адаптировано для всех экранов, включая 4K
    ================================================================ */
 .step-nav-container {
-    width: 100%;
-    max-width: 100%;
-    margin: 2.5rem auto 0;
-    padding-left: 0;
-    padding-right: 0;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 1.5rem auto 0 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
 }
-@media (min-width: 640px)  { .step-nav-container { padding-left: 0.5rem; padding-right: 0.5rem; } }
-@media (min-width: 1024px) { .step-nav-container { max-width: 56rem; margin-top: 0.5rem; } }
-@media (min-width: 1536px) { .step-nav-container { margin-top: 3.5rem; } }
-@media (min-width: 2500px) { .step-nav-container { margin-top: 3rem; } }
+@media (min-width: 1024px) { 
+    .step-nav-container { 
+        max-width: 100% !important; /* Занимает всю ширину своей колонки под картинкой */
+        margin-top: 1rem; 
+    } 
+}
 
 /* Внешняя рамка-окантовка со стрелкой справа */
 .step-nav-wrapper {
@@ -584,19 +609,20 @@ body.cursor-dot-enabled :is(button, a, input, select, textarea, option, label,
     border-radius: 9999px 0 0 9999px;
     box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
     clip-path: polygon(0% 0%, 96% 0%, 100% 50%, 96% 100%, 0% 100%);
+    width: 100%;
 }
 /* Внутренняя лента кнопок */
 .step-nav-inner {
     display: flex;
     width: 100%;
     background-color: #ffffff;
-    font-size: 10px;
+    font-size: 11px;
     font-weight: 500;
     border-radius: 9999px 0 0 9999px;
     overflow: hidden;
     clip-path: polygon(0% 0%, 96% 0%, 99.9% 50%, 96% 100%, 0% 100%);
 }
-@media (min-width: 640px) { .step-nav-inner { font-size: 0.75rem; } }
+@media (min-width: 640px) { .step-nav-inner { font-size: 0.85rem; } }
 
 .step-btn {
     flex: 1;
@@ -604,26 +630,54 @@ body.cursor-dot-enabled :is(button, a, input, select, textarea, option, label,
     align-items: center;
     justify-content: center;
     position: relative;
-    padding: 0.2rem 0.125rem;
+    padding: 0.4rem 0.2rem;
     text-align: center;
-    font-size: 11px;
+    font-size: 10px;
+    white-space: nowrap;
     cursor: pointer;
     transition: background-color 0.2s, color 0.2s;
 }
-@media (min-width: 640px)  { .step-btn { font-size: 0.875rem; } }
-@media (min-width: 1024px) { .step-btn { padding-top: 0.5rem; padding-bottom: 0.5rem; font-size: 0.95rem; } }
-@media (min-width: 1536px) { .step-btn { font-size: 1.15rem !important; padding-top: 0.8rem !important; padding-bottom: 0.8rem !important; } }
-@media (min-width: 2500px) { .step-btn { font-size: 1.5rem !important;  padding-top: 1.2rem !important; padding-bottom: 1.2rem !important; } }
+@media (min-width: 640px)  { .step-btn { font-size: 0.95rem; padding: 0.6rem; } }
+@media (min-width: 1024px) { .step-btn { padding-top: 0.7rem; padding-bottom: 0.7rem; font-size: 1.05rem; } }
+@media (min-width: 1536px) { .step-btn { font-size: 1.25rem !important; padding-top: 0.9rem !important; padding-bottom: 0.9rem !important; } }
+@media (min-width: 2500px) { .step-btn { font-size: 1.6rem !important; padding-top: 1.3rem !important; padding-bottom: 1.3rem !important; } }
 
 .step-btn-first  { border-top-left-radius: 9999px; border-bottom-left-radius: 9999px;
                    clip-path: polygon(0% 0%, 100% 0%, 85% 100%, 0% 100%); margin-right: -10px; z-index: 1; }
 .step-btn-middle { clip-path: polygon(15% 0%, 100% 0%, 85% 100%, 0% 100%); margin-left: -6px; margin-right: -10px; }
 .step-btn-last   { clip-path: polygon(15% 0%, 100% 0%, 100% 100%, 0% 100%); margin-left: -6px; padding-right: 0.25rem; z-index: 1; }
-@media (min-width: 1024px) { .step-btn-last { padding-right: 0.75rem; } }
 
 .step-btn.active   { background-image: var(--brand-grad); color: #fff; font-weight: 700; z-index: 20; }
 .step-btn.inactive { background-color: #fff; color: #4b5563; }
 .step-btn.inactive:hover { color: #000; }
+
+.step-nav-container {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 1.5rem auto 0 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+@media (min-width: 1024px) { 
+    .step-nav-container { 
+        max-width: 100% !important; 
+        margin-top: 1.5rem; /* Стандартный отступ для обычных мониторов */
+    } 
+}
+@media (min-width: 1536px) { 
+    .step-nav-container { 
+        margin-top: 2.5rem; /* Увеличенный отступ для 2K */
+    } 
+}
+@media (min-width: 2500px) { 
+    .step-nav-container { 
+        margin-top: 4rem; /* Увеличенный в 2 раза отступ для 4K мониторов */
+    } 
+}
+
+
+
+
 
 
 /* ================================================================
@@ -645,14 +699,15 @@ body.cursor-dot-enabled :is(button, a, input, select, textarea, option, label,
 @media (min-width: 2500px) { .custom-grid { gap: 6rem !important; } }
 @media (min-width: 3000px) { .custom-grid { max-width: 2750px !important; } }
 
-/* Ширина основных контейнеров (раньше было 5 перекрывающихся правил — действовало одно) */
 .max-w-7xl { max-width: 2800px !important; }
 @media (min-width: 1536px) { .max-w-7xl { padding-left: 2rem; padding-right: 2rem; } }
 
-/* Увеличение текста на 4K */
-@media (min-width: 3000px) {
-    .custom-section h2 { font-size: clamp(2.5rem, 2.5vw, 4.125rem) !important; }
-    .custom-section p  { font-size: clamp(1.45rem, 1.2vw, 2.5rem) !important; line-height: 1.7 !important; }
+/* Единый комфортный размер текста для статьи и хинтов на 4K / ультрашироких экранах */
+@media (min-width: 2500px) {
+    .custom-section h2 { font-size: clamp(2.5rem, 2.5vw, 3.8rem) !important; }
+    .custom-section p, 
+    .custom-section .text-lg,
+    .custom-section div.text-gray-800 { font-size: clamp(1.35rem, 1.1vw, 2.1rem) !important; line-height: 1.7 !important; }
 }
 
 
@@ -669,12 +724,11 @@ body.cursor-dot-enabled :is(button, a, input, select, textarea, option, label,
 .slideshow-paused .animate-floating-text { animation-play-state: paused; }
 
 .clean-fade-mask {
-    -webkit-mask-image: linear-gradient(to right, transparent 0px, black 80px, black calc(100% - 80px), transparent 100%),
-                        linear-gradient(to bottom, transparent 0px, black 80px, black calc(100% - 80px), transparent 100%);
-    -webkit-mask-composite: source-in;
-    mask-image: linear-gradient(to right, transparent 0px, black 80px, black calc(100% - 80px), transparent 100%),
-                linear-gradient(to bottom, transparent 0px, black 80px, black calc(100% - 80px), transparent 100%);
-    mask-composite: intersect;
+    /* маска строится в JS в пикселях (см. initFadeMasks), чтобы скругления были круглыми при любых пропорциях */
+    -webkit-mask-size: 100% 100%;
+    mask-size: 100% 100%;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
 }
 /* Мягкое растворение краёв всей секции в фон страницы */
 .section-fade-edges {
@@ -721,10 +775,103 @@ body.cursor-dot-enabled :is(button, a, input, select, textarea, option, label,
 .dark .btn-secondary:hover:not(:disabled) { background-color: var(--brand-deep); color: #fff; }
 .dark input[type="file"] { color: #A0A0A0; }
 .dark .hover\:bg-brand-900\/20:hover { background-color: rgb(var(--brand-rgb) / 0.2) !important; }
+
+/* ================================================================
+   ФЛЮИДНЫЕ МОДАЛКИ (Sign In / Edit Profile) И НИЖНЯЯ ПАНЕЛЬ
+   Все размеры внутри .fm заданы в em от одной переменной --fs,
+   которая считается от высоты и ширины окна браузера.
+   Поэтому окно целиком помещается без прокрутки на: телефоне
+   (портрет и ландшафт), Full HD, 2K, 4K.
+   ================================================================ */
+.fm {
+    /* базовый размер: ~16px на 1080p, ~21px на 1440p, ~32px на 2160p;
+       ограничен шириной (телефон) и минимумом 11px */
+    --fs: clamp(11px, min(1.85vh, 4.2vw), 64px);
+    --fs: clamp(11px, min(1.85dvh, 4.2vw), 64px);
+    font-size: var(--fs);
+    width: min(26em, 94vw);
+    max-height: 97vh;
+    max-height: 97dvh;
+    padding: 1.4em;
+    border-radius: 1.1em;
+    display: flex;
+    flex-direction: column;
+    gap: 0.7em;
+    overflow-y: auto;            /* страховка на нестандартных экранах */
+    overscroll-behavior: contain;
+    scrollbar-width: none;
+}
+.fm::-webkit-scrollbar { display: none; }
+
+.fm-title { font-size: 1.6em; line-height: 1.15; font-weight: 700; padding-right: 2.4em; }
+.fm-sub   { font-size: 0.8em; line-height: 1.3; margin-top: 0.25em; padding-right: 1.5em; }
+.fm-label { display: block; font-size: 0.75em; line-height: 1.2; font-weight: 700; margin: 0 0 0.25em 0.3em; }
+.fm-form  { display: flex; flex-direction: column; gap: 0.6em; }
+.fm-grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6em; }
+.fm-pw    { position: relative; }
+
+.fm .field {
+    font-size: 1em;
+    line-height: 1.3;
+    padding: 0.55em 0.85em;
+    border-radius: 0.7em;
+}
+.fm .field-pr { padding-right: 2.6em; }
+
+.fm-eye {
+    position: absolute; right: 0.7em; top: 50%; transform: translateY(-50%);
+    width: 1.6em; height: 1.6em; display: flex; align-items: center; justify-content: center;
+}
+.fm-eye svg { width: 1.2em; height: 1.2em; }
+
+.fm-close {
+    position: absolute; top: 0.8em; right: 0.8em; z-index: 50;
+    width: 2.2em; height: 2.2em; border-radius: 9999px;
+    display: flex; align-items: center; justify-content: center;
+}
+.fm-close i { font-size: 0.95em; }
+
+.fm-avatar-row { display: flex; align-items: center; gap: 0.7em; }
+.fm-avatar { width: 3.2em; height: 3.2em; flex: none; border-radius: 9999px; overflow: hidden; }
+.fm-avatar > div { font-size: 0.7em; }
+.fm-avatar-row > div:last-child { flex: 1; min-width: 0; }
+.fm input[type="file"] { width: 100%; font-size: 0.75em; line-height: 1.3; padding: 0.2em 0.2em 0.35em 0.1em; }
+.fm input[type="file"]::file-selector-button { font-size: 1em; padding: 0.35em 1em; margin-right: 0.8em; }
+
+.fm .fm-btn { width: 100%; padding: 0.75em 1em; font-size: 1.05em; line-height: 1.2; margin-top: 0.2em; }
+.fm-err   { font-size: 0.8em; line-height: 1.3; padding: 0.5em 0.7em; border-radius: 0.7em; text-align: center; font-weight: 700; }
+.fm-foot  { font-size: 0.85em; text-align: center; }
+.fm-delete{ width: 100%; padding: 0.55em; font-size: 0.85em; font-weight: 700; border-radius: 0.8em; }
+
+/* Низкие горизонтальные экраны (телефон в ландшафте и т.п.): две колонки */
+@media (orientation: landscape) and (max-height: 560px) {
+    .fm {
+        --fs: clamp(8px, min(3.3vh, 2vw), 64px);
+        --fs: clamp(8px, min(3.3dvh, 2vw), 64px);
+        width: min(46em, 96vw);
+        padding: 1.1em 1.4em;
+        gap: 0.5em;
+    }
+    .fm-form { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5em 1.2em; align-items: end; }
+    .fm-form > template + div, .fm-form .fm-contents { display: contents; }
+    .fm-form .fm-span { grid-column: 1 / -1; }
+    .fm-title { font-size: 1.4em; }
+}
+
+/* Нижняя панель управления (музыка, размер шрифта) масштабируется с экраном */
+.floating-controls {
+    font-size: clamp(11px, min(1.15vh, 0.65vw), 40px);
+    bottom: 1.6em; left: 1.6em; gap: 0.8em;
+}
+.floating-controls .control-btn {
+    font-size: 1em; padding: 0.8em 1.2em; gap: 0.7em; border-radius: 9999px;
+}
+.floating-controls .control-btn button { gap: 0.6em; }
+.floating-controls input[type="range"] { width: 5.5em; }
     </style>
     
 </head>
-<body :class="(selectedProduct || modalGalleryOpen) ? 'overflow-hidden' : ''" x-data="ReTools" @scroll.window="handleScroll">
+<body :class="(selectedProduct || modalGalleryOpen || showAuth || showProfileModal) ? 'overflow-hidden' : ''" x-data="ReTools" @scroll.window="handleScroll">
 
     <!-- AUDIO ELEMENT -->
     <audio id="bgMusic" loop>
@@ -959,34 +1106,26 @@ body.cursor-dot-enabled :is(button, a, input, select, textarea, option, label,
     </nav>
 
 
-	<!-- SIGN IN / SIGN UP MODAL -->
-    <div x-show="showAuth" x-effect="if (showAuth) refreshCaptcha()" x-cloak class="fixed inset-0 z-[100] flex items-center justify-center p-4">
-        
-        <!-- Клик по фону (закрытие) -->
-		<div class="absolute inset-0 bg-black/50 backdrop-blur-sm" @click="showAuth = false; authError = ''; showPassword = false; refreshCaptcha()"></div>
-        
-        <div class="bg-white w-full max-w-md rounded-xl p-10 shadow-2xl relative z-10 overflow-y-auto max-h-[90vh]"
+<!-- SIGN IN / SIGN UP MODAL (флюидный: размеры в em от --fs, без прокрутки) -->
+    <div x-show="showAuth" x-effect="if (showAuth) refreshCaptcha()" x-cloak class="fixed inset-0 z-[100] flex items-center justify-center p-2">
+
+        <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" @click="showAuth = false; authError = ''; showPassword = false; refreshCaptcha()"></div>
+
+        <div class="fm bg-white shadow-2xl relative z-10"
              x-transition:enter="transition ease-out duration-300"
              x-transition:enter-start="opacity-0 scale-90"
              x-transition:enter-end="opacity-100 scale-100">
-            
-            <!--
-			<button @click="showAuth = false; authError = ''; showPassword = false;" class="absolute top-6 right-6 z-50 w-10 h-10 rounded-full custom-slider-btn backdrop-blur-sm shadow-md flex items-center justify-center transition-all">
-				<i class="fa-solid fa-xmark text-black"></i>
-			</button>            
-            -->
-            
-            <!-- Кнопка закрытия (крестик) -->
-			<button @click="showAuth = false; authError = ''; showPassword = false; refreshCaptcha()" class="absolute top-6 right-6 z-50 w-10 h-10 rounded-full custom-slider-btn backdrop-blur-sm shadow-md flex items-center justify-center transition-all">
-				<i class="fa-solid fa-xmark text-black"></i>
-			</button>
-            
-            
-            <h2 class="text-3xl font-bold text-gray-900 mb-2" x-text="authMode === 'login' ? 'Welcome Back' : 'Join us'"></h2>
-            <p class="text-gray-500 text-sm mb-8" x-text="authMode === 'login' ? 'Enter your details to access your account.' : 'Create an account to start your organized journey.'"></p>
 
-            <!-- <form @submit.prevent="handleAuth" class="space-y-4"> -->
-				<form @submit.prevent="
+            <button @click="showAuth = false; authError = ''; showPassword = false; refreshCaptcha()" class="fm-close custom-slider-btn backdrop-blur-sm shadow-md transition-all">
+                <i class="fa-solid fa-xmark text-black"></i>
+            </button>
+
+            <div>
+                <h2 class="fm-title text-gray-900" x-text="authMode === 'login' ? 'Welcome Back' : 'Join us'"></h2>
+                <p class="fm-sub text-gray-500" x-text="authMode === 'login' ? 'Enter your details to access your account.' : 'Create an account to start your organized journey.'"></p>
+            </div>
+
+            <form @submit.prevent="
 				if (parseInt(userCaptchaInput) !== (captchaNum1 + captchaNum2)) {
 					authError = 'Wrong captcha. Try again.';
 					isCaptchaValid = false;
@@ -996,100 +1135,83 @@ body.cursor-dot-enabled :is(button, a, input, select, textarea, option, label,
 				isCaptchaValid = true;
 				authError = '';
 				handleAuth();
-			" class="space-y-4">
+			" class="fm-form">
                 <template x-if="authMode === 'signup'">
-                    <div class="space-y-4">
-						<!-- Блок загрузки и предпросмотра аватарки для регистрации -->
-						<div class="flex items-center space-x-4 mb-2">
-							<div class="relative w-16 h-16 rounded-full overflow-hidden bg-gray-100 border border-gray-200 flex-shrink-0">
-								<img :src="avatarBase64" x-show="avatarBase64" class="w-full h-full object-cover">
-								<div x-show="!avatarBase64" class="w-full h-full flex items-center justify-center text-gray-400 text-xs font-bold">Foto</div>
-							</div>
-							<div class="flex-1">
-								<label class="text-xs font-bold text-gray-600 ml-1 block mb-1">Avatar Image</label>
-								<input type="file" accept="image/*" @change="handleAvatarBase64" class="w-full">
-							</div>
-						</div>
-						
-                        <div class="space-y-1">
-                            <label class="text-xs font-bold text-gray-600 ml-1">Full Name</label>
+                    <div class="fm-contents fm-form">
+                        <div class="fm-avatar-row">
+                            <div class="fm-avatar relative bg-gray-100 border border-gray-200">
+                                <img :src="avatarBase64" x-show="avatarBase64" class="w-full h-full object-cover">
+                                <div x-show="!avatarBase64" class="w-full h-full flex items-center justify-center text-gray-400 font-bold">Foto</div>
+                            </div>
+                            <div>
+                                <label class="fm-label text-gray-600">Avatar Image</label>
+                                <input type="file" accept="image/*" @change="handleAvatarBase64">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="fm-label text-gray-600">Full Name</label>
                             <input type="text" x-model="userName" placeholder="John Smith" required class="field">
                         </div>
-                        <div class="space-y-1">
-                            <label class="text-xs font-bold text-gray-600 ml-1">Street Address</label>
+                        <div>
+                            <label class="fm-label text-gray-600">Street Address</label>
                             <input type="text" x-model="shippingInfo.address" placeholder="123 Study Lane" required class="field">
                         </div>
-                        <div class="grid grid-cols-2 gap-3">
-                            <div class="space-y-1">
-                                <label class="text-xs font-bold text-gray-600 ml-1">City</label>
+                        <div class="fm-grid2">
+                            <div>
+                                <label class="fm-label text-gray-600">City</label>
                                 <input type="text" x-model="shippingInfo.city" placeholder="Basel" required class="field">
                             </div>
-                            <div class="space-y-1">
-                                <label class="text-xs font-bold text-gray-600 ml-1">Zip Code</label>
+                            <div>
+                                <label class="fm-label text-gray-600">Zip Code</label>
                                 <input type="text" x-model="shippingInfo.zip" placeholder="1001" required class="field">
                             </div>
                         </div>
                     </div>
                 </template>
-                
-                <div class="space-y-1">
-                    <label class="text-xs font-bold text-gray-600 ml-1">Email Address</label>
+
+                <div>
+                    <label class="fm-label text-gray-600">Email Address</label>
                     <input type="email" x-model="authEmail" placeholder="name@email.com" required class="field">
                 </div>
 
-                <!-- Поле ввода пароля с кнопкой показа/скрытия -->
-                <div class="space-y-1">
-                    <label class="text-xs font-bold text-gray-600 ml-1">Password</label>
-                    <div class="relative">
-                        <input :type="showPassword ? 'text' : 'password'" 
-                               x-model="authPassword" 
-                               placeholder="••••••••" 
-                               required 
-                               class="field field-pr">
-                        
-                        <button type="button" @click="showPassword = !showPassword" class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 focus:outline-none">
-                            <!-- Иконка: глаз закрыт -->
-                            <svg x-show="!showPassword" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <div>
+                    <label class="fm-label text-gray-600">Password</label>
+                    <div class="fm-pw">
+                        <input :type="showPassword ? 'text' : 'password'" x-model="authPassword" placeholder="••••••••" required class="field field-pr">
+                        <button type="button" @click="showPassword = !showPassword" class="fm-eye text-gray-400 hover:text-gray-600 focus:outline-none">
+                            <svg x-show="!showPassword" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                             </svg>
-                            <!-- Иконка: глаз открыт -->
-                            <svg x-show="showPassword" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <svg x-show="showPassword" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7a10.05 10.05 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.542 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
                             </svg>
                         </button>
                     </div>
                 </div>
-                
-			<!-- БЛОК КАПЧИ (Математический пример) -->
-				<div class="space-y-1">
-					<label class="text-xs font-bold text-gray-600 ml-1">
-						Confirm you're not a robot: <span class="text-brand-600" x-text="captchaNum1 + ' + ' + captchaNum2 + ' = ?'"></span>
-					</label>
-					<input type="number" 
-						   x-model="userCaptchaInput" 
-						   placeholder="Введите ответ" 
-						   required 
-						   class="field">
-				</div>                                               
-                
-                <!-- Блок вывода ошибки в нижней части модального окна -->
+
+                <div>
+                    <label class="fm-label text-gray-600">
+                        Confirm you're not a robot: <span class="text-brand-600" x-text="captchaNum1 + ' + ' + captchaNum2 + ' = ?'"></span>
+                    </label>
+                    <input type="number" x-model="userCaptchaInput" placeholder="Введите ответ" required class="field">
+                </div>
+
                 <template x-if="authError">
-                    <div class="p-3 bg-red-50 text-red-600 text-xs font-bold rounded-xl text-center" x-text="authError"></div>
+                    <div class="fm-err fm-span bg-red-50 text-red-600" x-text="authError"></div>
                 </template>
 
-                <button type="submit" class="btn-primary w-full py-4 text-lg mt-4">
+                <button type="submit" class="btn-primary fm-btn">
                     <span x-text="authMode === 'login' ? 'Sign In' : 'Create Account'"></span>
                 </button>
             </form>
 
-            <div class="mt-8 text-center text-sm">
+            <div class="fm-foot">
                 <span class="text-gray-500" x-text="authMode === 'login' ? 'New here?' : 'Already have an account?'"></span>
                 <button @click="authMode = (authMode === 'login' ? 'signup' : 'login'); authError = '';" class="text-brand-600 font-bold ml-1 hover:underline" x-text="authMode === 'login' ? 'Sign Up' : 'Log In'"></button>
             </div>
         </div>
     </div>
-
 
 
 
@@ -1420,34 +1542,35 @@ body.cursor-dot-enabled :is(button, a, input, select, textarea, option, label,
                     <i class="fa-solid fa-xmark text-xl"></i>
                 </button>
 
-<!-- Кнопка скачивания изображения -->
-<template x-if="modalMedia[modalCurrentIndex] && modalMedia[modalCurrentIndex].type === 'image'">
-    <button @click.prevent="
-        fetch(modalMedia[modalCurrentIndex].url)
-            .then(response => response.blob())
-            .then(blob => {
-                const blobUrl = window.URL.createObjectURL(blob);
-                const link = document.createElement('a');
-                link.href = blobUrl;
-                link.download = 'image-' + (modalCurrentIndex + 1) + '.jpg';
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-                window.URL.revokeObjectURL(blobUrl);
-            })
-            .catch(err => {
-                // Если сервер Google блокирует запрос из-за CORS, 
-                // запасной вариант — открытие ссылки в новой вкладке
-                window.open(modalMedia[modalCurrentIndex].url, '_blank');
-            });
-    " class="w-10 h-10 rounded-full custom-slider-btn flex items-center justify-center transition-all cursor-pointer shadow-[0_0_30px_rgba(0,0,0,0.99)]" title="Скачать изображение">
-        <i class="fa-solid fa-download text-sm"></i>
-    </button>
-</template>
+				<!-- Кнопка скачивания изображения -->
+				<template x-if="modalMedia[modalCurrentIndex] && modalMedia[modalCurrentIndex].type === 'image'">
+					<button @click.prevent="
+						fetch(modalMedia[modalCurrentIndex].url)
+							.then(response => response.blob())
+							.then(blob => {
+								const blobUrl = window.URL.createObjectURL(blob);
+								const link = document.createElement('a');
+								link.href = blobUrl;
+								link.download = 'image-' + (modalCurrentIndex + 1) + '.jpg';
+								document.body.appendChild(link);
+								link.click();
+								document.body.removeChild(link);
+								window.URL.revokeObjectURL(blobUrl);
+							})
+							.catch(err => {
+								// Если сервер Google блокирует запрос из-за CORS, 
+								// запасной вариант — открытие ссылки в новой вкладке
+								window.open(modalMedia[modalCurrentIndex].url, '_blank');
+							});
+					" class="w-10 h-10 rounded-full custom-slider-btn flex items-center justify-center transition-all cursor-pointer shadow-[0_0_30px_rgba(0,0,0,0.99)]" title="Скачать изображение">
+						<i class="fa-solid fa-download text-sm"></i>
+					</button>
+				</template>
             </div>
 
             <template x-if="modalMedia.length > 0">
                 <div class="w-full flex flex-col items-center justify-center">
+
 					
 <div style="display: none;">                 
                     <!-- Если это картинка -->
@@ -1555,104 +1678,99 @@ body.cursor-dot-enabled :is(button, a, input, select, textarea, option, label,
 
 
 
-<!-- PROFILE EDIT MODAL -->
-<div x-show="showProfileModal" x-cloak class="fixed inset-0 z-[100] flex items-center justify-center p-4">
+<!-- PROFILE EDIT MODAL (флюидный: размеры в em от --fs, без прокрутки) -->
+<div x-show="showProfileModal" x-cloak class="fixed inset-0 z-[100] flex items-center justify-center p-2">
     <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" @click="showProfileModal = false; profileError = ''; showPassword = false;"></div>
-    <div class="bg-white w-full max-w-md rounded-xl p-10 shadow-2xl relative z-10 overflow-y-auto max-h-[90vh]"
+
+    <div class="fm bg-white shadow-2xl relative z-10"
          x-transition:enter="transition ease-out duration-300"
          x-transition:enter-start="opacity-0 scale-90"
          x-transition:enter-end="opacity-100 scale-100">
-        
-        <button @click="showProfileModal = false; profileError = ''; showPassword = false;" class="absolute top-6 right-6 z-50 w-10 h-10 rounded-full custom-slider-btn backdrop-blur-sm shadow-md flex items-center justify-center transition-all">
-				<i class="fa-solid fa-xmark text-black"></i>
-		</button> 
-        
-        
-        <h2 class="text-3xl font-bold text-gray-900 mb-2">Edit Profile</h2>
-        <p class="text-gray-500 text-sm mb-6">Update your personal details and shipping information.</p>
 
-        <form @submit.prevent="saveProfile" class="space-y-4">
-            
-			<!-- Блок загрузки и предпросмотра аватарки -->
-			<div class="flex items-center space-x-4 mb-2">
-				<div class="relative w-16 h-16 rounded-full overflow-hidden bg-gray-100 border border-gray-200 flex-shrink-0">
-					<!-- Картинка показывается, если avatarBase64 заполнен -->
-					<img :src="avatarBase64" x-show="avatarBase64" class="w-full h-full object-cover">
-					
-					<!-- Заглушка "Foto" показывается, если аватарки нет -->
-					<div x-show="!avatarBase64" class="w-full h-full flex items-center justify-center text-gray-400 text-xs font-bold">Foto</div>
-				</div>
-				<div class="flex-1">
-					<label class="text-xs font-bold text-gray-600 ml-1 block mb-1">Avatar Image</label>
-					<!--<input type="file" accept="image/*" @change="handleAvatarBase64" class="w-full">-->
-					<input type="file" x-ref="avatarInput" accept="image/*" @change="handleAvatarBase64" class="w-full">
-				</div>
-			</div>
+        <button @click="showProfileModal = false; profileError = ''; showPassword = false;" class="fm-close custom-slider-btn backdrop-blur-sm shadow-md transition-all">
+            <i class="fa-solid fa-xmark text-black"></i>
+        </button>
 
-            <div class="space-y-1">
-                <label class="text-xs font-bold text-gray-600 ml-1">Full Name</label>
+        <div>
+            <h2 class="fm-title text-gray-900">Edit Profile</h2>
+            <p class="fm-sub text-gray-500">Update your personal details and shipping information.</p>
+        </div>
+
+        <form @submit.prevent="saveProfile" class="fm-form">
+
+            <div class="fm-avatar-row">
+                <div class="fm-avatar relative bg-gray-100 border border-gray-200">
+                    <img :src="avatarBase64" x-show="avatarBase64" class="w-full h-full object-cover">
+                    <div x-show="!avatarBase64" class="w-full h-full flex items-center justify-center text-gray-400 font-bold">Foto</div>
+                </div>
+                <div>
+                    <label class="fm-label text-gray-600">Avatar Image</label>
+                    <input type="file" x-ref="avatarInput" accept="image/*" @change="handleAvatarBase64">
+                </div>
+            </div>
+
+            <div>
+                <label class="fm-label text-gray-600">Full Name</label>
                 <input type="text" x-model="userName" required class="field">
             </div>
-            
-            <div class="space-y-1">
-                <label class="text-xs font-bold text-gray-600 ml-1">Street Address</label>
+
+            <div>
+                <label class="fm-label text-gray-600">Street Address</label>
                 <input type="text" x-model="shippingInfo.address" required class="field">
             </div>
 
-            <div class="grid grid-cols-2 gap-3">
-                <div class="space-y-1">
-                    <label class="text-xs font-bold text-gray-600 ml-1">City</label>
+            <div class="fm-grid2">
+                <div>
+                    <label class="fm-label text-gray-600">City</label>
                     <input type="text" x-model="shippingInfo.city" required class="field">
                 </div>
-                <div class="space-y-1">
-                    <label class="text-xs font-bold text-gray-600 ml-1">Zip Code</label>
+                <div>
+                    <label class="fm-label text-gray-600">Zip Code</label>
                     <input type="text" x-model="shippingInfo.zip" required class="field">
                 </div>
             </div>
 
-            <div class="space-y-1">
-                <label class="text-xs font-bold text-gray-600 ml-1">Email Address</label>
+            <div>
+                <label class="fm-label text-gray-600">Email Address</label>
                 <input type="email" x-model="authEmail" required class="field">
             </div>
 
-            <div class="space-y-1">
-                <label class="text-xs font-bold text-gray-600 ml-1">Password</label>
-                <div class="relative">
-                    <input :type="showPassword ? 'text' : 'password'" 
-                           x-model="authPassword" 
-                           required 
-                           class="field field-pr">
-                    
-                    <button type="button" @click="showPassword = !showPassword" class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 focus:outline-none">
-                        <svg x-show="!showPassword" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                        </svg>
-                        <svg x-show="showPassword" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7a10.05 10.05 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.542 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
-                        </svg>
-                    </button>
+            <div>
+                <label class="fm-label text-gray-600">Password</label>
+                <div class="fm-pw">
+                    <input :type="showPassword ? 'text' : 'password'" x-model="authPassword" required class="field field-pr">
+                    <button type="button" @click="showPassword = !showPassword" class="fm-eye text-gray-400 hover:text-gray-600 focus:outline-none">
+                            <svg x-show="!showPassword" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                            </svg>
+                            <svg x-show="showPassword" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7a10.05 10.05 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.542 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
+                            </svg>
+                        </button>
                 </div>
             </div>
 
-            <!-- Блок вывода ошибки -->
             <template x-if="profileError">
-                <div class="p-3 bg-red-50 text-red-600 text-xs font-bold rounded-xl text-center" x-text="profileError"></div>
+                <div class="fm-err fm-span bg-red-50 text-red-600" x-text="profileError"></div>
             </template>
-            
-            <div class="pt-2">
-                <button type="submit" class="btn-primary w-full py-4 text-base">Save Changes</button>
-            </div>
+
+            <button type="submit" class="btn-primary fm-btn">Save Changes</button>
         </form>
 
-        <div class="mt-4 pt-4 border-t border-gray-100 text-center">
-            <button @click="deleteProfile" class="w-full py-3 text-sm font-bold text-red-500 hover:bg-red-50 rounded-xl transition-colors">
-                Delete Profile
-            </button>
+        <div>
+            <button @click="deleteProfile" class="fm-delete text-red-500 hover:bg-red-50 transition-colors">Delete Profile</button>
         </div>
     </div>
 </div>
-    
+
+
+
+
+
+
+
+
 <div style="display: none;">
     <!-- HOME / HERO SECTION -->
     <header class="px-4 lg:px-8 py-8 lg:py-12">
@@ -1727,6 +1845,9 @@ body.cursor-dot-enabled :is(button, a, input, select, textarea, option, label,
     </section>
 </div>    
     
+
+
+
 
 
 <!-- КРАСИВОЕ СЛАЙДШОУ В СТИЛЕ МАКОВСКОЙ ЗАСТАВКИ -->
@@ -1994,6 +2115,13 @@ body.cursor-dot-enabled :is(button, a, input, select, textarea, option, label,
 
 
 
+
+
+
+
+
+
+
 <!-- ДИНАМИЧЕСКИЙ ВЫВОД СЕКЦИЙ ИЗ products.js -->
 <template x-for="(sec, index) in sections" :key="sec.id">
     <section class="custom-section"
@@ -2194,18 +2322,20 @@ body.cursor-dot-enabled :is(button, a, input, select, textarea, option, label,
                 
                 <!-- Подсказки и кнопки: видны ТОЛЬКО на десктопе -->
                 <div class="hidden lg:block pt-8">
-                    <div class="space-y-4">
-                        <template x-for="(hint, idx) in sec.hints" :key="idx">
-                            <div class="flex items-center gap-3 justify-start text-left">
-                                <span class="text-2xl 4xl:text-5xl flex-shrink-0" x-text="hint.emoji"></span>
-                                <div class="text-gray-800 text-lg lg:text-lg 2xl:text-lg 4xl:text-4xl leading-relaxed">
-                                    <strong class="leading-relaxed font-bold text-gray-900" x-text="hint.title + ' '"></strong>
-                                    <span class="leading-relaxed font-normal" x-text="hint.text"></span>
-                                    <a x-show="hint.youtubeUrl && hint.youtubeUrl.length > 0" :href="hint.youtubeUrl" target="_blank" class="text-red-600 hover:underline font-bold ml-1" x-text="hint.youtubeText"></a>
-                                </div>
-                            </div>
-                        </template>
-                    </div>
+ <div class="space-y-4">
+        <template x-for="(hint, idx) in sec.hints" :key="idx">
+            <div class="flex items-center gap-3 justify-start text-left">
+                <!-- Уберите здесь классы 4xl:text-5xl у эмодзи, если они мешают -->
+                <span class="text-2xl flex-shrink-0" x-text="hint.emoji"></span>
+                <!-- Уберите здесь класс 4xl:text-4xl, оставив общий адаптивный размер -->
+                <div class="text-gray-800 text-lg leading-relaxed">
+                    <strong class="leading-relaxed font-bold text-gray-900" x-text="hint.title + ' '"></strong>
+                    <span class="leading-relaxed font-normal" x-text="hint.text"></span>
+                    <a x-show="hint.youtubeUrl && hint.youtubeUrl.length > 0" :href="hint.youtubeUrl" target="_blank" class="text-red-600 hover:underline font-bold ml-1" x-text="hint.youtubeText"></a>
+                </div>
+            </div>
+        </template>
+    </div>
 
 					<!-- Кнопки выровнены по правому краю, если текст справа, и по левому, если текст слева -->
 					<div class="flex flex-wrap gap-3 mt-8 2xl:mt-12 4xl:mt-24"
@@ -3426,5 +3556,38 @@ setTimeout(() => {
 <div class="cursor-outline"></div> 
 
 
+<script>
+/* Круглая размывка краёв: радиус и размытие считаются в px от меньшей стороны картинки,
+   поэтому у вытянутых картинок скругления не превращаются в овалы. */
+(function initFadeMasks() {
+    var RADIUS = 0.063, INSET = 0.08, BLUR = 0.035; // доли меньшей стороны (радиус = 0.09 * 0.7)
+    function apply(el) {
+        var w = el.clientWidth, h = el.clientHeight;
+        if (!w || !h) return;
+        var m = Math.min(w, h), p = INSET * m, r = RADIUS * m, b = BLUR * m;
+        var svg = "<svg xmlns='http://www.w3.org/2000/svg' width='" + w + "' height='" + h + "' viewBox='0 0 " + w + " " + h + "'>" +
+            "<filter id='b' filterUnits='userSpaceOnUse' x='0' y='0' width='" + w + "' height='" + h + "'><feGaussianBlur stdDeviation='" + b.toFixed(2) + "'/></filter>" +
+            "<rect x='" + p.toFixed(1) + "' y='" + p.toFixed(1) + "' width='" + (w - 2 * p).toFixed(1) + "' height='" + (h - 2 * p).toFixed(1) +
+            "' rx='" + r.toFixed(1) + "' ry='" + r.toFixed(1) + "' fill='white' filter='url(#b)'/></svg>";
+        var url = 'url("data:image/svg+xml,' + encodeURIComponent(svg) + '")';
+        if (el._fadeUrl === url) return;
+        el._fadeUrl = url;
+        el.style.webkitMaskImage = url;
+        el.style.maskImage = url;
+    }
+    var ro = new ResizeObserver(function (entries) { entries.forEach(function (e) { apply(e.target); }); });
+    function scan(root) {
+        (root.querySelectorAll ? root.querySelectorAll('.clean-fade-mask') : []).forEach(function (el) {
+            if (!el._fadeObs) { el._fadeObs = true; ro.observe(el); el.addEventListener('load', function () { apply(el); }); }
+            apply(el);
+        });
+    }
+    function start() {
+        scan(document);
+        new MutationObserver(function () { scan(document); }).observe(document.body, { childList: true, subtree: true });
+    }
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
+})();
+</script>
 </body>
 </html>

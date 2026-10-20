@@ -316,7 +316,7 @@ const SECTIONS_DATA = [
         steps: [
             { id: 'bottle', label: 'Bottle' },
             { id: 'tape', label: 'Tape' },
-            { id: 'filament', label: 'Filament', short: 'Fil.' },
+            { id: 'filament', label: 'Filament', short: 'Filament' },
             { id: 'join', label: 'Joining', short: 'Join' },
             { id: 'spool', label: 'Spool' },
             { id: 'printing', label: 'Print' }
@@ -432,7 +432,7 @@ const SECTIONS_DATA = [
 		steps: [
 			{ id: 'bottle', label: 'Bottle' },
 			{ id: 'tape', label: 'Tape' },
-			{ id: 'filament', label: 'Filament', short: 'Fil.' },
+			{ id: 'filament', label: 'Filament', short: 'Filament' },
 			{ id: 'join', label: 'Joining', short: 'Join' },
 			{ id: 'spool', label: 'Spool' },
 			{ id: 'printing', label: 'Print' }
@@ -471,7 +471,7 @@ const SECTIONS_DATA = [
         steps: [
             { id: 'bottle', label: 'Bottle' },
             { id: 'tape', label: 'Tape' },
-            { id: 'filament', label: 'Filament', short: 'Fil.' },
+            { id: 'filament', label: 'Filament', short: 'Filament' },
             { id: 'join', label: 'Joining', short: 'Join' },
             { id: 'spool', label: 'Spool' },
             { id: 'printing', label: 'Print' }
@@ -554,7 +554,7 @@ const SECTIONS_DATA = [
         steps: [
             { id: 'bottle', label: 'Bottle' },
             { id: 'tape', label: 'Tape' },
-            { id: 'filament', label: 'Filament', short: 'Fil.' },
+            { id: 'filament', label: 'Filament', short: 'Filament' },
             { id: 'join', label: 'Joining', short: 'Join' },
             { id: 'spool', label: 'Spool' },
             { id: 'printing', label: 'Print' }
@@ -616,7 +616,7 @@ const SECTIONS_DATA = [
         steps: [
             { id: 'bottle', label: 'Bottle' },
             { id: 'tape', label: 'Tape' },
-            { id: 'filament', label: 'Filament', short: 'Fil.' },
+            { id: 'filament', label: 'Filament', short: 'Filament' },
             { id: 'join', label: 'Joining', short: 'Join' },
             { id: 'spool', label: 'Spool' },
             { id: 'printing', label: 'Print' }
@@ -696,7 +696,7 @@ const SECTIONS_DATA = [
         steps: [
             { id: 'bottle', label: 'Bottle' },
             { id: 'tape', label: 'Tape' },
-            { id: 'filament', label: 'Filament', short: 'Fil.' },
+            { id: 'filament', label: 'Filament', short: 'Filament' },
             { id: 'join', label: 'Joining', short: 'Join' },
             { id: 'spool', label: 'Spool' },
             { id: 'printing', label: 'Print' }
@@ -773,7 +773,7 @@ const SECTIONS_DATA = [
         steps: [
             { id: 'bottle', label: 'Bottle' },
             { id: 'tape', label: 'Tape' },
-            { id: 'filament', label: 'Filament', short: 'Fil.' },
+            { id: 'filament', label: 'Filament', short: 'Filament' },
             { id: 'join', label: 'Joining', short: 'Join' },
             { id: 'spool', label: 'Spool' },
             { id: 'printing', label: 'Print' }
@@ -852,7 +852,7 @@ const SECTIONS_DATA = [
         steps: [
             { id: 'bottle', label: 'Bottle' },
             { id: 'tape', label: 'Tape' },
-            { id: 'filament', label: 'Filament', short: 'Fil.' },
+            { id: 'filament', label: 'Filament', short: 'Filament' },
             { id: 'join', label: 'Joining', short: 'Join' },
             { id: 'spool', label: 'Spool' },
             { id: 'printing', label: 'Print' }
@@ -922,7 +922,7 @@ const SECTIONS_DATA = [
         steps: [
             { id: 'bottle', label: 'Bottle' },
             { id: 'tape', label: 'Tape' },
-            { id: 'filament', label: 'Filament', short: 'Fil.' },
+            { id: 'filament', label: 'Filament', short: 'Filament' },
             { id: 'join', label: 'Joining', short: 'Join' },
             { id: 'spool', label: 'Spool' },
             { id: 'printing', label: 'Print' }
@@ -1006,7 +1006,7 @@ const SECTIONS_DATA = [
         steps: [
             { id: 'bottle', label: 'Bottle' },
             { id: 'tape', label: 'Tape' },
-            { id: 'filament', label: 'Filament', short: 'Fil.' },
+            { id: 'filament', label: 'Filament', short: 'Filament' },
             { id: 'join', label: 'Joining', short: 'Join' },
             { id: 'spool', label: 'Spool' },
             { id: 'printing', label: 'Print' }
@@ -1064,7 +1064,7 @@ const SECTIONS_DATA = [
         steps: [
             { id: 'bottle', label: 'Bottle' },
             { id: 'tape', label: 'Tape' },
-            { id: 'filament', label: 'Filament', short: 'Fil.' },
+            { id: 'filament', label: 'Filament', short: 'Filament' },
             { id: 'join', label: 'Joining', short: 'Join' },
             { id: 'spool', label: 'Spool' },
             { id: 'printing', label: 'Print' }
@@ -1150,7 +1150,7 @@ const SECTIONS_DATA = [
         steps: [
             { id: 'bottle', label: 'Bottle' },
             { id: 'tape', label: 'Tape' },
-            { id: 'filament', label: 'Filament', short: 'Fil.' },
+            { id: 'filament', label: 'Filament', short: 'Filament' },
             { id: 'join', label: 'Joining', short: 'Join' },
             { id: 'spool', label: 'Spool' },
             { id: 'printing', label: 'Print' }
@@ -1214,7 +1214,7 @@ const SECTIONS_DATA = [
         steps: [
             { id: 'bottle', label: 'Bottle' },
             { id: 'tape', label: 'Tape' },
-            { id: 'filament', label: 'Filament', short: 'Fil.' },
+            { id: 'filament', label: 'Filament', short: 'Filament' },
             { id: 'join', label: 'Joining', short: 'Join' },
             { id: 'spool', label: 'Spool' },
             { id: 'printing', label: 'Print' }
