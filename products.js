@@ -5,7 +5,7 @@ const SITE_SETTINGS = {
 // ---- Название сайта ----
 siteName: 'Johannes Schmid',   // вкладка браузера, логотип, шапка чата
 logoMark: 'JS',                // буквы внутри значка логотипа (если убрать — возьмутся инициалы siteName)
-logoLabel: 'Dev',              // текст справа от значка логотипа
+logoLabel: 'Hub',              // текст справа от значка логотипа
 
 // ---- Фирменный цвет (HEX) ----
 // Все кнопки, градиенты, ссылки, поля, чекбоксы и т.д. считаются от этого цвета:
@@ -378,8 +378,7 @@ const SECTIONS_DATA = [
         //bgClass: 'bg-white', // 'bg-white' или 'bg-gray-100'
         //imageLeft: false,
         aspectClass: 'aspect-[4/4]',
-        showSteps: true,
-        currentStep: 'tape',
+
 		title: 'RePet Filament Extruder',
 		p1: 'The RePet Compact is an innovative, compact PET bottle filament extruder that gives you a near-limitless supply of plastic right at your workspace. The extruder is designed for quick and convenient processing of plastic PET bottles into filament suitable both for 3D printing and for use in grass trimmers.',
 		p2: 'The extruder does not take up much space on the desk, consumes only 10 Watts of power, and saves you money on purchasing consumables.',
@@ -430,13 +429,44 @@ const SECTIONS_DATA = [
 		],
 
 		steps: [
-			{ id: 'bottle', label: 'Bottle' },
-			{ id: 'tape', label: 'Tape' },
-			{ id: 'filament', label: 'Filament', short: 'Filament' },
-			{ id: 'join', label: 'Joining', short: 'Join' },
-			{ id: 'spool', label: 'Spool' },
-			{ id: 'printing', label: 'Print' }
+			{ id: 'bottle', label: 'Bottle', desc: 'Pick a clean PET bottle and remove the cap and label.' },
+			{ id: 'tape', label: 'Tape', desc: 'Cut the bottle into a continuous tape of even width.' },
+			{ id: 'filament', label: 'Filament', short: 'Filament', desc: 'The extruder heats the tape and forms round filament.' },
+			{ id: 'join', label: 'Weld', short: 'Join', desc: 'Join the end of one tape to the next bottle without stopping.' },
+			{ id: 'spool', label: 'Spool', desc: 'Wind the finished filament onto a spool.' },
+			{ id: 'printing', label: 'Print', desc: 'Use it in your FDM printer or as grass trimmer line.' }
 		],
+        showSteps: true,
+        animSteps: true,
+        currentStep: 'tape',
+
+        // Диаграммы под основным блоком секции, две в ряд (на мобилке друг под другом).
+        // Типы: 'donut' (круговая) и 'bars' (столбчатая, сгруппированные столбцы).
+        widgets: [
+            {
+                type: 'donut',
+                title: 'Where the time goes',
+                centerLabel: 'Process',
+                // TODO: примерные данные, замените реальными. color у сегмента необязателен (по умолчанию палитра бренда)
+                data: [
+                    { label: 'Extrusion', value: 45 },
+                    { label: 'Tape cutting', value: 20 },
+                    { label: 'Joining', value: 15 },
+                    { label: 'Spooling', value: 10 },
+                    { label: 'Other', value: 10 }
+                ]
+            },
+            {
+                type: 'bars',
+                title: 'Filament produced, m per week',
+                // TODO: примерные данные, замените реальными. max необязателен (по умолчанию считается сам)
+                categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                series: [
+                    { name: 'Plan', values: [35, 45, 55, 60, 70, 82] },
+                    { name: 'Actual', values: [30, 52, 50, 55, 78, 95] }
+                ]
+            }
+        ],
         
         items: [
             { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczODA556kXVdOWozG3WVVaS7-BtQvxKR4wCl6OJLhbnmG6OmEqZohhzRacfR51Q-L467uS21zU7kbSfxDahspLXYOZAChMd8F-Xjjy4FfNCK7qpEQBXacUwnN7IuGcgEtgEEpSpnz_7s09bP-UmxuWSr=w1066-h1008-s-no' },            
@@ -536,7 +566,9 @@ const SECTIONS_DATA = [
            
             
             { type: 'video', url: 'https://dostupsreda.ru/media/files/materials/%D0%92%D0%BE%D0%B9%D1%81%D0%B0-%D0%B3%D0%B0%D0%B4%D0%B6%D0%B5%D1%82-%D0%BF%D0%BE%D0%BC%D0%BE%D1%89%D0%BD%D0%B8%D0%BA-%D0%BA%D0%BE%D0%BC%D0%BF%D0%B0%D0%BD%D0%B8%D1%8F-%D0%BA%D1%80%D1%83%D1%81%D1%82_0zWbDIF.mp4' },
-            //{ type: 'pdf', url: 'https://example.com/manual.pdf', title: 'Download User Manual (PDF)' },
+            { type: 'pdf', url: 'https://drive.usercontent.google.com/download?export=download&confirm=t&id=1Ya7VNq0rEyMTwKbkG3qYQj3cEYxOxUaT', title: 'Users manual (PDF)' },
+			{ type: 'pdf', url: 'https://drive.usercontent.google.com/download?export=download&confirm=t&id=1z8FwwZnH5_8cCpKiNmcDxiGHiCPNM1u5', title: 'Product spec (PDF)' },
+			
             //{ type: 'zip', url: 'https://example.com/models.zip', title: 'Download 3D Models (ZIP)' }
         ]
     },
@@ -722,7 +754,7 @@ const SECTIONS_DATA = [
 			{
 				emoji: '🔋',
 				title: 'Power & Storage:',
-				text: 'Contains 3500mAh LiPo battery, USB Tye-C and Wireless Charging capability. Provides up to 24 hours of continuous operation on a single battery charge, 8GB of internal storage, and expandable support for SD/SDHC/SDXC memory cards up to 64GB.',
+				text: 'Contains 3000mAh LiPo battery, USB Tye-C and Wireless Charging capability. Provides up to 24 hours of continuous operation on a single battery charge, 8GB of internal storage, and expandable support for SD/SDHC/SDXC memory cards up to 64GB.',
 				youtubeUrl: '',
 				youtubeText: ''
 			}
@@ -756,7 +788,74 @@ const SECTIONS_DATA = [
     
     
     
-    
+    { 
+        id: 'portplayer',
+        menuTitle: 'Portable Audiobook Reader',
+        inMenu: false,        
+        //bgClass: 'bg-gray-100', // 'bg-white' или 'bg-gray-100'
+        //imageLeft: true,
+        aspectClass: 'aspect-[4/4]',
+        showSteps: false,
+        currentStep: 'tape',
+        steps: [
+            { id: 'bottle', label: 'Bottle' },
+            { id: 'tape', label: 'Tape' },
+            { id: 'filament', label: 'Filament', short: 'Filament' },
+            { id: 'join', label: 'Joining', short: 'Join' },
+            { id: 'spool', label: 'Spool' },
+            { id: 'printing', label: 'Print' }
+        ],
+		title: 'Portable Audiobook Reader',
+		p1: 'The Portable Audiobook Reader is an advanced specialized device engineered specifically for blind and visually impaired individuals. It delivers a seamless, fully voice-controlled navigation experience designed to provide intuitive access to talking books, diverse music collections, live radio broadcasts, podcasts, and essential online internet services.',
+		p2: 'Featuring a fully voiced interactive menu where every single action is accompanied by clear spoken prompts, it also includes a built-in voice recorder and a convenient bookmarking function. Offering exceptional connectivity, long-lasting battery performance, and extensive media compatibility, it empowers users with complete independence in daily learning, reading, and entertainment.',
+
+		hints: [
+			{
+				emoji: '📚',
+				title: 'Formats & Reading:',
+				text: 'Supports DAISY talking books, all audio formats(mp3, aac, ogg), as well as text files (TXT, DOCX, EPUB, PDF) processed smoothly via an integrated text-to-speech synthesizer.',
+				youtubeUrl: '',
+				youtubeText: ''
+			},
+			{
+				emoji: '🌐',
+				title: 'Connectivity & Online:',
+				text: 'Equipped with built-in Wi-Fi (2.4 GHz) and 64-108 MHz FM Radio',
+				youtubeUrl: '',
+				youtubeText: ''
+			},
+			{
+				emoji: '🔋',
+				title: 'Power & Storage:',
+				text: 'Contains 2500mAh LiPo battery, USB Tye-C and Wireless Charging capability. Provides up to 24 hours of continuous operation on a single battery charge, 8GB of internal storage, and expandable support for SD/SDHC/SDXC memory cards up to 64GB.',
+				youtubeUrl: '',
+				youtubeText: ''
+			}
+		],
+        
+        items: [
+
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczOKi5a0RrGbPm0ZSn5D3j1qKHfvBDL6v22pU3DUuRHKEd3s0b4yGFTB4lB-4LH88kV1KgMyYjjrjZ_Edk6WslKOiEvomMqOA9aw3y2HHbSndqDlVNMv6NPxrNd-zJjaCO8VlpfMGQzHndpLSRfnc_Jc=w1539-h1022-s-no' },
+            
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczM9KA6oq-_asUa38m7L34dyn7IafZXoGajLk6E1O_OEsLb1ce8v41HMzlLCgjZX3etwa8FUHHU9uXYPSUszrzDKNZRoE3_GENOdafVeiEfiDTpexxTRIOMEyGcNyjpkgcOFnjw7RFlFNDyyRKnPZwNi=w3438-h1907-s-no' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPrslOu5noRe8A_cVqV1vZhChdnerrzjpusd2bzPckcl_7AgAesUEgaQkE6RcOzuOlanASP110KU0PGYIGGaLAkwBxc16rl1K-WPCN7UQXda5x2VPbZo6z5cmaFzVeEYSNhKcL0jdP8lnKolknM9ov-=w3438-h1907-s-no' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNoVj0QWCwtZLbqkyLqah37sPJDlb4nA97Vj4CYBATJz6ZT_-FLvupXNOPSycAzkrNbkiDqoauwsxVTax23dnhofY5ZaMhv14Y80uOe0t62b0kSv65_xy-1e88HghqRqVvyJ3w9G5vvvjsATwhWHS5T=w3438-h1907-s-no' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczOQ8qYWyNeZiFFDpDNNFYWPam6o5fgGThhJyROqLzOkCBI3nL44d21I0JHGp2llzamvEzy-YinXX4pj7umGlrYU_O-Q3iwze3XMiAWsf1sui3Fs19E1Hyq3pQgUetufFmsoGO_o0VGvDshMotYa6LXR=w3438-h1907-s-no' },            
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczM7Lx6CIFasNazg_1YEbe_xvKFUNQlSgATEm0T0EsnI_BR0V87GM_gnmCpsHgv5a2PuVwxFhg4471ZJ00Ygm-msxY6vlyrQoM9166tI56SkNFRzt_xBZTsI5bYj1ElSsBpmmKTNRX7VRvznzmnwc8XS=w3438-h1907-s-no' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczN55dz0NTc_zrRF08XxKBEeEuWzbg9D_BgLUJGk4TAfGi-YMwm6QlbFKXH8OUyFUlJtx1Fex3y46ww-WRce0MbbKHuon-t1tDzu-D4Ww0dWjky_qEUp2eH-9sQ74ZG0EDQReeqT_2HajCQm32cfKxYA=w3438-h1907-s-no' },            
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMRIFcr-AUxzVR2iTSwkLqJ5J7mkQe4M2CY7xHK-vNfXa_L2u6tOpqx0bU3bsBHmcjWfcF4fsck0o12j1zrolG6tL-9ZorRDviYJ9b8PwmIsiq6mm9DpvPfCQEaJ0PFNfy45tDRPy93NmvWt6GpxzYK=w1974-h1076-s-no' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMC0gWPs3Li-zURH385p8N6DqidPqcWLibs_HUviMWnk9iQIGhJYIBkEDKKaak184_MMbcznCltyThj2_k9ZqkOqmZjM5agdmkjnM5E4JYrlu5vnEM5Cxc5fnG6Lv4bA53G2EWSsZceLdrhbIOO_Be1=w2717-h1401-s-no' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczM8RjdbPYltHz9oZ6meMTW0gorWQBQpfftg2eJAbk8xkXDW_MhlF4JcRhSCnacCha7fuaRPGYuh5PdCytiDqfyUITjMRmjqZahd7u3-Y_Vz96WgeeX8RgXENeXNp6YmCQJ8xTFn861F0tvSsE9B95WX=w1457-h1297-s-no' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczOWSKmddFYna6rQO1YBdUrQU-_brdnesg2PB8aaXmY8coCo_C_pcbR6yC8aVOS0EMkG5SzBAIHwt72hN2ePpwgEXNYi9Pb4zEhqfFzZTAVSRa0c8RZF5HAAajbXt-hJpaCzjEwDSDjg-rUZXK7Wkp6T=w1417-h1413-s-no' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMKi1lhxIlo5IF-KJEe_RhWMyu92iVwJ-bKsh_f4hsAdy1Js7pPUUfOcPD8TBmC1PzRBBJowMOD5aOlJhDX9Ny4Rj1XQUYS_ZNFisQimidegTo1s8j_-3hq1cszisGN5vYxK5ryDdTZiwwdLUdOb2HS=w725-h1913-s-no' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMTcpjiTPJTtw0QmQTP0al0Zs08bgLsk3g_3TJe8VpWoSgivCz_PRDdqPgA_zHY5QigdILTwUjrG8q3CMaRWP_MjTKfCz_M0a6YRoBXYkeEEqxX9VqN4OwkE_fCskSFWnRGak8RStV7XtzPCuZsS-PI=w2853-h1485-s-no' },
+			{ type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNJls1MQeq_Ffm1VFzyhBi8lSWsW5Txr-yKtA__S5q7IFTz77anGn1NvXEltil6xStBFqzwEa2AmKc1_t-IgjLClwdJDApK37-yn9otxofFwIzAbzqiaNMS7VY2N1kD_5o5RRdhA1XCLBkYmDezg-wL=w2905-h1749-s-no' },
+                        
+            //{ type: 'video', url: 'https://dostupsreda.ru/media/files/materials/%D0%AD%D0%A0%D0%92%D0%A3_%D0%A1%D0%BE%D0%BA%D0%BE%D0%BB-1.mp4' },
+            //{ type: 'pdf', url: 'https://example.com/manual.pdf', title: 'Download User Manual (PDF)' },
+            //{ type: 'zip', url: 'https://example.com/models.zip', title: 'Download 3D Models (ZIP)' }
+        ]
+    },     
     
     
     
@@ -832,9 +931,10 @@ const SECTIONS_DATA = [
             { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPyQ5FMOidkVPToqhqbaUHsqugqonFT8UQ0IOd191OcCC0ga4jy9MpodSdXMSW6nfqQ1Wr2paczvGmayQx4UIIwajyGFkqQ0sV3kjHe3IToWxz9-6toBxXcg5tVXg0pF2sLJXOWVVfzyOnUw9JZMikU=w3629-h2013-s-no' },
             { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPpncDJTaeCPf4uOXx5HoUJqLGf0II4eDSNjU308vgBWuk3OcT4UDQj56xzjWspJ_vxjuKwf71A5jYkHkahVHV2vvJEfXE8Rv7xL4LshNcv-jZTOY5rrinu5ncfd32J6vVieC-TObbbAQhHBRlhSFo5=w3629-h2013-s-no' },
 			{ type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczN9s_Wtjw9P6inNCigN3yVnRJ-qZ5dcbFOx_1mE8Jj3xvQBPs1-GmeZnJ_tY0gLlbSs-ie62F7S4YIVg858gB-rhfD1atlcTMBLe3wyjr63BdLJ90XME_ZL89iHbKM9cYQxedeQ_pN6odCMy3anGlxN=w3629-h2013-s-no' },
-
-                        
+    
             { type: 'video', url: 'https://dostupsreda.ru/media/files/materials/%D0%AD%D0%A0%D0%92%D0%A3_%D0%A1%D0%BE%D0%BA%D0%BE%D0%BB-1.mp4' },
+            { type: 'pdf', url: 'https://drive.usercontent.google.com/download?export=download&confirm=t&id=1hsMFfEB6kLkqek0R0ELf_Mt2YfDN9WHT', title: 'Users manual (PDF)' },
+			{ type: 'pdf', url: 'https://drive.usercontent.google.com/download?export=download&confirm=t&id=1zImgy7GpcrikipeFUWSC8xC9fWdZWlml', title: 'Product spec (PDF)' },            
             //{ type: 'pdf', url: 'https://example.com/manual.pdf', title: 'Download User Manual (PDF)' },
             //{ type: 'zip', url: 'https://example.com/models.zip', title: 'Download 3D Models (ZIP)' }
         ]

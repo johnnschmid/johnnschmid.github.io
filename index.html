@@ -677,6 +677,42 @@ body.cursor-dot-enabled :is(button, a, input, select, textarea, option, label,
 
 
 
+/* Добавляем плавный переход для фона и цвета текста шагов */
+.step-btn {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    padding: 0.4rem 0.2rem;
+    text-align: center;
+    font-size: 10px;
+    white-space: nowrap;
+    cursor: pointer;
+    /* Плавная анимация цвета, фона и трансформаций при смене шага */
+    transition: background-color 0.5s ease, background-image 0.5s ease, color 0.5s ease, transform 0.3s ease;
+}
+
+/* Обычный активный шаг (градиент) */
+.step-btn.active {
+    background-image: var(--brand-grad);
+    color: #fff;
+    font-weight: 700;
+    z-index: 20;
+}
+
+/* Финальный (последний) активный шаг — Красный цвет */
+.step-btn.active.step-btn-last {
+    background-image: none !important;
+    background-color: #ef4444 !important; /* Красный цвет Tailwind red-500 */
+    color: #ffffff !important;
+    box-shadow: 0 0 12px rgba(239, 68, 68, 0.6);
+}
+
+
+
+
+
 
 
 
@@ -700,6 +736,14 @@ body.cursor-dot-enabled :is(button, a, input, select, textarea, option, label,
 @media (min-width: 3000px) { .custom-grid { max-width: 2750px !important; } }
 
 .max-w-7xl { max-width: 2800px !important; }
+
+/* Единая ширина контента: те же значения, что у .custom-grid (статьи), чтобы поля героя, проблем, магазина и статей совпадали на всех экранах */
+:root { --content-w: 80rem; }
+@media (min-width: 1536px) { :root { --content-w: 82vw; } }
+@media (min-width: 2000px) { :root { --content-w: 1750px; } }
+@media (min-width: 3000px) { :root { --content-w: 2750px; } }
+.site-w     { max-width: var(--content-w) !important; }                 /* блок без собственных боковых отступов */
+.site-w-pad { max-width: calc(var(--content-w) + 4rem) !important; }    /* блок с px-8 (2rem с каждой стороны) */
 @media (min-width: 1536px) { .max-w-7xl { padding-left: 2rem; padding-right: 2rem; } }
 
 /* Единый комфортный размер текста для статьи и хинтов на 4K / ультрашироких экранах */
@@ -710,6 +754,36 @@ body.cursor-dot-enabled :is(button, a, input, select, textarea, option, label,
     .custom-section div.text-gray-800 { font-size: clamp(1.35rem, 1.1vw, 2.1rem) !important; line-height: 1.7 !important; }
 }
 
+
+
+/* ================================================================
+   7a. ВИДЖЕТЫ СЕКЦИЙ: круговая и столбчатая диаграммы (sec.widgets)
+   ================================================================ */
+.widget-card { border-radius: 1.25rem; padding: 1.75rem; border: 1px solid rgb(var(--brand-rgb) / 0.12); box-shadow: 0 10px 30px -18px rgb(0 0 0 / 0.25); }
+.widget-title { font-size: 1.35rem; font-weight: 700; margin-bottom: 1.25rem; }
+
+.donut-wrap { position: relative; width: 100%; max-width: 13rem; aspect-ratio: 1 / 1; flex: none; }
+.donut-svg { position: absolute; inset: 0; width: 100%; height: 100%; transform: rotate(-90deg); pointer-events: none; overflow: visible; }
+.donut-svg circle { pointer-events: stroke; }
+.donut-seg { fill: none; transition: stroke-width .2s, opacity .2s; cursor: pointer; }
+.donut-center { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; pointer-events: none; text-align: center; padding: 0 22%; }
+.donut-legend-row { display: flex; align-items: center; gap: .7rem; padding: .4rem 0; cursor: default; transition: opacity .2s; }
+.donut-swatch { width: .8rem; height: .8rem; border-radius: 9999px; flex: none; }
+
+.bars-plot { position: relative; height: 13rem; }
+.bars-grid-line { position: absolute; left: 0; right: 0; display: flex; align-items: center; transform: translateY(50%); }
+.bars-grid-line span:first-child { width: 2.5rem; font-size: .8rem; color: #9ca3af; }
+.bars-grid-line span:last-child { flex: 1; border-top: 1px solid #e5e7eb; }
+.bars-cols { position: absolute; left: 2.5rem; right: 0; top: 0; bottom: 0; display: grid; }
+.bars-group { display: flex; align-items: flex-end; justify-content: center; gap: 4px; height: 100%; }
+.bars-bar { width: 22%; max-width: 1.4rem; min-width: .5rem; border-radius: 4px 4px 0 0; transition: filter .2s, height .4s; }
+.bars-bar:hover { filter: brightness(1.12); }
+.bars-xlabels { display: grid; margin-left: 2.5rem; margin-top: .6rem; text-align: center; font-size: .85rem; color: #9ca3af; }
+.bars-legend { display: flex; justify-content: center; gap: 1.5rem; margin-top: 1rem; font-size: .95rem; }
+.dark .bars-grid-line span:last-child { border-top-color: #5d5d5d; }
+.dark .widget-card { border-color: rgb(255 255 255 / 0.08); }
+@media (min-width: 1536px) { .donut-wrap { max-width: 17rem; } .widget-title { font-size: 1.7rem; } .bars-plot { height: 17rem; } .bars-xlabels, .bars-grid-line span:first-child { font-size: 1rem; } }
+@media (min-width: 2500px) { .donut-wrap { max-width: 25rem; } .widget-title { font-size: 2.4rem; } .bars-plot { height: 26rem; } .widget-card { padding: 3rem; } }
 
 /* ================================================================
    8. СЛАЙДШОУ: плавающий текст и мягкие края
@@ -1771,85 +1845,6 @@ body.cursor-dot-enabled :is(button, a, input, select, textarea, option, label,
 
 
 
-<div style="display: none;">
-    <!-- HOME / HERO SECTION -->
-    <header class="px-4 lg:px-8 py-8 lg:py-12">
-        <div class="hero-bg-gradient max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-12 px-8 lg:px-20 py-16 lg:py-24 rounded-xl shadow-xl overflow-hidden">
-            <div class="lg:w-1/2 space-y-8 text-left">
-                <h1 class="text-5xl lg:text-7xl font-extrabold leading-tight text-gray-900">Smarter Recycling <br> <span class="text-brand-600">Tools</span></h1>
-                <p class="text-gray-500 text-lg">Everything you need to succeed, all in one hub.</p>
-                
-                <div class="bg-white/50 backdrop-blur-md p-6 rounded-xl border border-white/50 max-w-sm space-y-4">
-                    <div class="flex flex-col gap-1">
-                        <p class="text-[10px] font-bold text-brand-500 uppercase tracking-widest">Flash Deal</p>
-                        <p class="text-2xl font-bold text-gray-900" x-text="products[heroActiveIndex].name"></p>
-                        <p class="text-xl font-black text-brand-600" x-text="formatPrice(products[heroActiveIndex].price)"></p>
-                    </div>
-					<div class="flex gap-3">
-						<button @click="addToCart(products[heroActiveIndex])" class="btn-primary flex-1 py-3 text-sm flex items-center justify-center">
-							<i class="fa-solid fa-bolt ml-0.5 mr-0.5"></i>Quick Order
-						</button>
-						<a href="#shop" class="btn-secondary flex-1 py-2 text-sm">View All</a>
-					</div>
-                </div>
-            </div>
-            
-            <div class="lg:w-1/2 relative h-[300px] lg:h-[450px] w-full flex items-center justify-center">
-                <template x-for="(p, index) in products" :key="'hero-'+p.id">
-                    <div x-show="heroActiveIndex === index" 
-                         x-transition:enter="transition opacity duration-1000 ease-in-out"
-                         x-transition:enter-start="opacity-0 scale-95"
-                         x-transition:enter-end="opacity-100 scale-100"
-                         x-transition:leave="transition opacity duration-1000 ease-in-out"
-                         x-transition:leave-start="opacity-100 scale-100"
-                         x-transition:leave-end="opacity-0 scale-105"
-                         class="absolute inset-0 flex items-center justify-center">
-                        <img :src="p.images[0]" 
-                             class="w-full h-full max-w-md object-cover rounded-xl shadow-2xl border-8 border-white">
-                    </div>
-                </template>
-            </div>
-        </div>
-    </header>
-</div>
-
-
-
-<div style="display: none;">
-    <!-- THE PROBLEM WE SOLVE -->
-    <section class="py-20 px-8 bg-gray-100">
-        <div class="max-w-7xl mx-auto text-center">
-            <h2 class="text-3xl font-bold mb-12">The Problem We Solve</h2>
-            <div class="grid md:grid-cols-3 gap-6 mb-8">
-                <div class="bg-white p-8 rounded-xl border border-gray-100 card-shadow">
-                    <div class="w-16 h-16 bg-red-500 text-white rounded-full flex items-center justify-center mx-auto mb-6 text-2xl"><i class="fa-solid fa-dollar-sign"></i></div>
-                    <h3 class="text-xl font-bold mb-3">Save your money</h3>
-                    <p class="text-gray-500 text-sm">Better price for electronics development on the market</p>
-                </div>
-                <div class="bg-white p-8 rounded-xl border border-gray-100 card-shadow">
-                    <div class="w-16 h-16 bg-yellow-400 text-white rounded-full flex items-center justify-center mx-auto mb-6 text-2xl"><i class="fa-solid fa-magnifying-glass"></i></div>
-                    <h3 class="text-xl font-bold mb-3">Everything here!</h3>
-                    <p class="text-gray-500 text-sm">Schematics, PCB, Software, Industrial design</p>
-                </div>
-                <div class="bg-white p-8 rounded-xl border border-gray-100 card-shadow">
-                    <div class="w-16 h-16 bg-green-500 text-white rounded-full flex items-center justify-center mx-auto mb-6 text-2xl"><i class="fa-solid fa-clock"></i></div>
-                    <h3 class="text-xl font-bold mb-3">Time-Consuming</h3>
-                    <p class="text-gray-500 text-sm">Let's discuss development and production time!</p>
-                </div>
-            </div>
-            <div class="bg-brand-50 p-6 rounded-xl flex items-center gap-6 max-w-7xl mx-auto border border-brand-100">
-                <div class="w-14 h-14 brand-gradient text-white rounded-full flex items-center justify-center flex-shrink-0 text-xl"><i class="fa-solid fa-lightbulb"></i></div>
-                <p class="text-gray-800 text-left font-medium"><strong>Have idea?</strong> I can develop design, hardware, firmware or software, based on your technical requirements!</p>
-            </div>
-        </div>
-    </section>
-</div>    
-    
-
-
-
-
-
 <!-- КРАСИВОЕ СЛАЙДШОУ В СТИЛЕ МАКОВСКОЙ ЗАСТАВКИ -->
 <section id="slideshow" class="relative w-full h-[calc(95dvh-4rem)] overflow-hidden flex items-center justify-center my-8 max-w-7xl mx-auto"
          x-data="{
@@ -2007,6 +2002,87 @@ body.cursor-dot-enabled :is(button, a, input, select, textarea, option, label,
         </div>
     </div>
 </section>
+
+<template x-if="!shopConfig.hideShop">
+    <!-- HOME / HERO SECTION -->
+    <section id="hero" class="px-4 lg:px-8 py-8 lg:py-12">
+        <div class="hero-bg-gradient site-w mx-auto flex flex-col lg:flex-row items-center justify-between gap-12 px-8 lg:px-20 py-16 lg:py-24 rounded-xl shadow-xl overflow-hidden">
+            <div class="lg:w-1/2 space-y-8 text-left">
+                <h1 class="text-5xl lg:text-7xl font-extrabold leading-tight text-gray-900">Smarter Recycling <br> <span class="text-brand-600">Tools</span></h1>
+                <p class="text-gray-500 text-lg">Everything you need to succeed, all in one hub.</p>
+                
+                <div class="bg-white/50 backdrop-blur-md p-6 rounded-xl border border-white/50 max-w-sm space-y-4">
+                    <div class="flex flex-col gap-1">
+                        <p class="text-[10px] font-bold text-brand-500 uppercase tracking-widest">Flash Deal</p>
+                        <p class="text-2xl font-bold text-gray-900" x-text="products[heroActiveIndex].name"></p>
+                        <p class="text-xl font-black text-brand-600" x-text="formatPrice(products[heroActiveIndex].price)"></p>
+                    </div>
+					<div class="flex gap-3">
+						<button @click="addToCart(products[heroActiveIndex])" class="btn-primary flex-1 py-3 text-sm flex items-center justify-center">
+							<i class="fa-solid fa-bolt ml-0.5 mr-0.5"></i>Quick Order
+						</button>
+						<a href="#shop" class="btn-secondary flex-1 py-2 text-sm">View All</a>
+					</div>
+                </div>
+            </div>
+            
+            <div class="lg:w-1/2 relative h-[300px] lg:h-[450px] w-full flex items-center justify-center">
+                <template x-for="(p, index) in products" :key="'hero-'+p.id">
+                    <div x-show="heroActiveIndex === index" 
+                         x-transition:enter="transition opacity duration-1000 ease-in-out"
+                         x-transition:enter-start="opacity-0 scale-95"
+                         x-transition:enter-end="opacity-100 scale-100"
+                         x-transition:leave="transition opacity duration-1000 ease-in-out"
+                         x-transition:leave-start="opacity-100 scale-100"
+                         x-transition:leave-end="opacity-0 scale-105"
+                         class="absolute inset-0 flex items-center justify-center">
+                        <img :src="p.images[0]" 
+                             class="w-full h-full max-w-md object-cover rounded-xl shadow-2xl border-8 border-white">
+                    </div>
+                </template>
+            </div>
+        </div>
+    </section>
+</template>
+
+
+
+<template x-if="!shopConfig.hideShop">
+    <!-- THE PROBLEM WE SOLVE -->
+    <section class="py-20 px-8 bg-gray-100">
+        <div class="site-w mx-auto text-center">
+            <h2 class="text-3xl font-bold mb-12">The Problem We Solve</h2>
+            <div class="grid md:grid-cols-3 gap-6 mb-8">
+                <div class="bg-white p-8 rounded-xl border border-gray-100 card-shadow">
+                    <div class="w-16 h-16 bg-red-500 text-white rounded-full flex items-center justify-center mx-auto mb-6 text-2xl"><i class="fa-solid fa-dollar-sign"></i></div>
+                    <h3 class="text-xl font-bold mb-3">Save your money</h3>
+                    <p class="text-gray-500 text-sm">Better price for electronics development on the market</p>
+                </div>
+                <div class="bg-white p-8 rounded-xl border border-gray-100 card-shadow">
+                    <div class="w-16 h-16 bg-yellow-400 text-white rounded-full flex items-center justify-center mx-auto mb-6 text-2xl"><i class="fa-solid fa-magnifying-glass"></i></div>
+                    <h3 class="text-xl font-bold mb-3">Everything here!</h3>
+                    <p class="text-gray-500 text-sm">Schematics, PCB, Software, Industrial design</p>
+                </div>
+                <div class="bg-white p-8 rounded-xl border border-gray-100 card-shadow">
+                    <div class="w-16 h-16 bg-green-500 text-white rounded-full flex items-center justify-center mx-auto mb-6 text-2xl"><i class="fa-solid fa-clock"></i></div>
+                    <h3 class="text-xl font-bold mb-3">Time-Consuming</h3>
+                    <p class="text-gray-500 text-sm">Let's discuss development and production time!</p>
+                </div>
+            </div>
+            <div class="bg-brand-50 p-6 rounded-xl flex items-center gap-6 site-w mx-auto border border-brand-100">
+                <div class="w-14 h-14 brand-gradient text-white rounded-full flex items-center justify-center flex-shrink-0 text-xl"><i class="fa-solid fa-lightbulb"></i></div>
+                <p class="text-gray-800 text-left font-medium"><strong>Have idea?</strong> I can develop design, hardware, firmware or software, based on your technical requirements!</p>
+            </div>
+        </div>
+    </section>
+</template>    
+    
+
+
+
+
+
+
     
 
 
@@ -2030,7 +2106,7 @@ body.cursor-dot-enabled :is(button, a, input, select, textarea, option, label,
     
 
     <!-- SHOP SECTION -->
-    <section id="shop" class="max-w-7xl mx-auto px-8 py-20" x-show="!shopConfig.hideShop" x-cloak>
+    <section id="shop" class="site-w-pad mx-auto px-8 py-20" x-show="!shopConfig.hideShop" x-cloak>
         <h2 class="text-3xl font-bold mb-10 text-left">Collections</h2>
         <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-8"> <template x-for="p in visibleProducts" :key="p.id">
                 <div class="bg-white p-4 lg:p-5 rounded-xl border border-gray-100 card-shadow group flex flex-col">
@@ -2261,7 +2337,17 @@ body.cursor-dot-enabled :is(button, a, input, select, textarea, option, label,
                     </div>
                 </div>
 
+
+
+
+
+
+
+
+
+
                 <!-- Панель шагов с шевронами -->
+                <!--
                 <div class="step-nav-container w-full" x-show="sec.showSteps" x-cloak>
                     <div class="step-nav-wrapper">
                         <div class="step-nav-inner">
@@ -2283,6 +2369,72 @@ body.cursor-dot-enabled :is(button, a, input, select, textarea, option, label,
                         </div>
                     </div>
                 </div>
+				-->
+
+
+
+
+
+
+<!-- Панель шагов с поддержкой animSteps (автоматическая анимация или фиксация на currentStep) -->
+<div class="step-nav-container w-full" 
+     x-show="sec.showSteps" 
+     x-cloak
+     x-data="{
+         stepTimer: null,
+         startAutoplay() {
+             this.stopAutoplay();
+             // Если animSteps явно выключен в конфигурации секции, таймер не запускаем
+             if (sec.animSteps === false) return;
+             
+             this.stepTimer = setInterval(() => {
+                 if (!sec.steps || sec.steps.length === 0) return;
+                 let currentIndex = sec.steps.findIndex(s => s.id === currentStep);
+                 let nextIndex = (currentIndex + 1) % sec.steps.length;
+                 currentStep = sec.steps[nextIndex].id;
+             }, 1000); // Переключение раз в 1 секунду
+         },
+         stopAutoplay() {
+             if (this.stepTimer) clearInterval(this.stepTimer);
+         }
+     }"
+     x-init="
+         // Если анимация отключена, сразу устанавливаем шаг из конфигурации
+         if (sec.animSteps === false && sec.currentStep) {
+             currentStep = sec.currentStep;
+         }
+         startAutoplay();
+     "
+     @mouseenter="stopAutoplay()"
+     @mouseleave="startAutoplay()">
+    <div class="step-nav-wrapper">
+        <div class="step-nav-inner">
+            <template x-for="(step, idx) in sec.steps" :key="step.id">
+                <div @click="if (sec.animSteps !== false) { currentStep = step.id; }" 
+                     class="step-btn"
+                     :class="{
+                         'active': currentStep === step.id,
+                         'inactive': currentStep !== step.id,
+                         'step-btn-first': idx === 0,
+                         'step-btn-middle': idx > 0 && idx < sec.steps.length - 1,
+                         'step-btn-last': idx === sec.steps.length - 1
+                     }"
+                     :style="idx === 0 ? 'z-index: 1;' : (idx === sec.steps.length - 1 ? 'z-index: ' + sec.steps.length + ';' : 'z-index: ' + (sec.steps.length - idx) + ';')">
+                    <span class="sm:hidden" x-text="step.short || step.label"></span>
+                    <span class="hidden sm:inline" x-text="step.label"></span>
+                </div>
+            </template>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
 
                 <!-- Подсказки и кнопки: видны ТОЛЬКО на мобилке -->
                 <div class="block lg:hidden space-y-4 pt-2 text-left">
@@ -2350,6 +2502,102 @@ body.cursor-dot-enabled :is(button, a, input, select, textarea, option, label,
                 </div>
             </div>
 
+        </div>
+
+        <!-- ДОП. ВИДЖЕТЫ СЕКЦИИ (sec.widgets): диаграммы в одной панели под основным блоком -->
+        <div class="custom-grid flex flex-col lg:flex-row gap-8 items-stretch mt-12 lg:mt-16"
+             x-show="sec.widgets && sec.widgets.length" x-cloak>
+            <template x-for="(w, wi) in (sec.widgets || [])" :key="wi">
+                <div class="w-full lg:flex-1 min-w-0">
+
+                    <!-- Круговая диаграмма -->
+                    <template x-if="w.type === 'donut'">
+                        <div class="widget-card bg-white h-full"
+                             x-data="{
+                                 hover: null,
+                                 palette: ['var(--brand)', '#34d399', '#fb923c', '#a78bfa', '#cbd5e1'],
+                                 total() { return w.data.reduce((a, d) => a + d.value, 0); },
+                                 color(i) { return w.data[i].color || this.palette[i % this.palette.length]; },
+                                 pct(i) { return Math.round(w.data[i].value / this.total() * 100); },
+                                 len(i) { return Math.max(w.data[i].value / this.total() * 100 - 0.8, 0); },
+                                 off(i) { let a = 0; for (let k = 0; k < i; k++) a += w.data[k].value / this.total() * 100; return -a; }
+                             }">
+                            <h3 class="widget-title text-gray-900" x-text="w.title"></h3>
+                            <div class="flex flex-col sm:flex-row items-center gap-8">
+                                <div class="donut-wrap">
+                                    <template x-for="(d, i) in w.data" :key="i">
+                                        <svg class="donut-svg" viewBox="0 0 100 100" aria-hidden="true">
+                                            <circle class="donut-seg" cx="50" cy="50" r="38" pathLength="100"
+                                                    :style="'stroke:' + color(i) + ';' + (hover !== null && hover !== i ? 'opacity:.35;' : '')"
+                                                    :stroke-width="hover === i ? 16 : 13"
+                                                    :stroke-dasharray="len(i) + ' ' + (100 - len(i))"
+                                                    :stroke-dashoffset="off(i)"
+                                                    @mouseenter="hover = i" @mouseleave="hover = null"
+                                                    @click="hover = (hover === i ? null : i)"></circle>
+                                        </svg>
+                                    </template>
+                                    <div class="donut-center">
+                                        <span class="text-3xl font-bold text-gray-900" x-text="hover === null ? '100%' : pct(hover) + '%'"></span>
+                                        <span class="text-sm text-gray-600" x-text="hover === null ? (w.centerLabel || 'Total') : w.data[hover].label"></span>
+                                    </div>
+                                </div>
+                                <div class="w-full text-lg text-gray-800">
+                                    <template x-for="(d, i) in w.data" :key="i">
+                                        <div class="donut-legend-row" :style="hover !== null && hover !== i ? 'opacity:.45' : ''"
+                                             @mouseenter="hover = i" @mouseleave="hover = null">
+                                            <span class="donut-swatch" :style="'background:' + color(i)"></span>
+                                            <span class="flex-1" x-text="d.label"></span>
+                                            <span class="font-bold" x-text="pct(i) + '%'"></span>
+                                        </div>
+                                    </template>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+
+                    <!-- Столбчатая диаграмма (сгруппированные столбцы) -->
+                    <template x-if="w.type === 'bars'">
+                        <div class="widget-card bg-white h-full"
+                             x-data="{
+                                 palette: ['var(--brand)', 'var(--brand-light)', '#34d399', '#fb923c'],
+                                 color(si) { return w.series[si].color || this.palette[si % this.palette.length]; },
+                                 max() { if (w.max) return w.max; const m = Math.max(...w.series.flatMap(s => s.values)); return (Math.ceil(m / 4 / 5) * 5 * 4) || 100; },
+                                 ticks() { const m = this.max(); return [0, 1, 2, 3, 4].map(i => Math.round(m / 4 * i)); }
+                             }">
+                            <h3 class="widget-title text-gray-900" x-text="w.title"></h3>
+                            <div class="bars-plot">
+                                <template x-for="t in ticks()" :key="t">
+                                    <div class="bars-grid-line" :style="'bottom:' + (t / max() * 100) + '%'">
+                                        <span x-text="t"></span><span></span>
+                                    </div>
+                                </template>
+                                <div class="bars-cols" :style="'grid-template-columns: repeat(' + w.categories.length + ', 1fr)'">
+                                    <template x-for="(cat, ci) in w.categories" :key="ci">
+                                        <div class="bars-group">
+                                            <template x-for="(s, si) in w.series" :key="si">
+                                                <div class="bars-bar"
+                                                     :style="'height:' + (s.values[ci] / max() * 100) + '%; background:' + color(si)"
+                                                     :title="s.name + ', ' + cat + ': ' + s.values[ci]"></div>
+                                            </template>
+                                        </div>
+                                    </template>
+                                </div>
+                            </div>
+                            <div class="bars-xlabels" :style="'grid-template-columns: repeat(' + w.categories.length + ', 1fr)'">
+                                <template x-for="(cat, ci) in w.categories" :key="ci"><span x-text="cat"></span></template>
+                            </div>
+                            <div class="bars-legend text-gray-600">
+                                <template x-for="(s, si) in w.series" :key="si">
+                                    <span class="inline-flex items-center gap-2">
+                                        <span class="donut-swatch" :style="'background:' + color(si)"></span>
+                                        <span x-text="s.name"></span>
+                                    </span>
+                                </template>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+            </template>
         </div>
     </section>
 </template>
@@ -2519,61 +2767,65 @@ body.cursor-dot-enabled :is(button, a, input, select, textarea, option, label,
 
 
 <!-- CONTACT SECTION -->
-<footer id="contact" class="py-20 px-4 md:px-8 border-t border-gray-100">
-    <div class="max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between gap-8">
+<footer id="contact" class="py-14 md:py-20 px-4 md:px-8 border-t border-gray-100">
+    <div class="site-w mx-auto flex flex-col md:flex-row items-center justify-between gap-10 md:gap-8">
         
         <!-- Левая колонка: Заголовок и иконки -->
-        <div class="text-left space-y-6">
+        <div class="text-center md:text-left space-y-6 w-full md:flex-1 md:min-w-0">
             <h2 class="text-4xl font-bold text-gray-900">Contact Us</h2>
-            <p class="text-gray-500 max-w-sm">Have questions? Feel free to contact me!</p>
+            <p class="text-gray-500 max-w-sm mx-auto md:mx-0">Have questions? Feel free to contact me!</p>
             
             <!-- Ряд круглых иконок -->
-            <div class="flex flex-wrap gap-3 pt-2">
+            <div class="flex flex-wrap justify-center md:justify-start gap-3 pt-2 md:max-w-xl">
                 <!-- 1. Email -->
-                <a href="mailto:johnnschmid@gmail.com" title="Email" class="btn-icon w-10 h-10 text-base">
+                <a href="mailto:johnnschmid@gmail.com" title="Email" class="btn-icon w-11 h-11 md:w-10 md:h-10 text-base">
                     <i class="fa-solid fa-envelope"></i>
                 </a>
                 <!-- 2. Location (Google Maps) -->
-                <a href="https://www.google.com/maps/search/?api=1&query=Öflinger+Str.,+Wehr,+Germany" target="_blank" rel="noopener noreferrer" title="Location" class="btn-icon w-10 h-10 text-base">
+                <a href="https://www.google.com/maps/search/?api=1&query=Öflinger+Str.,+Wehr,+Germany" target="_blank" rel="noopener noreferrer" title="Location" class="btn-icon w-11 h-11 md:w-10 md:h-10 text-base">
                     <i class="fa-solid fa-location-dot"></i>
                 </a>
                 <!-- 3. Phone -->
-                <a href="tel:+491551047827" title="Phone" class="btn-icon w-10 h-10 text-base">
+                <a href="tel:+491551047827" title="Phone" class="btn-icon w-11 h-11 md:w-10 md:h-10 text-base">
                     <i class="fa-solid fa-phone"></i>
                 </a>
                 <!-- 4. LinkedIn -->
-                <a href="https://www.linkedin.com/in/johnnschmid/" target="_blank" rel="noopener noreferrer" title="LinkedIn" class="btn-icon w-10 h-10 text-base">
+                <a href="https://www.linkedin.com/in/johnnschmid/" target="_blank" rel="noopener noreferrer" title="LinkedIn" class="btn-icon w-11 h-11 md:w-10 md:h-10 text-base">
                     <i class="fa-brands fa-linkedin-in"></i>
                 </a>
                 <!-- 5. Facebook -->
-                <a href="https://facebook.com/" target="_blank" rel="noopener noreferrer" title="Facebook" class="btn-icon w-10 h-10 text-base">
+                <a href="https://facebook.com/" target="_blank" rel="noopener noreferrer" title="Facebook" class="btn-icon w-11 h-11 md:w-10 md:h-10 text-base">
                     <i class="fa-brands fa-facebook-f"></i>
                 </a>
                 <!-- 6. Instagram -->
-                <a href="https://www.instagram.com/johnn_schmid/" target="_blank" rel="noopener noreferrer" title="Instagram" class="btn-icon w-10 h-10 text-base">
+                <a href="https://www.instagram.com/johnn_schmid/" target="_blank" rel="noopener noreferrer" title="Instagram" class="btn-icon w-11 h-11 md:w-10 md:h-10 text-base">
                     <i class="fa-brands fa-instagram"></i>
                 </a>
                 <!-- 7. Twitter / X -->
-                <a href="https://twitter.com/" target="_blank" rel="noopener noreferrer" title="Twitter" class="btn-icon w-10 h-10 text-base">
+                <a href="https://twitter.com/" target="_blank" rel="noopener noreferrer" title="Twitter" class="btn-icon w-11 h-11 md:w-10 md:h-10 text-base">
                     <i class="fa-brands fa-x-twitter"></i>
                 </a>
                 <!-- 8. Messenger -->
-                <a href="https://m.me/" target="_blank" rel="noopener noreferrer" title="Messenger" class="btn-icon w-10 h-10 text-base">
+                <a href="https://m.me/" target="_blank" rel="noopener noreferrer" title="Messenger" class="btn-icon w-11 h-11 md:w-10 md:h-10 text-base">
                     <i class="fa-brands fa-facebook-messenger"></i>
                 </a>
                 <!-- 9. Telegram -->
-                <a href="https://t.me/@grun_land" target="_blank" rel="noopener noreferrer" title="Telegram" class="btn-icon w-10 h-10 text-base">
+                <a href="https://t.me/@grun_land" target="_blank" rel="noopener noreferrer" title="Telegram" class="btn-icon w-11 h-11 md:w-10 md:h-10 text-base">
                     <i class="fa-brands fa-telegram"></i>
                 </a>
                 <!-- 10. YouTube -->
-                <a href="https://www.youtube.com/@ReInstruments" target="_blank" rel="noopener noreferrer" title="YouTube" class="btn-icon w-10 h-10 text-base">
+                <a href="https://www.youtube.com/@ReInstruments" target="_blank" rel="noopener noreferrer" title="YouTube" class="btn-icon w-11 h-11 md:w-10 md:h-10 text-base">
                     <i class="fa-brands fa-youtube"></i>
+                </a>
+                <!-- 11. GitHub -->
+                <a href="https://github.com/ivandevel/" target="_blank" rel="noopener noreferrer" title="GitHub" class="btn-icon w-11 h-11 md:w-10 md:h-10 text-base">
+                    <i class="fa-brands fa-github"></i>
                 </a>
             </div>
         </div>
 
         <!-- Правая колонка: Динамические QR-коды -->
-        <div class="flex items-center gap-4 md:gap-6">
+        <div class="flex items-start justify-center md:justify-end gap-4 md:gap-6 w-full md:w-auto md:flex-none">
             
             <div style="display: none;"> 
                 <div class="flex flex-col items-center gap-2">
@@ -2585,7 +2837,7 @@ body.cursor-dot-enabled :is(button, a, input, select, textarea, option, label,
             </div>
 
             <div class="flex flex-col items-center gap-2">
-                <div class="bg-gray-50 p-3 rounded-xl border border-gray-100 w-[144px] h-[144px] flex items-center justify-center shadow-sm">
+                <div class="bg-gray-50 p-3 rounded-xl border border-gray-100 w-[120px] h-[120px] sm:w-[144px] sm:h-[144px] flex items-center justify-center shadow-sm">
                     <img id="dynamicQR" src="" class="w-full h-full object-contain" loading="lazy">
                 </div>
                 <p class="text-[10px] font-bold text-gray-400 uppercase tracking-tighter text-center">Homepage</p>
@@ -2593,7 +2845,7 @@ body.cursor-dot-enabled :is(button, a, input, select, textarea, option, label,
             
             <div style="display: none;">
                 <div class="flex flex-col items-center gap-2">
-                    <div class="bg-gray-50 p-3 rounded-xl border border-gray-100 w-[144px] h-[144px] flex items-center justify-center shadow-sm">
+                    <div class="bg-gray-50 p-3 rounded-xl border border-gray-100 w-[120px] h-[120px] sm:w-[144px] sm:h-[144px] flex items-center justify-center shadow-sm">
                         <img id="dynamicQR2" src="" class="w-full h-full object-contain" loading="lazy">
                     </div>
                     <p class="text-[10px] font-bold text-gray-400 uppercase tracking-tighter text-center">eBay</p>
@@ -2601,7 +2853,7 @@ body.cursor-dot-enabled :is(button, a, input, select, textarea, option, label,
             </div>
 
             <div class="flex flex-col items-center gap-2">
-                <div class="bg-gray-50 p-3 rounded-xl border border-gray-100 w-[144px] h-[144px] flex items-center justify-center shadow-sm">
+                <div class="bg-gray-50 p-3 rounded-xl border border-gray-100 w-[120px] h-[120px] sm:w-[144px] sm:h-[144px] flex items-center justify-center shadow-sm">
                     <img id="dynamicQR3" src="" class="w-full h-full object-contain">
                 </div>
                 <p class="text-[10px] font-bold text-gray-400 uppercase tracking-tighter text-center">YouTube</p>
@@ -2611,8 +2863,8 @@ body.cursor-dot-enabled :is(button, a, input, select, textarea, option, label,
 
     </div>
 
-    <div class="mt-20 pt-8 border-t border-gray-50 text-center">
-        <p class="text-gray-400 text-s tracking-wide">© Designed and coded by Johannes Schmid. All rights reserved.</p>
+    <div class="mt-12 md:mt-20 pt-8 border-t border-gray-50 text-center">
+        <p class="text-gray-400 text-sm tracking-wide">© Designed and coded by Johannes Schmid. All rights reserved.</p>
     </div>
     
  
