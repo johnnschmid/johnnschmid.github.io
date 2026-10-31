@@ -795,6 +795,7 @@ const SECTIONS_DATA = [
         //bgClass: 'bg-gray-100', // 'bg-white' или 'bg-gray-100'
         //imageLeft: true,
         aspectClass: 'aspect-[4/4]',
+        
         showSteps: false,
         currentStep: 'tape',
         steps: [
@@ -805,6 +806,7 @@ const SECTIONS_DATA = [
             { id: 'spool', label: 'Spool' },
             { id: 'printing', label: 'Print' }
         ],
+		
 		title: 'Portable Audiobook Reader',
 		p1: 'The Portable Audiobook Reader is an advanced specialized device engineered specifically for blind and visually impaired individuals. It delivers a seamless, fully voice-controlled navigation experience designed to provide intuitive access to talking books, diverse music collections, live radio broadcasts, podcasts, and essential online internet services.',
 		p2: 'Featuring a fully voiced interactive menu where every single action is accompanied by clear spoken prompts, it also includes a built-in voice recorder and a convenient bookmarking function. Offering exceptional connectivity, long-lasting battery performance, and extensive media compatibility, it empowers users with complete independence in daily learning, reading, and entertainment.',
@@ -820,14 +822,14 @@ const SECTIONS_DATA = [
 			{
 				emoji: '🌐',
 				title: 'Connectivity & Online:',
-				text: 'Equipped with built-in Wi-Fi (2.4 GHz) and 64-108 MHz FM Radio',
+				text: 'Equipped with built-in Wi-Fi (2.4 GHz), Bluetooth 2.1 for wireless headphones or speakers and 64-108 MHz FM Radio',
 				youtubeUrl: '',
 				youtubeText: ''
 			},
 			{
 				emoji: '🔋',
 				title: 'Power & Storage:',
-				text: 'Contains 2500mAh LiPo battery, USB Tye-C and Wireless Charging capability. Provides up to 24 hours of continuous operation on a single battery charge, 8GB of internal storage, and expandable support for SD/SDHC/SDXC memory cards up to 64GB.',
+				text: 'Contains 2500mAh LiPo battery, USB Tye-C and Wireless Charging capability. Provides up to 24 hours of continuous operation on a single battery charge, 4GB of internal storage, and expandable support for SD/SDHC/SDXC memory cards up to 64GB.',
 				youtubeUrl: '',
 				youtubeText: ''
 			}
@@ -835,7 +837,8 @@ const SECTIONS_DATA = [
         
         items: [
 
-            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczOKi5a0RrGbPm0ZSn5D3j1qKHfvBDL6v22pU3DUuRHKEd3s0b4yGFTB4lB-4LH88kV1KgMyYjjrjZ_Edk6WslKOiEvomMqOA9aw3y2HHbSndqDlVNMv6NPxrNd-zJjaCO8VlpfMGQzHndpLSRfnc_Jc=w1539-h1022-s-no' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczO_AXX_GliAU7dS3cylQPAbvlq9kzrFeTl831pCWbKpMFRjtwdRyognopitfmnMY6DJ9XGMyEoqtuxfYPCJbX3-7R74VjqcqCBGSSWmyxlFKgLYguCmjyrKpHMzwueO2o6idV7atwRU4n61AwvWHlg7=w1024-h1024-s-no' },
+            { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMMG4C6MSO1a2LMAmMuywwI1nDY21s4riqzdRoqDDw4IVwKpxxqBKfy87uVi0Dd95Hr3hNThBUE7C_jmakR2OtJwfWU9BP6nXcRQdvbNTZwnuGO5PxpHf7JrytnMxWQSCbFYr0ondj7e55vuGSUT6Q_=w1100-h976-s-no' },
             
             { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczM9KA6oq-_asUa38m7L34dyn7IafZXoGajLk6E1O_OEsLb1ce8v41HMzlLCgjZX3etwa8FUHHU9uXYPSUszrzDKNZRoE3_GENOdafVeiEfiDTpexxTRIOMEyGcNyjpkgcOFnjw7RFlFNDyyRKnPZwNi=w3438-h1907-s-no' },
             { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPrslOu5noRe8A_cVqV1vZhChdnerrzjpusd2bzPckcl_7AgAesUEgaQkE6RcOzuOlanASP110KU0PGYIGGaLAkwBxc16rl1K-WPCN7UQXda5x2VPbZo6z5cmaFzVeEYSNhKcL0jdP8lnKolknM9ov-=w3438-h1907-s-no' },
