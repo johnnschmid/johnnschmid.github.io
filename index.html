@@ -151,9 +151,26 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
     
     
-    
-    
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@700&display=swap" rel="stylesheet">
+    
+    
+    
+    
+    
+<!-- Three.js + Контроллеры и Загрузчики -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/STLLoader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/3MFLoader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fflate@0.7.4/umd/index.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<!-- Библиотека для STEP/STP (Open CASCADE WASM) -->
+<script src="https://cdn.jsdelivr.net/npm/occt-import-js@0.0.22/dist/occt-import-js.js"></script>   
+    
+    
+    
+    
+    
+    
     <style>
 /* ================================================================
    1. ДИЗАЙН-ТОКЕНЫ
@@ -1455,6 +1472,7 @@ body.cursor-dot-enabled :is(button, a, input, select, textarea, option, label,
 <div x-show="modalGalleryOpen" x-cloak class="fixed inset-0 z-[120] flex items-center justify-center p-4"
      @wheel.window.prevent.capture="
          if (!modalGalleryOpen) return;
+         if (['3mf','stl','step','stp'].includes(modalMedia[modalCurrentIndex]?.type)) return;
          if ($event.deltaY > 0) {
              modalNext();
          } else {
@@ -1466,7 +1484,7 @@ body.cursor-dot-enabled :is(button, a, input, select, textarea, option, label,
 
     <!-- Контейнер модального окна -->
     <div class="relative z-10 max-h-[90vh] flex flex-col items-center justify-center"
-         :class="modalMedia[modalCurrentIndex]?.type === 'image' ? 'w-auto' : 'w-full max-w-5xl'"
+         :class="modalMedia[modalCurrentIndex]?.type === 'image' ? 'w-auto' : (['3mf','stl','step','stp'].includes(modalMedia[modalCurrentIndex]?.type) ? 'w-full max-w-[96vw]' : 'w-full max-w-5xl')"
          x-transition:enter="transition ease-out duration-300"
          x-transition:enter-start="opacity-0 scale-95"
          x-transition:enter-end="opacity-100 scale-100">
@@ -1483,12 +1501,19 @@ body.cursor-dot-enabled :is(button, a, input, select, textarea, option, label,
                 </button>
 
 <!-- Кнопка скачивания / открытия в новой вкладке -->
-<template x-if="modalMedia[modalCurrentIndex] && modalMedia[modalCurrentIndex].type === 'image'">
+<template x-if="isLoggedIn && modalMedia[modalCurrentIndex] && modalMedia[modalCurrentIndex].type === 'image'">
     <a :href="modalMedia[modalCurrentIndex].url" 
        target="_blank" 
        download 
        class="w-10 h-10 rounded-full custom-slider-btn flex items-center justify-center transition-all cursor-pointer shadow-[0_0_30px_rgba(0,0,0,0.99)]" 
        title="Открыть в новой вкладке и скачать">
+        <i class="fa-solid fa-download text-sm"></i>
+    </a>
+</template>
+<template x-if="isLoggedIn && modalMedia[modalCurrentIndex] && ['3mf','stl','step','stp'].includes(modalMedia[modalCurrentIndex].type)">
+    <a :href="modalMedia[modalCurrentIndex].url" target="_blank" download
+       class="w-10 h-10 rounded-full custom-slider-btn flex items-center justify-center transition-all cursor-pointer shadow-[0_0_30px_rgba(0,0,0,0.99)]"
+       title="Скачать модель">
         <i class="fa-solid fa-download text-sm"></i>
     </a>
 </template>
@@ -1553,7 +1578,21 @@ body.cursor-dot-enabled :is(button, a, input, select, textarea, option, label,
             <iframe :src="modalMedia[modalCurrentIndex].url" @contextmenu.prevent class="w-full h-full border-0 rounded-xl" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
         </div>
     </div>
-</template>                
+</template>
+<!-- 3D модель (3MF / STL / STEP) -->
+<template x-if="modalMedia[modalCurrentIndex] && ['3mf','stl','step','stp'].includes(modalMedia[modalCurrentIndex].type)">
+    <div class="w-full h-[84vh] rounded-xl bg-black/60 relative overflow-hidden"
+         @wheel.stop @touchstart.stop @touchend.stop>
+        <div class="absolute inset-0"
+             x-effect="Inline3D.mount($el, modalMedia[modalCurrentIndex].url, modalMedia[modalCurrentIndex].type, { autorotate: modalAutorotate })"></div>
+        <button type="button" @click.stop="modalAutorotate = !modalAutorotate"
+                class="absolute top-4 left-4 z-40 w-10 h-10 rounded-full custom-slider-btn shadow-lg flex items-center justify-center text-sm cursor-pointer"
+                :title="modalAutorotate ? 'Остановить вращение' : 'Включить вращение'">
+            <i class="fa-solid pointer-events-none" :class="modalAutorotate ? 'fa-pause' : 'fa-rotate-right'"></i>
+        </button>
+    </div>
+</template>
+                
                 </div>
             </template>
 
@@ -1617,7 +1656,7 @@ body.cursor-dot-enabled :is(button, a, input, select, textarea, option, label,
                 </button>
 
 				<!-- Кнопка скачивания изображения -->
-				<template x-if="modalMedia[modalCurrentIndex] && modalMedia[modalCurrentIndex].type === 'image'">
+				<template x-if="isLoggedIn && modalMedia[modalCurrentIndex] && modalMedia[modalCurrentIndex].type === 'image'">
 					<button @click.prevent="
 						fetch(modalMedia[modalCurrentIndex].url)
 							.then(response => response.blob())
@@ -2003,6 +2042,114 @@ body.cursor-dot-enabled :is(button, a, input, select, textarea, option, label,
     </div>
 </section>
 
+
+
+
+
+
+
+
+
+
+
+<!-- 3D CAD VIEWER SECTION -->
+<section id="cad-viewer" class="py-12 bg-gray-50 dark:bg-[#121212] transition-colors duration-200" x-data="cadViewerComponent()" x-show="showSection" x-cloak>
+    <div class="site-w mx-auto px-4">
+        
+        <!-- Шапка секции -->
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
+            <div>
+                <h2 class="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white tracking-tight">3D CAD Viewer</h2>
+                <p class="text-gray-500 dark:text-gray-400 text-sm mt-1">Интерактивный просмотр файлов .STL, .STEP / .STP и .3MF</p>
+            </div>
+
+            <!-- Кнопка загрузки файла с ПК (в общем стиле .btn-primary) -->
+            <label class="btn-primary px-6 py-3 text-sm font-medium cursor-pointer inline-flex items-center gap-3">
+                <i class="fa-solid fa-folder-open text-base"></i>
+                <span>Открыть файл с ПК</span>
+                <input type="file" accept=".stl,.step,.stp,.3mf" @change="loadLocalFile($event)" class="hidden">
+            </label>
+        </div>
+
+        <!-- 3D Контейнер -->
+        <div class="relative w-full h-[550px] bg-white dark:bg-[#0d1117] rounded-2xl overflow-hidden shadow-xl border border-gray-200 dark:border-gray-800 flex items-center justify-center group"
+             x-init="$watch('darkMode', value => updateViewerTheme(value))">
+            
+            <!-- Холст для Three.js -->
+            <div x-ref="canvasContainer" class="absolute inset-0 w-full h-full cursor-grab active:cursor-grabbing"></div>
+
+            <!-- Кнопки переключения (в стиле сайта) -->
+            <div class="absolute inset-0 flex items-center justify-between px-4 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50">
+                <button @click="currentIndex = (currentIndex - 1 + modelsList.length) % modelsList.length; selectModel(currentIndex)" class="pointer-events-auto w-10 h-10 rounded-full custom-slider-btn shadow-lg flex items-center justify-center text-sm cursor-pointer transition-colors">
+                    <i class="fa-solid fa-chevron-left pointer-events-none"></i>
+                </button>
+                <button @click="currentIndex = (currentIndex + 1) % modelsList.length; selectModel(currentIndex)" class="pointer-events-auto w-10 h-10 rounded-full custom-slider-btn shadow-lg flex items-center justify-center text-sm cursor-pointer transition-colors">
+                    <i class="fa-solid fa-chevron-right pointer-events-none"></i>
+                </button>
+            </div>
+
+            <!-- Лоадер с текстом статуса -->
+            <div x-show="isLoading" x-cloak class="absolute inset-0 bg-white/80 dark:bg-black/80 backdrop-blur-sm flex flex-col items-center justify-center text-gray-900 dark:text-white z-30 p-4 text-center">
+                <i class="fa-solid fa-circle-notch fa-spin text-3xl mb-3 text-brand-500"></i>
+                <p class="text-sm font-semibold" x-text="loadingText"></p>
+                <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Обработка 3D-геометрии...</p>
+            </div>
+
+            <!-- Плашка с информацией о модели -->
+            <div class="absolute top-4 left-16 bg-white/80 dark:bg-black/60 backdrop-blur-md px-3.5 py-2 rounded-xl text-gray-900 dark:text-white z-10 border border-gray-200 dark:border-white/10 shadow-lg pointer-events-none">
+                <span class="text-brand-600 dark:text-brand-400 font-mono text-[10px] font-bold uppercase tracking-wider block" x-text="currentModelType"></span>
+                <span class="text-xs font-medium" x-text="currentModelName"></span>
+            </div>
+
+            <!-- Панель инструментов снизу (в едином стиле с кнопками интерфейса) -->
+            <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-3 bg-white/90 dark:bg-black/70 backdrop-blur-md px-5 py-2.5 rounded-full z-10 border border-gray-200 dark:border-white/10 text-gray-800 dark:text-white text-xs shadow-xl">
+                <button @click="resetCamera()" class="hover:text-brand-600 dark:hover:text-brand-400 font-semibold transition-colors flex items-center gap-2 cursor-pointer">
+                    <i class="fa-solid fa-compress"></i> Сбросить вид
+                </button>
+                <span class="text-gray-300 dark:text-white/20">|</span>
+                <button @click="toggleAutorotate()" class="hover:text-brand-600 dark:hover:text-brand-400 font-semibold transition-colors flex items-center gap-2 cursor-pointer">
+                    <i class="fa-solid fa-rotate" :class="autorotate ? 'text-brand-600 dark:text-brand-400 animate-spin' : ''"></i> 
+                    <span x-text="autorotate ? 'Автоповорот ВКЛ' : 'Автоповорот ВЫКЛ'"></span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Переключатели моделей снизу (табы в стиле общих кнопок .btn-primary / .btn-secondary) -->
+        <div class="flex flex-wrap gap-3 mt-6 items-center justify-center">
+            <template x-for="(m, idx) in modelsList" :key="idx">
+                <button @click="selectModel(idx)" 
+                        class="px-5 py-2.5 rounded-full text-xs font-semibold transition-all cursor-pointer inline-flex items-center gap-2 active:scale-95 shadow-sm"
+                        :class="currentIndex === idx 
+                            ? 'btn-primary' 
+                            : 'btn-secondary'">
+                    <i class="fa-solid text-xs" :class="m.type === 'step' ? 'fa-cube' : (m.type === '3mf' ? 'fa-box' : 'fa-shapes')"></i>
+                    <span x-text="m.name"></span>
+                </button>
+            </template>
+        </div>
+
+    </div>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <template x-if="!shopConfig.hideShop">
     <!-- HOME / HERO SECTION -->
     <section id="hero" class="px-4 lg:px-8 py-8 lg:py-12">
@@ -2206,6 +2353,7 @@ body.cursor-dot-enabled :is(button, a, input, select, textarea, option, label,
              x-data="{ 
                  currentImg: 0, 
                  videoPlaying: false,
+                 rot3d: sec.slowAutorotate !== false,
                  currentStep: sec.steps ? sec.steps[0].id : null
              }">
         
@@ -2222,7 +2370,7 @@ body.cursor-dot-enabled :is(button, a, input, select, textarea, option, label,
 				<div class="relative group flex items-center justify-center overflow-hidden rounded-xl shadow-2xl bg-gray-100 rotate-1 transition-transform duration-300 hover:rotate-0 hover:scale-105 w-full"
 					 :class="sec.aspectClass || 'aspect-[4/3]'"
 					 x-data="{ 
-						 get media() { return sec.items.filter(i => i.type === 'image' || i.type === 'video'); },
+						 get media() { return sec.items.filter(i => i.type === 'image' || i.type === 'video' || ['3mf','stl','step','stp'].includes(i.type)); },
 						 touchStartX: 0,
 						 touchEndX: 0,
 						 handleTouchStart(e) {
@@ -2269,7 +2417,7 @@ body.cursor-dot-enabled :is(button, a, input, select, textarea, option, label,
                              @error="$el.src = media[currentImg].url"
                              class="w-full h-full object-cover transition-all duration-300" 
                              alt="Application Areas" 
-                             @click="openModalGallery(media, currentImg)"
+                             @click="openModalGallery(media, currentImg, rot3d)"
                              loading="lazy">
                     </template>
                     
@@ -2278,7 +2426,7 @@ body.cursor-dot-enabled :is(button, a, input, select, textarea, option, label,
                         <div class="w-full h-full relative group/vid">
                             <template x-if="!videoPlaying">
                                 <div class="absolute inset-0 w-full h-full rounded-xl overflow-hidden cursor-pointer z-30"
-                                     @click="openModalGallery(media, currentImg)">
+                                     @click="openModalGallery(media, currentImg, rot3d)">
                                     <iframe :src="media[currentImg].url" 
                                             class="w-full h-full border-0 absolute inset-0 rounded-xl pointer-events-none z-10"
                                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
@@ -2308,6 +2456,27 @@ body.cursor-dot-enabled :is(button, a, input, select, textarea, option, label,
                                     </div>
                                 </div>
                             </template>
+                        </div>
+                    </template>
+
+                    <!-- 3D модель (3MF / STL / STEP) -->
+                    <template x-if="media[currentImg] && ['3mf','stl','step','stp'].includes(media[currentImg].type)">
+                        <div class="absolute inset-0 w-full h-full z-30"
+                             @wheel.stop @touchstart.stop @touchend.stop>
+                            <div class="absolute inset-0"
+                                 x-effect="Inline3D.mount($el, media[currentImg].url, media[currentImg].type, { autorotate: rot3d })"></div>
+                            <button type="button"
+                                    @click.stop="rot3d = !rot3d"
+                                    class="absolute top-3 right-[3.75rem] z-40 w-9 h-9 rounded-full custom-slider-btn shadow-lg flex items-center justify-center text-sm cursor-pointer"
+                                    :title="rot3d ? 'Остановить вращение' : 'Включить вращение'">
+                                <i class="fa-solid pointer-events-none" :class="rot3d ? 'fa-pause' : 'fa-rotate-right'"></i>
+                            </button>
+                            <button type="button"
+                                    @click.stop="openModalGallery(media, currentImg, rot3d)"
+                                    class="absolute top-3 right-3 z-40 w-9 h-9 rounded-full custom-slider-btn shadow-lg flex items-center justify-center text-sm cursor-pointer"
+                                    title="Открыть на весь экран">
+                                <i class="fa-solid fa-expand pointer-events-none"></i>
+                            </button>
                         </div>
                     </template>
 
@@ -2384,7 +2553,6 @@ body.cursor-dot-enabled :is(button, a, input, select, textarea, option, label,
          stepTimer: null,
          startAutoplay() {
              this.stopAutoplay();
-             // Если animSteps явно выключен в конфигурации секции, таймер не запускаем
              if (sec.animSteps === false) return;
              
              this.stepTimer = setInterval(() => {
@@ -2392,17 +2560,14 @@ body.cursor-dot-enabled :is(button, a, input, select, textarea, option, label,
                  let currentIndex = sec.steps.findIndex(s => s.id === currentStep);
                  let nextIndex = (currentIndex + 1) % sec.steps.length;
                  currentStep = sec.steps[nextIndex].id;
-             }, 1000); // Переключение раз в 1 секунду
+             }, 1000);
          },
          stopAutoplay() {
              if (this.stepTimer) clearInterval(this.stepTimer);
          }
      }"
      x-init="
-         // Если анимация отключена, сразу устанавливаем шаг из конфигурации
-         if (sec.animSteps === false && sec.currentStep) {
-             currentStep = sec.currentStep;
-         }
+         if (sec.animSteps === false && sec.currentStep) { currentStep = sec.currentStep; }
          startAutoplay();
      "
      @mouseenter="stopAutoplay()"
@@ -2601,6 +2766,10 @@ body.cursor-dot-enabled :is(button, a, input, select, textarea, option, label,
         </div>
     </section>
 </template>
+
+
+
+
 
 
 
@@ -3035,6 +3204,7 @@ shopConfig: SHOP_CONFIG,
 				isCaptchaValid: true,
 				modalGalleryOpen: false,
 				modalMedia: [],
+				modalAutorotate: true,
 				modalCurrentIndex: 0,
                 shippingInfo: {
                     name: '',
@@ -3049,13 +3219,23 @@ shopConfig: SHOP_CONFIG,
                 
                 handleAvatarBase64(event) {
 					const file = event.target.files[0];
-					if (file) {
-						const reader = new FileReader();
-						reader.onload = (e) => {
-							this.avatarBase64 = e.target.result; // Результат конвертации
+					if (!file) return;
+					const reader = new FileReader();
+					reader.onload = (e) => {
+						const img = new Image();
+						img.onload = () => {
+							// Уменьшаем до 256px, иначе localStorage (лимит ~5 МБ) переполняется
+							const k = Math.min(1, 256 / Math.max(img.width, img.height));
+							const c = document.createElement('canvas');
+							c.width = Math.max(1, Math.round(img.width * k));
+							c.height = Math.max(1, Math.round(img.height * k));
+							c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+							this.avatarBase64 = c.toDataURL('image/jpeg', 0.85);
 						};
-						reader.readAsDataURL(file);
-					}
+						img.onerror = () => { this.avatarBase64 = ''; };
+						img.src = e.target.result;
+					};
+					reader.readAsDataURL(file);
 				},
                 get visibleProducts() {
                     return this.products.filter(p => p.isVisible);
@@ -3138,7 +3318,7 @@ if (window.location.pathname.replace(/^\/+|\/+$/g, '')) {
                         this.isLoggedIn = true;
                         this.userName = userData.name;
                         this.shippingInfo = { ...userData.shippingInfo };
-                        this.avatarBase64 = userData.avatar || '';
+                        this.avatarBase64 = userData.avatar || reToolsStore.avatarFor(userData.email);
                         
                         if (!this.shippingInfo.name) {
                         this.shippingInfo.name = this.userName;
@@ -3167,9 +3347,10 @@ if (window.location.pathname.replace(/^\/+|\/+$/g, '')) {
                     });
                 },
                 
-				openModalGallery(mediaArray, index) {
+				openModalGallery(mediaArray, index, autorotate) {
+					this.modalAutorotate = autorotate !== false;
 					// Фильтруем массив, оставляя только изображения и видео
-					const filteredMedia = mediaArray.filter(item => item.type === 'image' || item.type === 'video');
+					const filteredMedia = mediaArray.filter(item => item.type === 'image' || item.type === 'video' || ['3mf','stl','step','stp'].includes(item.type));
 					
 					// Находим правильный индекс элемента после фильтрации
 					const targetItem = mediaArray[index];
@@ -3207,6 +3388,7 @@ if (window.location.pathname.replace(/^\/+|\/+$/g, '')) {
 				handleAuth() {
 					const users = JSON.parse(localStorage.getItem('reTools_users') || '[]');
 					//console.log('Список всех пользователей в базе:', users);
+					if (reToolsStore.compactUsers(users)) reToolsStore.set('reTools_users', JSON.stringify(users));
 
 					//signup mode
 					if (this.authMode === 'signup') { //signup mode
@@ -3227,10 +3409,14 @@ if (window.location.pathname.replace(/^\/+|\/+$/g, '')) {
 							avatar: this.avatarBase64 || '' // Сохраняем аватар при регистрации
 						};
 						users.push(newUser);
-						localStorage.setItem('reTools_users', JSON.stringify(users));
+						if (!reToolsStore.set('reTools_users', JSON.stringify(users))) {
+							users.pop();
+							this.authError = '⚠️ Browser storage is full. Try a smaller avatar or clear site data.';
+							return;
+						}
 						
 						// Set active session
-						localStorage.setItem('reTools_session', JSON.stringify(newUser));
+						reToolsStore.saveSession(newUser);
 						this.isLoggedIn = true;
 						this.showAuth = false;
 					
@@ -3243,7 +3429,7 @@ if (window.location.pathname.replace(/^\/+|\/+$/g, '')) {
 							this.shippingInfo = { ...user.shippingInfo };
 							this.avatarBase64 = user.avatar || ''; // Загружаем аватар при входе
 							
-							localStorage.setItem('reTools_session', JSON.stringify(user));
+							reToolsStore.saveSession(user);
 							this.isLoggedIn = true;
 							this.showAuth = false;
 							this.authError = '';
@@ -3395,8 +3581,8 @@ if (window.location.pathname.replace(/^\/+|\/+$/g, '')) {
 						users.push(updatedUser);
 					}
 
-					localStorage.setItem('reTools_users', JSON.stringify(users));
-					localStorage.setItem('reTools_session', JSON.stringify(updatedUser));
+					reToolsStore.set('reTools_users', JSON.stringify(users));
+					reToolsStore.saveSession(updatedUser);
 
 					this.authPassword = '';
 					//alert('Профиль успешно обновлен!');
@@ -3803,7 +3989,580 @@ setTimeout(() => {
 </script>
 
 
+<script>
+// Глобальные переменные Three.js
+let threeScene = null;
+let threeCamera = null;
+let threeRenderer = null;
+let threeControls = null;
+let threeMeshGroup = null;
+let occtEngineInstance = null;
 
+document.addEventListener('alpine:init', () => {
+    Alpine.data('cadViewerComponent', () => ({
+        modelsList: [],
+        currentIndex: 0,
+        isLoading: false,
+        loadingText: 'Инициализация 3D...',
+        autorotate: true,
+        showOpenButton: true,
+        showSection: typeof CAD_VIEWER !== 'undefined' && CAD_VIEWER[0] ? (CAD_VIEWER[0].showOnHome ?? true) : true,
+
+        init() {
+            if (typeof CAD_VIEWER !== 'undefined' && CAD_VIEWER.length > 0) {
+                const cfg = CAD_VIEWER[0];
+                if (cfg.models && cfg.models.length > 0) {
+                    this.modelsList = cfg.models;
+                }
+                if (cfg.slowAutorotate !== undefined) {
+                    this.autorotate = cfg.slowAutorotate;
+                }
+                if (cfg.showOpenButton !== undefined) {
+                    this.showOpenButton = cfg.showOpenButton;
+                }
+            } else if (typeof CAD_MODELS_DATA !== 'undefined' && CAD_MODELS_DATA.length > 0) {
+                this.modelsList = CAD_MODELS_DATA;
+            }
+
+            this.$nextTick(async () => {
+                this.initThreeJS();
+                this.initOCCTWasm();
+                if (this.modelsList.length > 0) {
+                    await this.loadModelByIndex(0);
+                }
+            });
+        },
+
+        get currentModelName() {
+            return this.modelsList[this.currentIndex]?.name || 'Файл с ПК';
+        },
+
+        get currentModelType() {
+            return (this.modelsList[this.currentIndex]?.type || '3D').toUpperCase();
+        },
+
+        initThreeJS() {
+            const container = this.$refs.canvasContainer;
+            if (!container) return;
+
+            const width = container.clientWidth || 800;
+            const height = container.clientHeight || 550;
+
+            threeScene = new THREE.Scene();
+            this.updateViewerTheme(this.darkMode);
+
+            threeCamera = new THREE.PerspectiveCamera(45, width / height, 0.1, 5000);
+            threeCamera.position.set(100, 100, 100);
+
+            threeRenderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            threeRenderer.setSize(width, height);
+            threeRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            threeRenderer.shadowMap.enabled = true;
+            
+            container.innerHTML = '';
+            container.appendChild(threeRenderer.domElement);
+
+            threeControls = new THREE.OrbitControls(threeCamera, threeRenderer.domElement);
+            threeControls.enableDamping = true;
+            threeControls.dampingFactor = 0.05;
+
+            // Освещение
+            threeScene.add(new THREE.AmbientLight(0xffffff, 0.7));
+            const dirLight = new THREE.DirectionalLight(0xffffff, 0.8);
+            dirLight.position.set(100, 200, 150);
+            threeScene.add(dirLight);
+
+            this.updateGridTheme(this.darkMode);
+
+            const animate = () => {
+                requestAnimationFrame(animate);
+                if (threeMeshGroup && this.autorotate) {
+                    threeMeshGroup.rotation.y += 0.004;
+                }
+                if (threeControls) threeControls.update();
+                if (threeRenderer && threeScene && threeCamera) {
+                    threeRenderer.render(threeScene, threeCamera);
+                }
+            };
+            animate();
+
+            window.addEventListener('resize', () => {
+                if (!container || !threeCamera || !threeRenderer) return;
+                const w = container.clientWidth;
+                const h = container.clientHeight;
+                threeCamera.aspect = w / h;
+                threeCamera.updateProjectionMatrix();
+                threeRenderer.setSize(w, h);
+            });
+        },
+
+        updateViewerTheme(isDark) {
+            if (!threeScene) return;
+            threeScene.background = new THREE.Color(isDark ? 0x0a0f1d : 0xf8fafc);
+            this.updateGridTheme(isDark);
+        },
+
+        updateGridTheme(isDark) {
+            if (!threeScene) return;
+            threeScene.children = threeScene.children.filter(child => !(child instanceof THREE.GridHelper));
+
+            const gridColor = isDark ? 0x1e293b : 0xe2e8f0;
+            const gridHelper = new THREE.GridHelper(300, 60, 0x3b82f6, gridColor);
+            gridHelper.position.y = -30;
+            threeScene.add(gridHelper);
+        },
+
+        initOCCTWasm() {
+            if (typeof occtimportjs !== 'undefined' && !occtEngineInstance) {
+                occtimportjs().then(instance => {
+                    occtEngineInstance = instance;
+                }).catch(err => console.warn("OCCT WASM Init Warning:", err));
+            }
+        },
+
+        async loadModelByIndex(idx) {
+            if (!this.modelsList[idx]) return;
+            this.currentIndex = idx;
+            const model = this.modelsList[idx];
+            await this.loadRemoteFile(model.fileUrl, model.type);
+        },
+
+        async loadRemoteFile(url, type) {
+            this.isLoading = true;
+            this.loadingText = `Загрузка ${type.toUpperCase()}...`;
+
+            try {
+                const response = await fetch(url);
+                const buffer = await response.arrayBuffer();
+                this.processBuffer(buffer, type);
+            } catch (err) {
+                console.error("Ошибка загрузки удаленного файла:", err);
+                this.isLoading = false;
+            }
+        },
+
+        loadLocalFile(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const ext = file.name.split('.').pop().toLowerCase();
+            this.isLoading = true;
+            this.loadingText = `Чтение ${file.name}...`;
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                setTimeout(() => {
+                    try {
+                        this.processBuffer(e.target.result, ext);
+                        this.modelsList.push({ name: file.name, fileUrl: null, type: ext });
+                        this.currentIndex = this.modelsList.length - 1;
+                    } catch (err) {
+                        console.error("Ошибка обработки файла:", err);
+                        alert("Не удалось обработать CAD-файл.");
+                        this.isLoading = false;
+                    }
+                }, 30);
+            };
+            reader.readAsArrayBuffer(file);
+        },
+
+        processBuffer(buffer, type) {
+            if (type === 'stl') {
+                const loader = new THREE.STLLoader();
+                const geometry = loader.parse(buffer);
+                geometry.computeVertexNormals();
+                
+                const material = new THREE.MeshStandardMaterial({ color: 0x2D5BFF, roughness: 0.35, metalness: 0.2, side: THREE.DoubleSide });
+                const mesh = new THREE.Mesh(geometry, material);
+                
+                const group = new THREE.Group();
+                group.add(mesh);
+                this.displayModelGroup(group);
+            } 
+            else if (type === 'step' || type === 'stp') {
+                if (!occtEngineInstance) {
+                    alert("Конвертер STEP еще инициализируется. Пожалуйста, подождите пару секунд.");
+                    this.isLoading = false;
+                    return;
+                }
+                this.loadingText = 'Парсинг B-Rep геометрии STEP...';
+                
+                const result = occtEngineInstance.ReadStepFile(new Uint8Array(buffer), null);
+                
+                if (!result || !result.success || !result.meshes) throw new Error("Ошибка парсинга STEP");
+
+                const group = new THREE.Group();
+                result.meshes.forEach(m => {
+                    const geometry = new THREE.BufferGeometry();
+                    const positions = new Float32Array(m.attributes.position.array);
+                    geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+                    
+                    if (m.attributes.normal) {
+                        geometry.setAttribute('normal', new THREE.BufferAttribute(new Float32Array(m.attributes.normal.array), 3));
+                    } else {
+                        geometry.computeVertexNormals();
+                    }
+
+                    if (m.index) {
+                        geometry.setIndex(new THREE.BufferAttribute(new Uint32Array(m.index.array), 1));
+                    }
+
+                    let color = 0x2D5BFF;
+                    if (m.color) {
+                        color = new THREE.Color(m.color[0], m.color[1], m.color[2]);
+                    }
+                    const mat = new THREE.MeshStandardMaterial({ color, roughness: 0.4, metalness: 0.2, side: THREE.DoubleSide });
+                    group.add(new THREE.Mesh(geometry, mat));
+                });
+
+                this.displayModelGroup(group);
+            } 
+            else if (type === '3mf') {
+                this.loadingText = 'Распаковка и загрузка 3MF...';
+                const loader = new THREE.ThreeMFLoader();
+                const object = loader.parse(buffer);
+                this.displayModelGroup(object);
+            }
+            this.isLoading = false;
+        },
+
+        displayModelGroup(group) {
+            if (threeMeshGroup && threeScene) {
+                threeScene.remove(threeMeshGroup);
+                threeMeshGroup.traverse(child => {
+                    if (child.geometry) child.geometry.dispose();
+                    if (child.material) {
+                        if (Array.isArray(child.material)) child.material.forEach(m => m.dispose());
+                        else child.material.dispose();
+                    }
+                });
+            }
+
+            threeMeshGroup = group;
+            threeScene.add(threeMeshGroup);
+            this.resetCamera();
+        },
+
+        resetCamera() {
+            if (!threeMeshGroup || !threeControls || !threeCamera) return;
+            const box = new THREE.Box3().setFromObject(threeMeshGroup);
+            const size = box.getSize(new THREE.Vector3()).length();
+            const center = box.getCenter(new THREE.Vector3());
+
+            threeMeshGroup.position.sub(center);
+            threeControls.target.set(0, 0, 0);
+            threeCamera.position.set(size * 1.3, size * 1.0, size * 1.3);
+            threeCamera.lookAt(0, 0, 0);
+            threeControls.update();
+        },
+
+        selectModel(idx) {
+            this.loadModelByIndex(idx);
+        },
+
+        toggleAutorotate() {
+            this.autorotate = !this.autorotate;
+        }
+    }));
+});
+</script>
+
+
+
+<script>
+/* Inline3D — мини-просмотрщик 3D (STL / STEP / 3MF) для слайдеров секций и галереи.
+   Каждый вызов mount() создаёт отдельный WebGL-рендерер внутри переданного элемента
+   и сам освобождает ресурсы, когда элемент удаляется из DOM. */
+window.Inline3D = (function () {
+    const bufCache = new Map();   // url -> Promise<ArrayBuffer>
+    const objCache = new Map();   // url|type -> Promise<THREE.Object3D>
+    let occtPromise = null;
+
+    const norm = t => { t = (t || '').toLowerCase(); return t === 'stp' ? 'step' : t; };
+    const isDark = () => document.documentElement.classList.contains('dark');
+    const brand = () => (typeof SITE_SETTINGS !== 'undefined' && SITE_SETTINGS.brandColor) || '#2D5BFF';
+
+    function getOcct() {
+        if (!occtPromise) {
+            occtPromise = (typeof occtimportjs !== 'undefined')
+                ? occtimportjs()
+                : Promise.reject(new Error('occt-import-js не загружен'));
+            occtPromise.catch(() => { occtPromise = null; });
+        }
+        return occtPromise;
+    }
+
+    function getBuffer(url) {
+        if (!bufCache.has(url)) {
+            bufCache.set(url, fetch(url).then(r => {
+                if (!r.ok) throw new Error('HTTP ' + r.status);
+                return r.arrayBuffer();
+            }).catch(e => { bufCache.delete(url); throw e; }));
+        }
+        return bufCache.get(url);
+    }
+
+    async function parseModel(url, type) {
+        const buffer = await getBuffer(url);
+        if (type === 'stl') {
+            const geometry = new THREE.STLLoader().parse(buffer);
+            geometry.computeVertexNormals();
+            const mat = new THREE.MeshStandardMaterial({ color: new THREE.Color(brand()), roughness: 0.35, metalness: 0.2, side: THREE.DoubleSide });
+            const g = new THREE.Group();
+            g.add(new THREE.Mesh(geometry, mat));
+            return g;
+        }
+        if (type === 'step') {
+            const occt = await getOcct();
+            const result = occt.ReadStepFile(new Uint8Array(buffer), null);
+            if (!result || !result.success || !result.meshes) throw new Error('Ошибка парсинга STEP');
+            const g = new THREE.Group();
+            result.meshes.forEach(m => {
+                const geo = new THREE.BufferGeometry();
+                geo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(m.attributes.position.array), 3));
+                if (m.attributes.normal) geo.setAttribute('normal', new THREE.BufferAttribute(new Float32Array(m.attributes.normal.array), 3));
+                else geo.computeVertexNormals();
+                if (m.index) geo.setIndex(new THREE.BufferAttribute(new Uint32Array(m.index.array), 1));
+                const color = m.color ? new THREE.Color(m.color[0], m.color[1], m.color[2]) : new THREE.Color(brand());
+                g.add(new THREE.Mesh(geo, new THREE.MeshStandardMaterial({ color, roughness: 0.4, metalness: 0.2, side: THREE.DoubleSide })));
+            });
+            return g;
+        }
+        if (type === '3mf') {
+            return new THREE.ThreeMFLoader().parse(buffer);
+        }
+        throw new Error('Неподдерживаемый формат: ' + type);
+    }
+
+    function getModel(url, type) {
+        const key = url + '|' + type;
+        if (!objCache.has(key)) {
+            objCache.set(key, parseModel(url, type).catch(e => { objCache.delete(key); throw e; }));
+        }
+        return objCache.get(key);
+    }
+
+    function create(el, url, type, opts) {
+        el.innerHTML = '';
+        el.style.touchAction = 'none';
+
+        const status = document.createElement('div');
+        status.style.cssText = 'position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:.5rem;color:#fff;font-size:.875rem;font-weight:600;text-shadow:0 1px 6px rgba(0,0,0,.8);pointer-events:none;z-index:2;text-align:center;padding:1rem;';
+        status.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i><span>Загрузка 3D…</span>';
+
+        let renderer;
+        try {
+            renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        } catch (e) {
+            status.innerHTML = '<span>WebGL недоступен</span>';
+            el.appendChild(status);
+            return { url, setAutorotate() {}, destroy() { el.innerHTML = ''; } };
+        }
+
+        let w = el.clientWidth || 600, h = el.clientHeight || 400;
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+        renderer.setSize(w, h);
+        renderer.domElement.style.cssText = 'display:block;width:100%;height:100%;cursor:grab;';
+        el.appendChild(renderer.domElement);
+        el.appendChild(status);
+
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(45, w / h, 0.1, 5000);
+        camera.position.set(100, 100, 100);
+        // Свободное вращение (трекбол) без ограничений по углу — вместо OrbitControls
+        const camDir = new THREE.Vector3(1.1, 0.8, 1.1).normalize();
+        let camDist = 173, minDist = 1, maxDist = 10000;
+        camera.position.copy(camDir).multiplyScalar(camDist);
+        camera.lookAt(0, 0, 0);
+
+        scene.add(new THREE.AmbientLight(0xffffff, 0.7));
+        const dir = new THREE.DirectionalLight(0xffffff, 0.8);
+        dir.position.set(100, 200, 150);
+        scene.add(dir);
+        const dir2 = new THREE.DirectionalLight(0xffffff, 0.35);
+        dir2.position.set(-120, -80, -100);
+        scene.add(dir2);
+
+        let grid = null, gridSize = 0, gridY = 0, pivot = null, lastDark = null;
+        function buildGrid(dark) {
+            if (!gridSize) return;
+            if (grid) { scene.remove(grid); grid.geometry.dispose(); grid.material.dispose(); }
+            grid = new THREE.GridHelper(gridSize, 20, 0x3b82f6, dark ? 0x1e293b : 0xe2e8f0);
+            grid.position.y = gridY;
+            scene.add(grid);
+        }
+        let destroyed = false, visible = true, dragging = false, raf = 0;
+
+        function applyTheme() {
+            const dark = opts.dark === true || isDark();
+            if (dark === lastDark) return;
+            lastDark = dark;
+            scene.background = new THREE.Color(dark ? 0x0a0f1d : 0xf8fafc);
+            buildGrid(dark);
+        }
+        applyTheme();
+
+        const dom = renderer.domElement;
+        const pts = new Map();
+        let pinchDist = 0, vx = 0, vy = 0;
+        const tmpQ = new THREE.Quaternion(), axisV = new THREE.Vector3(), worldY = new THREE.Vector3(0, 1, 0);
+        function rotateBy(dx, dy) {
+            if (!pivot) return;
+            camera.updateMatrixWorld();
+            axisV.setFromMatrixColumn(camera.matrixWorld, 1);   // вертикаль экрана
+            pivot.quaternion.premultiply(tmpQ.setFromAxisAngle(axisV, dx));
+            axisV.setFromMatrixColumn(camera.matrixWorld, 0);   // горизонталь экрана
+            pivot.quaternion.premultiply(tmpQ.setFromAxisAngle(axisV, dy));
+        }
+        function applyZoom(f) {
+            camDist = Math.min(maxDist, Math.max(minDist, camDist * f));
+            camera.position.copy(camDir).multiplyScalar(camDist);
+        }
+        const onDown = e => {
+            try { dom.setPointerCapture(e.pointerId); } catch (err) {}
+            pts.set(e.pointerId, { x: e.clientX, y: e.clientY });
+            dragging = true; vx = vy = 0;
+            dom.style.cursor = 'grabbing';
+            if (pts.size === 2) { const [a, b] = [...pts.values()]; pinchDist = Math.hypot(a.x - b.x, a.y - b.y); }
+        };
+        const onMove = e => {
+            const p = pts.get(e.pointerId);
+            if (!p) return;
+            if (pts.size === 1) {
+                vx = (e.clientX - p.x) * 0.006;
+                vy = (e.clientY - p.y) * 0.006;
+                rotateBy(vx, vy);
+            }
+            p.x = e.clientX; p.y = e.clientY;
+            if (pts.size === 2) {
+                const [a, b] = [...pts.values()];
+                const d = Math.hypot(a.x - b.x, a.y - b.y);
+                if (pinchDist > 0 && d > 0) applyZoom(pinchDist / d);
+                pinchDist = d;
+            }
+        };
+        const onUp = e => {
+            pts.delete(e.pointerId);
+            pinchDist = 0;
+            if (pts.size === 0) { dragging = false; dom.style.cursor = 'grab'; }
+        };
+        const onWheel = e => { e.preventDefault(); applyZoom(Math.exp(e.deltaY * 0.0012)); };
+        dom.addEventListener('pointerdown', onDown);
+        dom.addEventListener('pointermove', onMove);
+        dom.addEventListener('pointerup', onUp);
+        dom.addEventListener('pointercancel', onUp);
+        dom.addEventListener('wheel', onWheel, { passive: false });
+
+        const ro = new ResizeObserver(() => {
+            const nw = el.clientWidth, nh = el.clientHeight;
+            if (!nw || !nh) return;
+            camera.aspect = nw / nh;
+            camera.updateProjectionMatrix();
+            renderer.setSize(nw, nh);
+        });
+        ro.observe(el);
+
+        const io = new IntersectionObserver(es => { visible = es[0].isIntersecting; });
+        io.observe(el);
+
+        function loop() {
+            if (destroyed) return;
+            if (!el.isConnected) { destroy(); return; }
+            raf = requestAnimationFrame(loop);
+            if (!visible) return;
+            applyTheme();
+            if (pivot && !dragging) {
+                if (Math.abs(vx) + Math.abs(vy) > 0.0002) { rotateBy(vx, vy); vx *= 0.93; vy *= 0.93; }   // инерция после броска
+                else if (opts.autorotate !== false) pivot.quaternion.premultiply(tmpQ.setFromAxisAngle(worldY, 0.004));
+            }
+            renderer.render(scene, camera);
+        }
+        raf = requestAnimationFrame(loop);
+
+        getModel(url, type).then(model => {
+            if (destroyed) return;
+            pivot = new THREE.Group();
+            const inner = model.clone(true);
+            pivot.add(inner);
+            scene.add(pivot);
+
+            const box = new THREE.Box3().setFromObject(inner);
+            const center = box.getCenter(new THREE.Vector3());
+            const dims = box.getSize(new THREE.Vector3());
+            const size = dims.length() || 1;
+            inner.position.sub(center);
+
+            lastDark = null; applyTheme();
+
+            camera.near = size / 100;
+            camera.far = size * 100;
+            camDist = size * Math.hypot(1.1, 0.8, 1.1);
+            minDist = size * 0.15; maxDist = size * 8;
+            camera.position.copy(camDir).multiplyScalar(camDist);
+            camera.lookAt(0, 0, 0);
+            camera.updateProjectionMatrix();
+            status.remove();
+        }).catch(err => {
+            console.error('Inline3D:', err);
+            if (destroyed) return;
+            status.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i><span>Не удалось загрузить модель</span>';
+        });
+
+        function destroy() {
+            if (destroyed) return;
+            destroyed = true;
+            cancelAnimationFrame(raf);
+            ro.disconnect();
+            io.disconnect();
+            renderer.dispose();
+            try { renderer.forceContextLoss(); } catch (e) {}
+            if (renderer.domElement.parentNode) renderer.domElement.parentNode.removeChild(renderer.domElement);
+            if (el._i3d === inst) el._i3d = null;
+        }
+        const inst = { url, destroy, setAutorotate(v) { opts.autorotate = v; } };
+        return inst;
+    }
+
+    function mount(el, url, type, opts) {
+        if (!el || !url) return;
+        type = norm(type);
+        if (el._i3d && el._i3d.url === url) {
+            if (el._i3d.setAutorotate) el._i3d.setAutorotate((opts || {}).autorotate !== false);
+            return;
+        }
+        if (el._i3d) el._i3d.destroy();
+        el._i3d = create(el, url, type, opts || {});
+    }
+
+    return { mount };
+})();
+</script>
+
+<script>
+/* Безопасная работа с localStorage (аккаунты): не падает при переполнении,
+   в сессию не кладёт аватар (он хранится только в списке пользователей). */
+window.reToolsStore = {
+    set(key, val) {
+        try { localStorage.setItem(key, val); return true; }
+        catch (e) { console.warn('localStorage недоступен или переполнен:', e); return false; }
+    },
+    saveSession(user) {
+        const rest = Object.assign({}, user); delete rest.avatar;
+        return this.set('reTools_session', JSON.stringify(rest));
+    },
+    avatarFor(email) {
+        try {
+            const u = JSON.parse(localStorage.getItem('reTools_users') || '[]').find(x => x.email === email);
+            return (u && u.avatar) || '';
+        } catch (e) { return ''; }
+    },
+    compactUsers(users) {
+        let changed = false;
+        users.forEach(u => { if (u.avatar && u.avatar.length > 200000) { u.avatar = ''; changed = true; } });
+        return changed;
+    }
+};
+</script>
 <div class="cursor-dot"></div>
 <div class="cursor-outline"></div> 
 

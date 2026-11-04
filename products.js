@@ -34,25 +34,35 @@ const SHOP_CONFIG = {
 
 
 
-// Отдельный массив для 3D CAD секции
-const CAD_MODELS_DATA = [
-/*
-    {
-        name: 'Extruder Assembly',
-        fileUrl: 'https://drive.usercontent.google.com/download?export=download&confirm=t&id=1KjaDCmBSuc0_EDkZCfWAW1WTets-klAV', // Ссылка на ваш STEP файл
-        type: 'step'
-    },
-*/   
-    {
-        name: 'Tape Spacer',
-        fileUrl: 'models/spacer.stl',    // Ссылка на ваш STL файл
-        type: 'stl'
-    },
-    {
-        name: 'Heater Spring',
-        fileUrl: 'models/spring.step',   // Ссылка на ваш STEP файл
-        type: 'step'
-    },
+// Настройки 3D CAD просмотрщика (STEP / STL)
+const CAD_VIEWER = [
+{ 
+    showOnHome: false,          // Установите true для отображения на главной
+    showOpenButton: true,
+    slowAutorotate: false,
+    models: [
+        {
+            name: 'Tape Spacer (STL)',
+            fileUrl: 'https://dl.dropboxusercontent.com/scl/fi/k0qq447u15zsjm2me5m08/Unnamed-BodyChamfer.stl?rlkey=1eq2h6pn2ke5j9f6q6dtuql1p&dl=1',
+            type: 'stl'
+        },
+        {
+            name: 'RePET (STEP)',
+            fileUrl: 'https://dl.dropboxusercontent.com/scl/fi/q51g2jipnzjugy3edu1zn/repet.step?rlkey=usv9zvc1aux8xy01quv0s39vy&dl=1',
+            type: 'step'
+        },        
+        {
+            name: '3mf (3mf)',
+            fileUrl: 'https://dl.dropboxusercontent.com/scl/fi/6a2q2yw3b78noqmdjfez0/Matek-F405.3MF?rlkey=gijf5a0zcpe9lokutj9a33rs8&st=w3lqkceu&dl=1',
+            type: '3mf'
+        },
+        {
+            name: 'Step (step)',
+            fileUrl: 'https://dl.dropboxusercontent.com/scl/fi/na4ao9ykrt2s002d72vqt/Nano_RP2040_Connect.step?rlkey=g2zu90yoa9b3uykc4lp9nglp7&st=8dovkl8d&dl=1',
+            type: 'step'
+        },        
+    ]
+}
 ];
 
 
@@ -311,6 +321,7 @@ const SECTIONS_DATA = [
         //bgClass: 'bg-gray-100', // 'bg-white' или 'bg-gray-100'
         //imageLeft: true,
         aspectClass: 'aspect-[4/4]',
+        slowAutorotate: false,
         showSteps: false,
         currentStep: 'tape',
         steps: [
@@ -365,6 +376,11 @@ const SECTIONS_DATA = [
             { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPEJ4a1tC40W2t_0FfPZAzSEqfAFDbHmRI8aAaEO2J2rGL1YGduG8qcbh25KGrWrKIvrFK9_LyCui0DafsiQfoYTvQ9gjV3SxAVzXfoAF0oUuCw2D1UJvt7mXVq6UI8hjwvYNHGdbixCg3Xr6o5_Wt_=w3579-h2013-s-no' },
             //{ type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPed9rTIz5vxA6aWzJ5MtqTKjoF-i8WjTWRMlK46sJVeUgBSgJzZC0ItmqhRqUygq3zp9wsuffC9GnKxYh6v-hHcdIgJVhdIPaXHsLEkAxuH9F8sAwUg2enyijdM93jjjolDd3GFt2iNmP4zEbEdHwi=w1086-h1448-s-no' },
 			{ type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNIS1ttqPvFb0x_RYyEq9C8VeLK4ccWlJFOq-Mnr2JlJtgGdDkaTCFg3m9bitvl-kpjhsQIYsALyczbfI_FMsBNXLypSBXmfDQZXKEyPd2yfrsV-JjNp6UVuHvKNb9DgF2YEL0n-5YXm3U4CX1rm-Ky=w1087-h1447-s-no' },
+            
+            
+            //{ type: '3mf', url: 'https://dl.dropboxusercontent.com/scl/fi/6a2q2yw3b78noqmdjfez0/Matek-F405.3MF?rlkey=gijf5a0zcpe9lokutj9a33rs8&st=w3lqkceu&dl=1'},
+            
+            
             { type: 'pdf', url: 'https://drive.usercontent.google.com/download?export=download&confirm=t&id=1ekCvtUsUVLTkgrTOHB7Qy2cqHE2R5Dab', title: 'Resume (PDF)' },
             { type: 'pdf', url: 'https://drive.usercontent.google.com/download?export=download&confirm=t&id=1QGFVjjxCcYgPwY4ZYbELje0WaiO815ox', title: 'Diplom (PDF)' },
             //{ type: 'pdf', url: 'https://drive.usercontent.google.com/download?export=download&confirm=t&id=19hlV3huYqnUShDzTAaF40CnnsKkgj6Ti', title: 'Certificate (PDF)' },
@@ -378,7 +394,8 @@ const SECTIONS_DATA = [
         //bgClass: 'bg-white', // 'bg-white' или 'bg-gray-100'
         //imageLeft: false,
         aspectClass: 'aspect-[4/4]',
-
+		slowAutorotate: false,
+		
 		title: 'RePet Filament Extruder',
 		p1: 'The RePet Compact is an innovative, compact PET bottle filament extruder that gives you a near-limitless supply of plastic right at your workspace. The extruder is designed for quick and convenient processing of plastic PET bottles into filament suitable both for 3D printing and for use in grass trimmers.',
 		p2: 'The extruder does not take up much space on the desk, consumes only 10 Watts of power, and saves you money on purchasing consumables.',
@@ -483,6 +500,10 @@ const SECTIONS_DATA = [
             { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNIv81Q1y_onHusiXBLynFkdq8tLIrAcNLXGXW5NG6oiou4VWzb1MQ0hwDQV7R5D019g6JCTH7gp4WQ78XF_8uqT-XYsS8S3YVUN6GmzJ1CmfgNeNiVcZh3RshZPh-ZhhnYCVqbvlOMhs1HucYzNzUR=w1587-h1319-s-no' },
             { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMGh65X55TTR_QmctKxAOMB9Y2_ZA6DlVCwJcee7yhAm_3WGIrUyv-YpYxw-8osn-_V6su0VxDdQ2zeRTWcFtHql88idIV8kmMnEw0Y0GpdhTMOwWDPzsJ_UjRpv958ko-rsbua7zRRfUKa9s-hjD3Q=w1365-h1061-s-no' },
             { type: 'video', url: 'https://www.youtube.com/embed/ymG4sdoDH3c' },
+
+            { type: '3mf', url: 'https://dl.dropboxusercontent.com/scl/fi/33ji098udftmqp4e3qomu/gearbox4.3MF?rlkey=7fyqwubn3dcpo90dz67gst6f9&st=gzudde6r&dl=1'},
+            
+            
             { type: 'pdf', url: 'https://drive.usercontent.google.com/download?export=download&confirm=t&id=1YMHcb2ZrTu7014qup8AXLSSAJnhL44xX', title: 'Product info (PDF)' },
             { type: 'pdf', url: 'https://drive.usercontent.google.com/download?export=download&confirm=t&id=1YMHcb2ZrTu7014qup8AXLSSAJnhL44xX', title: 'Quick start (PDF)' },
             //{ type: 'zip', url: 'https://example.com/models.zip', title: 'Download 3D Models (ZIP)' }
@@ -495,6 +516,8 @@ const SECTIONS_DATA = [
         //bgClass: 'bg-gray-100',
         //imageLeft: true,
         aspectClass: 'aspect-[4/4]',
+        slowAutorotate: false,
+        
         showSteps: false,
         currentStep: 'tape',
         steps: [
@@ -566,6 +589,12 @@ const SECTIONS_DATA = [
            
             
             { type: 'video', url: 'https://dostupsreda.ru/media/files/materials/%D0%92%D0%BE%D0%B9%D1%81%D0%B0-%D0%B3%D0%B0%D0%B4%D0%B6%D0%B5%D1%82-%D0%BF%D0%BE%D0%BC%D0%BE%D1%89%D0%BD%D0%B8%D0%BA-%D0%BA%D0%BE%D0%BC%D0%BF%D0%B0%D0%BD%D0%B8%D1%8F-%D0%BA%D1%80%D1%83%D1%81%D1%82_0zWbDIF.mp4' },
+            
+
+            { type: '3mf', url: 'https://dl.dropboxusercontent.com/scl/fi/f9slm0i41e88vkb59059u/NEW-player-MARCH21.3MF?rlkey=zk4oj5b3rznieovrcmr6fsip7&st=0ek2usyw&dl=1'},
+            
+            
+            
             { type: 'pdf', url: 'https://drive.usercontent.google.com/download?export=download&confirm=t&id=1Ya7VNq0rEyMTwKbkG3qYQj3cEYxOxUaT', title: 'Users manual (PDF)' },
 			{ type: 'pdf', url: 'https://drive.usercontent.google.com/download?export=download&confirm=t&id=1z8FwwZnH5_8cCpKiNmcDxiGHiCPNM1u5', title: 'Product spec (PDF)' },
 			
@@ -580,6 +609,7 @@ const SECTIONS_DATA = [
         //bgClass: 'bg-gray-100',
         //imageLeft: true,
         aspectClass: 'aspect-[4/4]',
+        slowAutorotate: false,
         showSteps: false,
         currentStep: 'tape',
         steps: [
@@ -630,6 +660,9 @@ const SECTIONS_DATA = [
             { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMAwHwjt0Keszgy1Ls39yF45sP0wH-1NR-rdCCxxy6XEFVeh7ObwE2h9EORC0HxCmRtvWQT35nLY3Lrx8fHJ4P2zFF-aX8L758JVzwIlYLDgv9YCRpfFkFTyPkjN6vBcje2RqvgJmlNPKGOLIRLb-zu=w3629-h2013-s-no' },
             { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNlhwNKx2wOWM5DZG-hCvNamAt-jiyfa1b1H9k9z72h8PWdUE6wVfWyzL7z_tZdbY7abfH-ipxi_peE2ebMPvcMQJsaYFjINOcWESlWLuxisMETNB7yQVbrMym6qvFaBniFtd6eYl7m08Ao6myvx6iz=w3629-h2013-s-no' },
             //{ type: 'video', url: 'https://dostupsreda.ru/media/files/materials/%D0%92%D0%BE%D0%B9%D1%81%D0%B0-%D0%B3%D0%B0%D0%B4%D0%B6%D0%B5%D1%82-%D0%BF%D0%BE%D0%BC%D0%BE%D1%89%D0%BD%D0%B8%D0%BA-%D0%BA%D0%BE%D0%BC%D0%BF%D0%B0%D0%BD%D0%B8%D1%8F-%D0%BA%D1%80%D1%83%D1%81%D1%82_0zWbDIF.mp4' },
+
+            { type: '3mf', url: 'https://dl.dropboxusercontent.com/scl/fi/8x9ikwd9xsf4rezuc9asm/saned_player.3MF?rlkey=jkevzgh6os63z5pziia6vq1qn&st=k4c7h10n&dl=1'},
+            
             //{ type: 'pdf', url: 'https://example.com/manual.pdf', title: 'Download User Manual (PDF)' },
             //{ type: 'zip', url: 'https://example.com/models.zip', title: 'Download 3D Models (ZIP)' }
         ]
@@ -642,6 +675,7 @@ const SECTIONS_DATA = [
         //bgClass: 'bg-white', // 'bg-white' или 'bg-gray-100'
         //imageLeft: false,
         aspectClass: 'aspect-[4/4]',
+        slowAutorotate: false,
         showSteps: false,
         currentStep: 'tape',
         steps: [
@@ -700,7 +734,7 @@ const SECTIONS_DATA = [
             { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczOtlyJfxKt3xPu6VGhMzo_uncv7wyv4pstI22JstOz0N8MAgMw0mx5Fy8FWkgxDuTpVyhiP0nMbyCUtR14WmH5WaT680f17_u0TF3G6Le8YUZsJ_MpYv46BwdRaFz75QN46_Mw8RkTzycnLTgIiqQkx=w2661-h997-s-no' },
             { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNsIbo1tsFqZKAItNFj8mH0IvinAU5OiLXYx64aHBGv2c0A9QvSORoiVAJwxoe6toJ8GSTXZGgr2Fj4xNP3GSzc-uXKrDNE3ZTdt1UkQlvdMcxcFgEUDIcDs29ManH9lwYB8LQSU66VqjpO6I5aQfNU=w2645-h1053-s-no' },
 
-
+			{ type: '3mf', url: 'https://dl.dropboxusercontent.com/scl/fi/0eehoonlozkfeupl2h3cf/tfp_miniature.3MF?rlkey=3e0j3rxopzhbbig88zrre4js9&st=7fb2w42h&dl=1'},
 
                         
             //{ type: 'video', url: 'https://dostupsreda.ru/media/files/materials/%D0%AD%D0%A0%D0%92%D0%A3_%D0%A1%D0%BE%D0%BA%D0%BE%D0%BB-1.mp4' },
@@ -722,6 +756,7 @@ const SECTIONS_DATA = [
         //bgClass: 'bg-gray-100', // 'bg-white' или 'bg-gray-100'
         //imageLeft: true,
         aspectClass: 'aspect-[4/4]',
+        slowAutorotate: false,
         showSteps: false,
         currentStep: 'tape',
         steps: [
@@ -778,7 +813,7 @@ const SECTIONS_DATA = [
             { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPqqwrvOpLKqyMy1OpQXLTLiLK03cZD6KKYzgInPLVhheyJx_vmxdFl0rd4mfBKBxvFvWOoBJSzPD2Xk3ezijOFNCoiLEh-Os-DVBe8PErT6ZLp00DTW8V5P6a8bQulI1tOcFR4lLrJ1KPosgFPbJx8=w1221-h1465-s-no' },
             { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNtBivlq5LC-p_IeVcxRM--nW4Scifzf8_SJJ8GjElPyK4GPW7RGyer4QgtIeZ4-k3rUL1U4xSibvfaFa2zHgYjxR2Ebqo2n0i8ax8inTZ-TZTm9fhL8odvNu3obEqPlbCZxwIyN60d8HpJ8o973cYQ=w729-h1781-s-no' },
 
-
+			{ type: '3mf', url: 'https://dl.dropboxusercontent.com/scl/fi/u8cfixbbw2e5voxz1g2ee/tfp-mini.3MF?rlkey=4cqbno878fb6i46ytcnr35glk&st=hddnrg3s&dl=1'},
                         
             //{ type: 'video', url: 'https://dostupsreda.ru/media/files/materials/%D0%AD%D0%A0%D0%92%D0%A3_%D0%A1%D0%BE%D0%BA%D0%BE%D0%BB-1.mp4' },
             //{ type: 'pdf', url: 'https://example.com/manual.pdf', title: 'Download User Manual (PDF)' },
@@ -795,6 +830,7 @@ const SECTIONS_DATA = [
         //bgClass: 'bg-gray-100', // 'bg-white' или 'bg-gray-100'
         //imageLeft: true,
         aspectClass: 'aspect-[4/4]',
+        slowAutorotate: false,
         
         showSteps: false,
         currentStep: 'tape',
@@ -853,7 +889,10 @@ const SECTIONS_DATA = [
             { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMKi1lhxIlo5IF-KJEe_RhWMyu92iVwJ-bKsh_f4hsAdy1Js7pPUUfOcPD8TBmC1PzRBBJowMOD5aOlJhDX9Ny4Rj1XQUYS_ZNFisQimidegTo1s8j_-3hq1cszisGN5vYxK5ryDdTZiwwdLUdOb2HS=w725-h1913-s-no' },
             { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMTcpjiTPJTtw0QmQTP0al0Zs08bgLsk3g_3TJe8VpWoSgivCz_PRDdqPgA_zHY5QigdILTwUjrG8q3CMaRWP_MjTKfCz_M0a6YRoBXYkeEEqxX9VqN4OwkE_fCskSFWnRGak8RStV7XtzPCuZsS-PI=w2853-h1485-s-no' },
 			{ type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNJls1MQeq_Ffm1VFzyhBi8lSWsW5Txr-yKtA__S5q7IFTz77anGn1NvXEltil6xStBFqzwEa2AmKc1_t-IgjLClwdJDApK37-yn9otxofFwIzAbzqiaNMS7VY2N1kD_5o5RRdhA1XCLBkYmDezg-wL=w2905-h1749-s-no' },
-                        
+			
+			
+			{ type: '3mf', url: 'https://dl.dropboxusercontent.com/scl/fi/q77lzss3tlxx55c2623gn/tfp_solo.3MF?rlkey=6xf4bfpdrv2fbuqgv154v8l2n&st=xjn7cvbl&dl=1'},
+			 
             //{ type: 'video', url: 'https://dostupsreda.ru/media/files/materials/%D0%AD%D0%A0%D0%92%D0%A3_%D0%A1%D0%BE%D0%BA%D0%BE%D0%BB-1.mp4' },
             //{ type: 'pdf', url: 'https://example.com/manual.pdf', title: 'Download User Manual (PDF)' },
             //{ type: 'zip', url: 'https://example.com/models.zip', title: 'Download 3D Models (ZIP)' }
@@ -869,6 +908,7 @@ const SECTIONS_DATA = [
         //bgClass: 'bg-white', // 'bg-white' или 'bg-gray-100'
         //imageLeft: false,
         aspectClass: 'aspect-[4/4]',
+        slowAutorotate: false,
         showSteps: false,
         currentStep: 'tape',
         steps: [
@@ -936,6 +976,11 @@ const SECTIONS_DATA = [
 			{ type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczN9s_Wtjw9P6inNCigN3yVnRJ-qZ5dcbFOx_1mE8Jj3xvQBPs1-GmeZnJ_tY0gLlbSs-ie62F7S4YIVg858gB-rhfD1atlcTMBLe3wyjr63BdLJ90XME_ZL89iHbKM9cYQxedeQ_pN6odCMy3anGlxN=w3629-h2013-s-no' },
     
             { type: 'video', url: 'https://dostupsreda.ru/media/files/materials/%D0%AD%D0%A0%D0%92%D0%A3_%D0%A1%D0%BE%D0%BA%D0%BE%D0%BB-1.mp4' },
+            
+
+            { type: '3mf', url: 'https://dl.dropboxusercontent.com/scl/fi/n63w2ijku898zcvcgwe9p/ERVU.3MF?rlkey=9snsglh29hp9xaasb6ff6697u&st=6lo73kgd&dl=1'},
+            
+            
             { type: 'pdf', url: 'https://drive.usercontent.google.com/download?export=download&confirm=t&id=1hsMFfEB6kLkqek0R0ELf_Mt2YfDN9WHT', title: 'Users manual (PDF)' },
 			{ type: 'pdf', url: 'https://drive.usercontent.google.com/download?export=download&confirm=t&id=1zImgy7GpcrikipeFUWSC8xC9fWdZWlml', title: 'Product spec (PDF)' },            
             //{ type: 'pdf', url: 'https://example.com/manual.pdf', title: 'Download User Manual (PDF)' },
@@ -949,6 +994,7 @@ const SECTIONS_DATA = [
         //bgClass: 'bg-gray-100',
         //imageLeft: true,
         aspectClass: 'aspect-[4/4]',
+        slowAutorotate: false,
         showSteps: false,
         currentStep: 'tape',
         steps: [
@@ -1007,6 +1053,7 @@ const SECTIONS_DATA = [
             { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNBpegnJLGc67bcBSSj3pzsU2Z1J_9HMs6cpC2xkv8n9PEDo1GjzAhTOarBkBDHCjC9-4-wAbFrOJsEu2LOPlSWO2XYVZHU_9y3X6bioE4M2CHmurpNrR9SgoA-w5rDmDf-i3Z5Mdp-NFKte-KaXN7x=w3629-h2013-s-no' },
             { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMnu1NWz71mx8fYXpNhoOcxO1KXg3_s46pRv2eCVVWVOGZaR0JSp8n6TzyrDePEXJ5dQ4kqfyH2-BE-eJLkb9UrZnHrujHXMurZVE7L6z7aKjBSjxAxwcB60d1OeNxFjsaxMwTeL372ao2qjP8XvUXS=w3629-h2013-s-no' },           
             
+            //{ type: '3mf', url: 'https://dl.dropboxusercontent.com/scl/fi/f9slm0i41e88vkb59059u/NEW-player-MARCH21.3MF?rlkey=zk4oj5b3rznieovrcmr6fsip7&st=0ek2usyw&dl=1'},
             
             //{ type: 'pdf', url: 'https://example.com/manual.pdf', title: 'Download User Manual (PDF)' },
             //{ type: 'zip', url: 'https://example.com/models.zip', title: 'Download 3D Models (ZIP)' }
@@ -1019,6 +1066,7 @@ const SECTIONS_DATA = [
         //bgClass: 'bg-white',
         //imageLeft: false,
         aspectClass: 'aspect-[4/4]',
+        slowAutorotate: false,
         showSteps: false,
         currentStep: 'tape',
         steps: [
@@ -1089,6 +1137,11 @@ const SECTIONS_DATA = [
             { type: 'video', url: 'https://www.youtube.com/embed/9ck88ZL7JQA' },  
             { type: 'video', url: 'https://www.youtube.com/embed/vH6aYH5--d4' },              
             
+            
+            { type: '3mf', url: 'https://dl.dropboxusercontent.com/scl/fi/frnm8siir90hsosavwpry/Tonometer.3MF?rlkey=m0z4hlklcdr2fzuj88jlsu49c&st=mlf8xbbm&dl=1'},
+            
+            
+            
             //{ type: 'pdf', url: 'https://drive.google.com/file/d/1WIUw-T5Bs6EJUH6hmj3C1r9S4iSmuF_4/view?usp=sharing', title: 'Download Article (PDF)' },
             { type: 'pdf', url: 'https://drive.usercontent.google.com/download?export=download&confirm=t&id=1WIUw-T5Bs6EJUH6hmj3C1r9S4iSmuF_4', title: 'Article (PDF)' },
             { type: 'pdf', url: 'https://drive.usercontent.google.com/download?export=download&confirm=t&id=1Q1vDmfcmrTQSMCtIJvE6_MMx-7YihwHL', title: 'Manual (PDF)' },
@@ -1103,6 +1156,7 @@ const SECTIONS_DATA = [
         //bgClass: 'bg-gray-100',
         //imageLeft: true,
         aspectClass: 'aspect-[4/4]',
+        slowAutorotate: false,
         showSteps: false,
         currentStep: 'tape',
         steps: [
@@ -1158,6 +1212,8 @@ const SECTIONS_DATA = [
             { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNaFw_Xy5gwqXbiGWY8qgLwo2-V_oMFdxsB0bcwQru7Xsyh19jwHu6C56l_KfiQ0KsAapw8LmGUqdup8XE9YEfJWdb0H5fdp5HiGtbr2obvOtj0oodnE5GffSJIwGv8gcQ8wrurTPZEBHEyPxXtMRaP=w3397-h1884-s-no' },
             { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczO7vx9825ADAaadrO8IQzLiAujhntk-ry42d9NtAUclTWuuRW9nF0_XiyJDcX1kP5YfWTF-AWdxxAP7kkwzVt8DzbDuCzoAlYt8Uq6xHPk-w7S4RSZ7utoGwT31c-SBYR60IcO3iLtjobiE-hI-9szr=w3397-h1884-s-no' },
 
+            { type: '3mf', url: 'https://dl.dropboxusercontent.com/scl/fi/e8o6id22hecapsi3c6bk0/seika_mini.3MF?rlkey=ufiko3oj4xr16s1eg12vqvuh6&st=trkjazv5&dl=1'},
+
             //{ type: 'pdf', url: 'https://example.com/manual.pdf', title: 'Download User Manual (PDF)' },
             //{ type: 'zip', url: 'https://example.com/models.zip', title: 'Download 3D Models (ZIP)' }
         ]
@@ -1169,6 +1225,7 @@ const SECTIONS_DATA = [
         //bgClass: 'bg-white',
         //imageLeft: false,
         aspectClass: 'aspect-[3/4]',
+        slowAutorotate: false,
         showSteps: false,
         currentStep: 'tape',
         
@@ -1241,8 +1298,8 @@ const SECTIONS_DATA = [
             { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPOWKP5JZr5ZwDkPEJ8H4dIWPxQBzyNEJwANms3-zGwYuBR_2uTkSmWEEzZNV6PIppAf4tMzFqQUvT07ebZ_0L2BOcyagaRS6lKoo1NXrTV6Ed5YcM8Rlh_Ii8yJtMRFO7qx8e_sXFk0Y1QAVrObBwK=w905-h1080-s-no' },
             { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMeqQy4oE4gwDSoCYRRyTmwUcy4f1UXm360Q9XY7yg4G52j-i-7SKmZW7Mylo8CjZPbJaenP73CSD3Zp3N8CM-ndrcTa9-m_NiJ9zx5Rv5Rx-QAM454d5xkGNUvoFxIWny9Olhdx2GILhXE4lQo5kAc=w2371-h1275-s-no' },
             { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMUKpXY8l3k3vmBfLGmhFX-ULt73677wkO2mLG76WwPr1eRKHO1p6XVTevtkUuAV_C4MyquxPxUuKZYIRiGE_T5iw0CsCT3KyEPttVyOdXUqn-wgh2aqtQpiijMYVJLs3yPPz1nt5PlZA0uc6z84AKm=w1920-h1080-s-no' },
-            
-            
+
+            { type: '3mf', url: 'https://dl.dropboxusercontent.com/scl/fi/y9epr5m40ovf22apszuuk/port_ind_loop.3MF?rlkey=8mz2behqd67ydblmzzrsse91f&st=ogq16jc1&dl=1'},
 
             //{ type: 'pdf', url: 'https://example.com/manual.pdf', title: 'Download User Manual (PDF)' },
             //{ type: 'zip', url: 'https://example.com/models.zip', title: 'Download 3D Models (ZIP)' }
@@ -1255,6 +1312,7 @@ const SECTIONS_DATA = [
         //bgClass: 'bg-gray-100',
         //imageLeft: true,
         aspectClass: 'aspect-[4/4]',
+        slowAutorotate: false,
         showSteps: false,
         currentStep: 'tape',
         
@@ -1308,6 +1366,9 @@ const SECTIONS_DATA = [
             { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNBxN1gvOzEb4Ub79SxzOPCkUr9ObEsITwzLTgwzRGeTfXnror-XhWa566iR99dO_VYbo6Pntpf-zVNRC9zx-ZVn1v_XM22hj2nHzwyv6V9R_Rgpyk89iL4s00V6XTXDdC3w-9c_GFyQWfHrzNrCqRl=w3629-h2013-s-no' },
             //{ type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNXO798Je40CaglOvRmcLtQKCquKJTrCKFbcjQ2WCVpGlDv6EusZ4HBvT5dfc4RylEvT9h6qYflUSzr9fCnzCIFSQtKoIjvFInyAjKK-p7_CuSB4JV2l9s6xJ1VBcUq72JKCyS3BU4u-xT5mkLR55iw=w3629-h2013-s-no' },
 
+			{ type: '3mf', url: 'https://dl.dropboxusercontent.com/scl/fi/v89tcrmw1rasf5i40qcjl/cb_assy.3MF?rlkey=fkfknu0d0z50u7gr2b2ramutr&st=gszot5i2&dl=1'},
+			
+			
             //{ type: 'pdf', url: 'https://example.com/manual.pdf', title: 'Download User Manual (PDF)' },
             //{ type: 'zip', url: 'https://example.com/models.zip', title: 'Download 3D Models (ZIP)' }
         ]
@@ -1319,6 +1380,7 @@ const SECTIONS_DATA = [
         //bgClass: 'bg-gray-100',
         //imageLeft: true,
         aspectClass: 'aspect-[3/4]',
+        slowAutorotate: false,
         showSteps: false,
         currentStep: 'tape',
         
@@ -1368,6 +1430,8 @@ const SECTIONS_DATA = [
 
             { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNYq_xVsfKtnmfPQ9DOw-QtT8PNbS7S0rl4lsBoXEdT1NXmmc4bHlUTgTY_wJ4NznTAEiLuOFGSrmTQc7VmftihDKejVfB1FM5lUlWB5nOhe43EPPqjsvNcMyBuZ6EObvmh9vMh-LVnAox3QSbVMbuE=w1097-h834-s-no' },
             { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczPy7X1Po9xkaOby5Zb_YpKOGHSQ4AaGfnDYL5NtoYC2AfeKuqtBdtw1znhhDAc7Dvi3V44SwXWtK2XGd4KNLR7yMXJPQiYLWGjpxE_PVbqJyRdnvMY_1S287-wfUvhpJbYRLsYtYlhBheS1Re65huIR=w1367-h957-s-no' },
+            
+            { type: '3mf', url: 'https://dl.dropboxusercontent.com/scl/fi/ncd7993r8ott9mcatqn4y/Voicebutton.3MF?rlkey=ezlu3l8e91ow6fqcbzwl9hfuh&st=aa2eo2a6&dl=1'},
 
             //{ type: 'pdf', url: 'https://example.com/manual.pdf', title: 'Download User Manual (PDF)' },
             //{ type: 'zip', url: 'https://example.com/models.zip', title: 'Download 3D Models (ZIP)' }
