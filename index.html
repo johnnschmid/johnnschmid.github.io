@@ -1907,6 +1907,23 @@ body.cursor-dot-enabled :is(button, a, input, select, textarea, option, label,
                  const nextIndex = (this.currentIndex + 1) % this.allSlides.length;
                  const data = this.allSlides[nextIndex];
 
+                 // 3D-модель: сначала предзагружаем и разбираем, затем показываем
+                 if (data.kind === 'model') {
+                     const failTimeout = new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 20000));
+                     Promise.race([Inline3D.preload(data.url, data.mtype), failTimeout]).then(() => {
+                         this.loading = false;
+                         const slide = { ...data };
+                         if (this.activeLayer === 0) { this.slideB = slide; this.activeLayer = 1; }
+                         else { this.slideA = slide; this.activeLayer = 0; }
+                         this.currentIndex = nextIndex;
+                     }).catch(() => {
+                         this.loading = false;
+                         this.currentIndex = nextIndex;
+                         if (tries < 5) this.nextSlide(tries + 1);
+                     });
+                     return;
+                 }
+
                  // Пробуем по очереди: уменьшенная версия -> оригинальная ссылка -> пропускаем слайд
                  const candidates = [thumbUrl(data.url, slideMaxW())];
                  console.log(candidates);
@@ -1960,7 +1977,7 @@ body.cursor-dot-enabled :is(button, a, input, select, textarea, option, label,
 
                      sections.forEach(sec => {
                          if (sec.items && sec.items.length > 0) {
-                             let images = sec.items.filter(item => item.type === 'image');
+                             let images = sec.items.filter(item => item.type === 'image' || ['3mf', 'stl', 'step', 'stp'].includes(item.type));
                              
                              if (images.length > 0) {
                                  // Если включен рандом картинок внутри альбома
@@ -1969,7 +1986,7 @@ body.cursor-dot-enabled :is(button, a, input, select, textarea, option, label,
                                  }
 
                                  images.forEach(item => {
-                                     extracted.push({ url: item.url, title: sec.title });
+                                     extracted.push({ url: item.url, title: sec.title, kind: item.type === 'image' ? 'image' : 'model', mtype: item.type });
                                  });
                              }
                          }
@@ -2006,8 +2023,17 @@ body.cursor-dot-enabled :is(button, a, input, select, textarea, option, label,
     <!-- Слой А -->
     <div class="absolute inset-0 w-full h-full transition-opacity ease-in-out flex items-center justify-center overflow-hidden"
          style="transition-duration: 2200ms;"
+         data-i3d-fade
          :class="activeLayer === 0 ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'">
-        <img :src="slideA.src || thumbUrl(slideA.url, slideMaxW())"
+        <template x-if="slideA.kind === 'model'">
+            <div class="relative z-10 w-full h-full clean-fade-mask transition-transform ease-out pointer-events-none"
+                 style="transition-duration: 5000ms;"
+                 :class="activeLayer === 0 ? 'scale-100' : 'scale-95'">
+                <div class="absolute inset-0"
+                     x-effect="Inline3D.mount($el, slideA.url, slideA.mtype, { autorotate: true, interactive: false, transparent: true })"></div>
+            </div>
+        </template>
+        <img x-show="slideA.kind !== 'model'" :src="slideA.kind === 'model' ? null : (slideA.src || thumbUrl(slideA.url, slideMaxW()))"
              referrerpolicy="no-referrer"
              @error="if ($el.dataset.fb !== slideA.url) { $el.dataset.fb = slideA.url; $el.src = slideA.url }" 
              class="rounded-[50px] max-w-full max-h-full object-contain relative z-10 clean-fade-mask transition-transform ease-out"
@@ -2025,8 +2051,17 @@ body.cursor-dot-enabled :is(button, a, input, select, textarea, option, label,
     <!-- Слой Б -->
     <div class="absolute inset-0 w-full h-full transition-opacity ease-in-out flex items-center justify-center overflow-hidden"
          style="transition-duration: 2200ms;"
+         data-i3d-fade
          :class="activeLayer === 1 ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'">
-        <img :src="slideB.src || thumbUrl(slideB.url, slideMaxW())"
+        <template x-if="slideB.kind === 'model'">
+            <div class="relative z-10 w-full h-full clean-fade-mask transition-transform ease-out pointer-events-none"
+                 style="transition-duration: 5000ms;"
+                 :class="activeLayer === 1 ? 'scale-100' : 'scale-95'">
+                <div class="absolute inset-0"
+                     x-effect="Inline3D.mount($el, slideB.url, slideB.mtype, { autorotate: true, interactive: false, transparent: true })"></div>
+            </div>
+        </template>
+        <img x-show="slideB.kind !== 'model'" :src="slideB.kind === 'model' ? null : (slideB.src || thumbUrl(slideB.url, slideMaxW()))"
              referrerpolicy="no-referrer"
              @error="if ($el.dataset.fb !== slideB.url) { $el.dataset.fb = slideB.url; $el.src = slideB.url }" 
              class="rounded-[50px] max-w-full max-h-full object-contain relative z-10 clean-fade-mask transition-transform ease-out"
@@ -4344,7 +4379,8 @@ window.Inline3D = (function () {
 
     function create(el, url, type, opts) {
         el.innerHTML = '';
-        el.style.touchAction = 'none';
+        const interactive = opts.interactive !== false;
+        if (interactive) el.style.touchAction = 'none';
 
         const status = document.createElement('div');
         status.style.cssText = 'position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:.5rem;color:#fff;font-size:.875rem;font-weight:600;text-shadow:0 1px 6px rgba(0,0,0,.8);pointer-events:none;z-index:2;text-align:center;padding:1rem;';
@@ -4362,7 +4398,8 @@ window.Inline3D = (function () {
         let w = el.clientWidth || 600, h = el.clientHeight || 400;
         renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
         renderer.setSize(w, h);
-        renderer.domElement.style.cssText = 'display:block;width:100%;height:100%;cursor:grab;';
+        renderer.domElement.style.cssText = 'display:block;width:100%;height:100%;' + (interactive ? 'cursor:grab;' : 'pointer-events:none;');
+        if (opts.transparent) renderer.setClearColor(0x000000, 0);
         el.appendChild(renderer.domElement);
         el.appendChild(status);
 
@@ -4397,7 +4434,7 @@ window.Inline3D = (function () {
             const dark = opts.dark === true || isDark();
             if (dark === lastDark) return;
             lastDark = dark;
-            scene.background = new THREE.Color(dark ? 0x0a0f1d : 0xf8fafc);
+            if (!opts.transparent) scene.background = new THREE.Color(dark ? 0x0a0f1d : 0xf8fafc);
             buildGrid(dark);
         }
         applyTheme();
@@ -4447,11 +4484,13 @@ window.Inline3D = (function () {
             if (pts.size === 0) { dragging = false; dom.style.cursor = 'grab'; }
         };
         const onWheel = e => { e.preventDefault(); applyZoom(Math.exp(e.deltaY * 0.0012)); };
-        dom.addEventListener('pointerdown', onDown);
-        dom.addEventListener('pointermove', onMove);
-        dom.addEventListener('pointerup', onUp);
-        dom.addEventListener('pointercancel', onUp);
-        dom.addEventListener('wheel', onWheel, { passive: false });
+        if (interactive) {
+            dom.addEventListener('pointerdown', onDown);
+            dom.addEventListener('pointermove', onMove);
+            dom.addEventListener('pointerup', onUp);
+            dom.addEventListener('pointercancel', onUp);
+            dom.addEventListener('wheel', onWheel, { passive: false });
+        }
 
         const ro = new ResizeObserver(() => {
             const nw = el.clientWidth, nh = el.clientHeight;
@@ -4465,11 +4504,16 @@ window.Inline3D = (function () {
         const io = new IntersectionObserver(es => { visible = es[0].isIntersecting; });
         io.observe(el);
 
+        // Слой слайдшоу целиком прозрачен (кроссфейд) — не тратим GPU на невидимую модель
+        const fadeEl = el.closest('[data-i3d-fade]');
+        let frameNo = 0, faded = false;
         function loop() {
             if (destroyed) return;
             if (!el.isConnected) { destroy(); return; }
             raf = requestAnimationFrame(loop);
             if (!visible) return;
+            if (fadeEl && (frameNo++ % 15 === 0)) faded = parseFloat(getComputedStyle(fadeEl).opacity) < 0.02;
+            if (faded) return;
             applyTheme();
             if (pivot && !dragging) {
                 if (Math.abs(vx) + Math.abs(vy) > 0.0002) { rotateBy(vx, vy); vx *= 0.93; vy *= 0.93; }   // инерция после броска
@@ -4534,7 +4578,10 @@ window.Inline3D = (function () {
         el._i3d = create(el, url, type, opts || {});
     }
 
-    return { mount };
+    // Предзагрузка и разбор модели (для слайдшоу)
+    function preload(url, type) { return getModel(url, norm(type)); }
+
+    return { mount, preload };
 })();
 </script>
 
