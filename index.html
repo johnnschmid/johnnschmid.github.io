@@ -1584,12 +1584,51 @@ body.cursor-dot-enabled :is(button, a, input, select, textarea, option, label,
     <div class="w-full h-[84vh] rounded-xl bg-black/60 relative overflow-hidden"
          @wheel.stop @touchstart.stop @touchend.stop>
         <div class="absolute inset-0"
-             x-effect="Inline3D.mount($el, modalMedia[modalCurrentIndex].url, modalMedia[modalCurrentIndex].type, { autorotate: modalAutorotate })"></div>
+             x-effect="Inline3D.mount($el, modalMedia[modalCurrentIndex].url, modalMedia[modalCurrentIndex].type, { autorotate: modalAutorotate, section: modalSection.on ? { axis: modalSection.axis, pct: modalSection.pct, flip: modalSection.flip } : null })"></div>
         <button type="button" @click.stop="modalAutorotate = !modalAutorotate"
                 class="absolute top-4 left-4 z-40 w-10 h-10 rounded-full custom-slider-btn shadow-lg flex items-center justify-center text-sm cursor-pointer"
                 :title="modalAutorotate ? 'Остановить вращение' : 'Включить вращение'">
             <i class="fa-solid pointer-events-none" :class="modalAutorotate ? 'fa-pause' : 'fa-rotate-right'"></i>
         </button>
+
+        <!-- Сечение модели -->
+        <div class="absolute bottom-4 left-4 z-40 flex flex-col items-start gap-2" @click.stop>
+            <div x-show="modalSection.on" x-transition.opacity
+                 class="w-64 rounded-2xl bg-black/70 backdrop-blur-md p-3 text-white text-sm space-y-3 shadow-xl">
+                <div class="flex items-center gap-2">
+                    <span class="text-xs text-white/70 mr-1">Плоскость</span>
+                    <template x-for="ax in ['x','y','z']" :key="ax">
+                        <button type="button" @click="modalSection.axis = ax"
+                                class="w-9 h-8 rounded-lg font-bold uppercase transition-colors cursor-pointer"
+                                :class="modalSection.axis === ax ? 'bg-blue-600 text-white' : 'bg-white/15 hover:bg-white/25 text-white'"
+                                x-text="ax"></button>
+                    </template>
+                </div>
+                <div>
+                    <div class="flex justify-between text-xs text-white/70 mb-1">
+                        <span>Глубина сечения</span>
+                        <span class="font-semibold text-white" x-text="modalSection.pct + '%'"></span>
+                    </div>
+                    <input type="range" min="0" max="100" step="1" x-model.number="modalSection.pct" class="w-full cursor-pointer">
+                </div>
+                <div class="flex gap-2">
+                    <button type="button" @click="modalSection.flip = !modalSection.flip"
+                            class="flex-1 h-8 rounded-lg text-xs font-semibold transition-colors cursor-pointer"
+                            :class="modalSection.flip ? 'bg-blue-600' : 'bg-white/15 hover:bg-white/25'">
+                        <i class="fa-solid fa-arrows-left-right mr-1"></i>Сторона
+                    </button>
+                    <button type="button" @click="modalSection.pct = 0; modalSection.flip = false"
+                            class="flex-1 h-8 rounded-lg bg-white/15 hover:bg-white/25 text-xs font-semibold transition-colors cursor-pointer">
+                        <i class="fa-solid fa-rotate-left mr-1"></i>Сброс
+                    </button>
+                </div>
+            </div>
+            <button type="button" @click.stop="modalSection.on = !modalSection.on"
+                    class="w-10 h-10 rounded-full custom-slider-btn shadow-lg flex items-center justify-center text-sm cursor-pointer"
+                    :title="modalSection.on ? 'Выключить сечение' : 'Сечение модели'">
+                <i class="fa-solid fa-scissors pointer-events-none" :class="modalSection.on ? 'text-blue-500' : ''"></i>
+            </button>
+        </div>
     </div>
 </template>
                 
@@ -2030,7 +2069,7 @@ body.cursor-dot-enabled :is(button, a, input, select, textarea, option, label,
                  style="transition-duration: 5000ms;"
                  :class="activeLayer === 0 ? 'scale-100' : 'scale-95'">
                 <div class="absolute inset-0"
-                     x-effect="Inline3D.mount($el, slideA.url, slideA.mtype, { autorotate: true, interactive: false, transparent: true })"></div>
+                     x-effect="Inline3D.mount($el, slideA.url, slideA.mtype, { autorotate: true, interactive: false, transparent: true, fit: 0.85 })"></div>
             </div>
         </template>
         <img x-show="slideA.kind !== 'model'" :src="slideA.kind === 'model' ? null : (slideA.src || thumbUrl(slideA.url, slideMaxW()))"
@@ -2058,7 +2097,7 @@ body.cursor-dot-enabled :is(button, a, input, select, textarea, option, label,
                  style="transition-duration: 5000ms;"
                  :class="activeLayer === 1 ? 'scale-100' : 'scale-95'">
                 <div class="absolute inset-0"
-                     x-effect="Inline3D.mount($el, slideB.url, slideB.mtype, { autorotate: true, interactive: false, transparent: true })"></div>
+                     x-effect="Inline3D.mount($el, slideB.url, slideB.mtype, { autorotate: true, interactive: false, transparent: true, fit: 0.85 })"></div>
             </div>
         </template>
         <img x-show="slideB.kind !== 'model'" :src="slideB.kind === 'model' ? null : (slideB.src || thumbUrl(slideB.url, slideMaxW()))"
@@ -3240,6 +3279,7 @@ shopConfig: SHOP_CONFIG,
 				modalGalleryOpen: false,
 				modalMedia: [],
 				modalAutorotate: true,
+				modalSection: { on: false, axis: 'x', pct: 0, flip: false },
 				modalCurrentIndex: 0,
                 shippingInfo: {
                     name: '',
@@ -3384,6 +3424,7 @@ if (window.location.pathname.replace(/^\/+|\/+$/g, '')) {
                 
 				openModalGallery(mediaArray, index, autorotate) {
 					this.modalAutorotate = autorotate !== false;
+					this.modalSection = { on: false, axis: 'x', pct: 0, flip: false };
 					// Фильтруем массив, оставляя только изображения и видео
 					const filteredMedia = mediaArray.filter(item => item.type === 'image' || item.type === 'video' || ['3mf','stl','step','stp'].includes(item.type));
 					
@@ -4392,7 +4433,7 @@ window.Inline3D = (function () {
         } catch (e) {
             status.innerHTML = '<span>WebGL недоступен</span>';
             el.appendChild(status);
-            return { url, setAutorotate() {}, destroy() { el.innerHTML = ''; } };
+            return { url, update() {}, destroy() { el.innerHTML = ''; } };
         }
 
         let w = el.clientWidth || 600, h = el.clientHeight || 400;
@@ -4419,6 +4460,30 @@ window.Inline3D = (function () {
         const dir2 = new THREE.DirectionalLight(0xffffff, 0.35);
         dir2.position.set(-120, -80, -100);
         scene.add(dir2);
+
+        // --- сечение: плоскость отсечения в локальных осях модели ---
+        let sec = opts.section || null, localBox = null;
+        const backMeshes = [], noClip = [], clipPlane = new THREE.Plane(), clipArr = [clipPlane];
+        const backMat = new THREE.MeshBasicMaterial({ color: 0xf59e0b, side: THREE.BackSide, polygonOffset: true, polygonOffsetFactor: -1, polygonOffsetUnits: -1 });
+        const nW = new THREE.Vector3(), pW = new THREE.Vector3();
+        let lastSec = null;
+        function updateClip() {
+            const active = !!(sec && pivot && localBox);
+            if (active) {
+                const ax = { x: 0, y: 1, z: 2 }[sec.axis] || 0;
+                const lo = localBox.min.getComponent(ax), hi = localBox.max.getComponent(ax);
+                const t = Math.min(100, Math.max(0, Number(sec.pct) || 0)) / 100;
+                const dir = sec.flip ? -1 : 1;
+                const d = sec.flip ? hi - (hi - lo) * t : lo + (hi - lo) * t;
+                nW.set(0, 0, 0).setComponent(ax, dir).applyQuaternion(pivot.quaternion);
+                pW.set(0, 0, 0).setComponent(ax, d).applyQuaternion(pivot.quaternion).add(pivot.position);
+                clipPlane.setFromNormalAndCoplanarPoint(nW, pW);
+                renderer.clippingPlanes = clipArr;
+            } else {
+                renderer.clippingPlanes = noClip;
+            }
+            if (active !== lastSec) { lastSec = active; backMeshes.forEach(m => { m.visible = active; }); }
+        }
 
         let grid = null, gridSize = 0, gridY = 0, pivot = null, lastDark = null;
         function buildGrid(dark) {
@@ -4451,27 +4516,47 @@ window.Inline3D = (function () {
             axisV.setFromMatrixColumn(camera.matrixWorld, 0);   // горизонталь экрана
             pivot.quaternion.premultiply(tmpQ.setFromAxisAngle(axisV, dy));
         }
+        function panBy(dx, dy) {
+            if (!pivot) return;
+            camera.updateMatrixWorld();
+            const k = 2 * camDist * Math.tan(camera.fov * Math.PI / 360) / Math.max(1, el.clientHeight);
+            axisV.setFromMatrixColumn(camera.matrixWorld, 0);
+            pivot.position.addScaledVector(axisV, dx * k);
+            axisV.setFromMatrixColumn(camera.matrixWorld, 1);
+            pivot.position.addScaledVector(axisV, -dy * k);
+        }
+        function mid() {
+            let x = 0, y = 0;
+            pts.forEach(q => { x += q.x; y += q.y; });
+            return { x: x / pts.size, y: y / pts.size };
+        }
         function applyZoom(f) {
             camDist = Math.min(maxDist, Math.max(minDist, camDist * f));
             camera.position.copy(camDir).multiplyScalar(camDist);
         }
         const onDown = e => {
             try { dom.setPointerCapture(e.pointerId); } catch (err) {}
-            pts.set(e.pointerId, { x: e.clientX, y: e.clientY });
+            // правая / средняя кнопка (или Shift + левая) — перемещение модели, левая — вращение
+            const pan = e.button === 2 || e.button === 1 || e.shiftKey;
+            pts.set(e.pointerId, { x: e.clientX, y: e.clientY, pan });
             dragging = true; vx = vy = 0;
-            dom.style.cursor = 'grabbing';
+            dom.style.cursor = pan ? 'move' : 'grabbing';
             if (pts.size === 2) { const [a, b] = [...pts.values()]; pinchDist = Math.hypot(a.x - b.x, a.y - b.y); }
         };
         const onMove = e => {
             const p = pts.get(e.pointerId);
             if (!p) return;
             if (pts.size === 1) {
-                vx = (e.clientX - p.x) * 0.006;
-                vy = (e.clientY - p.y) * 0.006;
-                rotateBy(vx, vy);
+                const dx = e.clientX - p.x, dy = e.clientY - p.y;
+                if (p.pan) { panBy(dx, dy); }
+                else { vx = dx * 0.006; vy = dy * 0.006; rotateBy(vx, vy); }
             }
+            const prevMid = pts.size === 2 ? mid() : null;
             p.x = e.clientX; p.y = e.clientY;
             if (pts.size === 2) {
+                // два пальца: щипок — масштаб, смещение центра — перемещение модели
+                const m = mid();
+                panBy(m.x - prevMid.x, m.y - prevMid.y);
                 const [a, b] = [...pts.values()];
                 const d = Math.hypot(a.x - b.x, a.y - b.y);
                 if (pinchDist > 0 && d > 0) applyZoom(pinchDist / d);
@@ -4490,6 +4575,7 @@ window.Inline3D = (function () {
             dom.addEventListener('pointerup', onUp);
             dom.addEventListener('pointercancel', onUp);
             dom.addEventListener('wheel', onWheel, { passive: false });
+            dom.addEventListener('contextmenu', e => e.preventDefault());
         }
 
         const ro = new ResizeObserver(() => {
@@ -4519,6 +4605,7 @@ window.Inline3D = (function () {
                 if (Math.abs(vx) + Math.abs(vy) > 0.0002) { rotateBy(vx, vy); vx *= 0.93; vy *= 0.93; }   // инерция после броска
                 else if (opts.autorotate !== false) pivot.quaternion.premultiply(tmpQ.setFromAxisAngle(worldY, 0.004));
             }
+            updateClip();
             renderer.render(scene, camera);
         }
         raf = requestAnimationFrame(loop);
@@ -4535,12 +4622,26 @@ window.Inline3D = (function () {
             const dims = box.getSize(new THREE.Vector3());
             const size = dims.length() || 1;
             inner.position.sub(center);
+            localBox = new THREE.Box3().setFromObject(pivot);
+            const meshes = [];
+            inner.traverse(o => { if (o.isMesh) meshes.push(o); });
+            meshes.forEach(m => {
+                const bm = new THREE.Mesh(m.geometry, backMat);
+                bm.renderOrder = 1; bm.visible = false;
+                m.add(bm); backMeshes.push(bm);
+            });
 
             lastDark = null; applyTheme();
 
             camera.near = size / 100;
             camera.far = size * 100;
             camDist = size * Math.hypot(1.1, 0.8, 1.1);
+            if (opts.fit) {
+                // плотная вписка по ограничивающей сфере (с учётом пропорций контейнера)
+                const vf = camera.fov * Math.PI / 180;
+                const hf = 2 * Math.atan(Math.tan(vf / 2) * camera.aspect);
+                camDist = (size / 2) / Math.sin(Math.min(vf, hf) / 2) * opts.fit;
+            }
             minDist = size * 0.15; maxDist = size * 8;
             camera.position.copy(camDir).multiplyScalar(camDist);
             camera.lookAt(0, 0, 0);
@@ -4558,12 +4659,13 @@ window.Inline3D = (function () {
             cancelAnimationFrame(raf);
             ro.disconnect();
             io.disconnect();
+            backMat.dispose();
             renderer.dispose();
             try { renderer.forceContextLoss(); } catch (e) {}
             if (renderer.domElement.parentNode) renderer.domElement.parentNode.removeChild(renderer.domElement);
             if (el._i3d === inst) el._i3d = null;
         }
-        const inst = { url, destroy, setAutorotate(v) { opts.autorotate = v; } };
+        const inst = { url, destroy, update(o) { opts.autorotate = o.autorotate; sec = o.section || null; } };
         return inst;
     }
 
@@ -4571,7 +4673,7 @@ window.Inline3D = (function () {
         if (!el || !url) return;
         type = norm(type);
         if (el._i3d && el._i3d.url === url) {
-            if (el._i3d.setAutorotate) el._i3d.setAutorotate((opts || {}).autorotate !== false);
+            if (el._i3d.update) el._i3d.update(opts || {});
             return;
         }
         if (el._i3d) el._i3d.destroy();
