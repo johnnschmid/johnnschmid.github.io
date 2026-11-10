@@ -1592,42 +1592,37 @@ body.cursor-dot-enabled :is(button, a, input, select, textarea, option, label,
         </button>
 
         <!-- Сечение модели -->
-        <div class="absolute bottom-4 left-4 z-40 flex flex-col items-start gap-2" @click.stop>
-            <div x-show="modalSection.on" x-transition.opacity
-                 class="w-64 rounded-2xl bg-black/70 backdrop-blur-md p-3 text-white text-sm space-y-3 shadow-xl">
-                <div class="flex items-center gap-2">
-                    <span class="text-xs text-white/70 mr-1">Плоскость</span>
-                    <template x-for="ax in ['x','y','z']" :key="ax">
-                        <button type="button" @click="modalSection.axis = ax"
-                                class="w-9 h-8 rounded-lg font-bold uppercase transition-colors cursor-pointer"
-                                :class="modalSection.axis === ax ? 'bg-blue-600 text-white' : 'bg-white/15 hover:bg-white/25 text-white'"
-                                x-text="ax"></button>
-                    </template>
-                </div>
-                <div>
-                    <div class="flex justify-between text-xs text-white/70 mb-1">
-                        <span>Глубина сечения</span>
-                        <span class="font-semibold text-white" x-text="modalSection.pct + '%'"></span>
-                    </div>
-                    <input type="range" min="0" max="100" step="1" x-model.number="modalSection.pct" class="w-full cursor-pointer">
-                </div>
-                <div class="flex gap-2">
-                    <button type="button" @click="modalSection.flip = !modalSection.flip"
-                            class="flex-1 h-8 rounded-lg text-xs font-semibold transition-colors cursor-pointer"
-                            :class="modalSection.flip ? 'bg-blue-600' : 'bg-white/15 hover:bg-white/25'">
-                        <i class="fa-solid fa-arrows-left-right mr-1"></i>Сторона
-                    </button>
-                    <button type="button" @click="modalSection.pct = 0; modalSection.flip = false"
-                            class="flex-1 h-8 rounded-lg bg-white/15 hover:bg-white/25 text-xs font-semibold transition-colors cursor-pointer">
-                        <i class="fa-solid fa-rotate-left mr-1"></i>Сброс
-                    </button>
+        <div class="absolute bottom-14 left-4 z-40 flex items-center gap-2" @click.stop>
+            <button type="button" @click.stop="modalSection.on = !modalSection.on"
+                    class="w-10 h-10 p-0 shrink-0 rounded-full custom-slider-btn shadow-lg text-sm cursor-pointer"
+                    :title="modalSection.on ? 'Выключить сечение' : 'Сечение модели'">
+                <span class="absolute inset-0 flex items-center justify-center leading-none pointer-events-none">
+                    <i class="fa-solid fa-scissors" :class="modalSection.on ? 'text-blue-500' : ''"></i>
+                </span>
+            </button>
+            <div x-show="modalSection.on" x-transition.opacity class="flex items-center gap-2">
+                <button type="button" @click.stop="modalSection.axis = { x: 'y', y: 'z', z: 'x' }[modalSection.axis]"
+                        class="w-10 h-10 p-0 shrink-0 rounded-full custom-slider-btn shadow-lg text-sm font-bold uppercase cursor-pointer"
+                        :title="'Плоскость сечения: ' + modalSection.axis.toUpperCase() + ' (нажмите для смены)'">
+                    <span class="absolute inset-0 flex items-center justify-center pointer-events-none">
+                        <svg x-show="modalSection.axis === 'x'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="block w-[18px] h-[18px]"><path d="M7 7l10 10M17 7L7 17"/></svg>
+                        <svg x-show="modalSection.axis === 'y'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="block w-[18px] h-[18px]"><path d="M7 5.5l5 6.5 5-6.5M12 12v6.5"/></svg>
+                        <svg x-show="modalSection.axis === 'z'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="block w-[18px] h-[18px]"><path d="M7 6.5h10L7 17.5h10"/></svg>
+                    </span>
+                </button>
+                <button type="button" @click.stop="modalSection.flip = !modalSection.flip"
+                        class="w-10 h-10 p-0 shrink-0 rounded-full custom-slider-btn shadow-lg text-sm cursor-pointer"
+                        title="Сменить сторону сечения">
+                    <span class="absolute inset-0 flex items-center justify-center pointer-events-none">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="block w-[18px] h-[18px]"><path d="M3.5 12h17M8 7.5L3.5 12 8 16.5M16 7.5l4.5 4.5-4.5 4.5"/></svg>
+                    </span>
+                </button>
+                <div class="h-10 px-4 rounded-full custom-slider-btn shadow-lg flex items-center gap-3">
+                    <input type="range" min="0" max="100" step="1" x-model.number="modalSection.pct"
+                           class="w-28 sm:w-52 cursor-pointer" title="Глубина сечения">
+                    <span class="text-xs font-semibold w-9 text-right" x-text="modalSection.pct + '%'"></span>
                 </div>
             </div>
-            <button type="button" @click.stop="modalSection.on = !modalSection.on"
-                    class="w-10 h-10 rounded-full custom-slider-btn shadow-lg flex items-center justify-center text-sm cursor-pointer"
-                    :title="modalSection.on ? 'Выключить сечение' : 'Сечение модели'">
-                <i class="fa-solid fa-scissors pointer-events-none" :class="modalSection.on ? 'text-blue-500' : ''"></i>
-            </button>
         </div>
     </div>
 </template>
@@ -3279,7 +3274,7 @@ shopConfig: SHOP_CONFIG,
 				modalGalleryOpen: false,
 				modalMedia: [],
 				modalAutorotate: true,
-				modalSection: { on: false, axis: 'x', pct: 0, flip: false },
+				modalSection: { on: false, axis: 'x', pct: 0, flip: true },
 				modalCurrentIndex: 0,
                 shippingInfo: {
                     name: '',
@@ -3424,7 +3419,7 @@ if (window.location.pathname.replace(/^\/+|\/+$/g, '')) {
                 
 				openModalGallery(mediaArray, index, autorotate) {
 					this.modalAutorotate = autorotate !== false;
-					this.modalSection = { on: false, axis: 'x', pct: 0, flip: false };
+					this.modalSection = { on: false, axis: 'x', pct: 0, flip: true };
 					// Фильтруем массив, оставляя только изображения и видео
 					const filteredMedia = mediaArray.filter(item => item.type === 'image' || item.type === 'video' || ['3mf','stl','step','stp'].includes(item.type));
 					
