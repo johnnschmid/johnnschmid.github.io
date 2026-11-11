@@ -1036,7 +1036,7 @@ body.cursor-dot-enabled :is(button, a, input, select, textarea, option, label,
           <div class="superellipse">
             <span class="logo-text-white" data-site="logoMark">JS</span>
           </div>
-          <span class="logo-label" data-site="logoLabel">Dev</span>
+          <span class="logo-label" data-site="logoLabel">Hub</span>
         </div>
         
 	<!-- NAVIGATION -->        
@@ -4246,7 +4246,7 @@ document.addEventListener('alpine:init', () => {
 
         async loadRemoteFile(url, type) {
             this.isLoading = true;
-            this.loadingText = `Загрузка ${type.toUpperCase()}...`;
+            this.loadingText = `Loading ${type.toUpperCase()}...`;
 
             try {
                 const response = await fetch(url);
@@ -4335,7 +4335,7 @@ document.addEventListener('alpine:init', () => {
                 this.displayModelGroup(group);
             } 
             else if (type === '3mf') {
-                this.loadingText = 'Распаковка и загрузка 3MF...';
+                this.loadingText = 'Unpacking and loading 3MF...';
                 const loader = new THREE.ThreeMFLoader();
                 const object = loader.parse(buffer);
                 this.displayModelGroup(object);
@@ -4466,7 +4466,7 @@ window.Inline3D = (function () {
 
         const status = document.createElement('div');
         status.style.cssText = 'position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:.5rem;color:#fff;font-size:.875rem;font-weight:600;text-shadow:0 1px 6px rgba(0,0,0,.8);pointer-events:none;z-index:2;text-align:center;padding:1rem;';
-        status.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i><span>Загрузка 3D…</span>';
+        status.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i><span>Loading 3D…</span>';
 
         let renderer;
         try {
