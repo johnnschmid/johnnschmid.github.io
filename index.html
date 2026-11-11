@@ -726,6 +726,46 @@ body.cursor-dot-enabled :is(button, a, input, select, textarea, option, label,
     box-shadow: 0 0 12px rgba(239, 68, 68, 0.6);
 }
 
+/* ================================================================
+   ИСПРАВЛЕНИЕ: шаги с шевронами — ровные параллельные срезы и плавная анимация
+   (срезы заданы в px, а не в %, поэтому края соседних кнопок всегда параллельны,
+   независимо от ширины кнопки и размера экрана; нахлёста нет)
+   ================================================================ */
+.step-nav-inner { --sk: 9px; --gap: 1px; }
+@media (min-width: 640px)  { .step-nav-inner { --sk: 11px; } }
+@media (min-width: 1024px) { .step-nav-inner { --sk: 13px; } }
+@media (min-width: 1536px) { .step-nav-inner { --sk: 16px; } }
+@media (min-width: 2500px) { .step-nav-inner { --sk: 24px; } }
+
+.step-btn {
+    flex: 1 1 0;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    isolation: isolate;
+    background-color: #fff;
+    background-image: none;
+    transition: color 0.45s ease;
+}
+.step-btn-first  { margin: 0; clip-path: polygon(0 0, 100% 0, calc(100% - var(--sk)) 100%, 0 100%); }
+.step-btn-middle { margin: 0 0 0 calc(var(--gap) - var(--sk)); clip-path: polygon(var(--sk) 0, 100% 0, calc(100% - var(--sk)) 100%, 0 100%); }
+.step-btn-last   { margin: 0 0 0 calc(var(--gap) - var(--sk)); clip-path: polygon(var(--sk) 0, 100% 0, 100% 100%, 0 100%); padding-right: 0.25rem; }
+
+/* Градиент не анимируется напрямую — плавно проявляем его отдельным слоем */
+.step-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background-image: var(--brand-grad);
+    opacity: 0;
+    transition: opacity 0.45s ease;
+}
+.step-btn.active,
+.step-btn.active.step-btn-last { background-image: none !important; background-color: #fff !important; box-shadow: none; }
+.step-btn.active::before { opacity: 1; }
+.step-btn.active.step-btn-last::before { background-image: none; background-color: #ef4444; }
+
 
 
 
@@ -1493,6 +1533,12 @@ body.cursor-dot-enabled :is(button, a, input, select, textarea, option, label,
         <div class="relative flex flex-col items-center justify-center rounded-xl bg-black/50 group overflow-hidden"
              :class="modalMedia[modalCurrentIndex]?.type === 'image' ? 'w-fit mx-auto' : 'w-full'">
             
+            <!-- Кнопка закрытия для мобильных -->
+            <button @click="modalGalleryOpen = false; modalMedia = [];" aria-label="Закрыть"
+                    class="md:hidden absolute top-3 right-3 z-[100] w-10 h-10 rounded-full custom-slider-btn flex items-center justify-center shadow-lg cursor-pointer">
+                <i class="fa-solid fa-xmark text-xl pointer-events-none"></i>
+            </button>
+
             <!-- Кнопки управления в правом верхнем углу -->
             <div class="absolute top-4 right-4 z-[100] hidden md:flex flex-col gap-2">
                 <!-- Кнопка закрытия (крестик) -->
@@ -1592,7 +1638,7 @@ body.cursor-dot-enabled :is(button, a, input, select, textarea, option, label,
         </button>
 
         <!-- Сечение модели -->
-        <div class="absolute bottom-14 left-4 z-40 flex items-center gap-2" @click.stop>
+        <div class="absolute bottom-14 left-4 right-4 z-40 flex items-center gap-2 pointer-events-none [&>*]:pointer-events-auto" @click.stop>
             <button type="button" @click.stop="modalSection.on = !modalSection.on"
                     class="w-10 h-10 p-0 shrink-0 rounded-full custom-slider-btn shadow-lg text-sm cursor-pointer"
                     :title="modalSection.on ? 'Выключить сечение' : 'Сечение модели'">
@@ -1600,7 +1646,7 @@ body.cursor-dot-enabled :is(button, a, input, select, textarea, option, label,
                     <i class="fa-solid fa-scissors" :class="modalSection.on ? 'text-blue-500' : ''"></i>
                 </span>
             </button>
-            <div x-show="modalSection.on" x-transition.opacity class="flex items-center gap-2">
+            <div x-show="modalSection.on" x-transition.opacity class="flex items-center gap-2 flex-1 min-w-0">
                 <button type="button" @click.stop="modalSection.axis = { x: 'y', y: 'z', z: 'x' }[modalSection.axis]"
                         class="w-10 h-10 p-0 shrink-0 rounded-full custom-slider-btn shadow-lg text-sm font-bold uppercase cursor-pointer"
                         :title="'Плоскость сечения: ' + modalSection.axis.toUpperCase() + ' (нажмите для смены)'">
@@ -1611,16 +1657,15 @@ body.cursor-dot-enabled :is(button, a, input, select, textarea, option, label,
                     </span>
                 </button>
                 <button type="button" @click.stop="modalSection.flip = !modalSection.flip"
-                        class="w-10 h-10 p-0 shrink-0 rounded-full custom-slider-btn shadow-lg text-sm cursor-pointer"
+                        class="group w-10 h-10 p-0 shrink-0 rounded-full custom-slider-btn shadow-lg text-sm cursor-pointer"
                         title="Сменить сторону сечения">
                     <span class="absolute inset-0 flex items-center justify-center pointer-events-none">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="block w-[18px] h-[18px]"><path d="M3.5 12h17M8 7.5L3.5 12 8 16.5M16 7.5l4.5 4.5-4.5 4.5"/></svg>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="block w-[18px] h-[18px] group-hover:text-white" :class="!modalSection.flip ? 'text-blue-500' : ''"><path d="M3.5 12h17M8 7.5L3.5 12 8 16.5M16 7.5l4.5 4.5-4.5 4.5"/></svg>
                     </span>
                 </button>
-                <div class="h-10 px-4 rounded-full custom-slider-btn shadow-lg flex items-center gap-3">
+                <div class="h-10 px-4 rounded-full custom-slider-btn shadow-lg flex items-center flex-1 min-w-0 max-w-[16rem]">
                     <input type="range" min="0" max="100" step="1" x-model.number="modalSection.pct"
-                           class="w-28 sm:w-52 cursor-pointer" title="Глубина сечения">
-                    <span class="text-xs font-semibold w-9 text-right" x-text="modalSection.pct + '%'"></span>
+                           class="w-full min-w-0 cursor-pointer" title="Глубина сечения">
                 </div>
             </div>
         </div>
@@ -1656,8 +1701,9 @@ body.cursor-dot-enabled :is(button, a, input, select, textarea, option, label,
         </div>
 
         <!-- Индикатор текущего слайда -->
-        <div class="mt-4 text-white/80 text-sm font-medium" x-show="modalMedia.length > 1">
-            <span x-text="modalCurrentIndex + 1"></span> / <span x-text="modalMedia.length"></span>
+        <div class="w-full min-h-[3.25rem] flex items-center justify-center text-white/80 text-sm font-medium cursor-pointer"
+             @click="modalGalleryOpen = false; modalMedia = [];" title="Закрыть">
+            <span x-show="modalMedia.length > 1"><span x-text="modalCurrentIndex + 1"></span> / <span x-text="modalMedia.length"></span></span>
         </div>
         
     </div>
