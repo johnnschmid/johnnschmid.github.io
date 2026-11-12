@@ -37,6 +37,396 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Настройки сайта (название, фирменный цвет) -->
     <script src="products.js"></script>
+<script>
+/* I18N — динамический (машинный) переводчик сайта. Никаких статичных словарей.
+   Исходный язык контента — английский. Любой видимый текст (текстовые узлы + атрибуты
+   placeholder / title / alt / aria-label) переводится прямо в браузере по мере появления на странице,
+   в том числе контент, который Alpine рисует позже (секции из products.js, модалки, корзина и т.д.).
+
+   Источники перевода (по порядку, при сбое берётся следующий):
+     1) свой сервер/прокси      — SITE_SETTINGS.translation = { endpoint, apiKey }  (формат LibreTranslate)
+     2) встроенный переводчик Chrome (Translator API) — на устройстве, без сети и без лимитов
+     3) Google Translate (бесплатный публичный endpoint)
+     4) Lingva Translate (публичные зеркала)
+     5) MyMemory
+   Готовые переводы кэшируются в localStorage — каждая строка переводится один раз на браузер.
+   Исправить неудачный машинный перевод можно вручную:
+     SITE_SETTINGS.translationOverrides = { GE: { 'Back': 'Zurück' }, RU: { 'Back': 'Назад' } }
+   Не переводить участок страницы: атрибут translate="no" или класс notranslate. */
+window.I18N = (function () {
+    const CODES = { EN: 'en', GE: 'de', RU: 'ru' };
+    const ATTRS = ['placeholder', 'title', 'alt', 'aria-label'];
+    const ATTR_SEL = '[placeholder],[title],[alt],[aria-label]';
+    const SKIP = 'script,style,noscript,textarea,code,pre,[translate="no"],.notranslate';
+    const LETTERS = /[A-Za-z\u00C0-\u024F\u0400-\u04FF]/;
+    const CACHE_PREFIX = 'reTools_tr_';
+    const MAX_PARALLEL = 6;
+    const RETRY_MS = 60000;
+
+    // Строки, которые показываются не в DOM (alert / confirm) — переводим заранее, чтобы были готовы
+    const PRELOAD = [
+        'Please fill out shipping information', 'Please enter payment details', 'Please select a star rating first.',
+        'Are you sure you want to delete your profile? This action cannot be undone.',
+        'Your profile has been completely deleted.', 'Failed to process the CAD file.',
+        'The STEP converter is still initializing. Please wait a few seconds.'
+    ];
+
+    let lang = 'EN';
+    let observer = null;
+    const textRec = new WeakMap();      // Text -> { o: оригинал, t: перевод }
+    const attrRec = new WeakMap();      // Element -> { attr: { o, t } }
+    const caches = {};                  // 'de' -> Map(исходный текст -> перевод)
+    const failedAt = new Map();         // 'de|текст' -> время неудачи
+    const queued = new Set();           // 'de|текст' — уже в очереди / в работе
+    const queue = [];
+    let active = 0, busyNow = false, applyTimer = 0, saveTimer = 0;
+
+    const norm = s => s.replace(/\s+/g, ' ').trim();
+    const settings = () => (typeof SITE_SETTINGS !== 'undefined' && SITE_SETTINGS) || {};
+    const cfg = () => settings().translation || {};
+
+    // ---------- что не переводится ----------
+    // Название сайта (siteName / logoMark / logoLabel), список SITE_SETTINGS.noTranslate и коды валют
+    // остаются как есть — и отдельными надписями, и внутри предложений.
+    const CURRENCY_RE = /\b(?:USD|EUR|PHP|RUB|GBP|CHF|JPY|CNY|UAH|KZT|PLN|CZK|AUD)\b/g;
+    let protCache = [], protKey = null;
+    function protectedTerms() {
+        const s = settings();
+        const list = [s.siteName, s.logoMark, s.logoLabel].concat(Array.isArray(s.noTranslate) ? s.noTranslate : [])
+            .filter(x => typeof x === 'string' && norm(x)).map(norm);
+        const key = list.join('\u0001');
+        if (key !== protKey) { protKey = key; protCache = Array.from(new Set(list)).sort((a, b) => b.length - a.length); }
+        return protCache;
+    }
+    const isProtected = core => { const c = core.toLowerCase(); return protectedTerms().some(t => t.toLowerCase() === c); };
+    const escRe = x => x.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    // Перед отправкой в переводчик защищённые слова заменяются метками, после перевода возвращаются на место
+    function mask(text) {
+        const tokens = [];
+        const put = m => { let i = tokens.indexOf(m); if (i === -1) { tokens.push(m); i = tokens.length - 1; } return 'ZQ7X' + i + 'Q'; };
+        let out = text;
+        protectedTerms().forEach(t => { out = out.replace(new RegExp('(?<![\\w])' + escRe(t) + '(?![\\w])', 'g'), put); });
+        out = out.replace(CURRENCY_RE, put);
+        return { text: out, tokens };
+    }
+    function unmask(text, tokens) {
+        for (let i = 0; i < tokens.length; i++) if (!new RegExp('ZQ7X' + i + 'Q', 'i').test(text)) return null;   // метка потерялась
+        return text.replace(/ZQ7X(\d+)Q/gi, (m, i) => tokens[+i] !== undefined ? tokens[+i] : m);
+    }
+    async function translateProtected(code, text) {
+        const m = mask(text);
+        if (!m.tokens.length) return translateOne(code, text);
+        const back = unmask(await translateOne(code, m.text), m.tokens);
+        return back !== null ? back : translateOne(code, text);
+    }
+
+    // ---------- кэш ----------
+    function cacheFor(code) {
+        if (caches[code]) return caches[code];
+        let obj = {};
+        try { obj = JSON.parse(localStorage.getItem(CACHE_PREFIX + code) || '{}') || {}; } catch (e) {}
+        return (caches[code] = new Map(Object.entries(obj)));
+    }
+    function saveCacheSoon(code) {
+        clearTimeout(saveTimer);
+        saveTimer = setTimeout(() => {
+            try { localStorage.setItem(CACHE_PREFIX + code, JSON.stringify(Object.fromEntries(cacheFor(code)))); }
+            catch (e) { /* хранилище переполнено — работаем только с кэшем в памяти */ }
+        }, 600);
+    }
+    function override(code, core) {
+        const o = settings().translationOverrides;
+        const dict = o && (o[code === 'de' ? 'GE' : code.toUpperCase()] || (code === 'de' ? o.DE : undefined));
+        if (!dict) return undefined;
+        for (const k in dict) if (norm(k) === core) return dict[k];
+        return undefined;
+    }
+
+    // ---------- провайдеры перевода ----------
+    function chunk(text, max) {
+        if (text.length <= max) return [text];
+        const parts = text.split(/(?<=[.!?…])\s+/), out = [];
+        let cur = '';
+        parts.forEach(p => {
+            if ((cur + ' ' + p).trim().length > max && cur) { out.push(cur); cur = p; } else cur = (cur + ' ' + p).trim();
+        });
+        if (cur) out.push(cur);
+        return out.flatMap(c => c.length > max ? c.match(new RegExp('.{1,' + max + '}', 'g')) : [c]);
+    }
+    async function chunked(text, max, fn) {
+        const res = [];
+        for (const c of chunk(text, max)) res.push(await fn(c));
+        return res.join(' ');
+    }
+
+    const chromeT = {};
+    const providers = [
+        {   // 0. собственный сервер (формат LibreTranslate)
+            name: 'custom', enabled: () => !!cfg().endpoint,
+            run: async (text, tgt) => {
+                const r = await fetch(cfg().endpoint, { method: 'POST', headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ q: text, source: 'en', target: tgt, format: 'text', api_key: cfg().apiKey || '' }) });
+                if (!r.ok) throw new Error('custom ' + r.status);
+                const j = await r.json();
+                if (!j.translatedText) throw new Error('custom: пустой ответ');
+                return j.translatedText;
+            }
+        },
+        {   // 1. встроенный переводчик Chrome (на устройстве; модель может быть ещё не скачана)
+            name: 'chrome', enabled: () => typeof self.Translator !== 'undefined' && cfg().provider !== 'web',
+            run: async (text, tgt) => {
+                let slot = chromeT[tgt];
+                if (!slot) {
+                    slot = chromeT[tgt] = { state: 'init', translator: null };
+                    (async () => {              // готовим переводчик в фоне, не задерживая остальные источники
+                        try {
+                            const a = await self.Translator.availability({ sourceLanguage: 'en', targetLanguage: tgt });
+                            const gesture = navigator.userActivation && navigator.userActivation.isActive;
+                            if (a === 'unavailable' || (a !== 'available' && !gesture)) { slot.state = 'no'; return; }
+                            slot.translator = await self.Translator.create({ sourceLanguage: 'en', targetLanguage: tgt });
+                            slot.state = 'ready';
+                            scheduleApply();
+                        } catch (e) { slot.state = 'no'; }
+                    })();
+                }
+                if (slot.translator) {
+                    return await Promise.race([slot.translator.translate(text), new Promise((_, rej) => setTimeout(() => rej(new Error('chrome: таймаут')), 8000))]);
+                }
+                const err = new Error('chrome: модель ещё не готова');
+                err.skip = true;                // не считать сбоем — просто идём к следующему источнику
+                throw err;
+            }
+        },
+        {   // 2. Google Translate (публичный endpoint)
+            name: 'google', enabled: () => true,
+            run: async (text, tgt) => {
+                const base = 'https://translate.googleapis.com/translate_a/single?client=gtx&dt=t&sl=auto&tl=' + tgt;
+                const r = text.length > 800
+                    ? await fetch(base, { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: 'q=' + encodeURIComponent(text) })
+                    : await fetch(base + '&q=' + encodeURIComponent(text));
+                if (!r.ok) throw new Error('google ' + r.status);
+                const j = await r.json();
+                const out = (j[0] || []).map(s => s && s[0] || '').join('');
+                if (!out) throw new Error('google: пустой ответ');
+                return out;
+            }
+        },
+        {   // 3. Lingva (открытые зеркала Google Translate)
+            name: 'lingva', enabled: () => true,
+            run: (text, tgt) => chunked(text, 900, async c => {
+                const hosts = ['https://lingva.ml', 'https://lingva.garudalinux.org', 'https://translate.plausibility.cloud'];
+                let last;
+                for (const h of hosts) {
+                    try {
+                        const r = await fetch(h + '/api/v1/en/' + tgt + '/' + encodeURIComponent(c));
+                        if (!r.ok) throw new Error('lingva ' + r.status);
+                        const j = await r.json();
+                        if (j.translation) return j.translation;
+                        throw new Error('lingva: пустой ответ');
+                    } catch (e) { last = e; }
+                }
+                throw last;
+            })
+        },
+        {   // 4. MyMemory
+            name: 'mymemory', enabled: () => true,
+            run: (text, tgt) => chunked(text, 480, async c => {
+                const r = await fetch('https://api.mymemory.translated.net/get?q=' + encodeURIComponent(c) + '&langpair=en|' + tgt);
+                if (!r.ok) throw new Error('mymemory ' + r.status);
+                const j = await r.json();
+                const t = j.responseData && j.responseData.translatedText;
+                if (!t || /MYMEMORY WARNING|QUERY LENGTH|INVALID/i.test(t) || j.responseStatus !== 200) throw new Error('mymemory: ' + (j.responseDetails || 'ошибка'));
+                return t;
+            })
+        }
+    ];
+    const downUntil = {};   // имя провайдера -> время, до которого он считается неработающим
+
+    async function translateOne(code, text) {
+        let lastErr;
+        for (const p of providers) {
+            if (!p.enabled()) continue;
+            if (cfg().provider && cfg().provider !== 'auto' && cfg().provider !== 'web' && cfg().provider !== p.name) continue;
+            if ((downUntil[p.name] || 0) > Date.now()) continue;
+            try {
+                const out = await p.run(text, code);
+                if (typeof out === 'string' && out.trim()) return out.trim();
+                throw new Error(p.name + ': пустой ответ');
+            } catch (e) {
+                lastErr = e;
+                if (e && e.skip) continue;
+                downUntil[p.name] = Date.now() + RETRY_MS;
+                console.warn('[I18N] провайдер "' + p.name + '" недоступен:', e && e.message || e);
+            }
+        }
+        throw lastErr || new Error('нет доступных переводчиков');
+    }
+
+    // ---------- очередь запросов ----------
+    function setBusy(v) {
+        if (v === busyNow) return;
+        busyNow = v;
+        window.dispatchEvent(new CustomEvent('i18n-busy', { detail: v }));
+    }
+    function pump() {
+        while (active < MAX_PARALLEL && queue.length) {
+            const job = queue.shift();
+            active++;
+            setBusy(true);
+            translateProtected(job.code, job.text).then(tr => {
+                cacheFor(job.code).set(job.text, tr);
+                saveCacheSoon(job.code);
+                if (job.code === CODES[lang]) scheduleApply();
+            }).catch(() => {
+                failedAt.set(job.code + '|' + job.text, Date.now());
+            }).finally(() => {
+                queued.delete(job.code + '|' + job.text);
+                active--;
+                if (!queue.length && !active) setBusy(false);
+                pump();
+            });
+        }
+    }
+    function request(code, core) {
+        const key = code + '|' + core;
+        if (queued.has(key)) return;
+        const f = failedAt.get(key);
+        if (f && Date.now() - f < RETRY_MS) return;
+        queued.add(key);
+        queue.push({ code, text: core });
+        pump();
+    }
+    function scheduleApply() {            // после прихода переводов — один проход по странице
+        clearTimeout(applyTimer);
+        applyTimer = setTimeout(() => { if (lang !== 'EN') applyAll(); }, 80);
+    }
+
+    // ---------- перевод строк / узлов ----------
+    function lookup(core) {
+        const code = CODES[lang];
+        const o = override(code, core);
+        if (o !== undefined) return o;
+        const hit = cacheFor(code).get(core);
+        if (hit !== undefined) return hit;
+        request(code, core);               // перевод появится позже, страница обновится сама
+        return null;
+    }
+    function translateRaw(raw) {
+        const m = /^(\s*)([\s\S]*?)(\s*)$/.exec(raw);
+        const core = norm(m[2]);
+        if (!core || !LETTERS.test(core) || /^(https?:|www\.)|@\S+\.\S+/.test(core)) return null;
+        if (/^[A-Z0-9]{2,6}$/.test(core) || isProtected(core)) return null;   // USD, PDF, STL, JS, название сайта…
+        const r = lookup(core);
+        return r === null ? null : m[1] + r + m[3];
+    }
+
+    const skipped = el => !el || (el.closest && el.closest(SKIP));
+
+    function textNode(node) {
+        const parent = node.parentNode;
+        if (!parent || parent.nodeType !== 1 || skipped(parent)) return;
+        const cur = node.nodeValue;
+        const r = textRec.get(node);
+        const base = (r && cur === r.t) ? r.o : cur;
+        const tr = lang === 'EN' ? null : translateRaw(base);
+        if (tr !== null && tr !== base) {
+            if (tr !== cur) node.nodeValue = tr;
+            textRec.set(node, { o: base, t: tr });
+        } else {
+            if (r && cur === r.t) node.nodeValue = base;
+            textRec.delete(node);
+        }
+    }
+    function attr(el, name) {
+        if (!el || el.nodeType !== 1 || skipped(el)) return;
+        let rec = attrRec.get(el);
+        if (!rec) { rec = {}; attrRec.set(el, rec); }
+        const cur = el.getAttribute(name);
+        if (cur === null) { delete rec[name]; return; }
+        const r = rec[name];
+        const base = (r && cur === r.t) ? r.o : cur;
+        const tr = lang === 'EN' ? null : translateRaw(base);
+        if (tr !== null && tr !== base) {
+            if (tr !== cur) el.setAttribute(name, tr);
+            rec[name] = { o: base, t: tr };
+        } else {
+            if (r && cur === r.t) el.setAttribute(name, base);
+            delete rec[name];
+        }
+    }
+    function attrs(el) { ATTRS.forEach(n => { if (el.hasAttribute(n)) attr(el, n); }); }
+
+    function walk(root) {
+        if (!root) return;
+        if (root.nodeType === 3) { textNode(root); return; }
+        if (root.nodeType !== 1) return;
+        if (root.matches && root.matches(SKIP)) return;
+        attrs(root);
+        if (root.querySelectorAll) root.querySelectorAll(ATTR_SEL).forEach(attrs);
+        const w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null);
+        let n;
+        while ((n = w.nextNode())) textNode(n);
+    }
+    function onMutations(list) {
+        observer.disconnect();
+        try {
+            list.forEach(r => {
+                if (r.type === 'childList') r.addedNodes.forEach(walk);
+                else if (r.type === 'characterData') textNode(r.target);
+                else if (r.type === 'attributes') attr(r.target, r.attributeName);
+            });
+        } finally { connect(); }
+    }
+    function connect() {
+        if (observer && document.body) observer.observe(document.body, { childList: true, subtree: true, characterData: true, attributes: true, attributeFilter: ATTRS });
+    }
+    function applyAll() {
+        if (!document.body) return;
+        if (!observer) observer = new MutationObserver(onMutations);
+        observer.disconnect();
+        walk(document.body);
+        connect();
+    }
+
+    function setLang(code) {
+        if (!CODES[code]) code = 'EN';
+        lang = code;
+        queue.length = 0; queued.clear();                  // отменяем запросы предыдущего языка
+        Object.keys(downUntil).forEach(k => delete downUntil[k]);   // новый выбор языка — пробуем всех провайдеров заново
+        document.documentElement.lang = CODES[code];
+        document.documentElement.setAttribute('data-lang', code);
+        applyAll();
+        if (code !== 'EN') PRELOAD.forEach(s => lookup(norm(s)));
+        return code;
+    }
+
+    // Синхронный перевод одной строки из кэша (для alert / confirm)
+    function t(str) {
+        if (lang === 'EN' || typeof str !== 'string') return str;
+        const r = translateRaw(str);
+        return r === null ? str : r;
+    }
+
+    return {
+        setLang, t,
+        get lang() { return lang; },
+        get busy() { return busyNow; },
+        clearCache() {                                      // сбросить сохранённые переводы (если закэшировался плохой перевод)
+            Object.keys(localStorage).filter(k => k.indexOf(CACHE_PREFIX) === 0).forEach(k => localStorage.removeItem(k));
+            Object.keys(caches).forEach(k => delete caches[k]);
+            failedAt.clear();
+            if (lang !== 'EN') setLang(lang);
+        }
+    };
+})();
+
+// Системные окна браузера тоже переводим (из кэша; если перевода ещё нет — показывается оригинал)
+(function () {
+    const _alert = window.alert.bind(window), _confirm = window.confirm.bind(window);
+    window.alert = m => _alert(I18N.t(String(m)));
+    window.confirm = m => _confirm(I18N.t(String(m)));
+})();
+</script>
     <script>
         /* Вся палитра считается от одного цвета: SITE_SETTINGS.brandColor (products.js) */
         (function () {
@@ -1036,7 +1426,7 @@ body.cursor-dot-enabled :is(button, a, input, select, textarea, option, label,
           <div class="superellipse">
             <span class="logo-text-white" data-site="logoMark">JS</span>
           </div>
-          <span class="logo-label" data-site="logoLabel">Hub</span>
+          <span class="logo-label" data-site="logoLabel">Dev</span>
         </div>
         
 	<!-- NAVIGATION -->        
@@ -1149,8 +1539,8 @@ body.cursor-dot-enabled :is(button, a, input, select, textarea, option, label,
                   <i class="fa-solid" :class="darkMode ? 'fa-sun' : 'fa-moon'"></i>
             </button>
         
-            <!-- Переключатель валют -->
-            <div class="relative" x-data="{ open: false }">
+            <!-- Переключатель валют (виден только когда магазин включён: SHOP_CONFIG.hideShop = false) -->
+            <div class="relative notranslate" translate="no" x-data="{ open: false }" x-show="!shopConfig.hideShop" x-cloak>
                 <button @click="open = !open" 
                         @click.away="open = false"
                         class="flex items-center gap-1 text-xs font-bold text-gray-500 hover:text-brand-600 transition-colors uppercase tracking-wider">
@@ -1178,11 +1568,12 @@ body.cursor-dot-enabled :is(button, a, input, select, textarea, option, label,
 
 
             <!-- Переключатель языков -->           
-            <div class="relative" x-data="{ open: false }">
+            <div class="relative notranslate" translate="no" x-data="{ open: false, busy: false }" @i18n-busy.window="busy = $event.detail">
                 <button @click="open = !open" 
                         @click.away="open = false"
                         class="flex items-center gap-1 text-xs font-bold text-gray-500 hover:text-brand-600 transition-colors uppercase tracking-wider">
                     <span x-text="language"></span>
+                    <i x-show="busy" x-cloak class="fa-solid fa-spinner fa-spin text-[9px]" title="Translating..."></i>
                     <i class="fa-solid fa-chevron-down text-[8px] transition-transform" :class="open ? 'rotate-180' : ''"></i>
                 </button>
 
@@ -1195,7 +1586,7 @@ body.cursor-dot-enabled :is(button, a, input, select, textarea, option, label,
                      :class="darkMode ? 'bg-[#1E1E1E] border-gray-800' : 'bg-white border-gray-200'">
                     
 					<template x-for="lang in ['EN', 'GE', 'RU']">
-						<button @click="language = lang; Alpine.store('siteLang', lang); open = false"
+						<button @click="setLanguage(lang); open = false"
 								class="w-full text-left px-4 py-2 text-[10px] font-bold transition-colors"
 								:class="darkMode ? 'text-gray-300 hover:bg-brand-900/20' : 'text-gray-700 hover:bg-gray-100'"
 								x-text="lang">
@@ -1215,7 +1606,7 @@ body.cursor-dot-enabled :is(button, a, input, select, textarea, option, label,
 			<template x-if="isLoggedIn">
 				<div class="flex items-center gap-3 pl-2 border-l border-gray-100">
 					<!-- Кликабельная аватарка или инициалы -->
-					<div @click="openProfile()" class="w-8 h-8 rounded-full overflow-hidden bg-brand-100 text-brand-600 flex items-center justify-center text-[10px] font-bold cursor-pointer hover:opacity-80 transition-opacity relative" title="Редактировать профиль">
+					<div @click="openProfile()" class="w-8 h-8 rounded-full overflow-hidden bg-brand-100 text-brand-600 flex items-center justify-center text-[10px] font-bold cursor-pointer hover:opacity-80 transition-opacity relative" title="Edit profile">
 						<!-- Картинка аватара -->
 						<img x-show="avatarBase64" :src="avatarBase64" class="w-full h-full object-cover absolute inset-0">
 						<!-- Инициалы (показываются, если avatarBase64 нет) -->
@@ -1325,7 +1716,7 @@ body.cursor-dot-enabled :is(button, a, input, select, textarea, option, label,
                     <label class="fm-label text-gray-600">
                         Confirm you're not a robot: <span class="text-brand-600" x-text="captchaNum1 + ' + ' + captchaNum2 + ' = ?'"></span>
                     </label>
-                    <input type="number" x-model="userCaptchaInput" placeholder="Введите ответ" required class="field">
+                    <input type="number" x-model="userCaptchaInput" placeholder="Enter your answer" required class="field">
                 </div>
 
                 <template x-if="authError">
@@ -1534,7 +1925,7 @@ body.cursor-dot-enabled :is(button, a, input, select, textarea, option, label,
              :class="modalMedia[modalCurrentIndex]?.type === 'image' ? 'w-fit mx-auto' : 'w-full'">
             
             <!-- Кнопка закрытия для мобильных -->
-            <button @click="modalGalleryOpen = false; modalMedia = [];" aria-label="Закрыть"
+            <button @click="modalGalleryOpen = false; modalMedia = [];" aria-label="Close"
                     class="md:hidden absolute top-3 right-3 z-[100] w-10 h-10 rounded-full custom-slider-btn flex items-center justify-center shadow-lg cursor-pointer">
                 <i class="fa-solid fa-xmark text-xl pointer-events-none"></i>
             </button>
@@ -1552,14 +1943,14 @@ body.cursor-dot-enabled :is(button, a, input, select, textarea, option, label,
        target="_blank" 
        download 
        class="w-10 h-10 rounded-full custom-slider-btn flex items-center justify-center transition-all cursor-pointer shadow-[0_0_30px_rgba(0,0,0,0.99)]" 
-       title="Открыть в новой вкладке и скачать">
+       title="Open in new tab and download">
         <i class="fa-solid fa-download text-sm"></i>
     </a>
 </template>
 <template x-if="isLoggedIn && modalMedia[modalCurrentIndex] && ['3mf','stl','step','stp'].includes(modalMedia[modalCurrentIndex].type)">
     <a :href="modalMedia[modalCurrentIndex].url" target="_blank" download
        class="w-10 h-10 rounded-full custom-slider-btn flex items-center justify-center transition-all cursor-pointer shadow-[0_0_30px_rgba(0,0,0,0.99)]"
-       title="Скачать модель">
+       title="Download model">
         <i class="fa-solid fa-download text-sm"></i>
     </a>
 </template>
@@ -1633,7 +2024,7 @@ body.cursor-dot-enabled :is(button, a, input, select, textarea, option, label,
              x-effect="Inline3D.mount($el, modalMedia[modalCurrentIndex].url, modalMedia[modalCurrentIndex].type, { autorotate: modalAutorotate, section: modalSection.on ? { axis: modalSection.axis, pct: modalSection.pct, flip: modalSection.flip } : null })"></div>
         <button type="button" @click.stop="modalAutorotate = !modalAutorotate"
                 class="absolute top-4 left-4 z-40 w-10 h-10 rounded-full custom-slider-btn shadow-lg flex items-center justify-center text-sm cursor-pointer"
-                :title="modalAutorotate ? 'Остановить вращение' : 'Включить вращение'">
+                :title="modalAutorotate ? 'Stop rotation' : 'Start rotation'">
             <i class="fa-solid pointer-events-none" :class="modalAutorotate ? 'fa-pause' : 'fa-rotate-right'"></i>
         </button>
 
@@ -1641,7 +2032,7 @@ body.cursor-dot-enabled :is(button, a, input, select, textarea, option, label,
         <div class="absolute bottom-14 left-4 right-4 z-40 flex items-center gap-2 pointer-events-none [&>*]:pointer-events-auto" @click.stop>
             <button type="button" @click.stop="modalSection.on = !modalSection.on"
                     class="w-10 h-10 p-0 shrink-0 rounded-full custom-slider-btn shadow-lg text-sm cursor-pointer"
-                    :title="modalSection.on ? 'Выключить сечение' : 'Сечение модели'">
+                    :title="modalSection.on ? 'Turn section off' : 'Section view'">
                 <span class="absolute inset-0 flex items-center justify-center leading-none pointer-events-none">
                     <i class="fa-solid fa-scissors" :class="modalSection.on ? 'text-blue-500' : ''"></i>
                 </span>
@@ -1649,7 +2040,7 @@ body.cursor-dot-enabled :is(button, a, input, select, textarea, option, label,
             <div x-show="modalSection.on" x-transition.opacity class="flex items-center gap-2 flex-1 min-w-0">
                 <button type="button" @click.stop="modalSection.axis = { x: 'y', y: 'z', z: 'x' }[modalSection.axis]"
                         class="w-10 h-10 p-0 shrink-0 rounded-full custom-slider-btn shadow-lg text-sm font-bold uppercase cursor-pointer"
-                        :title="'Плоскость сечения: ' + modalSection.axis.toUpperCase() + ' (нажмите для смены)'">
+                        :title="'Section plane: ' + modalSection.axis.toUpperCase() + ' (click to change)'">
                     <span class="absolute inset-0 flex items-center justify-center pointer-events-none">
                         <svg x-show="modalSection.axis === 'x'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="block w-[18px] h-[18px]"><path d="M7 7l10 10M17 7L7 17"/></svg>
                         <svg x-show="modalSection.axis === 'y'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="block w-[18px] h-[18px]"><path d="M7 5.5l5 6.5 5-6.5M12 12v6.5"/></svg>
@@ -1658,14 +2049,14 @@ body.cursor-dot-enabled :is(button, a, input, select, textarea, option, label,
                 </button>
                 <button type="button" @click.stop="modalSection.flip = !modalSection.flip"
                         class="group w-10 h-10 p-0 shrink-0 rounded-full custom-slider-btn shadow-lg text-sm cursor-pointer"
-                        title="Сменить сторону сечения">
+                        title="Switch cut side">
                     <span class="absolute inset-0 flex items-center justify-center pointer-events-none">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="block w-[18px] h-[18px] group-hover:text-white" :class="!modalSection.flip ? 'text-blue-500' : ''"><path d="M3.5 12h17M8 7.5L3.5 12 8 16.5M16 7.5l4.5 4.5-4.5 4.5"/></svg>
                     </span>
                 </button>
                 <div class="h-10 px-4 rounded-full custom-slider-btn shadow-lg flex items-center flex-1 min-w-0 max-w-[16rem]">
                     <input type="range" min="0" max="100" step="1" x-model.number="modalSection.pct"
-                           class="w-full min-w-0 cursor-pointer" title="Глубина сечения">
+                           class="w-full min-w-0 cursor-pointer" title="Cut depth">
                 </div>
             </div>
         </div>
@@ -1702,7 +2093,7 @@ body.cursor-dot-enabled :is(button, a, input, select, textarea, option, label,
 
         <!-- Индикатор текущего слайда -->
         <div class="w-full min-h-[3.25rem] flex items-center justify-center text-white/80 text-sm font-medium cursor-pointer"
-             @click="modalGalleryOpen = false; modalMedia = [];" title="Закрыть">
+             @click="modalGalleryOpen = false; modalMedia = [];" title="Close">
             <span x-show="modalMedia.length > 1"><span x-text="modalCurrentIndex + 1"></span> / <span x-text="modalMedia.length"></span></span>
         </div>
         
@@ -1755,7 +2146,7 @@ body.cursor-dot-enabled :is(button, a, input, select, textarea, option, label,
 								// запасной вариант — открытие ссылки в новой вкладке
 								window.open(modalMedia[modalCurrentIndex].url, '_blank');
 							});
-					" class="w-10 h-10 rounded-full custom-slider-btn flex items-center justify-center transition-all cursor-pointer shadow-[0_0_30px_rgba(0,0,0,0.99)]" title="Скачать изображение">
+					" class="w-10 h-10 rounded-full custom-slider-btn flex items-center justify-center transition-all cursor-pointer shadow-[0_0_30px_rgba(0,0,0,0.99)]" title="Download image">
 						<i class="fa-solid fa-download text-sm"></i>
 					</button>
 				</template>
@@ -2175,13 +2566,13 @@ body.cursor-dot-enabled :is(button, a, input, select, textarea, option, label,
         <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
             <div>
                 <h2 class="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white tracking-tight">3D CAD Viewer</h2>
-                <p class="text-gray-500 dark:text-gray-400 text-sm mt-1">Интерактивный просмотр файлов .STL, .STEP / .STP и .3MF</p>
+                <p class="text-gray-500 dark:text-gray-400 text-sm mt-1">Interactive viewer for .STL, .STEP / .STP and .3MF files</p>
             </div>
 
             <!-- Кнопка загрузки файла с ПК (в общем стиле .btn-primary) -->
             <label class="btn-primary px-6 py-3 text-sm font-medium cursor-pointer inline-flex items-center gap-3">
                 <i class="fa-solid fa-folder-open text-base"></i>
-                <span>Открыть файл с ПК</span>
+                <span>Open file from PC</span>
                 <input type="file" accept=".stl,.step,.stp,.3mf" @change="loadLocalFile($event)" class="hidden">
             </label>
         </div>
@@ -2207,7 +2598,7 @@ body.cursor-dot-enabled :is(button, a, input, select, textarea, option, label,
             <div x-show="isLoading" x-cloak class="absolute inset-0 bg-white/80 dark:bg-black/80 backdrop-blur-sm flex flex-col items-center justify-center text-gray-900 dark:text-white z-30 p-4 text-center">
                 <i class="fa-solid fa-circle-notch fa-spin text-3xl mb-3 text-brand-500"></i>
                 <p class="text-sm font-semibold" x-text="loadingText"></p>
-                <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Обработка 3D-геометрии...</p>
+                <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Processing 3D geometry...</p>
             </div>
 
             <!-- Плашка с информацией о модели -->
@@ -2219,12 +2610,12 @@ body.cursor-dot-enabled :is(button, a, input, select, textarea, option, label,
             <!-- Панель инструментов снизу (в едином стиле с кнопками интерфейса) -->
             <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-3 bg-white/90 dark:bg-black/70 backdrop-blur-md px-5 py-2.5 rounded-full z-10 border border-gray-200 dark:border-white/10 text-gray-800 dark:text-white text-xs shadow-xl">
                 <button @click="resetCamera()" class="hover:text-brand-600 dark:hover:text-brand-400 font-semibold transition-colors flex items-center gap-2 cursor-pointer">
-                    <i class="fa-solid fa-compress"></i> Сбросить вид
+                    <i class="fa-solid fa-compress"></i> Reset view
                 </button>
                 <span class="text-gray-300 dark:text-white/20">|</span>
                 <button @click="toggleAutorotate()" class="hover:text-brand-600 dark:hover:text-brand-400 font-semibold transition-colors flex items-center gap-2 cursor-pointer">
                     <i class="fa-solid fa-rotate" :class="autorotate ? 'text-brand-600 dark:text-brand-400 animate-spin' : ''"></i> 
-                    <span x-text="autorotate ? 'Автоповорот ВКЛ' : 'Автоповорот ВЫКЛ'"></span>
+                    <span x-text="autorotate ? 'Auto-rotate ON' : 'Auto-rotate OFF'"></span>
                 </button>
             </div>
         </div>
@@ -2567,7 +2958,7 @@ body.cursor-dot-enabled :is(button, a, input, select, textarea, option, label,
                                     </iframe>
                                     <div class="absolute inset-0 cursor-pointer bg-transparent z-20"
                                            @click="videoPlaying = false"
-                                           title="Нажмите, чтобы остановить видео">
+                                           title="Click to stop the video">
                                     </div>
                                 </div>
                             </template>
@@ -2583,13 +2974,13 @@ body.cursor-dot-enabled :is(button, a, input, select, textarea, option, label,
                             <button type="button"
                                     @click.stop="rot3d = !rot3d"
                                     class="absolute top-3 right-[3.75rem] z-40 w-9 h-9 rounded-full custom-slider-btn shadow-lg flex items-center justify-center text-sm cursor-pointer"
-                                    :title="rot3d ? 'Остановить вращение' : 'Включить вращение'">
+                                    :title="rot3d ? 'Stop rotation' : 'Start rotation'">
                                 <i class="fa-solid pointer-events-none" :class="rot3d ? 'fa-pause' : 'fa-rotate-right'"></i>
                             </button>
                             <button type="button"
                                     @click.stop="openModalGallery(media, currentImg, rot3d)"
                                     class="absolute top-3 right-3 z-40 w-9 h-9 rounded-full custom-slider-btn shadow-lg flex items-center justify-center text-sm cursor-pointer"
-                                    title="Открыть на весь экран">
+                                    title="Open fullscreen">
                                 <i class="fa-solid fa-expand pointer-events-none"></i>
                             </button>
                         </div>
@@ -3171,10 +3562,10 @@ body.cursor-dot-enabled :is(button, a, input, select, textarea, option, label,
 			 setInterval(() => loadUsers(), 1000);
 		 ">
 		
-		<h3 class="text-xl font-bold mb-4">Список зарегистрированных пользователей (<span x-text="allUsers.length"></span>)</h3>
+		<h3 class="text-xl font-bold mb-4">Registered users (<span x-text="allUsers.length"></span>)</h3>
 		
 		<template x-if="allUsers.length === 0">
-			<p class="text-gray-500">Пока нет зарегистрированных пользователей.</p>
+			<p class="text-gray-500">No registered users yet.</p>
 		</template>
 
 		<template x-if="allUsers.length > 0">
@@ -3182,14 +3573,14 @@ body.cursor-dot-enabled :is(button, a, input, select, textarea, option, label,
 				<table class="min-w-full divide-y divide-gray-200 text-sm">
 					<thead class="bg-gray-50">
 						<tr>
-							<th class="px-4 py-3 text-left font-medium text-gray-500 uppercase tracking-wider">Аватар</th>
-							<th class="px-4 py-3 text-left font-medium text-gray-500 uppercase tracking-wider">Имя</th>
+							<th class="px-4 py-3 text-left font-medium text-gray-500 uppercase tracking-wider">Avatar</th>
+							<th class="px-4 py-3 text-left font-medium text-gray-500 uppercase tracking-wider">Name</th>
 							<th class="px-4 py-3 text-left font-medium text-gray-500 uppercase tracking-wider">Email</th>
-							<th class="px-4 py-3 text-left font-medium text-gray-500 uppercase tracking-wider">Пароль</th>
-							<th class="px-4 py-3 text-left font-medium text-gray-500 uppercase tracking-wider">Адрес</th>
-							<th class="px-4 py-3 text-left font-medium text-gray-500 uppercase tracking-wider">Город</th>
-							<th class="px-4 py-3 text-left font-medium text-gray-500 uppercase tracking-wider">Индекс</th>
-							<th class="px-4 py-3 text-center font-medium text-gray-500 uppercase tracking-wider">Действие</th>
+							<th class="px-4 py-3 text-left font-medium text-gray-500 uppercase tracking-wider">Password</th>
+							<th class="px-4 py-3 text-left font-medium text-gray-500 uppercase tracking-wider">Address</th>
+							<th class="px-4 py-3 text-left font-medium text-gray-500 uppercase tracking-wider">City</th>
+							<th class="px-4 py-3 text-left font-medium text-gray-500 uppercase tracking-wider">Zip</th>
+							<th class="px-4 py-3 text-center font-medium text-gray-500 uppercase tracking-wider">Action</th>
 						</tr>
 					</thead>
 					<tbody class="bg-white divide-y divide-gray-200">
@@ -3216,7 +3607,7 @@ body.cursor-dot-enabled :is(button, a, input, select, textarea, option, label,
 									<button @click="
 										allUsers.splice(index, 1); 
 										localStorage.setItem('reTools_users', JSON.stringify(allUsers));
-									" class="text-red-600 hover:text-red-900 font-bold text-lg px-2 py-1" title="Удалить пользователя">
+									" class="text-red-600 hover:text-red-900 font-bold text-lg px-2 py-1" title="Delete user">
 										✕
 									</button>
 								</td>
@@ -3393,6 +3784,8 @@ shopConfig: SHOP_CONFIG,
                 },
 
                 init() {
+// --- Язык интерфейса ---
+this.setLanguage(this.detectLanguage(), false);
 // --- Инициализация пути из URL ---
 window.addEventListener('popstate', () => this.goToPath(true));
 if (window.location.pathname.replace(/^\/+|\/+$/g, '')) {
@@ -3435,6 +3828,7 @@ if (window.location.pathname.replace(/^\/+|\/+$/g, '')) {
                         this.userName = userData.name;
                         this.shippingInfo = { ...userData.shippingInfo };
                         this.avatarBase64 = userData.avatar || reToolsStore.avatarFor(userData.email);
+                        if (userData.lang) this.setLanguage(userData.lang, false);   // язык из профиля
                         
                         if (!this.shippingInfo.name) {
                         this.shippingInfo.name = this.userName;
@@ -3502,6 +3896,38 @@ if (window.location.pathname.replace(/^\/+|\/+$/g, '')) {
                         }
                     },
                 
+				// ---------- Язык интерфейса (EN / GE / RU) ----------
+				// Приоритет при запуске: язык из профиля вошедшего пользователя → последний выбранный → язык браузера → EN
+				detectLanguage() {
+					const ok = c => ['EN', 'GE', 'RU'].includes(c);
+					try { const s = JSON.parse(localStorage.getItem('reTools_session') || 'null'); if (s && ok(s.lang)) return s.lang; } catch (e) {}
+					try { const l = localStorage.getItem('reTools_lang'); if (ok(l)) return l; } catch (e) {}
+					const nav = (navigator.language || 'en').slice(0, 2).toLowerCase();
+					return nav === 'de' ? 'GE' : (nav === 'ru' ? 'RU' : 'EN');
+				},
+
+				setLanguage(code, save = true) {
+					if (!['EN', 'GE', 'RU'].includes(code)) code = 'EN';
+					this.language = code;
+					Alpine.store('siteLang', code);          // чат и прочие компоненты слушают это хранилище
+					reToolsStore.set('reTools_lang', code);
+					I18N.setLang(code);                      // переводит весь видимый контент на лету
+					if (save && this.isLoggedIn) this.saveLangToProfile(code);
+				},
+
+				// Сохраняет выбранный язык в профиле пользователя (и в активной сессии)
+				saveLangToProfile(code) {
+					try {
+						const session = JSON.parse(localStorage.getItem('reTools_session') || 'null');
+						if (!session) return;
+						const users = JSON.parse(localStorage.getItem('reTools_users') || '[]');
+						const i = users.findIndex(u => u.email === session.email);
+						if (i !== -1) { users[i].lang = code; reToolsStore.set('reTools_users', JSON.stringify(users)); }
+						session.lang = code;
+						reToolsStore.set('reTools_session', JSON.stringify(session));
+					} catch (e) { console.warn('Не удалось сохранить язык в профиле:', e); }
+				},
+
 				handleAuth() {
 					const users = JSON.parse(localStorage.getItem('reTools_users') || '[]');
 					//console.log('Список всех пользователей в базе:', users);
@@ -3523,7 +3949,8 @@ if (window.location.pathname.replace(/^\/+|\/+$/g, '')) {
 							email: this.authEmail,
 							password: this.authPassword,
 							shippingInfo: { ...this.shippingInfo },
-							avatar: this.avatarBase64 || '' // Сохраняем аватар при регистрации
+							avatar: this.avatarBase64 || '', // Сохраняем аватар при регистрации
+							lang: this.language // язык интерфейса в профиле
 						};
 						users.push(newUser);
 						if (!reToolsStore.set('reTools_users', JSON.stringify(users))) {
@@ -3550,6 +3977,9 @@ if (window.location.pathname.replace(/^\/+|\/+$/g, '')) {
 							this.isLoggedIn = true;
 							this.showAuth = false;
 							this.authError = '';
+							// Язык из профиля; если в профиле его ещё нет — сохраняем текущий выбранный
+							if (user.lang) this.setLanguage(user.lang, false);
+							else this.saveLangToProfile(this.language);
 						} else {
 							this.authError = '⚠️ Wrong email or password';
 							this.refreshCaptcha();
@@ -3659,13 +4089,13 @@ if (window.location.pathname.replace(/^\/+|\/+$/g, '')) {
 					// 1. Проверка корректности email
 					const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 					if (!emailRegex.test(this.authEmail)) {
-						this.profileError = '⚠️ Пожалуйста, введите корректный email';
+						this.profileError = '⚠️ Please enter a valid email';
 						return;
 					}
 
 					// 2. Проверка длины пароля (если введен)
 					if (this.authPassword && this.authPassword.length < 6) {
-						this.profileError = '⚠️ Новый пароль должен содержать не менее 6 символов';
+						this.profileError = '⚠️ New password must be at least 6 characters';
 						return;
 					}
 
@@ -3677,7 +4107,7 @@ if (window.location.pathname.replace(/^\/+|\/+$/g, '')) {
 					if (this.authEmail !== targetEmail) {
 						const emailExists = users.some(u => u.email === this.authEmail);
 						if (emailExists) {
-							this.profileError = '⚠️ Этот email уже используется другим аккаунтом';
+							this.profileError = '⚠️ This email is already used by another account';
 							return;
 						}
 					}
@@ -3689,7 +4119,8 @@ if (window.location.pathname.replace(/^\/+|\/+$/g, '')) {
 						email: this.authEmail,
 						password: this.authPassword ? this.authPassword : currentSession.password,
 						avatar: this.avatarBase64 !== undefined ? this.avatarBase64 : (currentSession.avatar || ''), // Сохранение аватарки
-						shippingInfo: { ...this.shippingInfo }
+						shippingInfo: { ...this.shippingInfo },
+						lang: this.language // язык интерфейса
 					};
 
 					if (userIndex !== -1) {
@@ -3720,7 +4151,7 @@ if (window.location.pathname.replace(/^\/+|\/+$/g, '')) {
 				},
 				// Метод удаления профиля
 				deleteProfile() {
-					if (confirm('Вы уверены, что хотите удалить свой профиль? Это действие необратимо.')) {
+					if (confirm('Are you sure you want to delete your profile? This action cannot be undone.')) {
 						// 1. Получаем текущую сессию, чтобы узнать, кого именно удаляем
 						const currentSession = JSON.parse(localStorage.getItem('reTools_session') || '{}');
 						const targetEmail = currentSession.email;
@@ -3743,7 +4174,7 @@ if (window.location.pathname.replace(/^\/+|\/+$/g, '')) {
 						this.shippingInfo = { name: '', address: '', city: '', zip: '' };
 						this.showProfileModal = false;
 						
-						alert('Ваш профиль был полностью удален.');
+						alert('Your profile has been completely deleted.');
 					}
 				},
 handleScroll() {
@@ -3899,7 +4330,7 @@ document.addEventListener('contextmenu', (e) => {
 
 
 <!-- ВИДЖЕТ УМНОГО ЧАТ-БОТА -->
-<div class="fixed bottom-6 right-6 z-50" x-data="siteChat()">
+<div class="fixed bottom-6 right-6 z-50 notranslate" translate="no" x-data="siteChat()">
     
     <!-- Кнопка вызова чата -->
     <button @click="isOpen = !isOpen" 
@@ -4120,7 +4551,7 @@ document.addEventListener('alpine:init', () => {
         modelsList: [],
         currentIndex: 0,
         isLoading: false,
-        loadingText: 'Инициализация 3D...',
+        loadingText: 'Initializing 3D...',
         autorotate: true,
         showOpenButton: true,
         showSection: typeof CAD_VIEWER !== 'undefined' && CAD_VIEWER[0] ? (CAD_VIEWER[0].showOnHome ?? true) : true,
@@ -4151,7 +4582,7 @@ document.addEventListener('alpine:init', () => {
         },
 
         get currentModelName() {
-            return this.modelsList[this.currentIndex]?.name || 'Файл с ПК';
+            return this.modelsList[this.currentIndex]?.name || 'File from PC';
         },
 
         get currentModelType() {
@@ -4264,7 +4695,7 @@ document.addEventListener('alpine:init', () => {
 
             const ext = file.name.split('.').pop().toLowerCase();
             this.isLoading = true;
-            this.loadingText = `Чтение ${file.name}...`;
+            this.loadingText = `Reading ${file.name}...`;
 
             const reader = new FileReader();
             reader.onload = (e) => {
@@ -4275,7 +4706,7 @@ document.addEventListener('alpine:init', () => {
                         this.currentIndex = this.modelsList.length - 1;
                     } catch (err) {
                         console.error("Ошибка обработки файла:", err);
-                        alert("Не удалось обработать CAD-файл.");
+                        alert("Failed to process the CAD file.");
                         this.isLoading = false;
                     }
                 }, 30);
@@ -4298,11 +4729,11 @@ document.addEventListener('alpine:init', () => {
             } 
             else if (type === 'step' || type === 'stp') {
                 if (!occtEngineInstance) {
-                    alert("Конвертер STEP еще инициализируется. Пожалуйста, подождите пару секунд.");
+                    alert("The STEP converter is still initializing. Please wait a few seconds.");
                     this.isLoading = false;
                     return;
                 }
-                this.loadingText = 'Парсинг B-Rep геометрии STEP...';
+                this.loadingText = 'Parsing STEP B-Rep geometry...';
                 
                 const result = occtEngineInstance.ReadStepFile(new Uint8Array(buffer), null);
                 
@@ -4472,7 +4903,7 @@ window.Inline3D = (function () {
         try {
             renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
         } catch (e) {
-            status.innerHTML = '<span>WebGL недоступен</span>';
+            status.innerHTML = '<span>WebGL is not available</span>';
             el.appendChild(status);
             return { url, update() {}, destroy() { el.innerHTML = ''; } };
         }
@@ -4691,7 +5122,7 @@ window.Inline3D = (function () {
         }).catch(err => {
             console.error('Inline3D:', err);
             if (destroyed) return;
-            status.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i><span>Не удалось загрузить модель</span>';
+            status.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i><span>Failed to load the model</span>';
         });
 
         function destroy() {

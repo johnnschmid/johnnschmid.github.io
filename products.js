@@ -16,6 +16,24 @@ brandColor: '#2D5BFF',
 cursorSkin: false, // или false для системного курсора
 defaultFontSize: 'Medium',
 
+translationOverrides: {
+  RU: {
+	'Home': 'Домой',  
+    'About': 'Обо мне',
+    'RePet': 'RePet',
+    'Contact': 'Контакты',
+    'Shop Now': 'В магазин',
+    'Back': 'Назад',
+    'Add to Cart': 'Добавить в корзину'
+  },
+  GE: {
+    'About': 'Über mich',
+    'Contact': 'Kontakt',
+    'RePet': 'RePet',
+    'Shop Now': 'Zum Shop'
+  }
+},
+
 };
 
 
