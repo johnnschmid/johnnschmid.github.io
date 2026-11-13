@@ -1201,6 +1201,12 @@ body.cursor-dot-enabled :is(button, a, input, select, textarea, option, label,
     .custom-section div.text-gray-800 { font-size: clamp(1.35rem, 1.1vw, 2.1rem) !important; line-height: 1.7 !important; }
 }
 
+/* Иконки подсказок (эмодзи слева от текста) растут вместе с текстом на 2K / 4K */
+@media (min-width: 2500px) {
+    .custom-section .hint-icon { font-size: clamp(2.3rem, 1.9vw, 3.6rem) !important; line-height: 1 !important; min-width: 1.4em; text-align: center; }
+    .custom-section .hint-icon + * { margin-left: 0.4rem; }
+}
+
 
 
 /* ================================================================
@@ -3111,7 +3117,7 @@ body.cursor-dot-enabled :is(button, a, input, select, textarea, option, label,
                 <div class="block lg:hidden space-y-4 pt-2 text-left">
                     <template x-for="(hint, idx) in sec.hints" :key="idx">
                         <div class="flex items-center gap-3 justify-start text-left mb-3">
-                            <span class="text-2xl flex-shrink-0" x-text="hint.emoji"></span>
+                            <span class="hint-icon text-2xl flex-shrink-0" x-text="hint.emoji"></span>
                             <p class="font-bold text-gray-800 text-lg text-left">
                                 <span x-text="hint.title"></span> 
                                 <span class="font-normal text-gray-800 text-lg" x-text="hint.text"></span>
@@ -3149,7 +3155,7 @@ body.cursor-dot-enabled :is(button, a, input, select, textarea, option, label,
         <template x-for="(hint, idx) in sec.hints" :key="idx">
             <div class="flex items-center gap-3 justify-start text-left">
                 <!-- Уберите здесь классы 4xl:text-5xl у эмодзи, если они мешают -->
-                <span class="text-2xl flex-shrink-0" x-text="hint.emoji"></span>
+                <span class="hint-icon text-2xl flex-shrink-0" x-text="hint.emoji"></span>
                 <!-- Уберите здесь класс 4xl:text-4xl, оставив общий адаптивный размер -->
                 <div class="text-gray-800 text-lg leading-relaxed">
                     <strong class="leading-relaxed font-bold text-gray-900" x-text="hint.title + ' '"></strong>

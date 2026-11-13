@@ -522,8 +522,8 @@ const SECTIONS_DATA = [
             { type: '3mf', url: 'https://dl.dropboxusercontent.com/scl/fi/33ji098udftmqp4e3qomu/gearbox4.3MF?rlkey=7fyqwubn3dcpo90dz67gst6f9&st=gzudde6r&dl=1'},
             
             
-            { type: 'pdf', url: 'https://drive.usercontent.google.com/download?export=download&confirm=t&id=1YMHcb2ZrTu7014qup8AXLSSAJnhL44xX', title: 'Product info (PDF)' },
-            { type: 'pdf', url: 'https://drive.usercontent.google.com/download?export=download&confirm=t&id=1YMHcb2ZrTu7014qup8AXLSSAJnhL44xX', title: 'Quick start (PDF)' },
+            { type: 'pdf', url: 'https://drive.usercontent.google.com/download?export=download&confirm=t&id=1YMHcb2ZrTu7014qup8AXLSSAJnhL44xX', title: 'Specs  (PDF)' },
+            { type: 'pdf', url: 'https://drive.usercontent.google.com/download?export=download&confirm=t&id=1YMHcb2ZrTu7014qup8AXLSSAJnhL44xX', title: 'Manual (PDF)' },
             //{ type: 'zip', url: 'https://example.com/models.zip', title: 'Download 3D Models (ZIP)' }
         ]
     },
@@ -613,8 +613,8 @@ const SECTIONS_DATA = [
             
             
             
-            { type: 'pdf', url: 'https://drive.usercontent.google.com/download?export=download&confirm=t&id=1Ya7VNq0rEyMTwKbkG3qYQj3cEYxOxUaT', title: 'Users manual (PDF)' },
-			{ type: 'pdf', url: 'https://drive.usercontent.google.com/download?export=download&confirm=t&id=1z8FwwZnH5_8cCpKiNmcDxiGHiCPNM1u5', title: 'Product spec (PDF)' },
+            { type: 'pdf', url: 'https://drive.usercontent.google.com/download?export=download&confirm=t&id=1Ya7VNq0rEyMTwKbkG3qYQj3cEYxOxUaT', title: 'Manual (PDF)' },
+			{ type: 'pdf', url: 'https://drive.usercontent.google.com/download?export=download&confirm=t&id=1z8FwwZnH5_8cCpKiNmcDxiGHiCPNM1u5', title: 'Specs  (PDF)' },
 			
             //{ type: 'zip', url: 'https://example.com/models.zip', title: 'Download 3D Models (ZIP)' }
         ]
@@ -999,8 +999,8 @@ const SECTIONS_DATA = [
             { type: '3mf', url: 'https://dl.dropboxusercontent.com/scl/fi/n63w2ijku898zcvcgwe9p/ERVU.3MF?rlkey=9snsglh29hp9xaasb6ff6697u&st=6lo73kgd&dl=1'},
             
             
-            { type: 'pdf', url: 'https://drive.usercontent.google.com/download?export=download&confirm=t&id=1hsMFfEB6kLkqek0R0ELf_Mt2YfDN9WHT', title: 'Users manual (PDF)' },
-			{ type: 'pdf', url: 'https://drive.usercontent.google.com/download?export=download&confirm=t&id=1zImgy7GpcrikipeFUWSC8xC9fWdZWlml', title: 'Product spec (PDF)' },            
+            { type: 'pdf', url: 'https://drive.usercontent.google.com/download?export=download&confirm=t&id=1hsMFfEB6kLkqek0R0ELf_Mt2YfDN9WHT', title: 'Manual (PDF)' },
+			{ type: 'pdf', url: 'https://drive.usercontent.google.com/download?export=download&confirm=t&id=1zImgy7GpcrikipeFUWSC8xC9fWdZWlml', title: 'Specs  (PDF)' },            
             //{ type: 'pdf', url: 'https://example.com/manual.pdf', title: 'Download User Manual (PDF)' },
             //{ type: 'zip', url: 'https://example.com/models.zip', title: 'Download 3D Models (ZIP)' }
         ]
@@ -1162,7 +1162,7 @@ const SECTIONS_DATA = [
             
             //{ type: 'pdf', url: 'https://drive.google.com/file/d/1WIUw-T5Bs6EJUH6hmj3C1r9S4iSmuF_4/view?usp=sharing', title: 'Download Article (PDF)' },
             { type: 'pdf', url: 'https://drive.usercontent.google.com/download?export=download&confirm=t&id=1WIUw-T5Bs6EJUH6hmj3C1r9S4iSmuF_4', title: 'Article (PDF)' },
-            { type: 'pdf', url: 'https://drive.usercontent.google.com/download?export=download&confirm=t&id=1Q1vDmfcmrTQSMCtIJvE6_MMx-7YihwHL', title: 'Manual (PDF)' },
+            { type: 'pdf', url: 'https://drive.usercontent.google.com/download?export=download&confirm=t&id=1Q1vDmfcmrTQSMCtIJvE6_MMx-7YihwHL', title: 'Manual  (PDF)' },
             
             //{ type: 'zip', url: 'https://example.com/models.zip', title: 'Download 3D Models (ZIP)' }
         ]
