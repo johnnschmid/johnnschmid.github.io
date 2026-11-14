@@ -479,12 +479,13 @@ window.I18N = (function () {
                 logoMark:  s.logoMark != null ? s.logoMark : initials,
                 logoLabel: s.logoLabel != null ? s.logoLabel : ''
             };
-            document.addEventListener('DOMContentLoaded', function () {
+            window.applySiteTexts = function () {
                 document.querySelectorAll('[data-site]').forEach(function (el) {
                     var v = texts[el.getAttribute('data-site')];
-                    if (v != null) el.textContent = v;
+                    if (v != null && el.textContent !== v) el.textContent = v;
                 });
-            });
+            };
+            document.addEventListener('DOMContentLoaded', window.applySiteTexts);
 
             /* Цвет адресной строки на мобильных */
             var meta = document.createElement('meta');
@@ -1167,6 +1168,14 @@ body.cursor-dot-enabled :is(button, a, input, select, textarea, option, label,
    7. РАСКЛАДКА СЕКЦИЙ И АДАПТИВ ДЛЯ 2K / 4K
    ================================================================ */
 .custom-section { padding: 4rem 1rem; }
+
+/* Длинные слова (особенно в немецком) переносятся и не растягивают страницу */
+.custom-section, .custom-section * { overflow-wrap: anywhere; word-wrap: break-word; min-width: 0; }
+.custom-section h2, .custom-section h3, .custom-section p { hyphens: auto; -webkit-hyphens: auto; }
+.custom-grid > * { min-width: 0; max-width: 100%; }
+@media (max-width: 639px) {
+    .custom-section h2 { font-size: clamp(1.6rem, 7.2vw, 2.25rem) !important; line-height: 1.15; }
+}
 @media (min-width: 768px) { .custom-section { padding: 6rem 2rem; } }
 
 .custom-grid {
@@ -1205,6 +1214,22 @@ body.cursor-dot-enabled :is(button, a, input, select, textarea, option, label,
 @media (min-width: 2500px) {
     .custom-section .hint-icon { font-size: clamp(2.3rem, 1.9vw, 3.6rem) !important; line-height: 1 !important; min-width: 1.4em; text-align: center; }
     .custom-section .hint-icon + * { margin-left: 0.4rem; }
+}
+
+/* Длинные слова (особенно в немецком: «Induktionsschleifensysteme») переносятся, а не растягивают страницу */
+html, body { overflow-x: clip; max-width: 100%; }
+section.custom-section, section.custom-section .custom-grid, section.custom-section .custom-grid > * { min-width: 0 !important; max-width: 100%; }
+section.custom-section h1, section.custom-section h2, section.custom-section h3, section.custom-section h4 {
+    overflow-wrap: anywhere !important; word-break: break-word; hyphens: auto !important; -webkit-hyphens: auto !important;
+    hyphenate-limit-chars: 14 5 5;   /* дефис только в словах от 14 букв: «aufzeichnen» (11) переносится целиком */
+    max-width: 100%;
+}
+section.custom-section p, section.custom-section strong, section.custom-section span, section.custom-section a, section.custom-section li {
+    overflow-wrap: anywhere; hyphens: auto; -webkit-hyphens: auto;
+    hyphenate-limit-chars: 12 5 5;   /* в обычном тексте — от 12 букв: «darin», «drücken» не рвутся */
+}
+@media (max-width: 639px) {
+    section.custom-section h2 { font-size: clamp(1.5rem, 6.4vw, 2.25rem) !important; line-height: 1.15 !important; }
 }
 
 
@@ -1430,10 +1455,11 @@ body.cursor-dot-enabled :is(button, a, input, select, textarea, option, label,
     <nav class="bg-white px-4 py-4 flex items-center justify-between sticky top-0 z-40 border-b border-gray-50 shadow-xl">
         <div class="logo-container">
           <div class="superellipse">
-            <span class="logo-text-white" data-site="logoMark">JS</span>
+            <span class="logo-text-white" data-site="logoMark"></span>
           </div>
-          <span class="logo-label" data-site="logoLabel">Dev</span>
+          <span class="logo-label" data-site="logoLabel"></span>
         </div>
+        <script>window.applySiteTexts && window.applySiteTexts();</script>
         
 	<!-- NAVIGATION -->        
 <!--
