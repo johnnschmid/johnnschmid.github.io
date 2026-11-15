@@ -1220,14 +1220,14 @@ body.cursor-dot-enabled :is(button, a, input, select, textarea, option, label,
 html, body { overflow-x: clip; max-width: 100%; }
 section.custom-section, section.custom-section .custom-grid, section.custom-section .custom-grid > * { min-width: 0 !important; max-width: 100%; }
 section.custom-section h1, section.custom-section h2, section.custom-section h3, section.custom-section h4 {
-    overflow-wrap: anywhere !important; word-break: break-word; hyphens: auto !important; -webkit-hyphens: auto !important;
-    hyphenate-limit-chars: 14 5 5;   /* дефис только в словах от 14 букв: «aufzeichnen» (11) переносится целиком */
+    overflow-wrap: anywhere !important; word-break: break-word; hyphens: manual; -webkit-hyphens: manual;
     max-width: 100%;
 }
 section.custom-section p, section.custom-section strong, section.custom-section span, section.custom-section a, section.custom-section li {
-    overflow-wrap: anywhere; hyphens: auto; -webkit-hyphens: auto;
-    hyphenate-limit-chars: 12 5 5;   /* в обычном тексте — от 12 букв: «darin», «drücken» не рвутся */
+    overflow-wrap: anywhere; hyphens: manual; -webkit-hyphens: manual;
 }
+/* Дефисный перенос включается скриптом fitHyphenation() ТОЛЬКО для блоков, где есть слово,
+   которое не помещается в строку даже целиком (inline-стиль hyphens:auto + hyphenate-limit-chars). */
 @media (max-width: 639px) {
     section.custom-section h2 { font-size: clamp(1.5rem, 6.4vw, 2.25rem) !important; line-height: 1.15 !important; }
 }
@@ -5215,6 +5215,49 @@ window.reToolsStore = {
         return changed;
     }
 };
+</script>
+<script>
+/* fitHyphenation — перенос слов дефисом только когда слово НЕ помещается в строку целиком.
+   Если слово влезает на следующей строке — оно переносится целиком, без дефиса. */
+(function () {
+    var SEL = 'section.custom-section :is(h1,h2,h3,h4,p,li)';
+    var ctx = document.createElement('canvas').getContext('2d');
+    var timer = 0;
+    function fit() {
+        document.querySelectorAll(SEL).forEach(function (el) {
+            var cs = getComputedStyle(el);
+            var avail = el.getBoundingClientRect().width - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+            var over = 0;
+            if (avail > 0) {
+                ctx.font = cs.fontStyle + ' ' + cs.fontWeight + ' ' + cs.fontSize + ' ' + cs.fontFamily;
+                if ('letterSpacing' in ctx) ctx.letterSpacing = cs.letterSpacing === 'normal' ? '0px' : cs.letterSpacing;
+                var upper = cs.textTransform === 'uppercase';
+                // слова делим по пробелам и обычным дефисам: в этих местах браузер и так умеет переносить
+                (el.textContent || '').split(/[\s\-\u2010\u2011\u2013\u2014\u00AD]+/).forEach(function (w) {
+                    if (w.length < 9) return;
+                    if (ctx.measureText(upper ? w.toUpperCase() : w).width > avail) over = over ? Math.min(over, w.length) : w.length;
+                });
+            }
+            if (over) {
+                el.style.setProperty('hyphens', 'auto');
+                el.style.setProperty('-webkit-hyphens', 'auto');
+                el.style.setProperty('hyphenate-limit-chars', Math.max(6, over - 1) + ' 3 3');
+            } else if (el.style.hyphens) {
+                el.style.removeProperty('hyphens');
+                el.style.removeProperty('-webkit-hyphens');
+                el.style.removeProperty('hyphenate-limit-chars');
+            }
+        });
+    }
+    function schedule() { clearTimeout(timer); timer = setTimeout(fit, 150); }
+    window.fitHyphenation = fit;
+    window.addEventListener('resize', schedule);
+    window.addEventListener('load', schedule);
+    document.addEventListener('alpine:initialized', schedule);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(schedule);
+    new MutationObserver(schedule).observe(document.body, { childList: true, subtree: true, characterData: true });
+    schedule();
+})();
 </script>
 <div class="cursor-dot"></div>
 <div class="cursor-outline"></div> 

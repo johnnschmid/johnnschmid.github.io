@@ -1095,8 +1095,8 @@ const SECTIONS_DATA = [
             { id: 'spool', label: 'Spool' },
             { id: 'printing', label: 'Print' }
         ],
-		title: 'Talking Blood Pressure Monitor "Tifloton"',
-		p1: 'The "Tifloton" is an innovative automatic talking blood pressure monitor with an integrated non-pharmacological blood pressure correction function, specifically designed for blind and visually impaired users. This unique medical technology combines precise blood pressure measurement with non-invasive electro-stimulation therapy via a wrist cuff electrode.',
+		title: 'Talking Blood Pressure Monitor',
+		p1: 'The Talking Blood Pressure Monitor is an innovative automatic talking blood pressure monitor with an integrated non-pharmacological blood pressure correction function, specifically designed for blind and visually impaired users. This unique medical technology combines precise blood pressure measurement with non-invasive electro-stimulation therapy via a wrist cuff electrode.',
 		p2: 'Daily 5-minute therapy sessions send targeted electrical impulses to nerve receptors, normalizing vascular wall tone and improving overall blood circulation to help manage hypertension and gradually reduce reliance on medication.',
 
 		hints: [
