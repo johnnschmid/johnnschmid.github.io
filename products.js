@@ -678,6 +678,10 @@ const SECTIONS_DATA = [
             { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczMAwHwjt0Keszgy1Ls39yF45sP0wH-1NR-rdCCxxy6XEFVeh7ObwE2h9EORC0HxCmRtvWQT35nLY3Lrx8fHJ4P2zFF-aX8L758JVzwIlYLDgv9YCRpfFkFTyPkjN6vBcje2RqvgJmlNPKGOLIRLb-zu=w3629-h2013-s-no' },
             { type: 'image', url: 'https://lh3.googleusercontent.com/pw/AP1GczNlhwNKx2wOWM5DZG-hCvNamAt-jiyfa1b1H9k9z72h8PWdUE6wVfWyzL7z_tZdbY7abfH-ipxi_peE2ebMPvcMQJsaYFjINOcWESlWLuxisMETNB7yQVbrMym6qvFaBniFtd6eYl7m08Ao6myvx6iz=w3629-h2013-s-no' },
             //{ type: 'video', url: 'https://dostupsreda.ru/media/files/materials/%D0%92%D0%BE%D0%B9%D1%81%D0%B0-%D0%B3%D0%B0%D0%B4%D0%B6%D0%B5%D1%82-%D0%BF%D0%BE%D0%BC%D0%BE%D1%89%D0%BD%D0%B8%D0%BA-%D0%BA%D0%BE%D0%BC%D0%BF%D0%B0%D0%BD%D0%B8%D1%8F-%D0%BA%D1%80%D1%83%D1%81%D1%82_0zWbDIF.mp4' },
+            
+            
+            { type: 'video', url: 'https://www.youtube.com/embed/Ue6ayxta13k' },
+            
 
             { type: '3mf', url: 'https://dl.dropboxusercontent.com/scl/fi/8x9ikwd9xsf4rezuc9asm/saned_player.3MF?rlkey=jkevzgh6os63z5pziia6vq1qn&st=k4c7h10n&dl=1'},
             
@@ -1117,7 +1121,7 @@ const SECTIONS_DATA = [
 			{
 				emoji: '💾',
 				title: 'Data Storage:',
-				text: 'Saves measurement history and therapy records directly to the included flash memory card for tracking.',
+				text: 'Saves measurement history and therapy records directly to the included SD flash memory card for tracking.',
 				youtubeUrl: '',
 				youtubeText: ''
 			}
@@ -1154,7 +1158,7 @@ const SECTIONS_DATA = [
             { type: 'video', url: 'https://www.youtube.com/embed/VbBEVBd04SU' },
             { type: 'video', url: 'https://www.youtube.com/embed/9ck88ZL7JQA' },  
             { type: 'video', url: 'https://www.youtube.com/embed/vH6aYH5--d4' },              
-            
+            { type: 'video', url: 'https://www.youtube.com/embed/QLrci50PT8U?start=5m01s' },
             
             { type: '3mf', url: 'https://dl.dropboxusercontent.com/scl/fi/frnm8siir90hsosavwpry/Tonometer.3MF?rlkey=m0z4hlklcdr2fzuj88jlsu49c&st=mlf8xbbm&dl=1'},
             

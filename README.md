@@ -1,2 +1,2 @@
-# reshop.github.io
-reshop
+# johnnschmid.github.io
+johnnschmid
