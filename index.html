@@ -1453,12 +1453,20 @@ section.custom-section p, section.custom-section strong, section.custom-section 
 
 	<!-- NAVIGATION -->
     <nav class="bg-white px-4 py-4 flex items-center justify-between sticky top-0 z-40 border-b border-gray-50 shadow-xl">
-        <div class="logo-container">
+        <a href="/" class="logo-container" title="Home" aria-label="Home"
+           style="text-decoration: none; color: inherit; cursor: pointer;"
+           @click.prevent="
+               activeSection = 'home';
+               isScrollingByClick = true;
+               history.pushState(null, '', '/');
+               window.scrollTo({top: 0, behavior: 'smooth'});
+               setTimeout(() => isScrollingByClick = false, 600);
+           ">
           <div class="superellipse">
             <span class="logo-text-white" data-site="logoMark"></span>
           </div>
           <span class="logo-label" data-site="logoLabel"></span>
-        </div>
+        </a>
         <script>window.applySiteTexts && window.applySiteTexts();</script>
         
 	<!-- NAVIGATION -->        
